@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsGameView",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsGameView",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

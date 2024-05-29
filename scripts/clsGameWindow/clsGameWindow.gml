@@ -8,8 +8,8 @@ function GameWindow() constructor {
 	
 	#region Functions
 	
-	/// -- center_window(defer)
-	/// Centers the game window
+	/// @method center_window(defer)
+	/// @desc Centers the game window
 	///
 	/// @param {bool}  [defer]  If true, centering is delayed by a single frame. Defaults to true.
 	static center_window = function(_defer/*: bool*/ = true) {
@@ -19,8 +19,8 @@ function GameWindow() constructor {
 			window_center();
 	};
 	
-	/// -- update_screen()
-	/// Updates the screen, resizing the application surface if needed
+	/// @method update_screen()
+	/// @desc Updates the screen, resizing the application surface if needed
 	static update_screen = function() {
 		with (options_data()) {
 			window_set_fullscreen(fullscreen);

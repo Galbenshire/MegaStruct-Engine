@@ -1,0 +1,2 @@
+camera.stepEnd();
+debug.stepEnd();
