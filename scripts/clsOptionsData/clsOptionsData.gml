@@ -29,8 +29,8 @@ function OptionsData() constructor {
     volumeSound = 1;
     
     // Controls
-    //keys = default_key_bindings(); /// @is {array<int>}
-    //buttons = default_button_bindings(); /// @is {array<gamepad_button>}
+    keys = default_key_bindings(); /// @is {array<int>}
+    buttons = default_button_bindings(); /// @is {array<gamepad_button>}
     downJumpSlide = true;
     autoFire = false;
     chargeToggle = false;
@@ -136,6 +136,58 @@ function OptionsData() constructor {
     static set_sound_volume = function(_percentage/*: number*/) {
         _percentage = clamp(_percentage, 0, 100);
         volumeSound = _percentage * 0.01;
+    };
+    
+    #endregion
+    
+    #region Functions - Controls
+    
+    /// -- default_button_bindings()
+	/// Returns the default gamepad bindings for this game
+	///
+	/// @returns {array<gamepad_button>}  Default button bindings
+    static default_button_bindings = function() {
+        var _defaults = array_create(InputActions.COUNT);
+        
+        _defaults[InputActions.LEFT] = gp_padl;
+        _defaults[InputActions.RIGHT] = gp_padr;
+        _defaults[InputActions.UP] = gp_padu;
+        _defaults[InputActions.DOWN] = gp_padd;
+        
+        _defaults[InputActions.JUMP] = gp_face1;
+        _defaults[InputActions.SHOOT] = gp_face3;
+        _defaults[InputActions.SLIDE] = gp_face2;
+        
+        _defaults[InputActions.WEAPON_SWITCH_LEFT] = gp_shoulderlb;
+		_defaults[InputActions.WEAPON_SWITCH_RIGHT] = gp_shoulderrb;
+		
+		_defaults[InputActions.PAUSE] = gp_start;
+        
+        return _defaults;
+    };
+    
+    /// -- default_button_bindings()
+	/// Returns the default keyboard bindings for this game
+	///
+	/// @returns {array<int>}  Default key bindings
+    static default_key_bindings = function() {
+        var _defaults = array_create(InputActions.COUNT);
+        
+        _defaults[InputActions.LEFT] = vk_left;
+        _defaults[InputActions.RIGHT] = vk_right;
+        _defaults[InputActions.UP] = vk_up;
+        _defaults[InputActions.DOWN] = vk_down;
+        
+        _defaults[InputActions.JUMP] = ord("Z");
+        _defaults[InputActions.SHOOT] = ord("X");
+        _defaults[InputActions.SLIDE] = ord("C");
+        
+        _defaults[InputActions.WEAPON_SWITCH_LEFT] = ord("A");
+		_defaults[InputActions.WEAPON_SWITCH_RIGHT] = ord("S");
+		
+		_defaults[InputActions.PAUSE] = vk_enter;
+        
+        return _defaults;
     };
     
     #endregion

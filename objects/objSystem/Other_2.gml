@@ -18,6 +18,7 @@ if (!variable_global_exists("__gameInit")) {
 	global.switchingSections = false; /// @is {bool}
 	
 	// Unlikely to change that much, if at all
+	global.player = new Player(0);
 	global.osInfo = os_get_info(); /// @is {ds_map}
 	
 	// Not intended to be accessed outside of system-specific code

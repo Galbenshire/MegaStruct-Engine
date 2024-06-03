@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsPlayer",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsPlayer",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

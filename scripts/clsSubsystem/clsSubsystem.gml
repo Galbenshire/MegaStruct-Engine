@@ -159,3 +159,35 @@ function Subsystem_Debug() : Subsystem() constructor {
         }
     };
 }
+
+/// @func Subsystem_Input()
+/// @desc Manages player input
+function Subsystem_Input() : Subsystem() constructor {
+	reader = new InputReader();
+	
+	static stepBegin = function() {
+		var _inputs = global.player.inputs,
+			_prev_held = _inputs.held,
+			_non_helds = 0;
+		
+		reader.update();
+		_inputs.clear_all();
+		_inputs.held = reader.results;
+		_non_helds = (_prev_held ^ _inputs.held);
+		_inputs.pressed = (_non_helds & _inputs.held);
+		_inputs.released = (_non_helds & _prev_held);
+    };
+    
+    static asyncSystem = function() {
+        switch (async_load[? "event_type"]) {
+            case "gamepad discovered":
+                reader.controller = async_load[? "pad_index"];
+                break;
+            
+            case "gamepad lost":
+                if (reader.controller == async_load[? "pad_index"])
+                    reader.controller = NO_CONTROLLER;
+                break;
+        }
+    }
+}

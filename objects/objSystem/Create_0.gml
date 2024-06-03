@@ -6,3 +6,4 @@ core = new Subsystem_Core();
 //
 camera = new Subsystem_Camera();
 debug = new Subsystem_Debug();
+input = new Subsystem_Input();

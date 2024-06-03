@@ -24,8 +24,8 @@ function GameView() constructor {
 	
 	#region Functions - Getters
     
-    /// -- get_x(include_offset)
-	/// Gets the x-position of the game view
+    /// @method get_x(include_offset)
+	/// @desc Gets the x-position of the game view
 	///
 	/// @param {bool}  [include_offset]  Whether to include the view's offset. Defaults to true.
 	///
@@ -34,8 +34,8 @@ function GameView() constructor {
         return xView + xOffset * _includeOffset;
     };
     
-    /// -- get_y(include_offset)
-	/// Gets the y-position of the game view
+    /// @method get_y(include_offset)
+	/// @desc Gets the y-position of the game view
 	///
 	/// @param {bool}  [include_offset]  Whether to include the view's offset. Defaults to true.
 	///
@@ -48,8 +48,8 @@ function GameView() constructor {
     
     #region Functions - Setters
     
-    /// -- set_offset(x, y)
-	/// Sets the offset for the game view
+    /// @method set_offset(x, y)
+	/// @desc Sets the offset for the game view
 	///
 	/// @param {number}  x  x-component of the offset
 	/// @param {number}  y  y-component of the offset
@@ -58,8 +58,8 @@ function GameView() constructor {
         yOffset = _y;
     };
     
-    /// -- set_position(x, y)
-	/// Sets the position of the game view
+    /// @method set_position(x, y)
+	/// @desc Sets the position of the game view
 	///
 	/// @param {number}  x  New X Position
 	/// @param {number}  y  New Y Position
@@ -68,8 +68,8 @@ function GameView() constructor {
 		yView = _y;
 	};
 	
-	/// -- set_prev_position(x, y)
-	/// Sets the previous position of the game view
+	/// @method set_prev_position(x, y)
+	/// @desc Sets the previous position of the game view
 	///
 	/// @param {number}  x  New X Position
 	/// @param {number}  y  New Y Position
@@ -82,8 +82,8 @@ function GameView() constructor {
     
     #region Functions - Centers
     
-    /// -- center_x(include_offset)
-	/// Returns the x-center of the game view
+    /// @method center_x(include_offset)
+	/// @desc Returns the x-center of the game view
 	///
 	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
 	///
@@ -92,8 +92,8 @@ function GameView() constructor {
 		return get_x(_includeOffset) + GAME_WIDTH * 0.5;
 	};
 	
-	/// -- center_y(include_offset)
-	/// Returns the y-center of the game view
+	/// @method center_y(include_offset)
+	/// @desc Returns the y-center of the game view
 	///
 	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
 	///
@@ -106,8 +106,8 @@ function GameView() constructor {
     
     #region Functions - Edges
     
-    /// -- view_left_edge(shift_by, include_offset)
-	/// Returns the left side of the game view, with an optional shift applied
+    /// @method view_left_edge(shift_by, include_offset)
+	/// @desc Returns the left side of the game view, with an optional shift applied
 	///
 	/// @param {number}  [shift_by]  Number of pixels to shift from the edge. Defaults to 0.
 	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
@@ -117,8 +117,8 @@ function GameView() constructor {
 		return get_x(_includeOffset) + _shift;
 	};
 	
-	/// -- view_right_edge(shift_by, include_offset)
-	/// Returns the right side of the game view, with an optional shift applied
+	/// @method view_right_edge(shift_by, include_offset)
+	/// @desc Returns the right side of the game view, with an optional shift applied
 	///
 	/// @param {number}  [shift_by]  Number of pixels to shift from the edge. Defaults to 0.
 	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
@@ -128,8 +128,8 @@ function GameView() constructor {
 		return left_edge(GAME_WIDTH + _shift, _includeOffset);
 	};
 	
-	/// -- view_top_edge(shift_by, include_offset)
-	/// Returns the top side of the game view, with an optional shift applied
+	/// @method view_top_edge(shift_by, include_offset)
+	/// @desc Returns the top side of the game view, with an optional shift applied
 	///
 	/// @param {number}  [shift_by]  Number of pixels to shift from the edge. Defaults to 0.
 	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
@@ -139,8 +139,8 @@ function GameView() constructor {
 		return get_y(_includeOffset) + _shift;
 	};
 	
-	/// -- view_bottom_edge(shift_by, include_offset)
-	/// Returns the bottom side of the game view, with an optional shift applied
+	/// @method view_bottom_edge(shift_by, include_offset)
+	/// @desc Returns the bottom side of the game view, with an optional shift applied
 	///
 	/// @param {number}  [shift_by]  Number of pixels to shift from the edge. Defaults to 0.
 	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
@@ -154,8 +154,8 @@ function GameView() constructor {
     
     #region Functions - Other
     
-    /// -- add_offset(x, y)
-	/// Applies an offset to the game view
+    /// @method add_offset(x, y)
+	/// @desc Applies an offset to the game view
 	///
 	/// @param {number}  x  x-component of the offset
 	/// @param {number}  y  y-component of the offset
@@ -164,8 +164,8 @@ function GameView() constructor {
         yOffset += _y;
     };
     
-    /// -- move_position(x, y)
-	/// Moves the game view by a set amount
+    /// @method move_position(x, y)
+	/// @desc Moves the game view by a set amount
 	///
 	/// @param {number}  x  The number of pixels to move horizontally
 	/// @param {number}  y  The number of pixels to move vertically
@@ -174,15 +174,15 @@ function GameView() constructor {
     	yView += _y;
     };
     
-    /// -- reset_offset()
-	/// Resets the offset for this view
+    /// @method reset_offset()
+	/// @desc Resets the offset for this view
     static reset_offset = function() {
         xOffset = 0;
         yOffset = 0;
     };
     
-    /// -- reset_all()
-	/// Resets the view co-ordinates. Usually called when a room starts
+    /// @method reset_all()
+	/// @desc Resets the view co-ordinates. Usually called when a room starts
     static reset_all = function() {
         xView = 0;
 		yView = 0;
