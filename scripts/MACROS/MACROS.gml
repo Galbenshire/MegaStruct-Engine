@@ -73,9 +73,100 @@ enum SolidType {
 	SLOPE_SOLID
 }
 
+// ===== Entity Collision =====
+
+enum DamageFlags {
+	NO_DAMAGE = 1 << 0,
+	MOCK_DAMAGE = 1 << 1
+}
+
+enum GuardType {
+	DAMAGE,
+	REFLECT,
+	IGNORE,
+	REFLECT_OR_IGNORE,
+	FORCE_REFLECT
+}
+
+enum PenetrateType {
+	NONE,
+	NO_DAMAGE,
+	NO_DAMAGE_AND_COLLISION,
+	BYPASS_GUARD
+}
+
+enum PierceType {
+	NEVER,
+	ON_KILLS_ONLY,
+	ALWAYS
+}
+
+// The list of factions an entity can be a part of, or can target, in this game
+enum Faction {
+	PICKUP = 1 << 0,
+	PLAYER = 1 << 1,
+	PLAYER_PROJECTILE = 1 << 2,
+	ENEMY = 1 << 3,
+	ENEMY_PROJECTILE = 1 << 4,
+	NEUTRAL = 1 << 5,
+	NEUTRAL_PROJECTILE = 1 << 6,
+	
+	// Shortcuts
+	PLAYER_FULL = Faction.PLAYER | Faction.PLAYER_PROJECTILE,
+	ENEMY_FULL = Faction.ENEMY | Faction.ENEMY_PROJECTILE,
+	NEUTRAL_FULL = Faction.NEUTRAL | Faction.NEUTRAL_PROJECTILE
+}
+
+// ===== Sections =====
+
+enum SectionSwitchBehaviour {
+	HIDDEN,
+	VISIBLE,
+	PERSISTANT
+}
+
+// ===== Physics =====
+
+#macro DEFAULT_GRAVITY 0.25
+#macro DEFAULT_GRAVITY_DIRECTION 1
+#macro DEFAULT_GRAVITY_WATER_MODIFIER 0.57
+#macro DEFAULT_FALL_SPEED 7
+
+// ===== State Machine Enums =====
+
+// The life states entities can have.
+// Used to flag if an entity is active, and is also used for spawning
+enum LifeState {
+	// The entity is not dead.
+	// It can run its step code, interact with other entities, and can be drawn
+	ALIVE,
+	
+	// This entity has been recently killed.
+	// It is intangible, inactive, & invisible.
+	// It must be scrolled offscreen before it can start respawning.
+	DEAD_ONSCREEN,
+	
+	// This entity is dead.
+	// Similar to DEAD_ONSCREEN, except it can now respawn if scrolled back onscreen.
+	DEAD_OFFSCREEN
+}
+
 // ===== Health =====
 
 #macro FULL_HEALTHBAR 28
+
+// ===== User Event Reserves =====
+
+#macro EVENT_ENTITY_TICK 14
+#macro EVENT_ENTITY_POSTTICK 15
+
+#macro EVENT_ANIMATION_INIT 12
+#macro EVENT_STATEMACHINE_INIT 13
+
+#macro EVENT_CHARACTER_SETUP ev_user10
+#macro EVENT_WEAPON_SETUP ev_user10
+
+#macro EVENT_INTERVAL_ACTION 14
 
 // ===== -1 Aliases =====
 

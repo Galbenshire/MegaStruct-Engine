@@ -30,6 +30,10 @@ function Subsystem_Core() : Subsystem() constructor {
         game_set_speed(GAME_SPEED, gamespeed_fps);
     };
     
+    static stepBegin = function() {
+		global.gameTimeScale.update();
+    };
+    
     static roomEnd = function() {
         
     };
@@ -55,9 +59,31 @@ function Subsystem_Camera() : Subsystem() constructor {
         if (!active)
             return;
         
-        // TO-DO: 
+        // TO-DO-BETTER: 
         var _camX = 0,
             _camY = 0;
+		var _count = 0;
+		
+		with (prtPlayer) {
+            _camX += x;
+            _camY += y
+            _count++;
+        }
+        
+        if (_count > 0) {
+            _camX = (_camX / _count) - GAME_WIDTH * 0.5;
+            _camY = (_camY / _count) - GAME_HEIGHT * 0.5;
+        } else {
+            _camX = _gameView.xView;
+            _camY = _gameView.yView;
+        }
+        
+        var _boundsLeft = 0,
+			_boundsTop = 0,
+			_boundsRight = room_width,
+			_boundsBottom = room_height;
+        _camX = clamp(_camX, _boundsLeft, _boundsRight - GAME_WIDTH);
+        _camY = clamp(_camY, _boundsTop, _boundsBottom - GAME_HEIGHT);
         
         _gameView.set_prev_position(_gameView.xView, _gameView.yView);
         _gameView.set_position(_camX, _camY);
@@ -65,6 +91,7 @@ function Subsystem_Camera() : Subsystem() constructor {
     
     static roomStart = function() {
 		active = false; // Most non-level rooms do not need the camera to be active
+		active = true; // temp
     };
 }
 

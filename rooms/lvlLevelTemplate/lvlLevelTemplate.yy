@@ -38,6 +38,9 @@
     "Width":256,
   },
   "sequenceId":null,
+  "tags":[
+    "room_level",
+  ],
   "views":[
     {"hborder":32,"hport":224,"hspeed":-1,"hview":224,"inherit":false,"objectId":null,"vborder":32,"visible":true,"vspeed":-1,"wport":256,"wview":256,"xport":0,"xview":0,"yport":0,"yview":0,},
     {"hborder":32,"hport":224,"hspeed":-1,"hview":224,"inherit":false,"objectId":null,"vborder":32,"visible":false,"vspeed":-1,"wport":256,"wview":256,"xport":0,"xview":0,"yport":0,"yview":0,},

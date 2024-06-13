@@ -1,1 +1,2 @@
 core.roomStart();
+camera.roomStart();

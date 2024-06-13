@@ -11,6 +11,7 @@ if (!variable_global_exists("__gameInit")) {
 	show_debug_message("Generating Global Variables...");
 	
 	// Likely to change a lot
+	global.gameTimeScale = new Fractional(1); /// @is {Fractional}
 	global.roomName = room_get_name(room); /// @is {string}
 	global.roomIsLevel = false; /// @is {bool}
 	global.previousRoom = room; /// @is {room}
