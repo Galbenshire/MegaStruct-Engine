@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"cbkOnDespawn",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cbkOnDespawn",
+  "parent":{
+    "name":"Callbacks",
+    "path":"folders/_System/Callbacks.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

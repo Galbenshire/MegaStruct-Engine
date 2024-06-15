@@ -39,3 +39,18 @@ bubbleTimer = 0; /// @is {int}
 
 subPixelX = 0; /// @is {number}
 subPixelY = 0; /// @is {number}
+
+// Callbacks
+// - Spawning
+onSpawn = method(id, onSpawn); /// @is {function<void>}
+onDespawn = method(id, onDespawn); /// @is {function<void>}
+// - Attacking
+onSetDamage = method(id, onSetDamage); /// @is {function<DamageSource, void>}
+onGuard = method(id, onGuard); /// @is {function<DamageSource, void>}
+onReflected = method(id, onReflected); /// @is {function<DamageSource, void>}
+onAttackBegin = method(id, onAttackBegin); /// @is {function<DamageSource, void>}
+onAttackEnd = method(id, onAttackEnd); /// @is {function<DamageSource, void>}
+onHurt = method(id, onHurt); /// @is {function<DamageSource, void>}
+onDeath = method(id, onDeath); /// @is {function<DamageSource, void>}
+// - Drawing
+onDraw = method(id, onDraw); /// @is {function<bool, void>}

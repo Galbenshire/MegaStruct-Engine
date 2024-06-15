@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"cbkOnDraw",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cbkOnDraw",
+  "parent":{
+    "name":"Callbacks",
+    "path":"folders/_System/Callbacks.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

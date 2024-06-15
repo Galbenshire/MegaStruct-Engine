@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsDamageSource",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsDamageSource",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

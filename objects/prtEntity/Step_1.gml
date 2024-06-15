@@ -22,7 +22,7 @@ switch (lifeState) {
 	case LifeState.ALIVE:
 		if (!entity_within_despawn_range()) {
 			lifeState = LifeState.DEAD_ONSCREEN;
-			//onDespawn();
+			onDespawn();
 		}
 		break;
 	
@@ -35,7 +35,7 @@ switch (lifeState) {
 		if (entity_within_respawn_range()) {
 			lifeState = LifeState.ALIVE;
 			inWater = interactWithWater && place_meeting(x, y, objWater);
-			//onSpawn();
+			onSpawn();
 		}
 		break;
 	

@@ -12,12 +12,10 @@ x += subPixelX;
 y += subPixelY;
 
 if (_iFrameInterval == 2) {
-	draw_self();
-	//onDraw(false);
+	onDraw(false);
 } else {
 	gpu_set_fog(true, c_white, 0, 0);
-	draw_self();
-	//onDraw(true);
+	onDraw(true);
 	gpu_set_fog(false, 0, 0, 0);
 }
 

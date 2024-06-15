@@ -44,7 +44,82 @@ function entity_check_ground() {
 /// @param {number}  [damage]  How much damage the attack will deal. Defaults to the entity's contactDamage.
 /// @param {prtEntity}  [suject]  The entity to deal damage to. Defaults to `other`.
 function entity_entity_collision(_damage = contactDamage, _subject = other) {
-	// TO-DO
+	if (array_contains(hitIgnoreList, _subject))
+		return;
+	
+	var _damageSource = new DamageSource(self, _subject, _damage);
+	_subject.onSetDamage(_damageSource);
+	
+	_subject.onGuard(_damageSource);
+	if (_damageSource.damage == 0)
+		_damageSource.guard = (_damageSource.guard == GuardType.DAMAGE) ? GuardType.FORCE_REFLECT : max(GuardType.REFLECT, _damageSource.guard);
+	
+	var _wasGuarded = false;
+	switch (_damageSource.guard) {
+		case GuardType.DAMAGE: // There is no guard. Damage will occur.
+			break;
+		
+		case GuardType.REFLECT: // Depends on the attacker's penetrate variable
+			if (penetrate == PenetrateType.NONE)
+				onReflected(_damageSource);
+			else if (penetrate == PenetrateType.NO_DAMAGE_AND_COLLISION)
+				array_push(hitIgnoreList, _subject);
+			
+			_wasGuarded = penetrate != PenetrateType.BYPASS_GUARD;
+			break;
+		
+		case GuardType.IGNORE: // Pass through the subject with no effect
+			_wasGuarded = true;
+			break;
+		
+		case GuardType.REFLECT_OR_IGNORE: // Depends on the attacker's penetrate variable, but always causes no damage
+			if (penetrate == PenetrateType.NONE)
+				onReflected(_damageSource);
+			_wasGuarded = true;
+			break;
+		
+		case GuardType.FORCE_REFLECT: // Always causes the reflected callback
+			onReflected(_damageSource);
+			_wasGuarded = true;
+			break;
+	}
+	
+	if (_wasGuarded) {
+		delete _damageSource;
+		return;
+	}
+	
+	onAttackBegin(_damageSource);
+	if (_damageSource.has_flag(DamageFlags.NO_DAMAGE)) {
+		delete _damageSource;
+		return;
+	}
+	
+	with (_damageSource.subject) {
+		var _mockDamage = _damageSource.has_flag(DamageFlags.MOCK_DAMAGE);
+		if (!_mockDamage)
+			healthpoints -= _damageSource.damage;
+		
+		lastHitBy = other;
+		onHurt(_damageSource);
+		hitTimer = 0;
+		
+		if (healthpoints <= 0 && !_mockDamage) {
+			_damageSource.hasKilled = true;
+			onDeath(_damageSource);
+		}
+		
+		other.onAttackEnd(_damageSource);
+	}
+	
+	if (pierces == PierceType.NEVER || (pierces == PierceType.ON_KILLS_ONLY && !_damageSource.hasKilled)) {
+		var _selfDamage = new DamageSourceSelf();
+		_selfDamage.hasKilled = true;
+		onDeath(_selfDamage);
+		delete _selfDamage;
+	}
+	
+	delete _damageSource;
 }
 
 /// @self {prtEntity}
