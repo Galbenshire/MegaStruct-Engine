@@ -81,6 +81,25 @@ function entity_horizontal_movement() {
 }
 
 /// @self {prtEntity}
+/// @func entity_update_subpixels()
+/// @desc Updates an entity's subpixels
+function entity_update_subpixels() {
+	if (options_data().pixelPerfect) {
+		subPixelX = 0;
+		subPixelY = 0;
+		return;
+	}
+	
+	subPixelX = xspeed.fractional;
+	subPixelY = yspeed.fractional;
+	
+	if (ground && is_object_type(prtEntity, groundInstance)) {
+		subPixelX += groundInstance.subPixelX;
+		subPixelY += groundInstance.subPixelY;
+	}
+}
+
+/// @self {prtEntity}
 /// @func entity_vertical_movement()
 /// @desc Moves an entity vertically
 function entity_vertical_movement() {

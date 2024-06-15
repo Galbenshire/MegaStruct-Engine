@@ -6,7 +6,7 @@ if (entity_is_dead()) {
 	exit;
 }
 
-if (global.paused)
+if (global.paused || global.gameTimeScale.integer <= 0)
 	exit;
 
 // =====  Entity-to-Entity Collisions =====

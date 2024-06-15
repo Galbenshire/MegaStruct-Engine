@@ -14,6 +14,9 @@ if (entity_is_dead()) {
     iFrames = 0;
 }
 
+if (global.paused || global.gameTimeScale.integer <= 0)
+	exit;
+
 // =====  Respawning/Despawning =====
 switch (lifeState) {
 	case LifeState.ALIVE:

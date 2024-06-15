@@ -5,11 +5,13 @@ if (!entity_can_step()) {
 	exit;
 }
 
-hitTimer++;
-if (iFrames > 0)
-	iFrames--;
+var _gameTicks = global.gameTimeScale.integer;
 
-repeat(global.gameTimeScale.integer) {
+hitTimer += _gameTicks;
+if (iFrames > 0)
+	iFrames = approach(iFrames, 0, _gameTicks);
+
+repeat(_gameTicks) {
     event_user(EVENT_ENTITY_TICK); // Run Physics Tick
 
     // =====  Standard Entity Stuff =====
@@ -22,8 +24,4 @@ repeat(global.gameTimeScale.integer) {
     event_user(EVENT_ENTITY_POSTTICK); // Run Physics Post Tick
 }
 
-// =====  Calculate subpixels =====
-subPixelX = xspeed.fractional;
-subPixelY = yspeed.fractional;
-if (ground)
-	subPixelY = is_object_type(prtEntity, groundInstance) ? groundInstance.subPixelY : 0;
+entity_update_subpixels();

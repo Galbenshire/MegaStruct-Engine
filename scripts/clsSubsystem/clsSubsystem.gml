@@ -63,10 +63,11 @@ function Subsystem_Camera() : Subsystem() constructor {
         var _camX = 0,
             _camY = 0;
 		var _count = 0;
+		var _pixelPerfect = options_data().pixelPerfect;
 		
 		with (prtPlayer) {
-            _camX += x;
-            _camY += y
+            _camX += x + subPixelX * !_pixelPerfect;
+            _camY += y + subPixelY * !_pixelPerfect;
             _count++;
         }
         
