@@ -1,9 +1,49 @@
-#region Substeps
+#region Substeps (mainly called during a Step Event)
 
 /// @self {prtEntity}
 /// @func entity_check_ground()
 /// @desc Any entity calling this function will check for a ground directly underneath them
 function entity_check_ground() {
+	if (!ground || !collideWithSolids || !gravEnabled || yspeed.value * gravDir < 0) {
+		ground = false;
+		groundInstance = noone;
+		return;
+	}
+	
+	var _groundRange = (abs(xspeed.integer) + 1) * gravDir,
+		_foundGround = false,
+		_collidables = get_ycoll_candidates(_groundRange),
+		_collidableCount = array_length(_collidables),
+		_distanceToMove = _groundRange,
+		_directionToMove = sign(_groundRange),
+		_groundInstance = noone;
+	
+	for (var i = 0; i < _collidableCount; i++) {
+		var _distanceToCollidable = distance_to_collidable_y(_collidables[i], gravDir);
+		
+		if (_distanceToCollidable * _directionToMove < 0 || abs(_distanceToCollidable) >= abs(_distanceToMove))
+            continue;
+        
+        _foundGround = true;
+        _distanceToMove = _distanceToCollidable;
+        _groundInstance = _collidables[i];
+	}
+	
+	y += _distanceToMove * _foundGround;
+	ground = _foundGround;
+	groundInstance = _foundGround ? _groundInstance : noone;
+	
+	if (_foundGround)
+		push_entities_y(_distanceToMove);
+}
+
+/// @self {prtEntity}
+/// @func entity_entity_collision(damage, subject)
+/// @desc Makes one entity attempt to apply damage to another entity
+///
+/// @param {number}  [damage]  How much damage the attack will deal. Defaults to the entity's contactDamage.
+/// @param {prtEntity}  [suject]  The entity to deal damage to. Defaults to `other`.
+function entity_entity_collision(_damage = contactDamage, _subject = other) {
 	// TO-DO
 }
 
@@ -13,7 +53,12 @@ function entity_check_ground() {
 ///
 /// @param {number}  [force]  How strong the gravity should be. Defaults to the entity's gravity.
 function entity_gravity(_force = grav) {
-	// TO-DO
+	if (ground || !gravEnabled)
+		return;
+	
+	yspeed.value += _force * gravDir * (inWater ? waterGravMod : 1);
+	if (yspeed.value * gravDir > maxFallSpeed)
+		yspeed.value = maxFallSpeed * gravDir;
 }
 
 /// @self {prtEntity}
@@ -25,9 +70,13 @@ function entity_horizontal_movement() {
 	xspeed.update();
 	
 	if (collideWithSolids) {
-		// move and collide
+		xcollInstance = move_and_collide_x(xspeed.integer);
+		if (xcollInstance != noone) {
+			xcoll = xspeed.value;
+			xspeed.clear_all();
+		}
 	} else {
-		// move
+		move_x(xspeed.integer);
 	}
 }
 
@@ -40,9 +89,18 @@ function entity_vertical_movement() {
 	yspeed.update();
 	
 	if (collideWithSolids) {
-		// move and collide
+		ycollInstance = move_and_collide_y(yspeed.integer);
+		if (ycollInstance != noone) {
+			if (gravEnabled && sign(yspeed.value) == gravDir) {
+				ground = true;
+				groundInstance = ycollInstance;
+			}
+			
+			ycoll = yspeed.value;
+			yspeed.clear_all();
+		}
 	} else {
-		// move
+		move_y(yspeed.integer);
 	}
 }
 
@@ -50,7 +108,21 @@ function entity_vertical_movement() {
 /// @func entity_water()
 /// @desc Entity interaction with water
 function entity_water() {
+	if (!interactWithWater) {
+		inWater = false;
+		return;
+	}
 	
+	inWater = place_meeting(x, y, objWater);
+	if (!inWater) {
+		bubbleTimer = 0;
+		return;
+	}
+	
+	if (++bubbleTimer >= 64) {
+		bubbleTimer = 0;
+		//instance_create_depth(x + bubbleXOffset, y + bubbleYOffset, depth, objAirBubble);
+	}
 }
 
 #endregion
@@ -111,6 +183,20 @@ function entity_within_respawn_range(_scope = self) {
 
 #endregion
 
+#region Other
+
+/// @func entity_can_attack_entity(target, scope)
+/// @desc Checks if the specified entity would be able to attack the targeted entity
+///
+/// @param {prtEntity}  target  The instance to check.
+/// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
+///
+/// @returns {bool}  If the entity can step (true) or not (false)
+function entity_can_attack_entity(_target, _scope = self) {
+	return _target != _scope && _target.canTakeDamage && _target.iFrames == 0
+		&& !entity_is_dead(_target) && (_scope.factionMask & _target.factionLayer > 0);
+}
+
 /// @func entity_can_step(scope)
 /// @desc Checks if the specified entity is able to perform their Step Event
 ///
@@ -131,4 +217,4 @@ function entity_is_dead(_scope = self) {
 	return _scope.lifeState != LifeState.ALIVE;
 }
 
-
+#endregion

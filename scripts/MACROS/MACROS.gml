@@ -131,6 +131,7 @@ enum SectionSwitchBehaviour {
 #macro DEFAULT_GRAVITY_DIRECTION 1
 #macro DEFAULT_GRAVITY_WATER_MODIFIER 0.57
 #macro DEFAULT_FALL_SPEED 7
+#macro MAX_SLOPE_STEEPNESS 1
 
 // ===== State Machine Enums =====
 

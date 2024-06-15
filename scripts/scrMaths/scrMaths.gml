@@ -66,6 +66,16 @@ function round_alt(_x) {
 	return (_x + _half) >> 0;
 }
 
+/// @func round_away_from_zero(x, step)
+/// @desc Rounds the given number away from zero
+///
+/// @param {number}  x  The number to round
+///
+/// @returns {number}  The rounded number
+function round_away_from_zero(_x) {
+	return (_x >= 0) ? ceil(_x) : floor(_x);
+}
+
 /// @func round_to(x, step)
 /// @desc Rounds the given number to the nearest multiple of the given step
 ///
@@ -75,6 +85,16 @@ function round_alt(_x) {
 /// @returns {number}  The snapped number
 function round_to(_x, _step) {
 	return (_step == 0) ? _x : (round(_x / _step) * _step);
+}
+
+/// @func round_towards_zero(x, step)
+/// @desc Rounds the given number towards zero
+///
+/// @param {number}  x  The number to round
+///
+/// @returns {number}  The rounded number
+function round_towards_zero(_x) {
+	return (_x >= 0) ? floor(_x) : ceil(_x);
 }
 
 /// @func sign_nonzero(x, prefer_positive)

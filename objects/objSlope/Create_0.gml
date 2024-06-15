@@ -1,0 +1,1 @@
+steepness = image_yscale / image_xscale;
