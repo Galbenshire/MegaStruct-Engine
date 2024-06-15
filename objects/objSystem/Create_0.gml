@@ -6,4 +6,7 @@ core = new Subsystem_Core();
 //
 camera = new Subsystem_Camera();
 debug = new Subsystem_Debug();
+flasher = new Subsystem_Flasher();
 input = new Subsystem_Input();
+level = new Subsystem_Level();
+shaker = new Subsystem_Shaker();

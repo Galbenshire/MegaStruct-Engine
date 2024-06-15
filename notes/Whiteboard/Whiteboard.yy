@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"",
+  "%Name":"Whiteboard",
+  "name":"Whiteboard",
+  "parent":{
+    "name":"MegaStructEngine",
+    "path":"MegaStructEngine.yyp",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}

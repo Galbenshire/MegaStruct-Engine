@@ -11,11 +11,15 @@ function Subsystem() constructor {
 /// @func Subsystem_Core()
 /// @desc Important operations of objSystem (or ones I could not find an actual category for)
 function Subsystem_Core() : Subsystem() constructor {
+	static stepBegin = function() {
+		global.gameTimeScale.update();
+    };
+    
     static roomStart = function() {
 		// Set some global variables
 		global.roomName = room_get_name(room);
 		global.roomIsLevel = asset_has_tags(global.roomName, "room_level");
-		show_debug_message("{0} == Instance Count: {1}, Is Level: {2}", global.roomName, instance_count, global.roomIsLevel);
+		show_debug_message("{0} -- Instance Count: {1}, Is Level: {2}", global.roomName, instance_count, global.roomIsLevel);
 		
         // Setup the view
         view_enabled = true;
@@ -28,10 +32,6 @@ function Subsystem_Core() : Subsystem() constructor {
         
         // Recalibrate the game speed (incase someone decided to change it)
         game_set_speed(GAME_SPEED, gamespeed_fps);
-    };
-    
-    static stepBegin = function() {
-		global.gameTimeScale.update();
     };
     
     static roomEnd = function() {
@@ -92,7 +92,6 @@ function Subsystem_Camera() : Subsystem() constructor {
     
     static roomStart = function() {
 		active = false; // Most non-level rooms do not need the camera to be active
-		active = true; // temp
     };
 }
 
@@ -162,6 +161,11 @@ function Subsystem_Debug() : Subsystem() constructor {
 					camera_set_begin_script(view_camera[0], -1);
 				}
 			}
+			
+			if (keyboard_check_pressed(vk_f8) && global.roomIsLevel) {
+				var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
+				array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), !layer_get_visible(_layer)); });
+			}
         }
     };
     
@@ -185,6 +189,57 @@ function Subsystem_Debug() : Subsystem() constructor {
 			draw_reset_text_align();
 			draw_reset_colour();
         }
+    };
+}
+
+/// @func Subsystem_Flasher()
+/// @desc Manages in-game screen flash
+///		  NOTE: Don't overuse. Some people are photosensitive
+function Subsystem_Flasher() : Subsystem() constructor {
+	colour = c_white;
+	timer = 0;
+	
+	static stepEnd = function() {
+		if (timer <= 0 || global.paused)
+			return;
+		
+		timer = approach(timer, 0, global.gameTimeScale.integer);
+		if (timer == 0)
+			colour = c_white;
+	};
+	
+	static roomStart = function() {
+		timer = 0;
+		colour = c_white;
+	};
+	
+	static drawEnd = function() {
+		if (timer > 0 && !global.paused) {
+			var _gameView = game_view();
+			draw_sprite_ext(sprDot, 0, _gameView.get_x(), _gameView.get_y(), GAME_WIDTH, GAME_HEIGHT, 0, colour, 1);
+		}
+    };
+}
+
+/// @func Subsystem_Level()
+/// @desc Handles level-specific actions, such as drawing a HUD
+function Subsystem_Level() : Subsystem() constructor {
+	active = false;
+    canPause = true;
+    data = {}; // Data specific to the current level
+    
+    static roomStart = function() {
+		active = global.roomIsLevel;
+		if (!active)
+			return;
+		
+		system.camera.active = true;
+		system.camera.stepEnd();
+		
+		var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
+		array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), false); });
+		
+		data = {};
     };
 }
 
@@ -219,3 +274,40 @@ function Subsystem_Input() : Subsystem() constructor {
         }
     }
 }
+
+/// @func Subsystem_Shaker()
+/// @desc Manages in-game screen shakes
+function Subsystem_Shaker() : Subsystem() constructor {
+	strengthX = 0;
+	strengthY = 0;
+	timer = 0;
+	
+	__shakeX = 0;
+	__shakeY = 0;
+	
+	static stepEnd = function() {
+		if (timer <= 0 || global.paused)
+			return;
+		
+		var _gameTicks = global.gameTimeScale.integer;
+		if (_gameTicks >= 1) {
+			timer = approach(timer, 0, _gameTicks);
+			if (timer == 0) {
+				strengthX = 0;
+				strengthY = 0;
+			}
+			__shakeX = choose(-strengthX, 0, strengthX);
+			__shakeY = choose(-strengthY, 0, strengthY);
+		}
+		
+		game_view().add_offset(__shakeX, __shakeY);
+	};
+	
+	static roomStart = function() {
+		strengthX = 0;
+		strengthY = 0;
+		timer = 0;
+		__shakeX = 0;
+		__shakeY = 0;
+	};
+};

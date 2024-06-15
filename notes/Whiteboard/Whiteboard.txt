@@ -1,0 +1,9 @@
+// === SCREEN SHAKER ===
+--- On a game frame
+- Update shake offset
+- Update timer
+- Apply offset
+
+--- On a non-game frame
+- Apply offset
+
