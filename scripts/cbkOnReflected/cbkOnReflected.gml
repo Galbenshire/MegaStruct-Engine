@@ -16,3 +16,17 @@ function cbkOnReflected_prtEntity(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Reflected - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.subject.object_index));
 }
+
+/// @func cbkOnReflected_prtProjectile(damage_source)
+/// @desc Default onReflected callback for projectiles
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnReflected_prtProjectile(_damage_source) {
+    if (DEBUG_ENABLED)
+        show_debug_message("Reflected - {0} (by {1})", object_get_name(object_index), object_get_name(_damage_source.subject.object_index));
+    
+    canTakeDamage = false;
+    canDealDamage = false;
+    set_velocity_vector(6, 45 + 90 * (xspeed.value > 0));
+    play_sfx(sfxReflect);
+}
