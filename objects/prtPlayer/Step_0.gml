@@ -1,8 +1,10 @@
-/// @description General Behaviour
-if (!entity_can_step()) {
-	if (entity_is_dead() && !respawn)
-		instance_destroy();
+if (global.paused)
 	exit;
+
+if (!is_undefined(player)) {
+    inputs.held = player.inputs.held;
+    inputs.pressed |= player.inputs.pressed;
+    inputs.released |= player.inputs.released;
 }
 
 var _gameTicks = global.gameTimeScale.integer;
@@ -22,6 +24,12 @@ repeat(_gameTicks) {
     entity_water();
     
     event_user(EVENT_ENTITY_POSTTICK);
+    
+    inputs.pressed = 0;
+    inputs.released = 0;
 }
 
 entity_update_subpixels();
+
+if (_gameTicks >= 1)
+    inputs.clear_all();

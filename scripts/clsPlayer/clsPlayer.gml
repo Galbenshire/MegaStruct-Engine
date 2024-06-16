@@ -7,10 +7,28 @@ function Player(_id/*:number*/) constructor {
     #region Variables
 	
 	id = _id; /// @is {number} A reference to the player's ID (i.e. they are Player 1, 2, 3, ...)
-	healthpoints = FULL_HEALTHBAR; /// @is {number} The player's health. If it reaches 0, they die, & the room restarts.
-	inputs = new InputMap(); /// @is {InputMap}
+	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
+	inputs = new InputMap();
 	
 	#endregion
 
+    #region Functions - Setters
     
+    /// @method set_body(body)
+	/// @desc Sets the instance representing the player's body
+	///
+	/// @param {prtPlayer}  body  The instance to use as a body
+	///
+	/// @returns {Player}  A reference to this struct. Useful for method chaining.
+	static set_body = function(_body/*:prtPlayer*/) {
+		assert(is_a_player(_body), "only objects that inherit from prtPlayer can be used as the player's body");
+		
+		body = _body;
+		body.player = self;
+		body.playerID = id;
+		
+		return self;
+	};
+    
+    #endregion
 }
