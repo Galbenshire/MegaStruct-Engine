@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsSpriteAtlas",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsSpriteAtlas",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

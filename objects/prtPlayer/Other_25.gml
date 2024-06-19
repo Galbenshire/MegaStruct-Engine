@@ -15,3 +15,9 @@ if (inputs.is_pressed(InputActions.SHOOT)) {
         onSpawn();
     }
 }
+
+skinCellX = 0;
+if (isSliding)
+	skinCellX = 11;
+if (isClimbing)
+	skinCellX = 15;

@@ -6,6 +6,14 @@ if (!variable_global_exists("__gameInit")) {
 	// ===== Custom Assets =====
 	show_debug_message("Building Custom Assets...");
 	global.font = font_add_sprite(sprFontMM9, ord(" "), false, 0); /// @is {font}
+	global.spriteAtlas_Player = new SpriteAtlas({
+		sprite: sprPlayerSkinRockMan,
+		width: 50,
+		margin: 1,
+		padding: 2,
+		xoffset: 25,
+		yoffset: 21
+	}); /// @is {SpriteAtlas}
 	
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");

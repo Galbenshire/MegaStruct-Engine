@@ -54,5 +54,9 @@ function EntityState(_initState, _execEnter = true) constructor {
         return self;
     };
     
+    static run_current_event_function = function() {
+        (__state.event_get_current_function())();
+    };
+    
     #endregion
 }

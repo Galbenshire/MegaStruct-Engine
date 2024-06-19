@@ -11,11 +11,9 @@ function is_a_player(_scope = self) {
 /// @self {prtPlayer}
 /// @func player_try_climbing()
 function player_try_climbing() {
-    return false;
-    
     ladderInstance = noone;
     
-    if (yDir == 0 || player.is_action_locked(LockAction.CLIMB))
+    if (yDir == 0)
         return false;
     
     if (yDir != gravDir)
@@ -29,9 +27,7 @@ function player_try_climbing() {
 /// @self {prtPlayer}
 /// @func player_try_sliding()
 function player_try_sliding() {
-    return false;
-    
-	if (!ground || player.is_action_locked(LockAction.SLIDE))
+	if (!ground)
         return false;
     
     var _input = inputs.is_pressed(InputActions.SLIDE) || (yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide);
@@ -39,7 +35,7 @@ function player_try_sliding() {
 		return false;
 	
 	// Check if there's space ahead
-	mask_index = maskFirstSlide;
+	mask_index = maskSlide;
 	var _hasSpace = !test_move_x(image_xscale);
 	mask_index = maskNormal;
     

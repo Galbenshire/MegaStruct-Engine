@@ -25,13 +25,6 @@ enum InputActions {
 	COUNT
 }
 
-enum InputState {
-	NONE,
-	HELD,
-	PRESSED,
-	RELEASED
-}
-
 // ===== Layer Names =====
 
 #macro LAYER_COLLISION "_Collision"
@@ -127,11 +120,16 @@ enum SectionSwitchBehaviour {
 
 // ===== Physics =====
 
+// -- General
 #macro DEFAULT_GRAVITY 0.25
 #macro DEFAULT_GRAVITY_DIRECTION 1
 #macro DEFAULT_GRAVITY_WATER_MODIFIER 0.57
 #macro DEFAULT_FALL_SPEED 7
 #macro MAX_SLOPE_STEEPNESS 1
+
+// -- Player Specific
+#macro COYOTE_FALL_BUFFER 6
+#macro JUMP_BUFFER 4
 
 // ===== State Machine Enums =====
 
@@ -175,6 +173,16 @@ enum LifeState {
 #macro INFINITE_I_FRAMES -1
 #macro NO_CONTROLLER -1
 #macro NOT_FOUND -1
+
+// ===== Tuples =====
+
+enum SpriteAtlasCell {
+    sheetX, /// @is {int}
+    sheetY, /// @is {int}
+    indexX, /// @is {int}
+    indexY, /// @is {int}
+    sizeof
+}
 
 // ===== Macro Functions =====
 

@@ -2,7 +2,7 @@
 // ================================
 stateMachine.add("_StandardGround", {
 	tick: function() {
-		var _canJump = inputs.is_pressed(InputActions.JUMP),
+		var _canJump = inputs.is_pressed(InputActions.JUMP) || (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP)),
 			_downJumpSlide = options_data().downJumpSlide && yDir == gravDir;
 		
 		if (_canJump && !_downJumpSlide) {
@@ -24,8 +24,10 @@ stateMachine.add("_StandardGround", {
 			return;
 		}
 		
-		if (!ground)
+		if (!ground) {
 			stateMachine.change("Fall");
+			coyoteTimer = COYOTE_FALL_BUFFER;
+		}
 	}
 });
 // --------------------------------
@@ -132,6 +134,8 @@ stateMachine.add("_StandardAir", {
 			yspeed.value = jumpSpeed * -gravDir;
 			//animator.play("jump");
 			canMinJump = true;
+			coyoteTimer = 0;
+			jumpBufferTimer = 0;
 		},
 		tick: function() {
 			stateMachine.inherit();
@@ -152,5 +156,139 @@ stateMachine.add("_StandardAir", {
 		enter: function() {
 			stateMachine.inherit();
 			//animator.play("fall");
+		},
+		tick: function() {
+			stateMachine.inherit();
+			if (stateMachine.has_just_changed())
+				return;
+			
+			if (coyoteTimer > 0 && inputs.is_pressed(InputActions.JUMP))
+				stateMachine.change("Jump");
 		}
 	});
+// ================================
+stateMachine.add("Slide", {
+	enter: function() {
+		isSliding = true;
+		
+		xspeed.value = slideSpeed * image_xscale;
+		yspeed.clear_all();
+		//animator.play("slide");
+		
+		mask_index = maskSlide;
+		
+		// with (instance_create_depth(bbox_horizontal(-image_xscale), bbox_vertical(image_yscale) - 4 * image_yscale, depth, objSlideDust))
+		// 	image_xscale = -other.image_xscale;
+	},
+	posttick: function() {
+		if (player_try_climbing()) {
+			stateMachine.change("Climb");
+			return;
+		}
+		
+		if (!ground) {
+			mask_index = maskSlideExtended;
+			ground = true;
+			entity_check_ground();
+			mask_index = maskSlide;
+			
+			if (ground)
+				yspeed.clear_all();
+		}
+		
+		var _freeSpaceAbove = !test_move_y(-slideMaskHeightDelta * gravDir),
+			_jumpInput = inputs.is_pressed(InputActions.JUMP),
+			_downJumpSlide = yDir == gravDir && options_data().downJumpSlide;
+		if (ground && _freeSpaceAbove && _jumpInput && !_downJumpSlide) {
+			stateMachine.change("Jump");
+			return;
+		}
+		
+		var _freeSpaceBelow = !ground && !test_move_y(slideMaskHeightDelta * gravDir);
+		if (!ground) {
+			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
+			stateMachine.change("Fall");
+			return;
+		}
+		
+		if (xDir == -image_xscale) {
+			if (_freeSpaceAbove) {
+				stateMachine.change("Idle");
+				return;
+			}
+			
+			image_xscale = xDir;
+			xspeed.value = slideSpeed * image_xscale;
+		}
+		
+		var _shouldEnd = xcoll != 0 || stateMachine.timer >= slideFrames;
+		if (_shouldEnd && (_freeSpaceAbove || _freeSpaceBelow)) {
+			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
+			stateMachine.change(xDir == image_xscale ? "Walk" : "Idle");
+		}
+	},
+	leave: function() {
+		isSliding = false;
+		mask_index = maskNormal;
+	}
+});
+// ================================
+stateMachine.add("Climb", {
+	enter: function() {
+		x = bbox_x_center(ladderInstance);
+		y = clamp(y, ladderInstance.bbox_top - 8 * (gravDir > 0), ladderInstance.bbox_bottom + 8 * (gravDir < 0));
+		
+		xspeed.clear_all();
+		yspeed.clear_all();
+		//animator.play("climb");
+		
+		ground = false;
+		groundInstance = noone;
+		gravEnabled = false;
+		isClimbing = true;
+	},
+	tick: function() {
+		yspeed.value = climbSpeed * yDir * !isShooting;
+		//animator.set_time_scale(abs(yspeed.value) != 0);
+		
+		// if (animator.timeScale.value == 0)
+		// 	animator.reset_frame_counter();
+		
+		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP))
+			stateMachine.change("Fall");
+	},
+	posttick: function() {
+		// Hitting ground while climbing down
+		if (sign(ycoll) == gravDir) {
+			stateMachine.change("Idle", function() {
+				stateMachine.run_current_event_function();
+				ground = true;
+				groundInstance = ycollInstance;
+			});
+			return;
+		}
+		
+		// Reached the bottom of the ladder?
+		var _reachedBottom = (gravDir >= 0) ? y > ladderInstance.bbox_bottom : y < ladderInstance.bbox_top;
+		if (_reachedBottom) {
+			stateMachine.change("Fall");
+			return;
+		}
+		
+		// Reached the top of the ladder?
+		var _reachedTop = (gravDir >= 0) ? y < ladderInstance.bbox_top - 10 : y > ladderInstance.bbox_bottom + 10;
+		if (_reachedTop) {
+			var _shift = bbox_vertical(-gravDir, ladderInstance) - bbox_vertical(gravDir);
+			move_and_collide_y(_shift);
+			
+			stateMachine.change("Idle");
+			ground = true;
+		}
+	},
+	leave: function() {
+		isClimbing = false;
+		ladderInstance = noone;
+		gravEnabled = true;
+		yspeed.clear_all();
+	}
+});
