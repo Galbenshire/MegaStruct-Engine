@@ -23,7 +23,6 @@ jumpBufferTimer = 0;
 slideMaskHeightDelta = abs(sprite_get_bbox_height(maskNormal) - sprite_get_bbox_height(maskSlide)); /// @is {number}
 
 // Player Spritesheet
-skinSprite = sprPlayerSkinRockMan;
 skinCellX = 0;
 skinCellY = 0;
 

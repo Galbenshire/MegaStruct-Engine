@@ -30,6 +30,23 @@ function instance_any(_obj, _predicate) {
     return false;
 }
 
+/// @func instance_create(x, y, depth_or_layer, obj, var_struct)
+/// @desc General purpose version of the instance_create_* functions
+///
+/// @param {number}  x  The x position the instance of the given object will be created at
+/// @param {number}  y  The y position the instance of the given object will be created at
+/// @param {number|layer|string}  depth_or_layer  The depth/layer to assign the created instance to
+/// @param {object}  obj  The object index of the object to create an instance of
+/// @param {struct}  [var_struct]  A struct with variables to assign to the new instance. Optional.
+///
+/// @returns {instance}  An instance of the object specified
+function instance_create(_x, _y, _depthOrLayer, _obj, _vars = {}) {
+    var _depth = (typeof(_depthOrLayer) == "number")
+		? _depthOrLayer
+		: layer_get_depth(_depthOrLayer);
+	return instance_create_depth(_x, _y, _depth, _obj, _vars);
+}
+
 /// @func is_object_type(object_index, scope)
 /// @desc Returns whether a specified instance is of a certain object,
 ///		  or is a descendent of the specified object.

@@ -233,6 +233,15 @@ function Subsystem_Level() : Subsystem() constructor {
 		if (!active)
 			return;
 		
+		assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
+		
+		// Calculate spawn coordinates
+		// (Will be more elaborate once I add checkpoints & teleporting)
+		var _spawn_x = objDefaultSpawn.x,
+			_spawn_y = objDefaultSpawn.y;
+		var _body = spawn_player_character(_spawn_x, _spawn_y, LAYER_ENTITY, CharacterType.MEGA);
+		global.player.set_body(_body);
+		
 		system.camera.active = true;
 		system.camera.stepEnd();
 		

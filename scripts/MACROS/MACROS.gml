@@ -5,6 +5,33 @@
 #macro GAME_WIDTH 256 // Resolution width of the game (in pixels)
 #macro GAME_HEIGHT 224 // Resolution height of the game (in pixels)
 
+// ===== Characters =====
+
+enum CharacterType {
+	MEGA,
+	PROTO,
+	BASS,
+	
+	COUNT
+}
+
+// ===== Weapons =====
+
+enum WeaponType {
+	BUSTER,
+	ICE_SLASHER,
+	METAL_BLADE,
+	
+	COUNT
+}
+
+enum WeaponFlags {
+	// Ammo pickups have no effect, there's no ammo bar on the HUD, & Tanks ignore this weapon entirely
+	NO_AMMO = 1 << 0,
+	// Weapon is chargeable (e.g. the Mega Buster (if you're not basic))
+	CHARGE = 1 << 1
+}
+
 // ===== Input =====
 
 enum InputActions {
@@ -182,6 +209,18 @@ enum SpriteAtlasCell {
     indexX, /// @is {int}
     indexY, /// @is {int}
     sizeof
+}
+
+enum PlayerPalette {
+	primary, /// @is {int}
+	secondary, /// @is {int}
+	outline, /// @is {int}
+	
+	skin, /// @is {int}
+	face, /// @is {int}
+	eyes, /// @is {int}
+	
+	sizeof
 }
 
 // ===== Macro Functions =====

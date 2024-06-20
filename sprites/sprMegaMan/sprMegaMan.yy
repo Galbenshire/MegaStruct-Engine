@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"Mega Man",
-    "path":"folders/Playable Characters/Mega Man.yy",
+    "name":"Level Objects",
+    "path":"folders/Level Objects.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

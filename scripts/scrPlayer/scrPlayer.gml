@@ -8,6 +8,22 @@ function is_a_player(_scope = self) {
     return is_object_type(prtPlayer, _scope);
 }
 
+/// @func player_input_palette()
+/// @desc Creates a copy of input colours used for the player object
+///
+/// @returns {PlayerPalette}
+function player_input_palette() {
+	var _palette/*:PlayerPalette*/ = array_create(PlayerPalette.sizeof);
+	_palette[@PlayerPalette.primary] = $EC7000;
+	_palette[@PlayerPalette.secondary] = $F8B838;
+	_palette[@PlayerPalette.outline] = $9858F8;
+	_palette[@PlayerPalette.skin] = $A8D8FC;
+	_palette[@PlayerPalette.face] = $000000;
+	_palette[@PlayerPalette.eyes] = $FFFFFF;
+	
+	return _palette;
+}
+
 /// @self {prtPlayer}
 /// @func player_try_climbing()
 function player_try_climbing() {
@@ -40,4 +56,19 @@ function player_try_sliding() {
 	mask_index = maskNormal;
     
     return _hasSpace;
+}
+
+/// @func spawn_player_character(x, y, depth_or_layer, character_type)
+/// @desc Creates an instance of a player character
+///
+/// @param {number}  x  The x position the player will be created at
+/// @param {number}  y  The y position the player will be created at
+/// @param {number|layer|string}  depth_or_layer
+/// @param {number}  character_type
+///
+/// @returns {prtPlayer}
+function spawn_player_character(_x, _y, _depthOrLayer, _characterType) {
+	var _character = global.characterList[_characterType].object;
+	var _body = spawn_entity(_x, _y, _depthOrLayer, _character);
+	return _body;
 }

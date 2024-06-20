@@ -1,0 +1,47 @@
+{
+  "$GMObject":"",
+  "%Name":"objMegaMan",
+  "eventList":[
+    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":20,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
+  "managed":true,
+  "name":"objMegaMan",
+  "overriddenProperties":[],
+  "parent":{
+    "name":"Mega Man",
+    "path":"folders/Playable Characters/Mega Man.yy",
+  },
+  "parentObjectId":{
+    "name":"prtPlayer",
+    "path":"objects/prtPlayer/prtPlayer.yy",
+  },
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"sprMegaMan",
+    "path":"sprites/sprMegaMan/sprMegaMan.yy",
+  },
+  "spriteMaskId":{
+    "name":"mskPlayer",
+    "path":"sprites/mskPlayer/mskPlayer.yy",
+  },
+  "tags":[
+    "character",
+  ],
+  "visible":true,
+}

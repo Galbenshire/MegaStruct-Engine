@@ -15,6 +15,14 @@ if (!variable_global_exists("__gameInit")) {
 		yoffset: 21
 	}); /// @is {SpriteAtlas}
 	
+	// ===== Grab all Playable Characters in this engine =====
+	show_debug_message("Grabbing playable characters...");
+	global.characterList = array_create(CharacterType.COUNT, undefined); /// @is {array<Character>}
+	var _characters = tag_get_assets("character"),
+	    _characterCount = array_length(_characters);
+	for (var i = 0; i < _characterCount; i++)
+	    event_perform_object(asset_get_index(_characters[i]), ev_other, EVENT_CHARACTER_SETUP);
+	
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");
 	

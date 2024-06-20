@@ -221,7 +221,7 @@ function entity_water() {
 
 #endregion
 
-#region Respawn/Despawn
+#region Spawning
 
 /// @func entity_within_despawn_range(scope)
 /// @desc Checks if the specified entity's despawn range is within game view
@@ -273,6 +273,24 @@ function entity_within_respawn_range(_scope = self) {
 		&& _entityTop <= _screenBottom
 		&& _entityRight >= _screenLeft
 		&& _entityBottom >= _screenTop;
+}
+
+/// @func spawn_entity(x, y, depth_or_layer, object, var_struct)
+/// @desc Spawns an entity.
+///		  This works like instance_create_*, but will take the actions needed to spawn the entity correctly
+///
+/// @param {number}  x  The x position the instance of the given entity will be created at
+/// @param {number}  y  The y position the instance of the given entity will be created at
+/// @param {number|layer|string}  depth_or_layer  The depth/layer to assign the created instance to
+/// @param {prtEntity}  obj  The object index of the entity to create an instance of
+/// @param {struct}  [var_struct]  A struct with variables to assign to the new instance. Optional.
+///
+/// @returns {instance}  An instance of the entity specified
+function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
+	var _entity = instance_create(_x, _y, _depthOrLayer, _obj, _vars);
+	_entity.lifeState = LifeState.ALIVE;
+	_entity.onSpawn();
+	return _entity;
 }
 
 #endregion

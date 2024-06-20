@@ -3,7 +3,7 @@
 //
 // An entity will spawn in three situations:
 // - They have been scrolled onscreen (if currently dead, they must be scrolled offscreen fist)
-// - They were created via the `spawn_entity_*` functions
+// - They were created via the `spawn_entity` function
 // - On room start, if they are in the starting section
 //
 // `onSpawn` is best used to reset an entity to their initial state

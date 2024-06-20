@@ -48,9 +48,9 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
     
     #region Functions - Activation/Deactivation
     
-    /// -- activate()
-    /// Activates the colour replace shader
-    /// All future draws will be affected by the shader
+    /// @method activate()
+    /// @desc Activates the colour replace shader
+    /// 	  All future draws will be affected by the shader
     static activate = function() {
         if (!isSupported)
             return;
@@ -59,9 +59,9 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
         active = true;
     };
     
-    /// -- deactivate()
-    /// Deactivates the colour replace shader
-    /// Call this once you are done using this shader
+    /// @method deactivate()
+    /// @desc Deactivates the colour replace shader
+    /// 	  Call this once you are done using this shader
     static deactivate = function() {
         if (!isSupported)
             return;
@@ -69,8 +69,8 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
         active = false;
     };
     
-    /// -- is_active()
-    /// Checks if the Colour Replacer is active
+    /// @method is_active()
+    /// @desc Checks if the Colour Replacer is active
     ///
 	/// @returns {bool}  The colours to ouput after replacing
     static is_active = function() {
@@ -81,18 +81,18 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
     
     #region Functions - Copying
     
-    /// -- copy_input_colours()
-	/// Gets a copy the colours this replacer is told to replace.
-	/// Any changes to this returned array will not affect the original values.
+    /// @method copy_input_colours()
+	/// @desc Gets a copy the colours this replacer is told to replace.
+	/// 	  Any changes to this returned array will not affect the original values.
 	///
 	/// @returns {array<int>}  The copy of the colours being replaced
     static copy_input_colours = function() {
         return variable_clone(inputColours);
     };
     
-    /// -- copy_output_colours()
-	/// Gets a copy the colours this replacer will display over replaced colours.
-	/// Any changes to this returned array will not affect the original values.
+    /// @method copy_output_colours()
+	/// @desc Gets a copy the colours this replacer will display over replaced colours.
+	/// 	  Any changes to this returned array will not affect the original values.
 	///
 	/// @returns {array<int>}  The copy of the colours to replace to
     static copy_output_colours = function() {
@@ -103,8 +103,8 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
     
     #region Functions - Setters
     
-    /// -- set_input_colour_at(index, colour)
-	/// Sets a specific index from the input list to the given colour
+    /// @method set_input_colour_at(index, colour)
+	/// @desc Sets a specific index from the input list to the given colour
 	///
 	/// @param {int}  index  The index to target
 	/// @param {int}  colour  The colour to set
@@ -124,8 +124,8 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
             shader_set_uniform_f_array(u_InputColours, __inputColourParams);
     };
     
-    /// -- set_output_colour_at(index, colour)
-	/// Sets a specific index from the output list to the given colour
+    /// @method set_output_colour_at(index, colour)
+	/// @desc Sets a specific index from the output list to the given colour
 	///
 	/// @param {int}  index  The index to target
 	/// @param {int}  colour  The colour to set
@@ -149,8 +149,8 @@ function ColourReplacer(_inputCols, _outputCols) constructor {
     
     #region Functions - Other
     
-    /// -- refresh_all_uniforms()
-    /// Sets all uniforms used in the colour shader
+    /// @method refresh_all_uniforms()
+    /// @desc Sets all uniforms used in the colour shader
     static refresh_all_uniforms = function() {
 		shader_set_uniform_f_array(u_InputColours, __inputColourParams);
         shader_set_uniform_f_array(u_OutputColours, __outputColourParams);
