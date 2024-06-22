@@ -228,6 +228,15 @@ function Subsystem_Level() : Subsystem() constructor {
     canPause = true;
     data = {}; // Data specific to the current level
     
+    static stepEnd = function() {
+		if (!active || !canPause || global.switchingSections || instance_exists(objPauseMenu))
+			return;
+		
+		var _player = global.player;
+        if (_player.inputs.is_pressed(InputActions.PAUSE))
+            instance_create_depth(0, 0, system.depth - 10, objPauseMenu);
+    };
+    
     static roomStart = function() {
 		active = global.roomIsLevel;
 		if (!active)
@@ -282,6 +291,39 @@ function Subsystem_Input() : Subsystem() constructor {
                 break;
         }
     }
+}
+
+/// @func Subsystem_Pause()
+/// @desc Manages the pausing of the game
+function Subsystem_Pause() : Subsystem() constructor {
+	pauseQueue = 0;
+	__pauseCache = false;
+	
+	static stepBegin = function() {
+		assert(global.paused == __pauseCache, "global.paused was modified directly. Use queue_pause() or queue_unpause() instead.");
+		
+		if (pauseQueue == 0)
+			return;
+		
+		switch (pauseQueue) {
+			case QUEUED_PAUSE:
+				global.paused = true;
+				time_source_pause(time_source_game);
+				break;
+			
+			case QUEUED_UNPAUSE:
+				global.paused = false;
+				time_source_resume(time_source_game);
+				break;
+			
+			default:
+				assert(false, string("pauseQueue set to an invalid value: {0}", pauseQueue));
+				break;
+		}
+		
+		__pauseCache = global.paused;
+		pauseQueue = 0;
+	};
 }
 
 /// @func Subsystem_Shaker()

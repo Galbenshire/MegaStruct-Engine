@@ -2,6 +2,9 @@ event_inherited();
 
 mask_index = maskNormal;
 
+// Animation System
+animator = new FrameAnimationPlayer(); /// @is {FrameAnimationPlayer}
+
 // State Machine
 stateMachine = new EntityState("Idle");
 
@@ -38,6 +41,8 @@ isIntro = false;
 isSliding = false;
 isClimbing = false;
 isShooting = false;
+isCharging = false;
+isHurt = false;
 
 // Event User Inits
 event_user(EVENT_ANIMATION_INIT);

@@ -30,6 +30,17 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Player Hurt by {0}", object_get_name(_damageSource.attacker.object_index));
     
-    iFrames = 45;
+    var _inASlideHole = isSliding && test_move_y(-slideMaskHeightDelta * gravDir);
+    
+    stateMachine.change("Hurt");
+    
+    if (_inASlideHole) {
+        isSliding = true;
+        mask_index = maskSlideExtended;
+        xspeed.value = 0;
+        yspeed.value = 0;
+    }
+    
+    iFrames = 60;
     play_sfx(_damageSource.hitSFX);
 }

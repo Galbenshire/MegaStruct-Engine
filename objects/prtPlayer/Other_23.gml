@@ -33,7 +33,7 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Idle", {
 		enter: function() {
-			//animator.play("idle");
+			animator.play("idle");
 		},
 		tick: function() {
 			stateMachine.inherit();
@@ -51,7 +51,7 @@ stateMachine.add("_StandardGround", {
 		enter: function() {
 			move_and_collide_x(xDir);
 			move_and_collide_y(gravDir);
-			//animator.play("sidestep");
+			animator.play("sidestep");
 		},
 		tick: function() {
 			stateMachine.inherit();
@@ -70,7 +70,7 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Walk", {
 		enter: function() {
-			//animator.play("walk");
+			animator.play("walk");
 		},
 		tick: function() {
 			stateMachine.inherit();
@@ -87,7 +87,7 @@ stateMachine.add("_StandardGround", {
 	stateMachine.add_child("_StandardGround", "Brake", {
 		enter: function() {
 			xspeed.value = brakeSpeed * image_xscale;
-			//animator.play("brake");
+			animator.play("brake");
 		},
 		tick: function() {
 			stateMachine.inherit();
@@ -132,7 +132,7 @@ stateMachine.add("_StandardAir", {
 		enter: function() {
 			stateMachine.inherit();
 			yspeed.value = jumpSpeed * -gravDir;
-			//animator.play("jump");
+			animator.play("jump");
 			canMinJump = true;
 			coyoteTimer = 0;
 			jumpBufferTimer = 0;
@@ -155,7 +155,7 @@ stateMachine.add("_StandardAir", {
 	stateMachine.add_child("_StandardAir", "Fall", {
 		enter: function() {
 			stateMachine.inherit();
-			//animator.play("fall");
+			animator.play("fall");
 		},
 		tick: function() {
 			stateMachine.inherit();
@@ -173,7 +173,7 @@ stateMachine.add("Slide", {
 		
 		xspeed.value = slideSpeed * image_xscale;
 		yspeed.clear_all();
-		//animator.play("slide");
+		animator.play("slide");
 		
 		mask_index = maskSlide;
 		
@@ -240,7 +240,7 @@ stateMachine.add("Climb", {
 		
 		xspeed.clear_all();
 		yspeed.clear_all();
-		//animator.play("climb");
+		animator.play("climb");
 		
 		ground = false;
 		groundInstance = noone;
@@ -249,10 +249,10 @@ stateMachine.add("Climb", {
 	},
 	tick: function() {
 		yspeed.value = climbSpeed * yDir * !isShooting;
-		//animator.set_time_scale(abs(yspeed.value) != 0);
+		animator.set_time_scale(abs(yspeed.value) != 0);
 		
-		// if (animator.timeScale.value == 0)
-		// 	animator.reset_frame_counter();
+		if (animator.timeScale.value == 0)
+			animator.reset_frame_counter();
 		
 		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP))
 			stateMachine.change("Fall");
@@ -290,5 +290,28 @@ stateMachine.add("Climb", {
 		ladderInstance = noone;
 		gravEnabled = true;
 		yspeed.clear_all();
+	}
+});
+// ================================
+stateMachine.add("Hurt", {
+	enter: function() {
+		isHurt = true;
+		hitTimer = 0;
+		iFrames = INFINITE_I_FRAMES;
+		animator.play("hurt");
+		
+		xspeed.value = image_xscale * -0.5;
+		yspeed.value = (-1.5 * gravDir) * (yspeed.value * gravDir <= 0);
+        
+        play_sfx(sfxPlayerHit);
+	},
+	tick: function() {
+		if (stateMachine.timer >= 32)
+			stateMachine.change(isSliding ? "Slide" : "Idle");
+	},
+	leave: function() {
+		isHurt = false;
+		iFrames = 60;
+		hitTimer = 0;
 	}
 });

@@ -9,4 +9,5 @@ debug = new Subsystem_Debug();
 flasher = new Subsystem_Flasher();
 input = new Subsystem_Input();
 level = new Subsystem_Level();
+pause = new Subsystem_Pause();
 shaker = new Subsystem_Shaker();

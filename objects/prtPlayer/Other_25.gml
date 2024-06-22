@@ -15,7 +15,8 @@ if (inputs.is_pressed(InputActions.SHOOT)) {
 }
 
 skinCellX = 0;
-if (isSliding)
-	skinCellX = 11;
-if (isClimbing)
-	skinCellX = 15;
+skinCellY = 0;
+animator.update();
+
+if (animator.flag == "step")
+	play_sfx(sfxLand);

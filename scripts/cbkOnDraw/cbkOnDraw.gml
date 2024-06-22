@@ -18,3 +18,21 @@
 function cbkOnDraw_prtEntity(_whiteflash) {
     draw_self();
 }
+
+/// @func cbkOnDraw_prtPlayer(whiteflash)
+/// @desc Default onDraw callback for players.
+///       prtPlayer calls onDraw a it differently from regular entities;
+///       the `whiteflash` variable is not used here
+///
+/// @param {bool}  whiteflash  Unused here
+function cbkOnDraw_prtPlayer(_whiteflash) {
+	if (iFrames < 0 || (iFrames & 3) < 2) {
+		if (isHurt && (stateMachine.timer & 7) <= 3) {
+			draw_sprite_ext(sprHitspark, 0, sprite_x_center(), sprite_y_center(), image_xscale, image_yscale, 0, c_white, 1);
+		} else {
+			bodyPalette.activate();
+            global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, 0, x, y, image_xscale, image_yscale, c_white, 1);
+            bodyPalette.deactivate();
+		}
+	}
+}

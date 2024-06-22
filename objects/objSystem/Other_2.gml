@@ -3,6 +3,17 @@
 if (!variable_global_exists("__gameInit")) {
 	show_debug_message("Initialising...");
 	
+	// ===== Check all our shaders in the system managed to compile =====
+	show_debug_message("Verifying shaders...");
+	
+	global.shadersSupported = shaders_are_supported(); /// @is {bool}
+	global.shadersCompiled = {}; /// @is {struct}
+	
+	var _shaders = asset_get_ids(asset_shader),
+    	_shaderCount = array_length(_shaders);
+	for (var i = 0; i < _shaderCount; i++)
+		struct_set(global.shadersCompiled, shader_get_name(_shaders[i]), shader_is_compiled(_shaders[i]));
+	
 	// ===== Custom Assets =====
 	show_debug_message("Building Custom Assets...");
 	global.font = font_add_sprite(sprFontMM9, ord(" "), false, 0); /// @is {font}
