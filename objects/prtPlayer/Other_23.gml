@@ -315,3 +315,38 @@ stateMachine.add("Hurt", {
 		hitTimer = 0;
 	}
 });
+// ================================
+stateMachine.add("Death", {
+	enter: function() {
+		canTakeDamage = false;
+		if (!is_undefined(player)) {
+			audio_stop_all();
+			queue_pause();
+			defer(DeferType.STEP, function(__) /*=>*/ { queue_unpause(); }, 30, true, true);
+		}
+	},
+	tick: function() {
+		if (stateMachine.timer < 1)
+			return;
+		
+		var _explosion_params = {
+			sprite_index: sprExplosion,
+			animSpeed: 1/3,
+			lifeDuration: 0
+		};
+		for (var i = 0; i < 16; i++) {
+			with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
+				set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
+		}
+		
+		healthpoints = 0;
+		play_sfx(sfxDeath);
+		
+		if (!is_undefined(player)) {
+			objSystem.level.canPause = false;
+			defer(DeferType.STEP, function(__) /*=>*/ { room_restart(); }, GAME_SPEED * 3, true, true);
+		}
+		
+		instance_destroy();
+	},
+});

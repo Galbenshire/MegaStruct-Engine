@@ -307,45 +307,6 @@ function move_y(_yspeed, _scope = self) {
     }
 }
 
-/// @func set_velocity_vector(speed, direction, scope)
-/// @desc Sets the velocity of the given entity, using a direction & magnitude
-///
-/// @param {number}  speed  The magnitude of the velocity
-/// @param {number}  direction  The direction of the velocity
-/// @param {prtEntity}  [scope]  The instance to set the velocity of. Defaults to the calling instance.
-function set_velocity_vector(_speed, _direction, _scope = self) {
-	with (_scope) {
-		direction = _direction;
-		speed = _speed;
-		xspeed.value = hspeed;
-		yspeed.value = vspeed;
-		direction = 0;
-		speed = 0;
-	}
-}
-
-/// @func test_move_x(xspeed, scope)
-/// @desc Checks for collisions along a horizontal path, without moving the instance
-///
-/// @param {int}  xspeed  Checks this many pixels horizontally. Should be an integer.
-/// @param {prtEntity}  [scope]  The instance to "move". Defaults to the calling instance.
-///
-/// @return {bool}  If there is a collision in this path (true) or not (false)
-function test_move_x(_xspeed, _scope = self) {
-	return move_and_collide_x(_xspeed, true, _scope) != noone;
-}
-
-/// @func test_move_y(yspeed, scope)
-/// @desc Checks for collisions along a vertical path, without moving the instance
-///
-/// @param {int}  yspeed  Checks this many pixels vertically. Should be an integer.
-/// @param {prtEntity}  [scope]  The instance to "move". Defaults to the calling instance.
-///
-/// @return {bool}  If there is a collision in this path (true) or not (false)
-function test_move_y(_yspeed, _scope = self) {
-	return move_and_collide_y(_yspeed, true, _scope) != noone;
-}
-
 /// @func push_entities_x(xspeed, scope)
 /// @desc Given an entity that has moved horizontally, push other entities that are standing on it, or are in its path
 ///
@@ -425,4 +386,43 @@ function push_entities_y(_yspeed, _scope = self) {
             move_and_collide_y(_displacement);
         }
     }
+}
+
+/// @func set_velocity_vector(speed, direction, scope)
+/// @desc Sets the velocity of the given entity, using a direction & magnitude
+///
+/// @param {number}  speed  The magnitude of the velocity
+/// @param {number}  direction  The direction of the velocity
+/// @param {prtEntity}  [scope]  The instance to set the velocity of. Defaults to the calling instance.
+function set_velocity_vector(_speed, _direction, _scope = self) {
+	with (_scope) {
+		direction = _direction;
+		speed = _speed;
+		xspeed.value = hspeed;
+		yspeed.value = vspeed;
+		direction = 0;
+		speed = 0;
+	}
+}
+
+/// @func test_move_x(xspeed, scope)
+/// @desc Checks for collisions along a horizontal path, without moving the instance
+///
+/// @param {int}  xspeed  Checks this many pixels horizontally. Should be an integer.
+/// @param {prtEntity}  [scope]  The instance to "move". Defaults to the calling instance.
+///
+/// @return {bool}  If there is a collision in this path (true) or not (false)
+function test_move_x(_xspeed, _scope = self) {
+	return move_and_collide_x(_xspeed, true, _scope) != noone;
+}
+
+/// @func test_move_y(yspeed, scope)
+/// @desc Checks for collisions along a vertical path, without moving the instance
+///
+/// @param {int}  yspeed  Checks this many pixels vertically. Should be an integer.
+/// @param {prtEntity}  [scope]  The instance to "move". Defaults to the calling instance.
+///
+/// @return {bool}  If there is a collision in this path (true) or not (false)
+function test_move_y(_yspeed, _scope = self) {
+	return move_and_collide_y(_yspeed, true, _scope) != noone;
 }

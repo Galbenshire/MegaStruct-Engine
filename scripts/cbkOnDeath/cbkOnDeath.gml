@@ -21,6 +21,16 @@ function cbkOnDeath_prtEntity(_damageSource) {
     instance_create_depth(bbox_x_center(), bbox_y_center(), depth, objExplosion);
 }
 
+/// @func cbkOnDeath_prtPlayer(damage_source)
+/// @desc Default onDeath callback for players
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnDeath_prtPlayer(_damageSource) {
+    show_debug_message("Player Death by {0}", object_get_name(_damageSource.attacker.object_index));
+    
+    stateMachine.change("Death");
+}
+
 /// @func cbkOnDeath_prtProjectile(damage_source)
 /// @desc Default onDeath callback for pojectiles
 ///

@@ -67,6 +67,18 @@ enum InputActions {
 #macro QUEUED_PAUSE 1
 #macro QUEUED_UNPAUSE -1
 
+// ===== Defer Event Types =====
+
+enum DeferType {
+	STEP,
+	STEP_BEGIN,
+	STEP_END,
+	
+	DRAW,
+	DRAW_BEGIN,
+	DRAW_END
+}
+
 // ===== Solid Collision =====
 
 // The types of solids in this engine

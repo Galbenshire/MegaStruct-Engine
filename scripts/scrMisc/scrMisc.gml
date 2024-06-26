@@ -1,3 +1,30 @@
+/// @func defer(type, function, delay, ignore_time_scale, ignore_pause, run_once, caller)
+/// @desc Defers the given function to run at the given event/sub-event
+///
+/// @param {int}  type  When this deferred function should run (see the DeferType enum)
+/// @param {function<instance,void>}  function  The function to run
+/// @param {int}  [delay]  Delays the function by this many frames. Defaults to 0, no delay.
+/// @param {bool}  [ignore_time_scale]  If true, the global time scale is ignored. Defaults to false.
+/// @param {bool}  [ignore_pause]  If true, if runs even when the game is paused. Defaults to false.
+/// @param {bool}  [run_once]  If true, the defer object is destroyed after running once. Defaults to true.
+/// @param {instance}  [caller]  The instance deferring this action. Defaults to the calling instance.
+///
+/// @returns {objDefer}  The deferred action
+function defer(_type, _func, _delay = 0, _ignoreTimeScale = false, _ignorePause = false, _runOnce = true, _caller = self) {
+	var _params = {
+		ignoreTimeScale: _ignoreTimeScale,
+		ignorePause: _ignorePause,
+		runOnce: _runOnce,
+		delay: _delay
+	};
+	with (instance_create_depth(0, 0, _caller.depth, objDefer, _params)) {
+		caller = _caller;
+		deferredAction = method(id, _func);
+		return self;
+	}
+	return noone; // Failsafe
+}
+
 /// @func is_shader_supported(shader)
 /// @desc Checks to see if the given shader works on the current system.
 ///

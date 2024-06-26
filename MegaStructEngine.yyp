@@ -51,7 +51,9 @@
   "resources":[
     {"id":{"name":"Whiteboard","path":"notes/Whiteboard/Whiteboard.yy",},},
     {"id":{"name":"objDefaultSpawn","path":"objects/objDefaultSpawn/objDefaultSpawn.yy",},},
+    {"id":{"name":"objDefer","path":"objects/objDefer/objDefer.yy",},},
     {"id":{"name":"objExplosion","path":"objects/objExplosion/objExplosion.yy",},},
+    {"id":{"name":"objGenericEffect","path":"objects/objGenericEffect/objGenericEffect.yy",},},
     {"id":{"name":"objLadder","path":"objects/objLadder/objLadder.yy",},},
     {"id":{"name":"objMegaMan","path":"objects/objMegaMan/objMegaMan.yy",},},
     {"id":{"name":"objPauseMenu","path":"objects/objPauseMenu/objPauseMenu.yy",},},
@@ -114,6 +116,7 @@
     {"id":{"name":"scrViews","path":"scripts/scrViews/scrViews.yy",},},
     {"id":{"name":"SnowState","path":"scripts/SnowState/SnowState.yy",},},
     {"id":{"name":"shdReplaceColour","path":"shaders/shdReplaceColour/shdReplaceColour.yy",},},
+    {"id":{"name":"sfxDeath","path":"sounds/sfxDeath/sfxDeath.yy",},},
     {"id":{"name":"sfxEnemyHit","path":"sounds/sfxEnemyHit/sfxEnemyHit.yy",},},
     {"id":{"name":"sfxLand","path":"sounds/sfxLand/sfxLand.yy",},},
     {"id":{"name":"sfxPlayerHit","path":"sounds/sfxPlayerHit/sfxPlayerHit.yy",},},

@@ -34,5 +34,5 @@ if (iFrames < 0 || (iFrames & 3) < 2) {
 x = _x;
 y = _y;
 
-var _text = string("{0}\n{1}", animator.currentFrame, animator.frameCounter);
-draw_text(mouse_x + 8, mouse_y, _text);
+var _text = string("{0}", healthpoints);
+draw_text(x, y - 32, _text);

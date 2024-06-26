@@ -66,6 +66,8 @@ function Subsystem_Camera() : Subsystem() constructor {
 		var _pixelPerfect = options_data().pixelPerfect;
 		
 		with (prtPlayer) {
+			if (entity_is_dead())
+				continue;
             _camX += x + subPixelX * !_pixelPerfect;
             _camY += y + subPixelY * !_pixelPerfect;
             _count++;
@@ -229,7 +231,7 @@ function Subsystem_Level() : Subsystem() constructor {
     data = {}; // Data specific to the current level
     
     static stepEnd = function() {
-		if (!active || !canPause || global.switchingSections || instance_exists(objPauseMenu))
+		if (!active || !canPause || global.paused || global.switchingSections)
 			return;
 		
 		var _player = global.player;
