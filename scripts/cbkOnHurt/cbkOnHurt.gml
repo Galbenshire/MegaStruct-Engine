@@ -42,5 +42,4 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     }
     
     iFrames = 60;
-    play_sfx(_damageSource.hitSFX);
 }

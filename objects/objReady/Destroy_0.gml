@@ -1,0 +1,1 @@
+signal_bus().emit_signal("readyComplete");

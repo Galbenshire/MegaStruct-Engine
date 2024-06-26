@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"DEBUG_VIEWS",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"DEBUG_VIEWS",
+  "parent":{
+    "name":"_System",
+    "path":"folders/_System.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

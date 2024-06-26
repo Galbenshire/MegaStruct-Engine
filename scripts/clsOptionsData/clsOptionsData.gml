@@ -35,6 +35,9 @@ function OptionsData() constructor {
     autoFire = false;
     chargeToggle = false;
     
+    // Other
+    gameSpeed = 1;
+    
     #endregion
     
     #region Functions - Getters
@@ -236,35 +239,6 @@ function OptionsData() constructor {
         
         show_debug_message("...Options Saved successfully");
     };
-    
-    #endregion
-    
-    #region Functions - Debug
-    
-    static debug_view = function() {
-        var _view = dbg_view("Options Data", false, -1, -1, 300, 380);
-        
-        var _display = dbg_section("Display");
-        dbg_slider_int(ref_create(self, "screenSize"), 1, floor(MAX_SCALE), "Screen Size");
-        dbg_checkbox(ref_create(self, "fullscreen"), "Fullscreen");
-        dbg_checkbox(ref_create(self, "pixelPerfect"), "Pixel Perfect");
-        dbg_checkbox(ref_create(self, "vsync"), "VSync");
-        dbg_checkbox(ref_create(self, "showFPS"), "Show FPS");
-        dbg_button("Update Screen", function() {
-			game_window().update_screen();
-			game_window().center_window();
-		});
-        
-        var _volume = dbg_section("Volume");
-        dbg_slider(ref_create(self, "volumeMaster"), 0, 1, "Master");
-        dbg_slider(ref_create(self, "volumeMusic"), 0, 1, "Music");
-        dbg_slider(ref_create(self, "volumeSound"), 0, 1, "Sound");
-        
-        var _controls = dbg_section("Controls");
-        dbg_checkbox(ref_create(self, "downJumpSlide"), "Down+Jump Slide");
-        dbg_checkbox(ref_create(self, "autoFire"), "Auto Fire");
-        dbg_checkbox(ref_create(self, "chargeToggle"), "Charge Toggle");
-    }
     
     #endregion
 }

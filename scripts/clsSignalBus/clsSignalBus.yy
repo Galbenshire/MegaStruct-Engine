@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsSignalBus",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsSignalBus",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

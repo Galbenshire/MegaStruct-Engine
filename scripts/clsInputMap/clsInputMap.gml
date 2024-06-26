@@ -24,6 +24,28 @@ function InputMap() constructor {
 	static get_axis = function(_positive, _negative) {
 		return is_held(_positive) - is_held(_negative);
 	};
+	
+	/// @method is_any_held(...inputs)
+	/// @desc Checks if any of the given inputs have been held
+	///
+	/// @param {any}  [...inputs]  The input actions to check
+	static is_any_held = function(_inputs) {
+		var _value = 0;
+		for (var i = 0; i < argument_count; i++)
+			_value |= (1 << argument[i]);
+		return bool(held & _value);
+	};
+	
+	/// @method is_any_pressed(...inputs)
+	/// @desc Checks if any of the given inputs have been pressed
+	///
+	/// @param {any}  [...inputs]  The input actions to check
+	static is_any_pressed = function(_inputs) {
+		var _value = 0;
+		for (var i = 0; i < argument_count; i++)
+			_value |= (1 << argument[i]);
+		return bool(pressed & _value);
+	};
     
     /// @method is_held(input)
 	/// @desc Checks if the given input is held

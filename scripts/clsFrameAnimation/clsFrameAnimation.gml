@@ -18,6 +18,7 @@ function FrameAnimationPlayer() constructor {
     animationMap = {}; /// @is {struct}
     
     __newFrame = false;
+    __animFinished = false;
 	
 	#endregion
 	
@@ -168,9 +169,13 @@ function FrameAnimationPlayer() constructor {
 		var _prevFrame = currentFrame;
 		currentFrame++;
 		
-		if (currentFrame >= currentAnimation.frames && currentAnimation.is_looping()) {
-			currentFrame = currentAnimation.resetFrame;
-			loops++;
+		if (currentFrame >= currentAnimation.frames) {
+			if (currentAnimation.is_looping()) {
+				currentFrame = currentAnimation.resetFrame;
+				loops++;
+			} else {
+				__animFinished = true;
+			}
 		}
         
         var _remainder = frameCounter;
@@ -183,6 +188,15 @@ function FrameAnimationPlayer() constructor {
 	#endregion
 	
 	#region Functions - Other
+	
+	/// @method is_animation_finished()
+	/// @desc Checks if the current animation has finished.
+	///		  Note: If the animation doesn't loop, it cannot "finish"
+	///
+	/// @returns {number}  Whether the animation has finished (true) or not (false)
+	static is_animation_finished = function() {
+		return __animFinished;
+	};
 	
 	/// @method play(animation_name, force_play, time_scale)
 	/// @desc Tells the animation player to start playing the given animation.
@@ -200,6 +214,7 @@ function FrameAnimationPlayer() constructor {
         timeScale.clear_all();
         timeScale.value = _timeScale;
         __newFrame = true;
+        __animFinished = false;
         
         if (!struct_exists(animationMap, _animName)) {
 			currentAnimation = undefined;

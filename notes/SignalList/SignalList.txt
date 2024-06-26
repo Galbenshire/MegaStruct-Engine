@@ -1,0 +1,5 @@
+=== appSurfaceResize() ===
+-- The application surface has been resized
+
+=== readyComplete() ===
+-- Informs the player that they can perform their intro sequence now

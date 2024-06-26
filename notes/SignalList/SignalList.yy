@@ -1,7 +1,7 @@
 {
   "$GMNotes":"",
-  "%Name":"Whiteboard",
-  "name":"Whiteboard",
+  "%Name":"SignalList",
+  "name":"SignalList",
   "parent":{
     "name":"Notes",
     "path":"folders/Notes.yy",

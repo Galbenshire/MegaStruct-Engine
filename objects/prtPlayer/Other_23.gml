@@ -1,4 +1,69 @@
 /// @description State Machine Init
+// === The States ===
+// - StartStart
+// - Intro
+// - _StandardGround
+//		- Idle
+//		- Sidestep
+//		- Walk
+//		- Brake
+// - _StandardAir
+//		- Jump
+//		- Fall
+// - Slide
+// - Climb
+// - Hurt
+// - Death
+
+// ================================
+stateMachine.add("StageStart", {
+	enter: function() {
+		isIntro = true;
+		canTakeDamage = false;
+		gravEnabled = false;
+		visible = false;
+	},
+	leave: function() {
+		isIntro = false;
+		canTakeDamage = true;
+		gravEnabled = true;
+		visible = true;
+	}
+});
+// ================================
+stateMachine.add("Intro", {
+	enter: function() {
+		isIntro = true;
+		canTakeDamage = false;
+		collideWithSolids = false;
+		gravEnabled = false;
+		interactWithWater = false;
+		animator.play("teleport-idle");
+		animator.update();
+		y = game_view().top_edge(0);
+	},
+	tick: function() {
+		if (animator.currentAnimationName == "teleport-idle") {
+			y += 8;
+			
+			if (y >= ystart) {
+				y = ystart;
+				animator.play("teleport-in");
+				play_sfx(sfxTeleportIn);
+			}
+		} else if (animator.is_animation_finished()) {
+			stateMachine.change("Idle");
+		}
+	},
+	leave: function() {
+		isIntro = false;
+		collideWithSolids = true;
+		gravEnabled = true;
+		canTakeDamage = true;
+		ground = true;
+		interactWithWater = true;
+	}
+});
 // ================================
 stateMachine.add("_StandardGround", {
 	tick: function() {

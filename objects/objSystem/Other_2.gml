@@ -30,9 +30,9 @@ if (!variable_global_exists("__gameInit")) {
 	show_debug_message("Grabbing playable characters...");
 	global.characterList = array_create(CharacterType.COUNT, undefined); /// @is {array<Character>}
 	var _characters = tag_get_assets("character"),
-	    _characterCount = array_length(_characters);
+		_characterCount = array_length(_characters);
 	for (var i = 0; i < _characterCount; i++)
-	    event_perform_object(asset_get_index(_characters[i]), ev_other, EVENT_CHARACTER_SETUP);
+		event_perform_object(asset_get_index(_characters[i]), ev_other, EVENT_CHARACTER_SETUP);
 	
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");
@@ -46,7 +46,8 @@ if (!variable_global_exists("__gameInit")) {
 	global.switchingSections = false; /// @is {bool}
 	
 	// Unlikely to change that much, if at all
-	global.player = new Player(0);
+	global.player = new Player(0); /// @is {Player}
+	global.nextRoom = room; /// @is {room}
 	global.osInfo = os_get_info(); /// @is {ds_map}
 	
 	// Not intended to be accessed outside of system-specific code
@@ -58,7 +59,8 @@ if (!variable_global_exists("__gameInit")) {
 	game_window().center_window();
 	
 	// ===== Setup Some Debug Views =====
-	options_data().debug_view();
+	__debug_view_options_data();
+	__debug_view_room_select();
 	show_debug_overlay(false);
 	
 	// ===== Other Stuff =====

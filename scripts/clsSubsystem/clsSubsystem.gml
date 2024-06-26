@@ -12,7 +12,10 @@ function Subsystem() constructor {
 /// @desc Important operations of objSystem (or ones I could not find an actual category for)
 function Subsystem_Core() : Subsystem() constructor {
 	static stepBegin = function() {
-		global.gameTimeScale.update();
+		with (global.gameTimeScale) {
+			value = options_data().gameSpeed;
+			update();
+		}
     };
     
     static roomStart = function() {
@@ -30,8 +33,10 @@ function Subsystem_Core() : Subsystem() constructor {
         view_set_hport(0, GAME_HEIGHT);
         game_view().reset_all();
         
-        // Recalibrate the game speed (incase someone decided to change it)
+        // Misc. Stuff
         game_set_speed(GAME_SPEED, gamespeed_fps);
+        queue_unpause();
+        signal_bus().clear_all();
     };
     
     static roomEnd = function() {
@@ -251,7 +256,9 @@ function Subsystem_Level() : Subsystem() constructor {
 		var _spawn_x = objDefaultSpawn.x,
 			_spawn_y = objDefaultSpawn.y;
 		var _body = spawn_player_character(_spawn_x, _spawn_y, LAYER_ENTITY, CharacterType.MEGA);
+		_body.stateMachine.change("StageStart");
 		global.player.set_body(_body);
+		signal_bus().connect_to_signal("readyComplete", _body, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		
 		system.camera.active = true;
 		system.camera.stepEnd();
@@ -260,6 +267,8 @@ function Subsystem_Level() : Subsystem() constructor {
 		array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), false); });
 		
 		data = {};
+		
+		instance_create_depth(0, 0, system.depth + 1, objReady);
     };
 }
 
