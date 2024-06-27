@@ -17,11 +17,13 @@ repeat(_gameTicks) {
     event_user(EVENT_ENTITY_TICK);
 
     // =====  Standard Entity Stuff =====
-    entity_horizontal_movement();
-    entity_vertical_movement();
-    entity_check_ground();
-    entity_gravity();
-    entity_water();
+    if (!lockpool.is_locked(PlayerAction.PHYSICS)) {
+		entity_horizontal_movement();
+		entity_vertical_movement();
+		entity_check_ground();
+		player_gravity();
+		entity_water();
+    }
     
     event_user(EVENT_ENTITY_POSTTICK);
     

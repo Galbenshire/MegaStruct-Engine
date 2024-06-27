@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsFractional",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsFractional",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,6 +1,6 @@
 /// @description Character Setup
 global.characterList[CharacterType.MEGA] = new Character({
-    id: WeaponType.BUSTER,
+    id: CharacterType.MEGA,
     object: objMegaMan,
     name: "Mega Man",
     

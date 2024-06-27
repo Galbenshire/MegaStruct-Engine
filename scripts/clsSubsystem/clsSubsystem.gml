@@ -40,7 +40,7 @@ function Subsystem_Core() : Subsystem() constructor {
     };
     
     static roomEnd = function() {
-        
+        global.player.canPause.release_all_locks();
     };
     
     static drawEnd = function() {
@@ -239,9 +239,10 @@ function Subsystem_Level() : Subsystem() constructor {
 		if (!active || !canPause || global.paused || global.switchingSections)
 			return;
 		
-		var _player = global.player;
-        if (_player.inputs.is_pressed(InputActions.PAUSE))
-            instance_create_depth(0, 0, system.depth - 10, objPauseMenu);
+		with (global.player) {
+			if (inputs.is_pressed(InputActions.PAUSE) && !canPause.is_locked())
+				instance_create_depth(0, 0, other.system.depth - 10, objPauseMenu);
+		}
     };
     
     static roomStart = function() {
@@ -256,8 +257,8 @@ function Subsystem_Level() : Subsystem() constructor {
 		var _spawn_x = objDefaultSpawn.x,
 			_spawn_y = objDefaultSpawn.y;
 		var _body = spawn_player_character(_spawn_x, _spawn_y, LAYER_ENTITY, CharacterType.MEGA);
-		_body.stateMachine.change("StageStart");
 		global.player.set_body(_body);
+		_body.stateMachine.change("StageStart");
 		signal_bus().connect_to_signal("readyComplete", _body, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		
 		system.camera.active = true;
@@ -269,6 +270,10 @@ function Subsystem_Level() : Subsystem() constructor {
 		data = {};
 		
 		instance_create_depth(0, 0, system.depth + 1, objReady);
+    };
+    
+    static roomEnd = function() {
+		canPause = true;
     };
 }
 

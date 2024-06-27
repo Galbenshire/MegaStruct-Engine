@@ -1,0 +1,43 @@
+{
+  "$GMObject":"",
+  "%Name":"objSlideDust",
+  "eventList":[
+    {"$GMEvent":"","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
+  "managed":true,
+  "name":"objSlideDust",
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEffect","path":"objects/prtEffect/prtEffect.yy",},"propertyId":{"name":"animSpeed","path":"objects/prtEffect/prtEffect.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.2",},
+  ],
+  "parent":{
+    "name":"Slide Dust",
+    "path":"folders/Effects/Slide Dust.yy",
+  },
+  "parentObjectId":{
+    "name":"prtEffect",
+    "path":"objects/prtEffect/prtEffect.yy",
+  },
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"sprSlideDust",
+    "path":"sprites/sprSlideDust/sprSlideDust.yy",
+  },
+  "spriteMaskId":null,
+  "visible":true,
+}

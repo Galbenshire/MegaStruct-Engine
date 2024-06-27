@@ -2,7 +2,7 @@
 stateMachine.posttick();
 stateMachine.update_timer();
 
-if (inputs.is_pressed(InputActions.SHOOT)) {
+if (inputs.is_pressed(InputActions.SHOOT) && !lockpool.is_locked(PlayerAction.SHOOT)) {
     var _params = {
         sprite_index: sprBusterShot,
         pierces: PierceType.NEVER,
@@ -14,9 +14,11 @@ if (inputs.is_pressed(InputActions.SHOOT)) {
     }
 }
 
-skinCellX = 0;
-skinCellY = 0;
-animator.update();
+if (!lockpool.is_locked(PlayerAction.SPRITE_CHANGE)) {
+	skinCellX = 0;
+	skinCellY = 0;
+	animator.update();
+}
 
 if (animator.flag == "step")
 	play_sfx(sfxLand);

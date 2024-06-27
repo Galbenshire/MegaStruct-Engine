@@ -52,6 +52,32 @@ enum InputActions {
 	COUNT
 }
 
+// ===== Player Actions (used by lockpools) =====
+
+enum PlayerAction {
+	PHYSICS,
+	GRAVITY,
+	MOVE_GROUND,
+	MOVE_AIR,
+	TURN_GROUND,
+	TURN_AIR,
+	JUMP,
+	CLIMB,
+	SLIDE,
+	SHOOT,
+	CHARGE,
+	SPRITE_CHANGE,
+	WEAPON_CHANGE,
+	
+	COUNT,
+	
+	//-- Special Shortcuts
+	// Covers both MOVE_GROUND and MOVE_AIR
+	MOVE,
+	// Covers both TURN_GROUND and TURN_AIR
+	TURN
+}
+
 // ===== Layer Names =====
 
 #macro LAYER_COLLISION "_Collision"

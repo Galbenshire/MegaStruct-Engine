@@ -9,6 +9,7 @@ function Player(_id/*:number*/) constructor {
 	id = _id; /// @is {number} A reference to the player's ID (i.e. they are Player 1, 2, 3, ...)
 	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
 	inputs = new InputMap();
+	canPause = new LockStack(); // Allows the player to pause the game during a level
 	
 	#endregion
 

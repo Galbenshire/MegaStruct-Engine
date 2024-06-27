@@ -1,3 +1,12 @@
+/// @func ColourReplacer(input_colours, output_colours)
+/// @desc A system designed to allow for the change of a sprite's colours on the fly.
+///       You specify which colours you want to change, and what to change those colours to.
+///       Supports up to 16 colours.
+///
+///       NOTE: This uses a shader. It will not work if your system doesn't support shaders.
+///
+/// @param {array<int>}  input_colours  Array of the colours to replace.
+/// @param {array<int>}  output_colours  Array of the colours after replacing.
 function ColourReplacer(_inputCols, _outputCols) constructor {
     #region Constants (in spirit)
     

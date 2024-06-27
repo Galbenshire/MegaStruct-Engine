@@ -1,3 +1,7 @@
+/// @func Character(config)
+/// @desc Represents a character that the player can play as in this engine
+///
+/// @param {struct}  config  A struct to configure this character
 function Character(_config = {}) constructor {
     #region Variables
 	

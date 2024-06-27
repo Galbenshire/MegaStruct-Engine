@@ -1,9 +1,9 @@
 {
   "$GMScript":"",
-  "%Name":"clsFactional",
+  "%Name":"clsPlayerLockStack",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"clsFactional",
+  "name":"clsPlayerLockStack",
   "parent":{
     "name":"Classes",
     "path":"folders/_System/Classes.yy",

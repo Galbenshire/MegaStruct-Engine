@@ -8,6 +8,14 @@ function is_a_player(_scope = self) {
     return is_object_type(prtPlayer, _scope);
 }
 
+/// @self {prtPlayer}
+/// @func player_gravity()
+/// @desc Works like the entity_gravity function, but takes the player's gravity locks into account
+function player_gravity() {
+    var _grav = grav * !lockpool.is_locked(PlayerAction.GRAVITY);
+    entity_gravity(_grav);
+}
+
 /// @func player_input_palette()
 /// @desc Creates a copy of input colours used for the player object
 ///
@@ -29,7 +37,7 @@ function player_input_palette() {
 function player_try_climbing() {
     ladderInstance = noone;
     
-    if (yDir == 0)
+    if (yDir == 0 || lockpool.is_locked(PlayerAction.CLIMB))
         return false;
     
     if (yDir != gravDir)
@@ -43,7 +51,7 @@ function player_try_climbing() {
 /// @self {prtPlayer}
 /// @func player_try_sliding()
 function player_try_sliding() {
-	if (!ground)
+	if (!ground || lockpool.is_locked(PlayerAction.SLIDE))
         return false;
     
     var _input = inputs.is_pressed(InputActions.SLIDE) || (yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide);

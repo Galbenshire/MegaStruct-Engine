@@ -1,9 +1,8 @@
+/// === SINGLETON ===
 /// @func SignalBus()
 /// @desc Handles the emitting of signals to any object that wants to listen.
 ///       A way for instances to listen to each other without coupling code.
 ///       (This would also be known as an Event Bus, but Events mean something else in GMS)
-///
-///       === SINGLETON ===
 function SignalBus() constructor {
 	ENFORCE_SINGLETON
 	
@@ -37,8 +36,8 @@ function SignalBus() constructor {
     
     #region Functions - Connect/Disconnect
     
-    /// -- connect_to_signal(signal_name, scope, callback, one_shot)
-	/// Connects an instance to a signal
+    /// @method connect_to_signal(signal_name, scope, callback, one_shot)
+	/// @desc Connects an instance to a signal
 	///
 	/// @param {string}  signal_name  Name of the signal to connect to
 	/// @param {instance|struct}  scope  The instance/struct the callback applies to
@@ -58,8 +57,8 @@ function SignalBus() constructor {
         return _listener;
     };
     
-    /// -- disconnect_from_signal(listener)
-	/// Disconnects a SignalListener from its signal
+    /// @method disconnect_from_signal(listener)
+	/// @desc Disconnects a SignalListener from its signal
 	///
 	/// @param {SignalListener}  listener  The SignalListener to disconnect
     static disconnect_from_signal = function(_listener) {
@@ -87,8 +86,8 @@ function SignalBus() constructor {
     
     #region Functions - Other
     
-    /// -- clear_all()
-	/// Clears ALL signals of all of their listeners
+    /// @method clear_all()
+	/// @desc Clears ALL signals of all of their listeners
     static clear_all = function() {
         var _signalNames = get_all_signal_names(),
             _signalCount = array_length(_signalNames);
@@ -97,8 +96,8 @@ function SignalBus() constructor {
             clear_signal(_signalNames[i]);
     };
     
-    /// -- clear_signal(name)
-	/// Clears a signal of all its listeners
+    /// @method clear_signal(name)
+	/// @desc Clears a signal of all its listeners
 	///
 	/// @param {string}  name  Name of the signal to clear
     static clear_signal = function(_name) {
@@ -116,8 +115,8 @@ function SignalBus() constructor {
         struct_remove(signals, _name);
     };
     
-    /// -- emit_signal(name, data)
-	/// Emits a signal, which all listeners attached will respond to
+    /// @method emit_signal(name, data)
+	/// @desc Emits a signal, which all listeners attached will respond to
 	///
 	/// @param {string}  name  Name of the signal to emit
 	/// @param {struct}  [data]  Optional data to pass along to the signal
@@ -166,8 +165,8 @@ function SignalListener(_signal, _owner, _callback, _oneShot = false) constructo
     callback = method(owner, _callback); /// @is {function<struct, void>}
     oneShot = _oneShot; /// @is {bool}
     
-    /// -- owner_exists()
-	/// Checks if the owner of this SignalListener actually exists
+    /// @method owner_exists()
+	/// @desc Checks if the owner of this SignalListener actually exists
 	///
 	/// @returns {bool}  If the owner exists (true) or not (false)
     static owner_exists = function() {
