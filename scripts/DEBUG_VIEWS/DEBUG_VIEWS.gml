@@ -5,7 +5,7 @@ function __debug_view_options_data() {
 	
 	var _options = options_data();
 	
-    var _view = dbg_view("Options Data", false, -1, -1, 300, 380);
+    var _view = dbg_view("Options Data", false, -1, -1, 340, 450);
     
     var _display = dbg_section("Display");
     dbg_slider_int(ref_create(_options, "screenSize"), 1, floor(_options.MAX_SCALE), "Screen Size");

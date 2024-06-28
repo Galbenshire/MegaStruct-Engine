@@ -5,13 +5,17 @@ if (!entity_can_step()) {
 	exit;
 }
 
-var _gameTicks = global.gameTimeScale.integer;
-
-hitTimer += _gameTicks;
-if (iFrames > 0)
-	iFrames = approach(iFrames, 0, _gameTicks);
-
-repeat(_gameTicks) {
+repeat(global.gameTimeScale.integer) {
+	hitTimer++;
+	if (iFrames > 0)
+		iFrames = approach(iFrames, 0, 1);
+	
+	if (!is_undefined(reticle)) {
+		reticle.update();
+		if (faceTarget)
+			calibrate_direction_object(reticle.target);
+	}
+	
     event_user(EVENT_ENTITY_TICK);
 
     // =====  Standard Entity Stuff =====

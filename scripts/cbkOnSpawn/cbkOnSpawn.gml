@@ -15,6 +15,12 @@ function cbkOnSpawn_prtEntity() {
         show_debug_message("Spawn - {0} ({1}, {2})", object_get_name(object_index), x, y);
     
     healthpoints = healthpointsStart;
+    
+    if (!is_undefined(reticle)) {
+		reticle.update();
+		if (faceTargetOnSpawn)
+			calibrate_direction_object(reticle.target);
+    }
 }
 
 /// @func cbkOnSpawn_prtPlayer()

@@ -126,6 +126,19 @@ function approach(_start, _end, _amount) {
 		: max(_start - _amount, _end);
 }
 
+/// @func distance_to_point_target(x, y, target)
+/// @desc Version of distance_to_point that can be called on a specific instance
+///
+/// @param {number}  x  The x position to check.
+/// @param {number}  y  The y position to check.
+/// @param {instance}  [target]  The instance to call this function on. Defaults to the calling instance.
+///
+/// @returns {number}  The distance from the edge of the bounding box of the target to the specified position
+function distance_to_point_target(_x, _y, _target = self) {
+	with (_target)
+		return distance_to_point(_x, _y);
+}
+
 /// @func in_range(x, min, max, inclusive_min, inclusive_max)
 /// @desc Checks if a number is within a specified range
 ///

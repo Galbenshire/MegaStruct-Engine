@@ -36,3 +36,17 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 		}
 	}
 }
+
+/// @func cbkOnDraw_colourReplacer(whiteflash)
+/// @desc onDraw callback preset for when an entity uses a ColourReplacer palette
+///
+/// @param {bool}  whiteflash  If true, the entity is currently flashing white
+function cbkOnDraw_colourReplacer(_whiteflash) {
+    if (_whiteflash || is_undefined(palette)) {
+        draw_self();
+    } else {
+        palette.activate();
+        draw_self();
+        palette.deactivate();
+    }
+}

@@ -234,7 +234,7 @@ function entity_water() {
 ///
 /// @returns {bool}  If the entity is within range (true) or not (false)
 function entity_within_despawn_range(_scope = self) {
-    if (_scope.despawnRange == infinity)
+    if (is_infinity(_scope.despawnRange))
         return true;
     
     var _gameView = game_view(),
@@ -260,7 +260,7 @@ function entity_within_despawn_range(_scope = self) {
 ///
 /// @returns {bool}  If the entity is within range (true) or not (false)
 function entity_within_respawn_range(_scope = self) {
-    if (_scope.respawnRange == infinity)
+    if (is_infinity(_scope.respawnRange))
         return true;
     
     var _gameView = game_view(),
@@ -321,6 +321,18 @@ function entity_can_attack_entity(_target, _scope = self) {
 /// @returns {bool}  If the entity can step (true) or not (false)
 function entity_can_step(_scope = self) {
 	return !global.paused && !entity_is_dead(_scope);
+}
+
+/// @func entity_can_target_entity(target, scope)
+/// @desc Checks if the specified entity would be able to target another entity
+///
+/// @param {prtEntity}  target  The instance to target.
+/// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
+///
+/// @returns {bool}  If the entity can step (true) or not (false)
+function entity_can_target_entity(_target, _scope = self) {
+	return _target != _scope && _target.canTakeDamage && _target.isTargetable
+		&& !entity_is_dead(_target) && (_scope.factionTargets & _target.factionLayer > 0);
 }
 
 /// @func entity_is_dead(scope)

@@ -9,11 +9,11 @@ if (!is_undefined(player)) {
 
 var _gameTicks = global.gameTimeScale.integer;
 
-hitTimer += _gameTicks;
-if (iFrames > 0)
-	iFrames = approach(iFrames, 0, _gameTicks);
-
 repeat(_gameTicks) {
+	hitTimer++;
+	if (iFrames > 0)
+		iFrames = approach(iFrames, 0, 1);
+	
     event_user(EVENT_ENTITY_TICK);
 
     // =====  Standard Entity Stuff =====

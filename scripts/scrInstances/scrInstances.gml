@@ -1,3 +1,27 @@
+/// @func calibrate_direction_object(target, scope)
+/// @desc This function will set the specified instance's image_xscale to face towards another instance
+///       The size of image_xscale will be preserved.
+///
+/// @param {instance}  target  The instance to face towards
+/// @param {instance}  [scope]  The instance to perform this on. Defaults to the calling instance.
+function calibrate_direction_object(_target, _scope = self) {
+    if (!instance_exists(_target))
+        return;
+    calibrate_direction_point(_target.x, _scope);
+}
+
+/// @func calibrate_direction_point(x, scope)
+/// @desc This function will set the specified instance's image_xscale to face towards the given x position
+///       The size of image_xscale will be preserved.
+///
+/// @param {number}  x  The x-position to face towards
+/// @param {instance}  [scope]  The instance to perform this on. Defaults to the calling instance.
+function calibrate_direction_point(_x, _scope = self) {
+    var _dir = sign(_x - _scope.x);
+    if (_dir != 0)
+        image_xscale = _dir * abs(image_xscale);
+}
+
 /// @func instance_all(obj, predicate)
 /// @desc This function will check to see if all instances of the specified object fulfills the predicate condition
 ///

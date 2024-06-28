@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsReticle",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsReticle",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

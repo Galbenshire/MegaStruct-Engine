@@ -26,7 +26,8 @@ function cbkOnDeath_prtEntity(_damageSource) {
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
 function cbkOnDeath_prtPlayer(_damageSource) {
-    show_debug_message("Player Death by {0}", object_get_name(_damageSource.attacker.object_index));
+    if (DEBUG_ENABLED)
+        show_debug_message("Player Death by {0}", object_get_name(_damageSource.attacker.object_index));
     
     stateMachine.change("Death");
 }

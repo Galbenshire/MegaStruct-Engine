@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"objGenericEnemyBullet_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objGenericEnemyBullet_Callbacks",
+  "parent":{
+    "name":"_GenericEnemyBullet",
+    "path":"folders/Enemies/_GenericEnemyBullet.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
