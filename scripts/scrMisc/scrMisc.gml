@@ -17,9 +17,11 @@ function defer(_type, _func, _delay = 0, _ignoreTimeScale = false, _ignorePause 
 		runOnce: _runOnce,
 		delay: _delay
 	};
-	with (instance_create_depth(0, 0, _caller.depth, objDefer, _params)) {
+	var _depth = (instanceof(_caller) == "instance") ? _caller.depth : layer_get_depth(LAYER_SYSTEM);
+	with (instance_create_depth(0, 0, _depth, objDefer, _params)) {
 		caller = _caller;
 		deferredAction = method(id, _func);
+		__placedInEditor = false;
 		return self;
 	}
 	return noone; // Failsafe

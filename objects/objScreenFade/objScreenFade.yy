@@ -10,8 +10,8 @@
   "name":"objScreenFade",
   "overriddenProperties":[],
   "parent":{
-    "name":"_System",
-    "path":"folders/_System.yy",
+    "name":"Objects",
+    "path":"folders/_System/Objects.yy",
   },
   "parentObjectId":{
     "name":"prtAlwaysActive",

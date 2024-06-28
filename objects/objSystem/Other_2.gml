@@ -39,16 +39,17 @@ if (!variable_global_exists("__gameInit")) {
 	
 	// Likely to change a lot
 	global.gameTimeScale = new Fractional(1); /// @is {Fractional}
-	global.roomName = room_get_name(room); /// @is {string}
-	global.roomIsLevel = false; /// @is {bool}
 	global.previousRoom = room; /// @is {room}
 	global.paused = false; /// @is {bool}
+	global.roomName = room_get_name(room); /// @is {string}
+	global.roomIsLevel = false; /// @is {bool}
+	global.section = noone; /// @is {objSection}
 	global.switchingSections = false; /// @is {bool}
 	
 	// Unlikely to change that much, if at all
-	global.player = new Player(0); /// @is {Player}
 	global.nextRoom = room; /// @is {room}
 	global.osInfo = os_get_info(); /// @is {ds_map}
+	global.player = new Player(0); /// @is {Player}
 	
 	// Not intended to be accessed outside of system-specific code
 	global.__collisionList = ds_list_create(); /// @is {ds_list}

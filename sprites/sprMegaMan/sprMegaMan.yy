@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"Level Objects",
-    "path":"folders/Level Objects.yy",
+    "name":"Sprites",
+    "path":"folders/Level Objects/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

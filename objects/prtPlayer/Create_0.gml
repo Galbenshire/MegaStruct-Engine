@@ -25,6 +25,11 @@ jumpBufferTimer = 0;
 // Sliding
 slideMaskHeightDelta = abs(sprite_get_bbox_height(maskNormal) - sprite_get_bbox_height(maskSlide)); /// @is {number}
 
+// Flag for if the player died by falling down a pit
+// (to skip the delay & explosions)
+canDieToPits = true;
+diedToAPit = false;
+
 // Player Spritesheet
 skinCellX = 0;
 skinCellY = 0;

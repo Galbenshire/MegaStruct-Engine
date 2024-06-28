@@ -34,6 +34,7 @@ function Subsystem_Core() : Subsystem() constructor {
         game_view().reset_all();
         
         // Misc. Stuff
+        global.section = noone;
         game_set_speed(GAME_SPEED, gamespeed_fps);
         queue_unpause();
         signal_bus().clear_all();
@@ -86,10 +87,12 @@ function Subsystem_Camera() : Subsystem() constructor {
             _camY = _gameView.yView;
         }
         
-        var _boundsLeft = 0,
-			_boundsTop = 0,
-			_boundsRight = room_width,
-			_boundsBottom = room_height;
+        var _section = global.section,
+			_sectionExists = instance_exists(_section);
+		var _boundsLeft = _sectionExists ? _section.left : 0,
+			_boundsTop = _sectionExists ? _section.top : 0,
+			_boundsRight = _sectionExists ? _section.right : room_width,
+			_boundsBottom = _sectionExists ? _section.bottom : room_height;
         _camX = clamp(_camX, _boundsLeft, _boundsRight - GAME_WIDTH);
         _camY = clamp(_camY, _boundsTop, _boundsBottom - GAME_HEIGHT);
         
@@ -153,7 +156,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 				show_debug_overlay(!is_debug_overlay_open());
 			
 			if (keyboard_check_pressed(vk_f6)) {
-				var _newFPS = (game_get_speed(gamespeed_fps) == 60 ? 1 : 60);
+				var _newFPS = (game_get_speed(gamespeed_fps) == 60) ? 1 : 60;
 				game_set_speed(_newFPS, gamespeed_fps);
 			}
 			
@@ -170,7 +173,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 			}
 			
 			if (keyboard_check_pressed(vk_f8) && global.roomIsLevel) {
-				var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
+				var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID , LAYER_TRANSITION];
 				array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), !layer_get_visible(_layer)); });
 			}
         }
@@ -251,6 +254,7 @@ function Subsystem_Level() : Subsystem() constructor {
 			return;
 		
 		assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
+		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
 		
 		// Calculate spawn coordinates
 		// (Will be more elaborate once I add checkpoints & teleporting)
@@ -261,6 +265,9 @@ function Subsystem_Level() : Subsystem() constructor {
 		_body.stateMachine.change("StageStart");
 		signal_bus().connect_to_signal("readyComplete", _body, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		
+		global.section = find_section_at(_spawn_x, _spawn_y);
+		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
+		
 		system.camera.active = true;
 		system.camera.stepEnd();
 		
@@ -270,6 +277,11 @@ function Subsystem_Level() : Subsystem() constructor {
 		data = {};
 		
 		instance_create_depth(0, 0, system.depth + 1, objReady);
+		
+		defer(DeferType.STEP_BEGIN, function() {
+			deactivate_game_objects(false);
+			activate_game_objects();
+		}, 0, true, true);
     };
     
     static roomEnd = function() {

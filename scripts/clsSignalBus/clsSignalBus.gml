@@ -160,7 +160,7 @@ function SignalListener(_signal, _owner, _callback, _oneShot = false) constructo
 	signalName = _signal; /// @is {string}
     
     owner = _owner; /// @is {instance|struct}
-    ownerIsInstance = (typeof(_owner) == "ref"); /// @is {bool}
+    ownerIsInstance = (instanceof(owner) == "instance"); /// @is {bool}
     
     callback = method(owner, _callback); /// @is {function<struct, void>}
     oneShot = _oneShot; /// @is {bool}

@@ -413,24 +413,31 @@ stateMachine.add("Hurt", {
 stateMachine.add("Death", {
 	enter: function() {
 		canTakeDamage = false;
+		canDieToPits = false;
+		
 		if (!is_undefined(player)) {
 			audio_stop_all();
-			queue_pause();
-			defer(DeferType.STEP, function(__) /*=>*/ { queue_unpause(); }, 30, true, true);
+			
+			if (!diedToAPit) {
+				queue_pause();
+				defer(DeferType.STEP, function(__) /*=>*/ { queue_unpause(); }, 30, true, true);
+			}
 		}
 	},
 	tick: function() {
 		if (stateMachine.timer < 1)
 			return;
 		
-		var _explosion_params = {
-			sprite_index: sprExplosion,
-			animSpeed: 1/3,
-			lifeDuration: 0
-		};
-		for (var i = 0; i < 16; i++) {
-			with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
-				set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
+		if (!diedToAPit) {
+			var _explosion_params = {
+				sprite_index: sprExplosion,
+				animSpeed: 1/3,
+				lifeDuration: 0
+			};
+			for (var i = 0; i < 16; i++) {
+				with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
+					set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
+			}
 		}
 		
 		healthpoints = 0;

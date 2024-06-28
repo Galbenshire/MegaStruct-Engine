@@ -1,3 +1,45 @@
+/// @func find_section_at(x, y)
+/// @desc Finds an objSection at the given location
+///
+/// @param {number}  x  x-coordinate to find a section at
+/// @param {number}  y  y-coordinate to find a section at
+///
+/// @returns {objSection}  The objSection at this position. Returns noone if nothing is found.
+function find_section_at(_x, _y) {
+	return instance_position(_x, _y, objSection);
+}
+
+/// @func inside_section(scope, x, y)
+/// @desc Checks if the specified instance is within the current section.
+///
+/// @param {instance}  [scope]  The instance to check against. Defaults to the calling instance.
+/// @param {number}  [x]  x-coordinate to check. Defaults to the instance's own x-position.
+/// @param {number}  [y]  y-coordinate to check. Defaults to the instance's own y-position.
+///
+/// @returns {bool}  If the instance is within the section (true), or not (false)
+function inside_section(_scope = self, _x = _scope.x, _y = _scope.y) {
+	var _section = global.section;
+	if (!instance_exists(_section))
+		return true;
+	with (_scope)
+		return place_meeting(_x, _y, _section);
+	return false;
+}
+
+/// @func inside_section_point(x, y)
+/// @desc Checks if the given point is within the current section.
+///
+/// @param {number}  [x]  x-coordinate to check. Defaults to the calling instance's own x-position.
+/// @param {number}  [y]  y-coordinate to check. Defaults to the calling instance's own y-position.
+///
+/// @returns {bool}  If the point is within the section (true), or not (false)
+function inside_section_point(_x = x, _y = y) {
+	var _section = global.section;
+	if (!instance_exists(_section))
+		return true;
+	return position_meeting(_x, _y, _section);
+}
+
 /// @func inside_view(scope, x, y, margin)
 /// @desc Checks if the specified instance is within view.
 ///		  By default, the check is done at the instance's current location, but a custom position can be specified.

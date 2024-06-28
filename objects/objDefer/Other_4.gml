@@ -1,1 +1,2 @@
-assert(false, "objDefer should not be placed in a room via the room editor. Please use defer()");
+if (__placedInEditor)
+    assert(false, "objDefer should not be placed in a room via the room editor. Please use defer()");
