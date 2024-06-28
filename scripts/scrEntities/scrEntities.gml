@@ -207,6 +207,10 @@ function entity_water() {
 		return;
 	}
 	
+	var _x = bbox_x_center(),
+		_y = bbox_y_center();
+	try_splashing(_x - (x - xprevious), _y - (y - yprevious), _x, _y);
+	
 	inWater = place_meeting(x, y, objWater);
 	if (!inWater) {
 		bubbleTimer = 0;
@@ -215,7 +219,7 @@ function entity_water() {
 	
 	if (++bubbleTimer >= 64) {
 		bubbleTimer = 0;
-		//instance_create_depth(x + bubbleXOffset, y + bubbleYOffset, depth, objAirBubble);
+		instance_create_depth(x + bubbleXOffset, y + bubbleYOffset, depth, objAirBubble);
 	}
 }
 

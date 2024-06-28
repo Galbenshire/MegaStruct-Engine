@@ -51,6 +51,9 @@ isShooting = false;
 isCharging = false;
 isHurt = false;
 
+// temp vars
+ignoreCamera = false;
+
 // Event User Inits
 event_user(EVENT_ANIMATION_INIT);
 event_user(EVENT_STATEMACHINE_INIT);

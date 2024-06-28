@@ -1,11 +1,35 @@
-// ===== Engine Configurations =====
+#region _Engine Configurations
 
 #macro DEBUG_ENABLED true // Enables various debug keys & features (should be false for a release build)
 #macro GAME_SPEED 60 // How fast the game is expected to be (in FPS)
 #macro GAME_WIDTH 256 // Resolution width of the game (in pixels)
 #macro GAME_HEIGHT 224 // Resolution height of the game (in pixels)
 
-// ===== Characters =====
+#endregion
+
+
+#region _Macro Functions
+
+#macro ENFORCE_SINGLETON static __init = 0;\
+__init++;\
+assert(__init == 1, "Only one instance of {0} can be present at any time.", instanceof(self));
+
+#endregion
+
+
+#region -1 Aliases
+
+#macro INFINITE_RANGE -1
+#macro INFINITE_I_FRAMES -1
+#macro NO_CONTROLLER -1
+#macro NOT_FOUND -1
+
+#endregion
+
+
+#region Characters
+
+// All playable characters available in this engine
 
 enum CharacterType {
 	MEGA,
@@ -15,24 +39,96 @@ enum CharacterType {
 	COUNT
 }
 
-// ===== Weapons =====
+#endregion
 
-enum WeaponType {
-	BUSTER,
-	ICE_SLASHER,
-	METAL_BLADE,
+
+#region Entity Macros
+
+// The list of factions an entity can be a part of, or can target, in this game
+enum Faction {
+	PICKUP = 1 << 0,
+	PLAYER = 1 << 1,
+	PLAYER_PROJECTILE = 1 << 2,
+	ENEMY = 1 << 3,
+	ENEMY_PROJECTILE = 1 << 4,
+	NEUTRAL = 1 << 5,
+	NEUTRAL_PROJECTILE = 1 << 6,
 	
-	COUNT
+	// Shortcuts
+	PLAYER_FULL = Faction.PLAYER | Faction.PLAYER_PROJECTILE,
+	ENEMY_FULL = Faction.ENEMY | Faction.ENEMY_PROJECTILE,
+	NEUTRAL_FULL = Faction.NEUTRAL | Faction.NEUTRAL_PROJECTILE
 }
 
-enum WeaponFlags {
-	// Ammo pickups have no effect, there's no ammo bar on the HUD, & Tanks ignore this weapon entirely
-	NO_AMMO = 1 << 0,
-	// Weapon is chargeable (e.g. the Mega Buster (if you're not basic))
-	CHARGE = 1 << 1
+// The life states entities can have.
+// Used to flag if an entity is active, and is also used for spawning
+enum LifeState {
+	// The entity is not dead.
+	// It can run its step code, interact with other entities, and can be drawn
+	ALIVE,
+	
+	// This entity has been recently killed.
+	// It is intangible, inactive, & invisible.
+	// It must be scrolled offscreen before it can start respawning.
+	DEAD_ONSCREEN,
+	
+	// This entity is dead.
+	// Similar to DEAD_ONSCREEN, except it can now respawn if scrolled back onscreen.
+	DEAD_OFFSCREEN
 }
 
-// ===== Input =====
+// Represents how entities react during a section switch
+enum SectionSwitchBehaviour {
+	// The entity will be deactivated right as the section switch occurs
+	HIDDEN,
+	
+	// The entity will still be visible during a section switch
+	// It only gets deactivated if not in the new section once the switch is done
+	VISIBLE,
+	
+	// The entity will never be deactivated during a section switch
+	PERSISTANT
+}
+
+#endregion
+
+
+#region Entity-Entity Collisions
+
+// Denotes various attributes of an entity attack
+enum DamageFlags {
+	NO_DAMAGE = 1 << 0,
+	MOCK_DAMAGE = 1 << 1
+}
+
+// How an entity should guard against an attack
+enum GuardType {
+	DAMAGE,
+	REFLECT,
+	IGNORE,
+	REFLECT_OR_IGNORE,
+	FORCE_REFLECT
+}
+
+// Denotes how an entity should react to being guarded
+enum PenetrateType {
+	NONE,
+	NO_DAMAGE,
+	NO_DAMAGE_AND_COLLISION,
+	BYPASS_GUARD
+}
+
+// Denotes if an entity should be killed after dealing damage
+enum PierceType {
+	NEVER,
+	ON_KILLS_ONLY,
+	ALWAYS
+}
+
+#endregion
+
+
+#region Input
 
 enum InputActions {
 	LEFT,
@@ -52,33 +148,10 @@ enum InputActions {
 	COUNT
 }
 
-// ===== Player Actions (used by lockpools) =====
+#endregion
 
-enum PlayerAction {
-	PHYSICS,
-	GRAVITY,
-	MOVE_GROUND,
-	MOVE_AIR,
-	TURN_GROUND,
-	TURN_AIR,
-	JUMP,
-	CLIMB,
-	SLIDE,
-	SHOOT,
-	CHARGE,
-	SPRITE_CHANGE,
-	WEAPON_CHANGE,
-	
-	COUNT,
-	
-	//-- Special Shortcuts
-	// Covers both MOVE_GROUND and MOVE_AIR
-	MOVE,
-	// Covers both TURN_GROUND and TURN_AIR
-	TURN
-}
 
-// ===== Layer Names =====
+#region Layer Names
 
 #macro LAYER_COLLISION "_Collision"
 #macro LAYER_ENTITY "_Entities"
@@ -88,24 +161,10 @@ enum PlayerAction {
 #macro LAYER_SYSTEM "_System"
 #macro LAYER_TRANSITION "_Transitions"
 
-// ===== Pause Queuing =====
+#endregion
 
-#macro QUEUED_PAUSE 1
-#macro QUEUED_UNPAUSE -1
 
-// ===== Defer Event Types =====
-
-enum DeferType {
-	STEP,
-	STEP_BEGIN,
-	STEP_END,
-	
-	DRAW,
-	DRAW_BEGIN,
-	DRAW_END
-}
-
-// ===== Solid Collision =====
+#region Physics
 
 // The types of solids in this engine
 enum SolidType {
@@ -131,60 +190,6 @@ enum SolidType {
 	SLOPE_SOLID
 }
 
-// ===== Entity Collision =====
-
-enum DamageFlags {
-	NO_DAMAGE = 1 << 0,
-	MOCK_DAMAGE = 1 << 1
-}
-
-enum GuardType {
-	DAMAGE,
-	REFLECT,
-	IGNORE,
-	REFLECT_OR_IGNORE,
-	FORCE_REFLECT
-}
-
-enum PenetrateType {
-	NONE,
-	NO_DAMAGE,
-	NO_DAMAGE_AND_COLLISION,
-	BYPASS_GUARD
-}
-
-enum PierceType {
-	NEVER,
-	ON_KILLS_ONLY,
-	ALWAYS
-}
-
-// The list of factions an entity can be a part of, or can target, in this game
-enum Faction {
-	PICKUP = 1 << 0,
-	PLAYER = 1 << 1,
-	PLAYER_PROJECTILE = 1 << 2,
-	ENEMY = 1 << 3,
-	ENEMY_PROJECTILE = 1 << 4,
-	NEUTRAL = 1 << 5,
-	NEUTRAL_PROJECTILE = 1 << 6,
-	
-	// Shortcuts
-	PLAYER_FULL = Faction.PLAYER | Faction.PLAYER_PROJECTILE,
-	ENEMY_FULL = Faction.ENEMY | Faction.ENEMY_PROJECTILE,
-	NEUTRAL_FULL = Faction.NEUTRAL | Faction.NEUTRAL_PROJECTILE
-}
-
-// ===== Sections =====
-
-enum SectionSwitchBehaviour {
-	HIDDEN,
-	VISIBLE,
-	PERSISTANT
-}
-
-// ===== Physics =====
-
 // -- General
 #macro DEFAULT_GRAVITY 0.25
 #macro DEFAULT_GRAVITY_DIRECTION 1
@@ -196,57 +201,53 @@ enum SectionSwitchBehaviour {
 #macro COYOTE_FALL_BUFFER 6
 #macro JUMP_BUFFER 4
 
-// ===== State Machine Enums =====
+#endregion
 
-// The life states entities can have.
-// Used to flag if an entity is active, and is also used for spawning
-enum LifeState {
-	// The entity is not dead.
-	// It can run its step code, interact with other entities, and can be drawn
-	ALIVE,
+
+#region Player Macros
+
+// Represents various actions a player can perform
+// Used by the lockpool system
+enum PlayerAction {
+	PHYSICS,
+	GRAVITY,
+	MOVE_GROUND,
+	MOVE_AIR,
+	TURN_GROUND,
+	TURN_AIR,
+	JUMP,
+	CLIMB,
+	SLIDE,
+	SHOOT,
+	CHARGE,
+	SPRITE_CHANGE,
+	WEAPON_CHANGE,
 	
-	// This entity has been recently killed.
-	// It is intangible, inactive, & invisible.
-	// It must be scrolled offscreen before it can start respawning.
-	DEAD_ONSCREEN,
+	COUNT,
 	
-	// This entity is dead.
-	// Similar to DEAD_ONSCREEN, except it can now respawn if scrolled back onscreen.
-	DEAD_OFFSCREEN
+	//-- Special Shortcuts
+	// Covers both MOVE_GROUND and MOVE_AIR
+	MOVE,
+	// Covers both TURN_GROUND and TURN_AIR
+	TURN
 }
-
-// ===== Health =====
 
 #macro FULL_HEALTHBAR 28
 
-// ===== User Event Reserves =====
+#endregion
 
-#macro EVENT_ENTITY_TICK 14
-#macro EVENT_ENTITY_POSTTICK 15
 
-#macro EVENT_ANIMATION_INIT 12
-#macro EVENT_STATEMACHINE_INIT 13
+#region Tuples
 
-#macro EVENT_CHARACTER_SETUP ev_user10
-#macro EVENT_WEAPON_SETUP ev_user10
+// These enums represent fixed-size arrays
+// Could be more useful than structs at times, since they use less memory
 
-#macro EVENT_INTERVAL_ACTION 14
-
-// ===== -1 Aliases =====
-
-#macro INFINITE_RANGE -1
-#macro INFINITE_I_FRAMES -1
-#macro NO_CONTROLLER -1
-#macro NOT_FOUND -1
-
-// ===== Tuples =====
-
-enum SpriteAtlasCell {
-    sheetX, /// @is {int}
-    sheetY, /// @is {int}
-    indexX, /// @is {int}
-    indexY, /// @is {int}
-    sizeof
+enum Line {
+	x1, /// @is {number}
+	y1, /// @is {number}
+	x2, /// @is {number}
+	y2, /// @is {number}
+	sizeof
 }
 
 enum PlayerPalette {
@@ -261,8 +262,84 @@ enum PlayerPalette {
 	sizeof
 }
 
-// ===== Macro Functions =====
+enum SpriteAtlasCell {
+    sheetX, /// @is {int}
+    sheetY, /// @is {int}
+    indexX, /// @is {int}
+    indexY, /// @is {int}
+    sizeof
+}
 
-#macro ENFORCE_SINGLETON static __init = 0;\
-__init++;\
-assert(__init == 1, "Only one instance of {0} can be present at any time.", instanceof(self));
+enum Vector {
+	x, /// @is {number}
+	y, /// @is {number}
+	sizeof
+}
+
+#endregion
+
+
+#region User Event Reserves
+
+#macro EVENT_ENTITY_TICK 14
+#macro EVENT_ENTITY_POSTTICK 15
+
+#macro EVENT_ANIMATION_INIT 12
+#macro EVENT_STATEMACHINE_INIT 13
+
+#macro EVENT_CHARACTER_SETUP ev_user10
+#macro EVENT_WEAPON_SETUP ev_user10
+
+#macro EVENT_INTERVAL_ACTION 14
+
+#endregion
+
+
+#region Weapons
+
+// Macros relating to player weapons
+
+enum WeaponType {
+	BUSTER,
+	ICE_SLASHER,
+	METAL_BLADE,
+	
+	COUNT
+}
+
+enum WeaponFlags {
+	// Ammo pickups have no effect, there's no ammo bar on the HUD, & Tanks ignore this weapon entirely
+	NO_AMMO = 1 << 0,
+	// Weapon is chargeable (e.g. the Mega Buster (if you're not basic))
+	CHARGE = 1 << 1
+}
+
+#endregion
+
+
+#region _Misc
+
+// -- Angle directions from 4 enum values (multiply by 90 to get the angle)
+enum AngleDir {
+	RIGHT,
+	UP,
+	LEFT,
+	DOWN
+}
+
+// -- Defer Event Types
+enum DeferType {
+	STEP,
+	STEP_BEGIN,
+	STEP_END,
+	
+	DRAW,
+	DRAW_BEGIN,
+	DRAW_END
+}
+
+// -- Pausing
+#macro QUEUED_PAUSE 1
+#macro QUEUED_UNPAUSE -1
+
+#endregion

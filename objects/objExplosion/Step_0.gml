@@ -2,11 +2,12 @@
 if (global.paused)
 	exit;
 
-if (image_index + (animSpeed * global.gameTimeScale.integer) >= image_number) {
-	show_debug_message("Spawn item here");
+repeat(global.gameTimeScale.integer) {
+	if (image_index + animSpeed >= image_number) {
+		show_debug_message("Spawn item here");
+		instance_destroy();
+		exit;
+	}
 	
-	instance_destroy();
-	exit;
+	image_index += animSpeed;
 }
-
-event_inherited();

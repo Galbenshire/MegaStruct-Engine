@@ -426,3 +426,34 @@ function test_move_x(_xspeed, _scope = self) {
 function test_move_y(_yspeed, _scope = self) {
 	return move_and_collide_y(_yspeed, true, _scope) != noone;
 }
+
+/// @func try_splashing(x1, y1, x2, y2)
+/// @desc Given a line, this function tries to make a splash against any water instances in the line's path
+///
+/// @param {number}  x1  The x coordinate of the start of the line.
+/// @param {number}  y1  The y coordinate of the start of the line.
+/// @param {number}  x2  The x coordinate of the end of the line.
+/// @param {number}  y2  The y coordinate of the end of the line.
+function try_splashing(_x1, _y1, _x2, _y2) {
+	var _inWaterStart = position_meeting(_x1, _y1, objWater),
+		_inWaterEnd = position_meeting(_x2, _y2, objWater);
+	if (_inWaterStart == _inWaterEnd)
+		return;
+	
+	var _water = _inWaterStart ? instance_position(_x1, _y1, objWater) : instance_position(_x2, _y2, objWater);
+	
+	for (var i = 0; i < 4; i++) {
+		if (!(_water.splashDirection & (1 << i)))
+			continue;
+		
+		var _line/*:Line*/ = _water.lines[i],
+			_intersect/*:Vector*/ = line_line_intersects(_x1, _y1, _x2, _y2, _line[Line.x1], _line[Line.y1], _line[Line.x2], _line[Line.y2]);
+		if (is_undefined(_intersect))
+			continue;
+		
+		var _splash = instance_create_depth(_intersect[Vector.x], _intersect[Vector.y], depth, objSplash, {
+			image_angle: 90 * (i - 1),
+			waterInstance: _water
+		});
+	}
+}

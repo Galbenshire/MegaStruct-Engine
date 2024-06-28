@@ -44,6 +44,7 @@ stateMachine.add("Intro", {
 		collideWithSolids = false;
 		gravEnabled = false;
 		interactWithWater = false;
+		ignoreCamera = true;
 		animator.play("teleport-idle");
 		animator.update();
 		y = game_view().top_edge(0);
@@ -68,6 +69,7 @@ stateMachine.add("Intro", {
 		canTakeDamage = true;
 		ground = true;
 		interactWithWater = true;
+		ignoreCamera = false;
 		
 		introLock = introLock.release();
 		if (!is_undefined(pauseLock))

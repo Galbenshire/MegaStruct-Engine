@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"scrGeometry",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrGeometry",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

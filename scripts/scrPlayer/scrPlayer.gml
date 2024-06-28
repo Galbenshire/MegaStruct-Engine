@@ -34,6 +34,9 @@ function player_input_palette() {
 
 /// @self {prtPlayer}
 /// @func player_try_climbing()
+/// @desc Function that checks if the player is able to climb a ladder
+///
+/// @returns {bool}  Whether the player can climb a ladder (true), or not (false)
 function player_try_climbing() {
     ladderInstance = noone;
     
@@ -50,6 +53,9 @@ function player_try_climbing() {
 
 /// @self {prtPlayer}
 /// @func player_try_sliding()
+/// @desc Function that checks if the player is able slide
+///
+/// @returns {bool}  Whether the player can slide (true), or not (false)
 function player_try_sliding() {
 	if (!ground || lockpool.is_locked(PlayerAction.SLIDE))
         return false;
