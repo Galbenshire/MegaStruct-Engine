@@ -1,3 +1,13 @@
+/// @func array_empty(array)
+/// @desc Checks if the given array is empty
+///
+/// @param {array}  array  The array to check
+///
+/// @returns {bool}  Whether the array is empty (true) or not (false)
+function array_empty(_array) {
+	return array_length(_array) <= 0;
+}
+
 /// @func array_slice(array, offset, length)
 /// @desc Returns a portion of the given array
 ///

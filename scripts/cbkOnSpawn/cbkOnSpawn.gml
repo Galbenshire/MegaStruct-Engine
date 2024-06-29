@@ -30,6 +30,7 @@ function cbkOnSpawn_prtPlayer() {
         show_debug_message("Player Spawn ({0}, {1})", x, y);
     
     healthpoints = healthpointsStart;
+    player_update_palette();
 }
 
 /// @func cbkOnSpawn_phaseReset()

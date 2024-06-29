@@ -5,7 +5,7 @@
 ///
 /// @param {sprite}  ind  The index of the sprite to check.
 ///
-/// @returns {bool}  The height of the sprite's bounding box
+/// @returns {number}  The height of the sprite's bounding box
 function sprite_get_bbox_height(_sprite) {
 	return sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite);
 }
@@ -15,7 +15,7 @@ function sprite_get_bbox_height(_sprite) {
 ///
 /// @param {sprite}  ind  The index of the sprite to check.
 ///
-/// @returns {bool}  The width of the sprite's bounding box
+/// @returns {number}  The width of the sprite's bounding box
 function sprite_get_bbox_width(_sprite) {
 	return sprite_get_bbox_right(_sprite) - sprite_get_bbox_left(_sprite);
 }

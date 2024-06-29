@@ -2,6 +2,11 @@ event_inherited();
 
 mask_index = maskNormal;
 
+// Weapons
+weapons = []; /// @is {array<Weapon>}
+weaponCount = 0;
+weaponIndex = 0;
+
 // Animation System
 animator = new FrameAnimationPlayer(); /// @is {FrameAnimationPlayer}
 
@@ -25,6 +30,15 @@ jumpBufferTimer = 0;
 // Sliding
 slideMaskHeightDelta = abs(sprite_get_bbox_height(maskNormal) - sprite_get_bbox_height(maskSlide)); /// @is {number}
 
+// Shooting
+shootTimer = 0;
+shootAnimation = 0;
+autoFireTimer = 0;
+
+// Weapon Switching
+quickSwitchTimer = 0; /// @is {int}
+weaponIconTimer = 0; /// @is {int}
+
 // Flag for if the player died by falling down a pit
 // (to skip the delay & explosions)
 canDieToPits = true;
@@ -36,8 +50,8 @@ skinCellY = 0;
 
 // Palette
 bodyPalette = new ColourReplacer(
-	[ $EC7000, $F8B838, $9858F8 ],
-	[ $EC7000, $F8B838, $000000 ]
+	player_input_palette(),
+	player_input_palette()
 );
 
 // Lock Pool

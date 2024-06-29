@@ -9,7 +9,7 @@ function Character(_config = {}) constructor {
 	
 	name = _config.name; /// @is {string} Character's name
 	object = _config.object; /// @is {prtPlayer} The object representing this character. When the player spawns into a level, this object will be created for them to control.
-	colours = _config.colours; /// @is {PlayerPalette}
+	colours = _config.colours; /// @is {PalettePlayer}
 	loadout = _config.loadout; /// @is {array<int>} A list of weapons this character will have available to them
 	
 	#endregion
@@ -19,7 +19,7 @@ function Character(_config = {}) constructor {
 	/// -- get_colours()
 	/// Gets the colours of this character. It would be used as a base, changed by the player's current weapon.
 	///
-	/// @returns {PlayerPalette}  A copy of this characters's colours.
+	/// @returns {PalettePlayer}  A copy of this characters's colours.
 	static get_colours = function() {
 		return variable_clone(colours);	
 	};

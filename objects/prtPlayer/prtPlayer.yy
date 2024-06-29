@@ -51,6 +51,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v1","%Name":"characterID","filters":[],"listItems":[],"multiselect":false,"name":"characterID","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"walkSpeed","filters":[],"listItems":[],"multiselect":false,"name":"walkSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.3","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"airSpeed","filters":[],"listItems":[],"multiselect":false,"name":"airSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.3","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"jumpSpeed","filters":[],"listItems":[],"multiselect":false,"name":"jumpSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5.25","varType":0,},

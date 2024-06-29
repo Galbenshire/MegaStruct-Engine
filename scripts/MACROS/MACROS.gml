@@ -250,7 +250,7 @@ enum Line {
 	sizeof
 }
 
-enum PlayerPalette {
+enum PalettePlayer {
 	primary, /// @is {int}
 	secondary, /// @is {int}
 	outline, /// @is {int}
@@ -262,6 +262,19 @@ enum PlayerPalette {
 	sizeof
 }
 
+enum PaletteWeapon {
+	primary, /// @is {int}
+	secondary, /// @is {int}
+	sizeof
+}
+
+enum PaletteHealthBar {
+	primary, /// @is {int}
+	secondary, /// @is {int}
+	background, /// @is {int}
+	sizeof
+}
+
 enum SpriteAtlasCell {
     sheetX, /// @is {int}
     sheetY, /// @is {int}
@@ -270,7 +283,7 @@ enum SpriteAtlasCell {
     sizeof
 }
 
-enum Vector {
+enum Vector2 {
 	x, /// @is {number}
 	y, /// @is {number}
 	sizeof

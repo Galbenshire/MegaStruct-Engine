@@ -14,7 +14,7 @@
 /// @param {number}  x4  The x coordinate of the end of the second line.
 /// @param {number}  y4  The y coordinate of the end of the second line.
 ///
-/// @returns {Vector?}  The point of intersection between the two lines
+/// @returns {Vector2?}  The point of intersection between the two lines
 ///                     If no intersection is found, `undefined` is returned
 function line_line_intersects(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4) {
     var _uDiv = (_y4 - _y3) *  (_x2 - _x1) - (_x4 - _x3) * (_y2 - _y1),

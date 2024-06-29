@@ -447,11 +447,11 @@ function try_splashing(_x1, _y1, _x2, _y2) {
 			continue;
 		
 		var _line/*:Line*/ = _water.lines[i],
-			_intersect/*:Vector*/ = line_line_intersects(_x1, _y1, _x2, _y2, _line[Line.x1], _line[Line.y1], _line[Line.x2], _line[Line.y2]);
+			_intersect/*:Vector2*/ = line_line_intersects(_x1, _y1, _x2, _y2, _line[Line.x1], _line[Line.y1], _line[Line.x2], _line[Line.y2]);
 		if (is_undefined(_intersect))
 			continue;
 		
-		var _splash = instance_create_depth(_intersect[Vector.x], _intersect[Vector.y], depth, objSplash, {
+		var _splash = instance_create_depth(_intersect[Vector2.x], _intersect[Vector2.y], depth, objSplash, {
 			image_angle: 90 * (i - 1),
 			waterInstance: _water
 		});

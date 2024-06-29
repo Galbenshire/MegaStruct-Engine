@@ -256,12 +256,18 @@ function Subsystem_Level() : Subsystem() constructor {
 		assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
 		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
 		
+		var _player = global.player;
+		
 		// Calculate spawn coordinates
 		// (Will be more elaborate once I add checkpoints & teleporting)
 		var _spawn_x = objDefaultSpawn.x,
 			_spawn_y = objDefaultSpawn.y;
-		var _body = spawn_player_character(_spawn_x, _spawn_y, LAYER_ENTITY, CharacterType.MEGA);
-		global.player.set_body(_body);
+			
+		// Spawn the player
+		var _body = spawn_player_character(_spawn_x, _spawn_y, LAYER_ENTITY, _player.character);
+		_player.set_body(_body);
+		_player.generate_loadout();
+		player_update_palette(_body);
 		_body.stateMachine.change("StageStart");
 		signal_bus().connect_to_signal("readyComplete", _body, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		
@@ -276,12 +282,11 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		data = {};
 		
-		instance_create_depth(0, 0, system.depth + 1, objReady);
-		
 		defer(DeferType.STEP_BEGIN, function() {
 			deactivate_game_objects(false);
 			activate_game_objects();
 		}, 0, true, true);
+		instance_create_depth(0, 0, system.depth + 1, objReady);
     };
     
     static roomEnd = function() {

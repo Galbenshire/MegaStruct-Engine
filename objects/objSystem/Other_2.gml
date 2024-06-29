@@ -26,8 +26,16 @@ if (!variable_global_exists("__gameInit")) {
 		yoffset: 21
 	}); /// @is {SpriteAtlas}
 	
+	// ===== Grab all Player Weapons in this engine =====
+	show_debug_message("Generating player weapons...");
+	global.weaponList = array_create(WeaponType.COUNT, undefined); /// @is {array<Weapon>}
+	var _weapons = tag_get_assets("weapon"),
+		_weaponCount = array_length(_weapons);
+	for (var i = 0; i < _weaponCount; i++)
+		event_perform_object(asset_get_index(_weapons[i]), ev_other, EVENT_WEAPON_SETUP);
+	
 	// ===== Grab all Playable Characters in this engine =====
-	show_debug_message("Grabbing playable characters...");
+	show_debug_message("Generating playable characters...");
 	global.characterList = array_create(CharacterType.COUNT, undefined); /// @is {array<Character>}
 	var _characters = tag_get_assets("character"),
 		_characterCount = array_length(_characters);

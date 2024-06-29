@@ -51,23 +51,47 @@ function player_handle_sections() {
 /// @func player_handle_shooting()
 /// @desc Handles the act of the player shooting
 function player_handle_shooting() {
-	if (inputs.is_pressed(InputActions.SHOOT) && !lockpool.is_locked(PlayerAction.SHOOT)) {
-		var _params = {
-			sprite_index: sprBusterShot,
-			pierces: PierceType.NEVER,
-			factionLayer: [ Faction.PLAYER_PROJECTILE ],
-			factionMask: [ Faction.ENEMY_FULL ]
-		};
-		with (spawn_entity(x, y, depth, prtProjectile, _params)) {
-			xspeed.value = 5.5 * other.image_xscale;
+	// if (inputs.is_pressed(InputActions.SHOOT) && !lockpool.is_locked(PlayerAction.SHOOT)) {
+	// 	var _params = {
+	// 		sprite_index: sprBusterShot,
+	// 		pierces: PierceType.NEVER,
+	// 		factionLayer: [ Faction.PLAYER_PROJECTILE ],
+	// 		factionMask: [ Faction.ENEMY_FULL ]
+	// 	};
+	// 	with (spawn_entity(x, y, depth, prtProjectile, _params)) {
+	// 		xspeed.value = 5.5 * other.image_xscale;
+	// 	}
+	// 	isShooting = true;
+	// 	shootAnimation = 1;
+	// 	shootTimer = 17;
+	// 	play_sfx(sfxBuster);
+	// }
+	
+	if (weaponCount > 0) {
+		weapons[weaponIndex].onTick(self);
+	}
+	
+	if (isShooting) {
+		shootTimer = approach(shootTimer, 0, 1);
+		if (shootTimer == 0) {
+			isShooting = false;
+			shootAnimation = 0;
 		}
 	}
 }
 
 /// @self {prtPlayer}
-/// @func player_switch_weapons()
-function player_switch_weapons() {
+/// @func player_handle_switch_weapons()
+function player_handle_switch_weapons() {
+	if (weaponCount <= 0 || lockpool.is_locked(PlayerAction.WEAPON_CHANGE))
+		return;
 	
+	var _dir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
+	if (_dir == 0)
+		return;
+	
+	weaponIndex = modf(weaponIndex + _dir, weaponCount);
+	player_update_palette();
 }
 
 /// @self {prtPlayer}
@@ -112,6 +136,41 @@ function player_try_sliding() {
 
 #endregion
 
+#region Functions for the player object
+
+/// @func player_add_weapon()
+/// @desc Gives a player object a weapon
+function player_add_weapon(_weaponID, _player = self) {
+	assert(is_a_player(_player), "player_add_weapon can only be used by an object that inherits from prtPlayer");
+	
+	with (_player) {
+		var _weapon = global.weaponList[_weaponID].instantiate();
+		array_push(weapons, _weapon);
+		weaponCount = array_length(weapons);
+	}
+}
+
+/// @func player_update_palette()
+/// @desc Updates the player's palette
+function player_update_palette(_player = self) {
+	assert(is_a_player(_player), "player_update_palette can only be used by an object that inherits from prtPlayer");
+	
+	with (_player) {
+		var _characterPalette/*:PalettePlayer*/ = global.characterList[characterID].get_colours();
+		
+		if (weaponCount > 0) {
+			var _weaponPalette/*:PaletteWeapon*/ = weapons[weaponIndex].get_colours();
+			_characterPalette[@PalettePlayer.primary] = _weaponPalette[PaletteWeapon.primary];
+			_characterPalette[@PalettePlayer.secondary] = _weaponPalette[PaletteWeapon.secondary];
+		}
+		
+		for (var i = 0; i < bodyPalette.colourCount; i++)
+			bodyPalette.set_output_colour_at(i, _characterPalette[i]);
+	}
+}
+
+#endregion
+
 #region Other
 
 /// @func is_a_player(scope)
@@ -127,31 +186,33 @@ function is_a_player(_scope = self) {
 /// @func player_input_palette()
 /// @desc Creates a copy of input colours used for the player object
 ///
-/// @returns {PlayerPalette}
+/// @returns {PalettePlayer}
 function player_input_palette() {
-	var _palette/*:PlayerPalette*/ = array_create(PlayerPalette.sizeof);
-	_palette[@PlayerPalette.primary] = $EC7000;
-	_palette[@PlayerPalette.secondary] = $F8B838;
-	_palette[@PlayerPalette.outline] = $9858F8;
-	_palette[@PlayerPalette.skin] = $A8D8FC;
-	_palette[@PlayerPalette.face] = $000000;
-	_palette[@PlayerPalette.eyes] = $FFFFFF;
+	var _palette/*:PalettePlayer*/ = array_create(PalettePlayer.sizeof);
+	_palette[@PalettePlayer.primary] = $EC7000;
+	_palette[@PalettePlayer.secondary] = $F8B838;
+	_palette[@PalettePlayer.outline] = $9858F8;
+	_palette[@PalettePlayer.skin] = $A8D8FC;
+	_palette[@PalettePlayer.face] = $000000;
+	_palette[@PalettePlayer.eyes] = $FFFFFF;
 	
 	return _palette;
 }
 
-/// @func spawn_player_character(x, y, depth_or_layer, character_type)
+/// @func spawn_player_character(x, y, depth_or_layer, character_id)
 /// @desc Creates an instance of a player character
 ///
 /// @param {number}  x  The x position the player will be created at
 /// @param {number}  y  The y position the player will be created at
 /// @param {number|layer|string}  depth_or_layer
-/// @param {number}  character_type
+/// @param {number}  character_id
 ///
 /// @returns {prtPlayer}
-function spawn_player_character(_x, _y, _depthOrLayer, _characterType) {
-	var _character = global.characterList[_characterType].object;
-	var _body = spawn_entity(_x, _y, _depthOrLayer, _character);
+function spawn_player_character(_x, _y, _depthOrLayer, _characterID) {
+	var _character = global.characterList[_characterID];
+	var _body = spawn_entity(_x, _y, _depthOrLayer, _character.object, {
+		characterID: _character.id
+	});
 	return _body;
 }
 

@@ -28,5 +28,9 @@ if (iFrames < 0 || (iFrames & 3) < 2) {
 	}
 }
 
+if (weaponCount > 0) {
+	weapons[weaponIndex].draw_icon(x - 8, y - 30 * image_yscale);
+}
+
 x = _x;
 y = _y;
