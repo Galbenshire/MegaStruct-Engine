@@ -63,6 +63,11 @@ function Weapon() constructor {
 	///
 	/// @returns {Weapon}  A reference to this struct. Useful for method chaining.
 	static set_ammo = function(_value) {
+		if (!is_copy()) {
+			if (DEBUG_ENABLED)
+				show_debug_message("Error: Trying to change the ammo of a master copy of a Weapon");
+			return;
+		}
 		ammo = clamp(_value, 0, FULL_HEALTHBAR);
 		return self;
 	};
@@ -132,6 +137,22 @@ function Weapon() constructor {
 	#endregion
 	
 	#region Functions - Other
+	
+	/// @method change_ammo(value)
+	/// @desc Change the ammo by a specific amount
+	///
+	/// @param {number}  value  How much to change ammo by
+	///
+	/// @returns {Player}  A reference to this struct. Useful for method chaining.
+	static change_ammo = function(_value) {
+		if (!is_copy()) {
+			if (DEBUG_ENABLED)
+				show_debug_message("Error: Trying to change the ammo of a master copy of a Weapon");
+			return;
+		}
+		ammo = clamp(ammo + _value, 0, FULL_HEALTHBAR);
+		return self;
+	};
 	
 	/// @method has_flag(flag)
 	/// @desc Checks if this weapon has the specified flag

@@ -1,3 +1,19 @@
+/// @func draw_mm_healthbar(x, y, value, colours)
+/// @desc Draws a Mega Man style health/ammo bar
+///
+/// @param {number}  x  x-position to draw the healthbar
+/// @param {number}  y  y-position to draw the healthbar
+/// @param {number}  value  How full to draw the bar. In a [0 - 28] range.
+/// @param {PaletteHealthBar}  colours  The palette of the bar
+function draw_mm_healthbar(_x, _y, _value, _colours) {
+	_value = clamp(ceil(_value), 0, FULL_HEALTHBAR);
+	
+	var _offset = 2 * (FULL_HEALTHBAR - _value);
+	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, FULL_HEALTHBAR, 0, _colours[PaletteHealthBar.background], 1);
+	draw_sprite_ext(sprHealthbar, 2, _x, _y + _offset, 1, _value, 0, _colours[PaletteHealthBar.secondary], 1);
+	draw_sprite_ext(sprHealthbar, 1, _x, _y + _offset, 1, _value, 0, _colours[PaletteHealthBar.primary], 1);
+}
+
 /// @func draw_rectangle_width(x1, y1, x2, y2, width)
 /// @desc Draws an outline of a rectangle with the lines at a given thickness
 ///

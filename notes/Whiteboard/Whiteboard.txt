@@ -7,3 +7,30 @@
 --- On a non-game frame
 - Apply offset
 
+
+
+// === PALETTE TYPES ===
+--- Player Palette
+- Six colours (primary, secondary, outline, skin, face, eyes)
+- Used by the player object
+
+--- Weapon Palette
+- Two colours (primary, secondary)
+- Used for weapon icons
+- Also used by the player object to update palette according to weapon
+
+
+// === The player entity holds two palettes ===
+- Body palette
+    - Uses a Player Palette
+    - Used to colour the player's sprite
+    - On Refresh
+        - Pull from the colours of the current playable character
+        - If the player has a weapon active, apply its colours next
+
+
+var _params = {
+    xOffset: 12,
+    yOffset: 2,
+    
+};

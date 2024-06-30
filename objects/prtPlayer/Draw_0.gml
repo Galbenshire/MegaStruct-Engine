@@ -7,29 +7,22 @@ x += subPixelX;
 y += subPixelY;
 
 if (iFrames < 0 || (iFrames & 3) < 2) {
-	if (isHurt && (hitTimer & 7) <= 3) {
+	if (isHurt && (hitTimer & 7) <= 3)
 		draw_sprite_ext(sprHitspark, 0, sprite_x_center(), sprite_y_center(), image_xscale, image_yscale, 0, c_white, 1);
-	} else if (bodyPalette.isSupported) {
-		bodyPalette.activate();
-        global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);
-        bodyPalette.deactivate();
-	} else { // Shaders aren't working? Then let's go for our backup: whitemasks
-		var _whitemaskBlends = array_create_ext(4, function(i) /*=>*/ {return (i == 0) ? c_white : bodyPalette.outputColours[i - 1]});
-		var _blendChannels = [ colour_get_red(image_blend) / 255, colour_get_green(image_blend) / 255, colour_get_blue(image_blend) / 255 ];
-		
-		for (var i = 0; i < 4; i++) {
-			var _colour = make_color_rgb(
-				(colour_get_red(_whitemaskBlends[i]) / 255) * _blendChannels[0] * 255,
-				(colour_get_green(_whitemaskBlends[i]) / 255) * _blendChannels[1] * 255,
-				(colour_get_blue(_whitemaskBlends[i]) / 255) * _blendChannels[2] * 255,
-			);
-			global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, i, _x, _y, image_xscale, image_yscale, _colour, image_alpha);
-		}
-	}
+	else
+		onDraw();
 }
 
-if (weaponCount > 0) {
-	weapons[weaponIndex].draw_icon(x - 8, y - 30 * image_yscale);
+draw_mm_healthbar(game_view().left_edge(16), game_view().top_edge(8), healthpoints, [ $A8E0FC, c_white, c_black ]);
+
+if (!is_undefined(weapon)) {
+	draw_mm_healthbar(game_view().left_edge(8), game_view().top_edge(8), weapon.ammo, [ bodyPalette.outputColours[0], bodyPalette.outputColours[1], c_black ]);
+	
+	if (weaponIconTimer > 0) {
+		iconPalette.activate();
+		weapon.draw_icon(x - 8, y - 30 * image_yscale);
+		iconPalette.deactivate();
+	}
 }
 
 x = _x;

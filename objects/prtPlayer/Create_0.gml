@@ -3,9 +3,9 @@ event_inherited();
 mask_index = maskNormal;
 
 // Weapons
-weapons = []; /// @is {array<Weapon>}
-weaponCount = 0;
-weaponIndex = 0;
+weapon = undefined; /// @is {Weapon}
+loadout = []; /// @is {array<Weapon>}
+loadoutSize = 0;
 
 // Animation System
 animator = new FrameAnimationPlayer(); /// @is {FrameAnimationPlayer}
@@ -48,10 +48,14 @@ diedToAPit = false;
 skinCellX = 0;
 skinCellY = 0;
 
-// Palette
+// Palettes
 bodyPalette = new ColourReplacer(
-	player_input_palette(),
-	player_input_palette()
+	input_palette_player(),
+	global.characterList[characterID].get_colours()
+);
+iconPalette = new ColourReplacer(
+	input_palette_weapon(),
+	input_palette_weapon()
 );
 
 // Lock Pool

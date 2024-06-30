@@ -4,7 +4,7 @@
 ///
 /// @param {bool}  condition  Will crash the game if this is false
 /// @param {string}  [message]  Message to display, should the assertion fail
-/// @param {rest<any>}  [...values]  The values to be inserted at the placeholder positions in the message
+/// @param {any}  [...values]  The values to be inserted at the placeholder positions in the message
 function assert(_condition/*:bool*/, _msg/*:string*/ = "") {
 	var _values = array_create(max(argument_count - 2, 0));
 	for (var i = 2; i < argument_count; i++)

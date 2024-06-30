@@ -14,6 +14,9 @@
 __init++;\
 assert(__init == 1, "Only one instance of {0} can be present at any time.", instanceof(self));
 
+#macro PLAYER_ONLY_FUNCTION assert(is_a_player(_player),\
+"{0} can only be used by an object that inherits from {1}", _GMFUNCTION_, object_get_name(prtPlayer));
+
 #endregion
 
 

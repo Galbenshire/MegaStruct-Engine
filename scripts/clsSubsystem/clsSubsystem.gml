@@ -264,12 +264,15 @@ function Subsystem_Level() : Subsystem() constructor {
 			_spawn_y = objDefaultSpawn.y;
 			
 		// Spawn the player
-		var _body = spawn_player_character(_spawn_x, _spawn_y, LAYER_ENTITY, _player.character);
-		_player.set_body(_body);
-		_player.generate_loadout();
-		player_update_palette(_body);
-		_body.stateMachine.change("StageStart");
-		signal_bus().connect_to_signal("readyComplete", _body, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
+		with (spawn_player_entity(_spawn_x, _spawn_y, LAYER_ENTITY, _player.character)) {
+			_player.set_body(self);
+			_player.generate_loadout();
+			weapon = loadout[0];
+			player_refresh_palette_body();
+			player_refresh_palette_icon();
+			stateMachine.change("StageStart");
+			signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
+		}
 		
 		global.section = find_section_at(_spawn_x, _spawn_y);
 		assert(global.section != noone, "Spawn coordinates are outside of any defined section");

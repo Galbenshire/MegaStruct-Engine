@@ -51,25 +51,8 @@ function player_handle_sections() {
 /// @func player_handle_shooting()
 /// @desc Handles the act of the player shooting
 function player_handle_shooting() {
-	// if (inputs.is_pressed(InputActions.SHOOT) && !lockpool.is_locked(PlayerAction.SHOOT)) {
-	// 	var _params = {
-	// 		sprite_index: sprBusterShot,
-	// 		pierces: PierceType.NEVER,
-	// 		factionLayer: [ Faction.PLAYER_PROJECTILE ],
-	// 		factionMask: [ Faction.ENEMY_FULL ]
-	// 	};
-	// 	with (spawn_entity(x, y, depth, prtProjectile, _params)) {
-	// 		xspeed.value = 5.5 * other.image_xscale;
-	// 	}
-	// 	isShooting = true;
-	// 	shootAnimation = 1;
-	// 	shootTimer = 17;
-	// 	play_sfx(sfxBuster);
-	// }
-	
-	if (weaponCount > 0) {
-		weapons[weaponIndex].onTick(self);
-	}
+	if (!is_undefined(weapon))
+		weapon.onTick(self);
 	
 	if (isShooting) {
 		shootTimer = approach(shootTimer, 0, 1);
@@ -83,15 +66,45 @@ function player_handle_shooting() {
 /// @self {prtPlayer}
 /// @func player_handle_switch_weapons()
 function player_handle_switch_weapons() {
-	if (weaponCount <= 0 || lockpool.is_locked(PlayerAction.WEAPON_CHANGE))
+	if (loadoutSize <= 0 || lockpool.is_locked(PlayerAction.WEAPON_CHANGE)) {
+		quickSwitchTimer = 0;
+		weaponIconTimer = 0;
 		return;
+	}
 	
-	var _dir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
-	if (_dir == 0)
-		return;
+	var _index = array_get_index(loadout, weapon),
+		_wpnSwitchLeft = inputs.is_held(InputActions.WEAPON_SWITCH_LEFT),
+		_wpnSwitchRight = inputs.is_held(InputActions.WEAPON_SWITCH_RIGHT),
+		_dir = _wpnSwitchRight - _wpnSwitchLeft;
 	
-	weaponIndex = modf(weaponIndex + _dir, weaponCount);
-	player_update_palette();
+	if (_dir != 0) {
+		if (--quickSwitchTimer <= 0)
+			_index = modf(_index + _dir, loadoutSize);
+	} else if (_wpnSwitchLeft && _wpnSwitchRight) {
+		_index = 0;
+	} else {
+		quickSwitchTimer = 0;
+	}
+	
+	if (loadout[_index] != weapon) {
+		if (!is_undefined(weapon))
+			weapon.onUnequip(self);
+		weapon = loadout[_index];
+		weapon.onEquip(self);
+		
+		with (prtProjectile) {
+			if (owner == other.id)
+				instance_destroy();
+		}
+		
+		quickSwitchTimer = 8 + (10 * (quickSwitchTimer < 0));
+		weaponIconTimer = 32;
+		play_sfx(sfxWeaponSwitch);
+		player_refresh_palette_body();
+		player_refresh_palette_icon();
+	}
+	
+	weaponIconTimer--;
 }
 
 /// @self {prtPlayer}
@@ -136,36 +149,163 @@ function player_try_sliding() {
 
 #endregion
 
-#region Functions for the player object
+#region Player Functions
 
-/// @func player_add_weapon()
+// That is, functions intended exclusively for the player entity
+
+/// @func player_add_weapon(weapon_id, player)
 /// @desc Gives a player object a weapon
+///
+/// @param {int}  weapon_id  The ID of the weapon to add
+/// @param {prtPlayer}  [player]  The player entity to add the weapon to. Defaults to the calling instance.
 function player_add_weapon(_weaponID, _player = self) {
-	assert(is_a_player(_player), "player_add_weapon can only be used by an object that inherits from prtPlayer");
+	PLAYER_ONLY_FUNCTION
 	
 	with (_player) {
 		var _weapon = global.weaponList[_weaponID].instantiate();
-		array_push(weapons, _weapon);
-		weaponCount = array_length(weapons);
+		array_push(loadout, _weapon);
+		loadoutSize = array_length(loadout);
 	}
 }
 
-/// @func player_update_palette()
-/// @desc Updates the player's palette
-function player_update_palette(_player = self) {
-	assert(is_a_player(_player), "player_update_palette can only be used by an object that inherits from prtPlayer");
+/// @func player_fire_weapon(params, player)
+/// @desc Script to make the player fire a weapon.
+///
+/// @param {struct}  params  Defines various parameters of this projectile.
+///		The list of applicable parameters are as follows:
+///		-- REQUIRED --
+///		- object: The object of the projectile to create
+///		- cost: Uses up this many units of ammo to fire. If you have no ammo, this projectile will not be created.
+///		- limit: A limit to the number of projectiles onscreen
+///		- shootAnimation: The player's shoot animation after firing
+///		-- OPTIONAL --
+///		- weapon: What weapon this projectile is for. Used for ammo checks. Defaults to the player's current weapon
+///		- offsetX: x-offset from the player, in addition to the base offset from the player's "gun" position
+///		- offsetY: y-offset from the player, in addition to the base offset from the player's "gun" position
+///		- depthOffset: Depth of the bullet relative to the player. Defaults to one value in front of the player
+///		- standstill: A boolean for if the player should be put in a standstill. Defaults to false.
+/// @param {prtPlayer}  [_player]
+///
+/// @returns {instance}  The projectile. Returns `noone` if something prevented a projectile being created.
+function player_fire_weapon(_params = {}, _player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	// Check for the bullet limit
+	if (_params.limit > 0) {
+		var _limit = _params.limit;
+		
+		with (prtProjectile) {
+			if (owner != _player.id)
+				continue;
+			
+			_limit -= bulletLimitCost;
+			if (_limit <= 0)
+				return noone;
+		}
+	}
+	
+	var _weapon = _params[$ "weapon"] ?? _player.weapon;
+	
+	// Check for ammo
+	if (_params.cost > 0 && !is_undefined(_weapon)) {
+		if (_weapon.ammo <= 0)
+			return noone;
+		
+		_weapon.change_ammo(-_params.cost);
+	}
 	
 	with (_player) {
-		var _characterPalette/*:PalettePlayer*/ = global.characterList[characterID].get_colours();
+		isShooting = true;
+		shootAnimation = _params.shootAnimation;
+		shootTimer = 17;
 		
-		if (weaponCount > 0) {
-			var _weaponPalette/*:PaletteWeapon*/ = weapons[weaponIndex].get_colours();
-			_characterPalette[@PalettePlayer.primary] = _weaponPalette[PaletteWeapon.primary];
-			_characterPalette[@PalettePlayer.secondary] = _weaponPalette[PaletteWeapon.secondary];
+		if (isClimbing) {
+			if (xDir != 0 && !lockpool.is_locked(PlayerAction.TURN_GROUND))
+				image_xscale = xDir;
+		}
+		
+		var _gunOffset/*:Vector2*/ = player_gun_offset();
+		
+		// Make the bullet
+		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * _player.image_xscale,
+			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * _player.image_yscale,
+			_bulletDepth = depth + (_params[$ "depthOffset"] ?? -1),
+			_bulletObj = _params.object;
+		
+		var _bullet = spawn_entity(_bulletX, _bulletY, _bulletDepth, _bulletObj, {
+			image_xscale: sign(image_xscale),
+			image_yscale: sign(image_yscale)
+		});
+		_bullet.owner = id;
+		_bullet.playerID = playerID;
+		
+		return _bullet;
+	}
+	
+	return noone; // failsafe
+}
+
+/// @func player_get_character(player)
+/// @desc Get the playable character the given player entity is set as
+///
+/// @param {prtPlayer}  [player]  The player entity to check. Defaults to the calling instance.
+///
+/// @returns {Character}  The playable character set for this player
+function player_get_character(_player = self) {
+	PLAYER_ONLY_FUNCTION
+	return global.characterList[_player.characterID];
+}
+
+/// @self {prtPlayer}
+/// @func player_gun_offset()
+/// @desc Gets the relative position of the player's gun/arm cannon
+///		  Mainly used to get a base offset when furing a weapon
+///
+/// @returns {Vector2}  Gun offset
+function player_gun_offset() {
+	var _offset/*:Vector2*/ = [16, 4];
+	if (isClimbing)
+		_offset[@Vector2.y] -= 2;
+	else if (!ground)
+		_offset[@Vector2.y] -= 5;
+	return _offset;
+}
+
+/// @func player_refresh_palette_body(player)
+/// @desc Updates the player's palette for their body
+///
+/// @param {prtPlayer}  [player]
+function player_refresh_palette_body(_player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	with (_player) {
+		var _characterPalette = global.characterList[characterID].get_colours();
+		
+		if (!is_undefined(weapon)) {
+			var _weaponPalette = weapon.get_colours();
+			_characterPalette[PalettePlayer.primary] = _weaponPalette[PaletteWeapon.primary];
+			_characterPalette[PalettePlayer.secondary] = _weaponPalette[PaletteWeapon.secondary];
 		}
 		
 		for (var i = 0; i < bodyPalette.colourCount; i++)
 			bodyPalette.set_output_colour_at(i, _characterPalette[i]);
+	}
+}
+
+/// @func player_refresh_palette_icon()
+/// @desc Updates the player's palette for the weapon icon
+///
+/// @param {prtPlayer}  [player]
+function player_refresh_palette_icon(_player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	with (_player) {
+		if (is_undefined(weapon))
+			return;
+		
+		var _weaponPalette = weapon.get_colours();
+		for (var i = 0; i < iconPalette.colourCount; i++)
+			iconPalette.set_output_colour_at(i, _weaponPalette[i]);
 	}
 }
 
@@ -183,23 +323,7 @@ function is_a_player(_scope = self) {
     return is_object_type(prtPlayer, _scope);
 }
 
-/// @func player_input_palette()
-/// @desc Creates a copy of input colours used for the player object
-///
-/// @returns {PalettePlayer}
-function player_input_palette() {
-	var _palette/*:PalettePlayer*/ = array_create(PalettePlayer.sizeof);
-	_palette[@PalettePlayer.primary] = $EC7000;
-	_palette[@PalettePlayer.secondary] = $F8B838;
-	_palette[@PalettePlayer.outline] = $9858F8;
-	_palette[@PalettePlayer.skin] = $A8D8FC;
-	_palette[@PalettePlayer.face] = $000000;
-	_palette[@PalettePlayer.eyes] = $FFFFFF;
-	
-	return _palette;
-}
-
-/// @func spawn_player_character(x, y, depth_or_layer, character_id)
+/// @func spawn_player_entity(x, y, depth_or_layer, character_id)
 /// @desc Creates an instance of a player character
 ///
 /// @param {number}  x  The x position the player will be created at
@@ -208,7 +332,7 @@ function player_input_palette() {
 /// @param {number}  character_id
 ///
 /// @returns {prtPlayer}
-function spawn_player_character(_x, _y, _depthOrLayer, _characterID) {
+function spawn_player_entity(_x, _y, _depthOrLayer, _characterID) {
 	var _character = global.characterList[_characterID];
 	var _body = spawn_entity(_x, _y, _depthOrLayer, _character.object, {
 		characterID: _character.id
