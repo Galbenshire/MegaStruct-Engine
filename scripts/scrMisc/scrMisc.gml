@@ -72,8 +72,24 @@ function queue_unpause() {
 	objSystem.pause.pauseQueue = QUEUED_UNPAUSE;
 }
 
-/// @func screen_fade()
-/// @desc Performs a screen fade
+/// @func screen_fade(config)
+/// @desc Performs a screen fade.
+///		  Various actions can be performed at set parts of the fade.
+///
+/// @param {struct}  [config]  Defines various parameters of this screen fade.
+///		The list of applicable parameters are as follows (all optional):
+///		-- REGULAR PARAMS --
+///		- fadeOutDuration: How long to fade out the screen
+///		- fadeHoldDuration: How long to stay on the fade for
+///		- fadeInDuration: How long to fade back into the game screen
+///		- fadeColour: The colour of the fade. Defaults to black
+///		- fadeStep: Clamp the fade alpha to set intervals. Makes the fade appear more discreet.
+///		- ignoreTimeScale: If true, the fade is independant of the game screen.
+///		-- CALLBACKS --
+///		- onFadeOutStart: Code to run at the start of fade out (basically right as the fade is created)
+///		- onFadeOutEnd: Code to run at the end of fade out
+///		- onFadeInStart: Code to run at the start of fade in
+///		- onFadeInEnd: Code to run at the end of fade in, before the fade is destroyed
 function screen_fade(_config = {}) {
 	if (struct_exists(_config, "onFadeOutStart"))
 		_config.onFadeOutStart = method(self, _config.onFadeOutStart);

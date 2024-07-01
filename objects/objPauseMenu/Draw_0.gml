@@ -1,7 +1,9 @@
-var _gameView = game_view();
-draw_sprite_ext(sprDot, 0, _gameView.get_x(), _gameView.get_y(), GAME_WIDTH, GAME_HEIGHT, 0, c_gray, 0.5);
+for (var i = 0; i < bgSpritesCount; i++) {
+    with (bgSprites[i])
+        draw_sprite_ext(sprite_index, image_index, other.x + x, other.y + y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+}
 
-draw_set_halign(fa_center);
-draw_set_valign(fa_middle);
-draw_text(_gameView.center_x(), _gameView.center_y(), "-- PAUSE --");
+draw_set_text_align(fa_center, fa_middle);
+draw_sprite_ext(sprDot, 0, x, y + 96, 256, 32, 0, c_black, 0.8);
+draw_text(x + 128, y + 112, "--PAUSE MENU--\n(WIP)");
 draw_reset_text_align();

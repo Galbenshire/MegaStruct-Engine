@@ -59,6 +59,8 @@ function player_handle_shooting() {
 		if (shootTimer == 0) {
 			isShooting = false;
 			shootAnimation = 0;
+			if (!is_undefined(shootStandStillLock))
+				shootStandStillLock = shootStandStillLock.release();
 		}
 	}
 }
@@ -86,11 +88,8 @@ function player_handle_switch_weapons() {
 		quickSwitchTimer = 0;
 	}
 	
-	if (loadout[_index] != weapon) {
-		if (!is_undefined(weapon))
-			weapon.onUnequip(self);
-		weapon = loadout[_index];
-		weapon.onEquip(self);
+	if (_index != NOT_FOUND && loadout[_index] != weapon) {
+		player_equip_weapon(_index);
 		
 		with (prtProjectile) {
 			if (owner == other.id)
@@ -154,7 +153,7 @@ function player_try_sliding() {
 // That is, functions intended exclusively for the player entity
 
 /// @func player_add_weapon(weapon_id, player)
-/// @desc Gives a player object a weapon
+/// @desc Gives a player object a weapon to add to their loadout
 ///
 /// @param {int}  weapon_id  The ID of the weapon to add
 /// @param {prtPlayer}  [player]  The player entity to add the weapon to. Defaults to the calling instance.
@@ -165,6 +164,41 @@ function player_add_weapon(_weaponID, _player = self) {
 		var _weapon = global.weaponList[_weaponID].instantiate();
 		array_push(loadout, _weapon);
 		loadoutSize = array_length(loadout);
+	}
+}
+
+/// @func player_equip_weapon(weapon_or_loadout_index, player)
+/// @desc Makes a player entity equip a weapon
+///		  This can either be an actual Weapon instance,
+///		  or an index from the player's loadout
+///
+/// @param {Weapon|int}  weapon_or_loadout_index  The ID of the weapon to add
+function player_equip_weapon(_weaponOrLoadout, _player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	with (_player) {
+		var _weapon = undefined;
+		if (is_instanceof(_weaponOrLoadout, Weapon)) {
+			_weapon = _weaponOrLoadout;
+		} else if (is_numeric(_weaponOrLoadout)) {
+			try
+				_weapon = loadout[_weaponOrLoadout];
+			catch( _exception)
+				_weapon = undefined;
+		}
+		
+		if (is_undefined(_weapon))
+			return;
+		
+		if (!is_undefined(weapon))
+			weapon.onUnequip(self);
+		weapon = _weapon;
+		weapon.onEquip(self);
+		
+		if (!is_undefined(player)) {
+			player.hudElement.ammoVisible = !weapon.has_flag(WeaponFlags.NO_AMMO);
+			player.hudElement.ammo = weapon.ammo;
+		}
 	}
 }
 
@@ -215,20 +249,29 @@ function player_fire_weapon(_params = {}, _player = self) {
 	}
 	
 	with (_player) {
+		if (!is_undefined(player) && !is_undefined(_weapon))
+			player.hudElement.ammo = _weapon.ammo;
+		
 		isShooting = true;
 		shootAnimation = _params.shootAnimation;
 		shootTimer = 17;
 		
-		if (isClimbing) {
+		if (!is_undefined(shootStandStillLock))
+			shootStandStillLock = shootStandStillLock.release();
+		
+		var _standstill = _params[$ "standstill"] ?? false;
+		if (_standstill || isClimbing) {
 			if (xDir != 0 && !lockpool.is_locked(PlayerAction.TURN_GROUND))
 				image_xscale = xDir;
 		}
+		if (_standstill)
+			shootStandStillLock = lockpool.add_lock(PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND);
 		
 		var _gunOffset/*:Vector2*/ = player_gun_offset();
 		
 		// Make the bullet
-		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * _player.image_xscale,
-			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * _player.image_yscale,
+		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
+			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? -1),
 			_bulletObj = _params.object;
 		
@@ -289,6 +332,9 @@ function player_refresh_palette_body(_player = self) {
 		
 		for (var i = 0; i < bodyPalette.colourCount; i++)
 			bodyPalette.set_output_colour_at(i, _characterPalette[i]);
+		
+		if (!is_undefined(player))
+			player.hudElement.ammoPalette = array_slice(bodyPalette.outputColours, 0, 3);
 	}
 }
 

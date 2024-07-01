@@ -1,7 +1,6 @@
 /// @description Weapon Setup
-global.weaponList[WeaponType.ICE_SLASHER] = new Weapon();
+global.weaponList[WeaponType.ICE_SLASHER] = new Weapon(WeaponType.ICE_SLASHER);
 with (global.weaponList[WeaponType.ICE_SLASHER]) {
-	id = WeaponType.ICE_SLASHER;
     object = objIceSlasher;
     set_name("Ice Slasher");
 	set_icon(sprWeaponIcons, 3);

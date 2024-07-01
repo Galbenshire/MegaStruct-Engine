@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"clsHUDElements",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsHUDElements",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

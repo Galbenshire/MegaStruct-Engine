@@ -1,0 +1,149 @@
+== healthpointsStart (int)
+- how much health this entity spawns in with
+  entities left with 0 health will die
+
+== contactDamage (number)
+- how much damage this entity can deal to other hostile entities
+  (`canDealDamage` must also be true to actually deal damage)
+
+== canTakeDamage (bool)
+- sets whether this entity can receive damage from other entities (true) or not (false)
+
+== canDealDamage (bool)
+- sets whether this entity can deal damage to other entities (true) or not (false)
+  (`contactDamage` must also be > 0 to actually deal damage)
+
+== penetrate (int)
+- sets how this entity should react to "guards" during entity-entity collisions
+  the available values (corresponding to the `PenetrateType` enum) are as follows:
+    * PenetrateType.NONE: No damage occurs. The entity is reflected, using its `onReflected` callback
+    * PenetrateType.NO_DAMAGE: No damage occurs. The current collision is ignored.
+    * PenetrateType.NO_DAMAGE_AND_COLLISION: No damage occurs. All future collisions are ignored.
+    * PenetrateType.BYPASS_GUARD: The guard is ignored, and damage continues as normal.
+
+== pierces (int)
+- sets how this entity should react after dealing damage to an entity
+  the available values (corresponding to the `PierceType` enum) are as follows:
+    * PierceType.NEVER: The entity always dies after dealing damage
+    * PierceType.ON_KILLS_ONLY: The entity only dies if its target did not die from the attack
+    * PierceType.ALWAYS: The entity never dies from dealing damage
+
+== factionLayer (int)
+- this sets which "factions" this entity belongs to
+  corresponding to the `Faction` enum, this determines which entities can collide with this one
+  (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
+
+== factionMask (int)
+- this sets which "factions" this entity can collide with
+  other entities with any of the factions listed here in their `factionLayer` variable will be viable for collisions
+  (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
+
+== factionTargets (int)
+- this sets which "factions" this entity can target
+  other entities with any of the factions listed here in their `factionLayer` variable will be viable for targetting
+  (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
+  (if this entity is not set to target anything, this variable will do nothing)
+
+== isTargetable (bool)
+- sets whether this entity can be targetted by other entities (true) or not (false)
+
+== targetingPreset (string)
+- sets a preset targetting behaviour for this entity
+  the available values are as follows:
+    * "Generic": Pseudo-smart AI. Only retarget (with low probability) if the current target is far away, and hasn't attacked in a while
+    * "Nearest": Always pick the closest valid target.
+    * "Switch Regularly": Pick a target at random every set interval
+    * "Pick Once": Pick a target at random, and stick to it (unless it becomes invalid)
+    * "Custom": You must supply the targetting behaviour yourself
+    * "No Target": This entity will not perform any targetting
+
+== faceTarget (bool)
+- if true, this entity will face its current target at all times
+  (this entity must be set to do any targetting for this to work)
+
+== faceTargetOnSpawn (bool)
+- if true, this entity will face its current target when spawning in
+  (this entity must be set to do any targetting for this to work)
+
+== collideWithSolids (bool)
+- sets whether this entity can collide with solids (true) or not (false)
+
+== gravEnabled (bool)
+- sets whether this entity should be affected by gravity (true) or not (false)
+
+== grav (number)
+- the strength of gravity to apply to this entity
+  (`gravEnabled` must be set to true for this variable to do anything)
+
+== gravDir (int)
+- the direction to apply gravity to this entity
+  (`gravEnabled` must be set to true for this variable to do anything)
+
+== maxFallSpeed (number)
+- maximum falling speed for this entity, relative to their direction of gravity
+
+== respawn (bool)
+- if false, this entity is destroyed when despawned or killed
+
+== respawnRange (int)
+- this entity must be this close to the edge of the screen to be spawned in
+
+== despawnRange (int)
+- this entity must be this far away from the edge of the screen to be despawned
+
+== sectionSwitchBehaviour (int)
+- determines how this entity should act during section switches
+  the available values (corresponding to the `SectionSwitchBehaviour` enum) are as follows:
+    * SectionSwitchBehaviour.HIDDEN: The entity is deactivated as soon as a section switch occurs
+    * SectionSwitchBehaviour.VISIBLE: The entity is only deactivated if offscreen at the end of a section switch
+    * SectionSwitchBehaviour.PERSISTANT: The entity is deactivated from section switches
+
+== interactWithWater (bool)
+- sets whether this entity should be affected by water (true) or not (false)
+  this includes reduced gravity, splashes, & making bubbles
+
+== waterGravMod (number)
+- reduces the entity's gravity when in water
+  (`interactWithWater` must be set to true for this variable to do anything)
+
+== canMakeBubble (bool)
+- sets whether this entity should make bubbles in water (true) or not (false)
+  (`interactWithWater` must be set to true for this variable to do anything)
+
+== bubbleXOffset (number)
+- water bubbles will be spawned at this x-offset from the entity
+  (`canMakeBubble` must be set to true for this variable to do anything)
+
+== bubbleYOffset (number)
+- water bubbles will be spawned at this y-offset from the entity
+  (`canMakeBubble` must be set to true for this variable to do anything)
+
+== onSpawn (function<void>)
+- code to perform when this entity spawns in
+
+== onDespawn (function<void>)
+- code to perform when this entity is despawned
+
+== onSetDamage (function<DamageSource, void>)
+- code to perform when calculating damage to receive from an attack
+
+== onGuard (function<DamageSource, void>)
+- code to run to check if an entity can "guard" against an attack
+
+== onReflected (function<DamageSource, void>)
+- code to run when an entity has been reflected
+
+== onAttackBegin (function<DamageSource, void>)
+- code to perform just before this entity can deal damage
+
+== onAttackEnd (function<DamageSource, void>)
+- code to perform after this entity has dealt damage
+
+== onHurt (function<DamageSource, void>)
+- code to perform after an entity has received damage from an attack
+
+== onDeath (function<DamageSource, void>)
+- code to perform when this entity dies from an attack
+
+== onDraw (function<bool, void>)
+- code for drawing this entity

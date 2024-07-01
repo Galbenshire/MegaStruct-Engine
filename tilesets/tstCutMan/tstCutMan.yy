@@ -1,0 +1,48 @@
+{
+  "$GMTileSet":"",
+  "%Name":"tstCutMan",
+  "autoTileSets":[],
+  "macroPageTiles":{
+    "SerialiseHeight":8,
+    "SerialiseWidth":17,
+    "TileCompressedData":[
+      -54,0,1,31,-4,32,6,33,0,6,6,0,15,-6,0,14,21,20,29,30,20,24,0,6,6,0,16,0,4,5,-3,0,9,21,20,27,28,20,24,
+      0,6,6,-8,0,12,21,20,22,23,20,24,0,6,6,0,25,26,-5,0,6,21,20,29,30,20,24,-4,0,4,34,35,0,0,
+    ],
+    "TileDataFormat":1,
+  },
+  "name":"tstCutMan",
+  "out_columns":6,
+  "out_tilehborder":2,
+  "out_tilevborder":2,
+  "parent":{
+    "name":"Cut Man",
+    "path":"folders/Backgrounds/Cut Man.yy",
+  },
+  "resourceType":"GMTileSet",
+  "resourceVersion":"2.0",
+  "spriteId":{
+    "name":"bgCutMan",
+    "path":"sprites/bgCutMan/bgCutMan.yy",
+  },
+  "spriteNoExport":false,
+  "textureGroupId":{
+    "name":"Default",
+    "path":"texturegroups/Default",
+  },
+  "tileAnimation":{
+    "FrameData":[
+      0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,
+    ],
+    "SerialiseFrameCount":1,
+  },
+  "tileAnimationFrames":[],
+  "tileAnimationSpeed":15.0,
+  "tileHeight":16,
+  "tilehsep":1,
+  "tilevsep":1,
+  "tileWidth":16,
+  "tilexoff":1,
+  "tileyoff":1,
+  "tile_count":36,
+}

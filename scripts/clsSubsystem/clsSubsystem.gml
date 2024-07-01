@@ -231,8 +231,34 @@ function Subsystem_Flasher() : Subsystem() constructor {
     };
 }
 
+/// @func Subsystem_HUD()
+/// @desc Handles the drawing of a HUD
+function Subsystem_HUD() : Subsystem() constructor {
+	active = false;
+	playerHUD = undefined; /// @is {PlayerHUD}
+	bossHUD = [];
+	
+	static roomStart = function() {
+		active = global.roomIsLevel;
+		if (active) {
+			playerHUD = global.player.hudElement;
+			bossHUD = [];
+		}
+	};
+	
+	static draw = function() {
+        if (!active)
+            return;
+        
+        var _hudX = game_view().left_edge(8),
+			_hudY = game_view().top_edge(8);
+		
+        playerHUD.draw(_hudX, _hudY);
+    };
+}
+
 /// @func Subsystem_Level()
-/// @desc Handles level-specific actions, such as drawing a HUD
+/// @desc Handles level-specific actions
 function Subsystem_Level() : Subsystem() constructor {
 	active = false;
     canPause = true;
@@ -267,7 +293,8 @@ function Subsystem_Level() : Subsystem() constructor {
 		with (spawn_player_entity(_spawn_x, _spawn_y, LAYER_ENTITY, _player.character)) {
 			_player.set_body(self);
 			_player.generate_loadout();
-			weapon = loadout[0];
+			_player.hudElement.healthpoints = healthpoints;
+			player_equip_weapon(0);
 			player_refresh_palette_body();
 			player_refresh_palette_icon();
 			stateMachine.change("StageStart");

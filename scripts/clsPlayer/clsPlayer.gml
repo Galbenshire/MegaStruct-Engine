@@ -11,6 +11,7 @@ function Player(_id/*:number*/) constructor {
 	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
 	inputs = new InputMap();
 	canPause = new LockStack(); // Allows the player to pause the game during a level
+	hudElement = new PlayerHUD();
 	
 	#endregion
 	
@@ -48,6 +49,9 @@ function Player(_id/*:number*/) constructor {
     
     #region Functions - Other
     
+    /// @method generate_loadout()
+	/// @desc Generates a weapon loadout for the player's body
+	///		  This will be based on the player's currently selected character
     static generate_loadout = function() {
 		if (!instance_exists(body))
 			return;

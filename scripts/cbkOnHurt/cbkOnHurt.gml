@@ -42,4 +42,7 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     }
     
     iFrames = 60;
+    
+    if (!is_undefined(player))
+        player.hudElement.healthpoints = healthpoints;
 }

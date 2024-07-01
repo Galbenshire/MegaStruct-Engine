@@ -13,16 +13,10 @@ if (iFrames < 0 || (iFrames & 3) < 2) {
 		onDraw();
 }
 
-draw_mm_healthbar(game_view().left_edge(16), game_view().top_edge(8), healthpoints, [ $A8E0FC, c_white, c_black ]);
-
-if (!is_undefined(weapon)) {
-	draw_mm_healthbar(game_view().left_edge(8), game_view().top_edge(8), weapon.ammo, [ bodyPalette.outputColours[0], bodyPalette.outputColours[1], c_black ]);
-	
-	if (weaponIconTimer > 0) {
-		iconPalette.activate();
-		weapon.draw_icon(x - 8, y - 30 * image_yscale);
-		iconPalette.deactivate();
-	}
+if (weaponIconTimer > 0 && !is_undefined(weapon)) {
+	iconPalette.activate();
+	weapon.draw_icon(x - 8, y - 30 * image_yscale);
+	iconPalette.deactivate();
 }
 
 x = _x;

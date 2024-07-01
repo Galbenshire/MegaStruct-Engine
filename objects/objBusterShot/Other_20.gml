@@ -1,7 +1,6 @@
 /// @description Weapon Setup
-global.weaponList[WeaponType.BUSTER] = new Weapon();
+global.weaponList[WeaponType.BUSTER] = new Weapon(WeaponType.BUSTER);
 with (global.weaponList[WeaponType.BUSTER]) {
-	id = WeaponType.BUSTER;
 	object = objBusterShot;
 	set_name("Mega Buster");
 	set_icon(sprWeaponIcons, 1);

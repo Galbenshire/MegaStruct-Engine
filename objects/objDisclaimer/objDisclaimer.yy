@@ -33,7 +33,7 @@
   "properties":[
     {"$GMObjectProperty":"v1","%Name":"nextRoom","filters":[
         "GMRoom",
-      ],"listItems":[],"multiselect":false,"name":"nextRoom","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"lvlTest","path":"rooms/lvlTest/lvlTest.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"lvlTest","varType":5,},
+      ],"listItems":[],"multiselect":false,"name":"nextRoom","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"rmTitleScreen","path":"rooms/rmTitleScreen/rmTitleScreen.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"rmTitleScreen","varType":5,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

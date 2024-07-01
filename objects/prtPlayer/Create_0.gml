@@ -51,7 +51,7 @@ skinCellY = 0;
 // Palettes
 bodyPalette = new ColourReplacer(
 	input_palette_player(),
-	global.characterList[characterID].get_colours()
+	player_get_character().get_colours()
 );
 iconPalette = new ColourReplacer(
 	input_palette_weapon(),
@@ -62,6 +62,7 @@ iconPalette = new ColourReplacer(
 lockpool = new PlayerLockStack();
 introLock = undefined; /// @is {PlayerLockStackLock}
 slideLock = undefined; /// @is {PlayerLockStackLock}
+shootStandStillLock = undefined; /// @is {PlayerLockStackLock} This lock is for staying on the ground after using a weapon like Metal Blade
 hitstunLock = undefined; /// @is {PlayerLockStackLock}
 pauseLock = undefined; /// @is {LockStackLock}
 

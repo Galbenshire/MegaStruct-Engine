@@ -1,9 +1,11 @@
-/// @func Weapon()
+/// @func Weapon(id)
 /// @desc Represents a weapon that can be used by the player in-game.
-function Weapon() constructor {
+///
+/// @param {int}  id  ID that corresponds to this weapon (from the `WeaponType` enum)
+function Weapon(_id) constructor {
     #region Parameters
 	
-    id = -1; /// @is {int} Corresponds to the WeaponType enum
+    id = _id; /// @is {int} Corresponds to the WeaponType enum
 	colours = array_create(PaletteWeapon.sizeof); /// @is {PaletteWeapon}
 	flags = 0; // Attributes for this weapon (e.g No Ammo)
 	// - Icon

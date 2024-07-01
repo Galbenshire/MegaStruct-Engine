@@ -444,6 +444,7 @@ stateMachine.add("Death", {
 		play_sfx(sfxDeath);
 		
 		if (!is_undefined(player)) {
+			player.hudElement.healthpoints = healthpoints;
 			pauseLock = player.canPause.add_lock();
 			defer(DeferType.STEP, function(__) /*=>*/ { restart_room(); }, GAME_SPEED * 3, true, true);
 		}

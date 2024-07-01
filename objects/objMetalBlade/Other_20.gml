@@ -1,7 +1,6 @@
 /// @description Weapon Setup
-global.weaponList[WeaponType.METAL_BLADE] = new Weapon();
+global.weaponList[WeaponType.METAL_BLADE] = new Weapon(WeaponType.METAL_BLADE);
 with (global.weaponList[WeaponType.METAL_BLADE]) {
-	id = WeaponType.METAL_BLADE;
     object = objMetalBlade;
     set_name("Metal Blade");
 	set_icon(sprWeaponIcons, 2);

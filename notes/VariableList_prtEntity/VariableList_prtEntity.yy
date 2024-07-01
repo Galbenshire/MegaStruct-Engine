@@ -1,0 +1,11 @@
+{
+  "$GMNotes":"",
+  "%Name":"VariableList_prtEntity",
+  "name":"VariableList_prtEntity",
+  "parent":{
+    "name":"Notes",
+    "path":"folders/Notes.yy",
+  },
+  "resourceType":"GMNotes",
+  "resourceVersion":"2.0",
+}
