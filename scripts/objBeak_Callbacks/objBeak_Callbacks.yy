@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"objBeak_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objBeak_Callbacks",
+  "parent":{
+    "name":"Beak",
+    "path":"folders/Enemies/Beak.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
