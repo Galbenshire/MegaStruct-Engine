@@ -68,6 +68,7 @@ if (!variable_global_exists("__gameInit")) {
 	game_window().center_window();
 	
 	// ===== Setup Some Debug Views =====
+	__debug_view_instance_count();
 	__debug_view_options_data();
 	__debug_view_room_select();
 	show_debug_overlay(false);

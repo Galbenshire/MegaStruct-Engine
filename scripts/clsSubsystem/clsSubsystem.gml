@@ -112,6 +112,11 @@ function Subsystem_Debug() : Subsystem() constructor {
     freeRoamX = 0;
     freeRoamY = 0;
     
+    instanceCountActive = 0;
+    instanceCountRoomStart = 0;
+    instanceListNames = "---- Objects ----";
+	instanceListCounts = "---- Counts ----";
+    
     static stepBegin = function() {
         // Exit/Restart the game
         if (keyboard_check_pressed(vk_escape)) {
@@ -180,10 +185,22 @@ function Subsystem_Debug() : Subsystem() constructor {
     };
     
     static stepEnd = function() {
+		if (DEBUG_ENABLED)
+			instanceCountActive = instance_count;
+		
         if (freeRoamEnabled) {
 			freeRoamX += 2 * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
 			freeRoamY += 2 * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
         }
+    };
+    
+    static roomStart = function() {
+		if (DEBUG_ENABLED) {
+			instanceCountActive = instance_count;
+			instanceCountRoomStart = instance_count;
+			instanceListNames = "---- Objects ----";
+			instanceListCounts = "---- Counts ----";
+        }	
     };
     
     static drawEnd = function() {

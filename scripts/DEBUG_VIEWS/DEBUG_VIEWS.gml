@@ -1,3 +1,45 @@
+/// @func __debug_view_instance_count()
+function __debug_view_instance_count() {
+	var _debug = objSystem.debug;
+	
+	var _view = dbg_view("Instance Count", false, -1, -1, 475, 300);
+	
+	var _main = dbg_section("Main");
+	dbg_watch(ref_create(_debug, "instanceCountActive"), "Instance Count (Current): ");
+	dbg_watch(ref_create(_debug, "instanceCountRoomStart"), "Instance Count (On Room Start): ");
+	
+	var _snapshot = dbg_section("Snapshot");
+	dbg_button("Take Snapshot", function() {
+		var _objects = [];
+		with (all) {
+			var _line = string("{0}||{1}", object_get_name(object_index), instance_number(object_index));
+			if (!array_contains(_objects, _line))
+				array_push(_objects, _line);
+		}
+		array_sort(_objects, true);
+		
+		with (objSystem.debug) {
+			instanceListNames = "---- Objects ----\n";
+			instanceListCounts = "---- Counts ----\n";
+			
+			var _count = array_length(_objects);
+			for (var i = 0; i < _count; i++) {
+				var _line_split = string_split(_objects[i], "||");
+				instanceListNames += _line_split[0];
+				instanceListCounts += string("\t\t{0}", _line_split[1]);
+				
+				if (i != _count - 1) {
+					instanceListNames += "\n";
+					instanceListCounts += "\n";
+				}
+			}
+		}
+	});
+	dbg_text(ref_create(_debug, "instanceListNames"));
+	dbg_same_line();
+	dbg_text(ref_create(_debug, "instanceListCounts"));
+}
+
 /// @func __debug_view_options_data()
 function __debug_view_options_data() {
     if (is_html5()) // Debug Views don't work on HTML5
