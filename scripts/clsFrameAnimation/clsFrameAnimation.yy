@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"clsFrameAnimation",
   "isCompatibility":false,
   "isDnD":false,

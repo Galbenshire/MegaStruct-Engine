@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scrRooms",
   "isCompatibility":false,
   "isDnD":false,

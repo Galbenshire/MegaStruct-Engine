@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"cbkOnReflected",
   "isCompatibility":false,
   "isDnD":false,

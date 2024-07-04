@@ -1,0 +1,46 @@
+{
+  "$GMObject":"",
+  "%Name":"objSuperCutterSpawner",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":24,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
+  "managed":true,
+  "name":"objSuperCutterSpawner",
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtInterval","path":"objects/prtInterval/prtInterval.yy",},"propertyId":{"name":"waitTime","path":"objects/prtInterval/prtInterval.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"36",},
+  ],
+  "parent":{
+    "name":"Super Cutter",
+    "path":"folders/Gimmicks/Super Cutter.yy",
+  },
+  "parentObjectId":{
+    "name":"prtInterval",
+    "path":"objects/prtInterval/prtInterval.yy",
+  },
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[
+    {"$GMObjectProperty":"v1","%Name":"detectRange","filters":[],"listItems":[],"multiselect":false,"name":"detectRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"80","varType":0,},
+  ],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"sprSuperCutterSpawner",
+    "path":"sprites/sprSuperCutterSpawner/sprSuperCutterSpawner.yy",
+  },
+  "spriteMaskId":null,
+  "visible":true,
+}

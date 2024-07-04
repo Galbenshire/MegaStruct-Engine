@@ -14,6 +14,8 @@
 __init++;\
 assert(__init == 1, "Only one instance of {0} can be present at any time.", instanceof(self));
 
+#macro DEBUG_VIEW_HTML5_CHECK if (is_html5()) { return; }
+
 #macro PLAYER_ONLY_FUNCTION assert(is_a_player(_player),\
 "{0} can only be used by an object that inherits from {1}", _GMFUNCTION_, object_get_name(prtPlayer));
 

@@ -19,13 +19,18 @@ function player_handle_sections() {
 	if (!instance_exists(_section))
 		return;
 	
-	var _transition = instance_position(x, y, objScreenTransition);
+	var _checkX = clamp(x, _section.left + 4, _section.right - 4),
+		_checkY = clamp(y, _section.top + 4, _section.bottom - 4),
+		_transition = instance_position(_checkX, _checkY, objScreenTransition);
 	if (instance_exists(_transition)) {
 		var _isValid = inside_section_point(_transition.centerX, _transition.centerY);
 		if (_transition.image_angle == 90)
 			_isValid &= isClimbing;
 		
 		if (_isValid) {
+			x = _checkX;
+			y = _checkY;
+			
 			var _switch = instance_create_depth(x, y, depth, objSectionSwitcher);
 			_switch.playerInstance = id;
 			_switch.transitionInstance = _transition;

@@ -17,6 +17,7 @@ function cbkOnSpawn_prtEntity() {
     healthpoints = healthpointsStart;
     
     if (!is_undefined(reticle)) {
+    	reticle.clear_target();
 		reticle.update();
 		if (faceTargetOnSpawn)
 			calibrate_direction_object(reticle.target);

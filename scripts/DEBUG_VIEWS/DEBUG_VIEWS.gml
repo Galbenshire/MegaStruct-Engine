@@ -1,5 +1,7 @@
 /// @func __debug_view_instance_count()
 function __debug_view_instance_count() {
+	DEBUG_VIEW_HTML5_CHECK
+	
 	var _debug = objSystem.debug;
 	
 	var _view = dbg_view("Instance Count", false, -1, -1, 475, 300);
@@ -42,8 +44,7 @@ function __debug_view_instance_count() {
 
 /// @func __debug_view_options_data()
 function __debug_view_options_data() {
-    if (is_html5()) // Debug Views don't work on HTML5
-		return;
+    DEBUG_VIEW_HTML5_CHECK
 	
 	var _options = options_data();
 	
@@ -76,8 +77,7 @@ function __debug_view_options_data() {
 
 /// @func __debug_view_room_select()
 function __debug_view_room_select() {
-	if (is_html5()) // Debug Views don't work on HTML5
-		return;
+	DEBUG_VIEW_HTML5_CHECK
 	
 	var _roomIDs = asset_get_ids(asset_room),
 		_roomList = array_map(_roomIDs, function(_room, i) /*=>*/ {return string("{0}:{1}", room_get_name(_room), int64(_room))});

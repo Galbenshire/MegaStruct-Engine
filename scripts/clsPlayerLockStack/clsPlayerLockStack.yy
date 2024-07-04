@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"clsPlayerLockStack",
   "isCompatibility":false,
   "isDnD":false,

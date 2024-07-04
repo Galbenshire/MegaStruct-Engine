@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scrPhysics",
   "isCompatibility":false,
   "isDnD":false,

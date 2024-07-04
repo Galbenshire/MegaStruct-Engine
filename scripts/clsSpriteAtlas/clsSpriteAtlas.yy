@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"clsSpriteAtlas",
   "isCompatibility":false,
   "isDnD":false,

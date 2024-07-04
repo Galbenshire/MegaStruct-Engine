@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"clsColourReplacer",
   "isCompatibility":false,
   "isDnD":false,

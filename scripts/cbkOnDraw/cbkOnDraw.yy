@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"cbkOnDraw",
   "isCompatibility":false,
   "isDnD":false,

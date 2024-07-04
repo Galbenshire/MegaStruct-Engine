@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"objFlea_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objFlea_Callbacks",
+  "parent":{
+    "name":"Flea",
+    "path":"folders/Enemies/Flea.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

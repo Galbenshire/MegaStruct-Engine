@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"cbkOnDespawn",
   "isCompatibility":false,
   "isDnD":false,

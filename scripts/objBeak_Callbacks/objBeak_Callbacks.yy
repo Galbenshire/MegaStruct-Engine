@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"objBeak_Callbacks",
   "isCompatibility":false,
   "isDnD":false,

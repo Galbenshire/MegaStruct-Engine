@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scrGeometry",
   "isCompatibility":false,
   "isDnD":false,

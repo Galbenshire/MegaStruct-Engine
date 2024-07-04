@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"objSniperJoe_Callbacks",
   "isCompatibility":false,
   "isDnD":false,

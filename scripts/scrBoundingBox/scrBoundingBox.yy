@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"scrBoundingBox",
   "isCompatibility":false,
   "isDnD":false,

@@ -45,7 +45,7 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
                 onDespawn();
                 event_perform(ev_step, ev_step_begin);
                 lifeState = LifeState.DEAD_OFFSCREEN;
-            
+                
                 if (!respawn)
                     continue;
             }
@@ -53,6 +53,13 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
             if (sectionSwitchBehaviour != SectionSwitchBehaviour.PERSISTANT)
                 instance_deactivate_object(id);
             
+            continue;
+        }
+        
+        // Intervals reset their timer before deactivating
+        if (is_object_type(prtInterval)) {
+            timer = startingWaitTime;
+            instance_deactivate_object(id);
             continue;
         }
         

@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"cbkOnAttackBegin",
   "isCompatibility":false,
   "isDnD":false,

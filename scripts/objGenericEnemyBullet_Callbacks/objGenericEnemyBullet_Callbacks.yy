@@ -1,5 +1,5 @@
 {
-  "$GMScript":"",
+  "$GMScript":"v1",
   "%Name":"objGenericEnemyBullet_Callbacks",
   "isCompatibility":false,
   "isDnD":false,

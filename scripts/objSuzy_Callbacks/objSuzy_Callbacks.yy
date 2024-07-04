@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"objSuzy_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objSuzy_Callbacks",
+  "parent":{
+    "name":"Suzy",
+    "path":"folders/Enemies/Suzy.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
