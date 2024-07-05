@@ -302,7 +302,7 @@ function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 #region Other
 
 /// @func entity_can_attack_entity(target, scope)
-/// @desc Checks if the specified entity would be able to attack the targeted entity
+/// @desc Checks if the specified entity would be able to attack (i.e. collide with) the targeted entity
 ///
 /// @param {prtEntity}  target  The instance to check.
 /// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
@@ -332,7 +332,31 @@ function entity_can_step(_scope = self) {
 /// @returns {bool}  If the entity can step (true) or not (false)
 function entity_can_target_entity(_target, _scope = self) {
 	return _target != _scope && _target.canTakeDamage && _target.isTargetable
-		&& !entity_is_dead(_target) && (_scope.factionTargets & _target.factionLayer > 0);
+		&& !entity_is_dead(_target) && (entity_get_faction_targets(_scope) & _target.factionLayer > 0);
+}
+
+/// @func entity_get_faction_targets(target, scope)
+/// @desc Gets the factions the specified entity is able to target.
+///		  If the entity's `factionTargetWhitelist` variable is a non-zero value, that value will be used.
+///		  Otherwise, the value of `factionMask` gets returned instead.
+///
+/// @param {prtEntity}  [scope]  The instance to get the value from. Defaults to the calling instance.
+///
+/// @returns {int}  The factions this entity can target, in a bitmask form
+function entity_get_faction_targets(_scope = self) {
+	return (_scope.factionTargetWhitelist > 0) ? _scope.factionTargetWhitelist : _scope.factionMask;
+}
+
+/// @func entity_get_faction_solids(target, scope)
+/// @desc Gets the factions the specified entity acts solid towards.
+///		  If the entity's `factionSolidWhitelist` variable is a non-zero value, that value will be used.
+///		  Otherwise, the entity is treated as being solid to all entities.
+///
+/// @param {prtEntity}  [scope]  The instance to get the value from. Defaults to the calling instance.
+///
+/// @returns {int}  The factions this entity is solid towards, in a bitmask form
+function entity_get_faction_solids(_scope = self) {
+	return (_scope.factionSolidWhitelist > 0) ? _scope.factionSolidWhitelist : 0xFFFFFFFF;
 }
 
 /// @func entity_is_dead(scope)
@@ -343,6 +367,17 @@ function entity_can_target_entity(_target, _scope = self) {
 /// @returns {bool}  If the entity is alive (true) or not (false)
 function entity_is_dead(_scope = self) {
 	return _scope.lifeState != LifeState.ALIVE;
+}
+
+/// @func entity_is_solid_to_entity(target, scope)
+/// @desc Checks if the specified entity is solid to another entity
+///
+/// @param {prtEntity}  target  The instance to check against.
+/// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
+///
+/// @returns {bool}  If the entity is solid to the target (true) or not (false)
+function entity_is_solid_to_entity(_target, _scope = self) {
+	return _target != _scope && !entity_is_dead(_scope) && (entity_get_faction_solids(_scope) & _target.factionLayer > 0);
 }
 
 #endregion

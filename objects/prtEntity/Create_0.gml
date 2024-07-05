@@ -9,7 +9,8 @@ iFrames = 0;
 
 factionLayer = array_reduce(factionLayer, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
 factionMask = array_reduce(factionMask, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
-factionTargets = array_reduce(factionTargets, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
+factionTargetWhitelist = array_reduce(factionTargetWhitelist, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
+factionSolidWhitelist = array_reduce(factionSolidWhitelist, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
 
 hitTimer = 9999;
 lastHitBy = noone; /// @is {prtEntity}

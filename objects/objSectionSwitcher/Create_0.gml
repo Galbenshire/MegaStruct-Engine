@@ -8,6 +8,7 @@ yspeed = new Fractional();
 playerInstance = noone; /// @is {prtPlayer}
 transitionInstance = noone;  /// @is {objScreenTransition}
 targetSection = noone; /// @is {objSection}
+bossDoor = noone; /// @is {objBossDoor}
 // A copy of the player's speed
 playerXSpeedCache = 0;
 playerYSpeedCache = 0;

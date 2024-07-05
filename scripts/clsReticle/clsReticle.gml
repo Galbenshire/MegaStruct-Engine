@@ -88,7 +88,7 @@ function Reticle() constructor {
     static is_target_valid = function(_target = target) {
         if (!instance_exists(_target))
             return false;
-        return !entity_is_dead(_target) && _target.canTakeDamage && (owner.factionTargets & _target.factionLayer > 0);
+        return !entity_is_dead(_target) && _target.canTakeDamage && (entity_get_faction_targets(owner) & _target.factionLayer > 0);
     };
     
     /// -- switch_target(new_target)

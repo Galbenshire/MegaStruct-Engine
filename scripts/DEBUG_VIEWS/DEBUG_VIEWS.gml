@@ -50,7 +50,7 @@ function __debug_view_options_data() {
 	
     var _view = dbg_view("Options Data", false, -1, -1, 340, 450);
     
-    var _display = dbg_section("Display");
+    var _display = dbg_text_separator("Display");
     dbg_slider_int(ref_create(_options, "screenSize"), 1, floor(_options.MAX_SCALE), "Screen Size");
     dbg_checkbox(ref_create(_options, "fullscreen"), "Fullscreen");
     dbg_checkbox(ref_create(_options, "pixelPerfect"), "Pixel Perfect");
@@ -61,18 +61,18 @@ function __debug_view_options_data() {
 		game_window().center_window();
 	});
     
-    var _volume = dbg_section("Volume");
+    var _volume = dbg_text_separator("Volume");
     dbg_slider(ref_create(_options, "volumeMaster"), 0, 1, "Master");
     dbg_slider(ref_create(_options, "volumeMusic"), 0, 1, "Music");
     dbg_slider(ref_create(_options, "volumeSound"), 0, 1, "Sound");
     
-    var _controls = dbg_section("Controls");
+    var _controls = dbg_text_separator("Controls");
     dbg_checkbox(ref_create(_options, "downJumpSlide"), "Down+Jump Slide");
     dbg_checkbox(ref_create(_options, "autoFire"), "Auto Fire");
     dbg_checkbox(ref_create(_options, "chargeToggle"), "Charge Toggle");
     
-    var _controls = dbg_section("Other");
-    dbg_slider(ref_create(_options, "gameSpeed"), 0.1, 2, "Game Speed");
+    var _controls = dbg_text_separator("Other");
+    dbg_slider(ref_create(_options, "gameSpeed"), 0.1, 2, "Game Speed", 0.01);
 }
 
 /// @func __debug_view_room_select()

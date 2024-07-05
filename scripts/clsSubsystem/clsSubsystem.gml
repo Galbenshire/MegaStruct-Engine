@@ -16,6 +16,8 @@ function Subsystem_Core() : Subsystem() constructor {
 			value = options_data().gameSpeed;
 			update();
 		}
+		global.roomTimer++;
+		global.systemTimer++;
     };
     
     static roomStart = function() {
@@ -35,6 +37,7 @@ function Subsystem_Core() : Subsystem() constructor {
         
         // Misc. Stuff
         global.section = noone;
+        global.roomTimer = 0;
         game_set_speed(GAME_SPEED, gamespeed_fps);
         queue_unpause();
         signal_bus().clear_all();

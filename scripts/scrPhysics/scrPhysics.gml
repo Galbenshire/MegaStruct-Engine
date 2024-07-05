@@ -72,7 +72,7 @@ function get_xcoll_candidates(_range, _scope = self) {
         for (var i = 0; i < _count; i++) {
             if (_list[| i].id == self.id)
                 continue;
-            if (is_object_type(prtEntity, _list[| i]) && entity_is_dead(_list[| i]))
+            if (is_object_type(prtEntity, _list[| i]) && !entity_is_solid_to_entity(_scope, _list[| i]))
                 continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
@@ -124,7 +124,7 @@ function get_ycoll_candidates(_range, _scope = self) {
         for (var i = 0; i < _count; i++) {
             if (_list[| i].id == self.id)
                 continue;
-            if (is_object_type(prtEntity, _list[| i]) && entity_is_dead(_list[| i]))
+            if (is_object_type(prtEntity, _list[| i]) && !entity_is_solid_to_entity(_scope, _list[| i]))
             	continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope

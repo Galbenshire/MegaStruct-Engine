@@ -51,7 +51,9 @@ stateMachine.add("Init", {
         alignmentFixXDir = ((x < targetSection.left) - (x + GAME_WIDTH > targetSection.right)) * isVerticalTransition;
 		alignmentFixYDir = ((y < targetSection.top) - (y + GAME_HEIGHT > targetSection.bottom)) * !isVerticalTransition;
 		
-		if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
+		if (instance_exists(bossDoor))
+			stateMachine.change("OpenDoor");
+		else if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
 			stateMachine.change("FixAlignmentToSection");
 		else
 			stateMachine.change("ToNewSection");
@@ -59,6 +61,29 @@ stateMachine.add("Init", {
 	leave: function() {
 		playerXSpeedCache = playerInstance.xspeed.value;
 		playerYSpeedCache = playerInstance.yspeed.value;
+	}
+});
+// ================================
+stateMachine.add("OpenDoor", {
+	tick: function() {
+		with (bossDoor)
+			event_user(0);
+		
+		if (bossDoor.isOpen) {
+			if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
+				stateMachine.change("FixAlignmentToSection");
+			else
+				stateMachine.change("ToNewSection");
+		}
+	},
+	leave: function() {
+		bossDoor.doorOpener.clear_fractional();
+		
+		// Recalculate player movement parameters
+		var _targetX = isVerticalTransition ? playerInstance.x : bbox_horizontal(transitionXDir, bossDoor) + borderDistance * transitionXDir,
+			_targetY = !isVerticalTransition ? playerInstance.y : bbox_vertical(transitionYDir, bossDoor) + borderDistance * transitionYDir;
+		playerMoveXSpeed = (_targetX - playerInstance.x) / scrollDuration;
+		playerMoveYSpeed = (_targetY - playerInstance.y) / scrollDuration;
 	}
 });
 // ================================
@@ -114,7 +139,9 @@ stateMachine.add("ToNewSection", {
 		ystart = gameViewRef.yView;
 		gameViewRef.set_position(x, y);
 		
-		if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
+		if (instance_exists(bossDoor))
+			stateMachine.change("CloseDoor");
+		else if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
 			stateMachine.change("FixAlignmentToCamera");
 		else
 			stateMachine.change("_End");
@@ -123,6 +150,23 @@ stateMachine.add("ToNewSection", {
 		xspeed.value = 0;
 		yspeed.value = 0;
 		animatePlayer = false;
+	}
+});
+// ================================
+stateMachine.add("CloseDoor", {
+	tick: function() {
+		with (bossDoor)
+			event_user(1);
+		
+		if (!bossDoor.isOpen) {
+			if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
+				stateMachine.change("FixAlignmentToSection");
+			else
+				stateMachine.change("_End");
+		}
+	},
+	leave: function() {
+		bossDoor.doorOpener.clear_fractional();
 	}
 });
 // ================================
