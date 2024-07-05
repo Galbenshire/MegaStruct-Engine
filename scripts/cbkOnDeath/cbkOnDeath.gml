@@ -29,7 +29,42 @@ function cbkOnDeath_prtPlayer(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Player Death by {0}", object_get_name(_damageSource.attacker.object_index));
     
+    // If the player is about to fall onto a spike,
+    // make sure it looks like they're actually hitting it
+    if (ground && ycoll * gravDir > 0 && is_object_type(objDamageZone, _damageSource.attacker)) {
+		if (!lockpool.is_locked(PlayerAction.SPRITE_CHANGE)) {
+			animator.play("fall");
+			animator.update();
+		}
+		
+		yspeed.value = ycoll;
+		yspeed.update();
+		y += yspeed.integer;
+    }
+    
     stateMachine.change("Death");
+}
+
+/// @func cbkOnDeath_prtBoss(damage_source)
+/// @desc Default onDeath callback for bosses
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnDeath_prtBoss(_damageSource) {
+    if (DEBUG_ENABLED)
+        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
+    
+    lifeState = LifeState.DEAD_ONSCREEN;
+    play_sfx(sfxDeath);
+    
+	var _explosion_params = {
+		sprite_index: sprExplosion,
+		animSpeed: 1/3,
+		lifeDuration: 0
+	};
+	for (var i = 0; i < 16; i++) {
+		with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
+			set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
+	}
 }
 
 /// @func cbkOnDeath_prtProjectile(damage_source)

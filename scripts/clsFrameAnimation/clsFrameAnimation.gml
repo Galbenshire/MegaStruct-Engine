@@ -182,7 +182,7 @@ function FrameAnimationPlayer() constructor {
 		reset_frame_counter();
 		frameCounter += _remainder;
 		
-		__newFrame = (currentAnimation.get_frame(currentFrame) != _prevFrame);
+		__newFrame = (currentAnimation.get_frame(currentFrame) != _prevFrame) && !__animFinished;
     };
 	
 	#endregion
@@ -287,7 +287,7 @@ function FrameAnimation() constructor {
     /// @method add_property(property, values)
 	/// @desc Adds a property of the owner for the animation to update
 	///
-	/// @param {int}  property  Which variable on the owner to adjust
+	/// @param {string}  property  The name of the variable on the owner to adjust
 	/// @param {array<any>}  values  The value `property` becomes on each frame of this animation
 	///
 	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.

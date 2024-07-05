@@ -271,9 +271,12 @@ function Subsystem_HUD() : Subsystem() constructor {
             return;
         
         var _hudX = game_view().left_edge(8),
-			_hudY = game_view().top_edge(8);
+			_hudY = game_view().top_edge(8),
+			_bossCount = array_length(bossHUD);
 		
         playerHUD.draw(_hudX, _hudY);
+        for (var i = 0; i < _bossCount; i++)
+			bossHUD[i].draw(_hudX + 24, _hudY);
     };
 }
 

@@ -46,3 +46,18 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     if (!is_undefined(player))
         player.hudElement.healthpoints = healthpoints;
 }
+
+/// @func cbkOnHurt_prtBoss(damage_source)
+/// @desc Default onHurt callback for bosses
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnHurt_prtBoss(_damageSource) {
+    if (DEBUG_ENABLED)
+        show_debug_message("Hurt - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
+    
+    iFrames = max(1, iFrameDuration);
+    play_sfx(_damageSource.hitSFX);
+    
+    if (!is_undefined(hudElement))
+        hudElement.healthpoints = healthpoints;
+}
