@@ -49,14 +49,11 @@ skinCellX = 0;
 skinCellY = 0;
 
 // Palettes
-bodyPalette = new ColourReplacer(
+palette = new ColourReplacer(
 	input_palette_player(),
 	player_get_character().get_colours()
 );
-iconPalette = new ColourReplacer(
-	input_palette_weapon(),
-	input_palette_weapon()
-);
+paletteCache = variable_clone(palette);
 
 // Lock Pool
 lockpool = new PlayerLockPool();

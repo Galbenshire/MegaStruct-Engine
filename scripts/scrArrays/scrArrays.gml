@@ -1,3 +1,20 @@
+/// @func array_at(array, index)
+/// @desc Retrieves the value in an array at the specified index.
+///		  If the index is negative, it will search from the back of the array.
+///
+/// @param {array}  array  The array to check
+/// @param {int}  index  The index of the array element to get the value from. Negative values will search backwards.
+///
+/// @returns {any}  The value at the given index. Returns `undefined` of the index would go beyond the range of the array.
+function array_at(_array, _index) {
+	var _length = array_length(_array);
+	
+	if (_index < -_length || _index >= _length)
+		return undefined;
+	
+	return (_index >= 0) ? _array[_index] : _array[_index + _length];
+}
+
 /// @func array_empty(array)
 /// @desc Checks if the given array is empty
 ///

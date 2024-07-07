@@ -103,8 +103,7 @@ function player_handle_switch_weapons() {
 		quickSwitchTimer = 8 + (10 * (quickSwitchTimer < 0));
 		weaponIconTimer = 32;
 		play_sfx(sfxWeaponSwitch);
-		player_refresh_palette_body();
-		player_refresh_palette_icon();
+		player_refresh_palette();
 	}
 	
 	weaponIconTimer--;
@@ -182,14 +181,10 @@ function player_equip_weapon(_weaponOrLoadout, _player = self) {
 	
 	with (_player) {
 		var _weapon = undefined;
-		if (is_instanceof(_weaponOrLoadout, Weapon)) {
+		if (is_instanceof(_weaponOrLoadout, Weapon))
 			_weapon = _weaponOrLoadout;
-		} else if (is_numeric(_weaponOrLoadout)) {
-			try
-				_weapon = loadout[_weaponOrLoadout];
-			catch( _exception)
-				_weapon = undefined;
-		}
+		else if (is_numeric(_weaponOrLoadout))
+			_weapon = array_at(loadout, _weaponOrLoadout);
 		
 		if (is_undefined(_weapon))
 			return;
@@ -319,11 +314,11 @@ function player_gun_offset(_player = self) {
 	return _offset;
 }
 
-/// @func player_refresh_palette_body(player)
-/// @desc Updates the player's palette for their body
+/// @func player_refresh_palette(player)
+/// @desc Updates the player's palette
 ///
 /// @param {prtPlayer}  [player]
-function player_refresh_palette_body(_player = self) {
+function player_refresh_palette(_player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	with (_player) {
@@ -335,11 +330,13 @@ function player_refresh_palette_body(_player = self) {
 			_characterPalette[PalettePlayer.secondary] = _weaponPalette[PaletteWeapon.secondary];
 		}
 		
-		for (var i = 0; i < bodyPalette.colourCount; i++)
-			bodyPalette.set_output_colour_at(i, _characterPalette[i]);
+		for (var i = 0; i < palette.colourCount; i++) {
+			palette.set_output_colour_at(i, _characterPalette[i]);
+			paletteCache.set_output_colour_at(i, _characterPalette[i]);
+		}
 		
 		if (!is_undefined(player))
-			player.hudElement.ammoPalette = array_slice(bodyPalette.outputColours, 0, 3);
+			player.hudElement.ammoPalette = array_slice(palette.outputColours, 0, 3);
 	}
 }
 
@@ -356,23 +353,6 @@ function player_is_action_locked(_action, _player = self) {
 		_result |= _player.player.lockpool.is_locked(_action);
 	
 	return _result;
-}
-
-/// @func player_refresh_palette_icon()
-/// @desc Updates the player's palette for the weapon icon
-///
-/// @param {prtPlayer}  [player]
-function player_refresh_palette_icon(_player = self) {
-	PLAYER_ONLY_FUNCTION
-	
-	with (_player) {
-		if (is_undefined(weapon))
-			return;
-		
-		var _weaponPalette = weapon.get_colours();
-		for (var i = 0; i < iconPalette.colourCount; i++)
-			iconPalette.set_output_colour_at(i, _weaponPalette[i]);
-	}
 }
 
 #endregion

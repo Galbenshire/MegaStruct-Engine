@@ -293,8 +293,10 @@ function Subsystem_Level() : Subsystem() constructor {
 			return;
 		
 		with (global.player) {
-			if (inputs.is_pressed(InputActions.PAUSE))
-				instance_create_depth(0, 0, other.system.depth - 10, objPauseMenu);
+			if (inputs.is_pressed(InputActions.PAUSE)) {
+				var _menu = instance_create_layer(0, 0, LAYER_FADER, objPauseMenu);
+				_menu.depth += 5;
+			}
 		}
     };
     
@@ -319,8 +321,7 @@ function Subsystem_Level() : Subsystem() constructor {
 			_player.generate_loadout();
 			_player.hudElement.healthpoints = healthpoints;
 			player_equip_weapon(0);
-			player_refresh_palette_body();
-			player_refresh_palette_icon();
+			player_refresh_palette();
 			stateMachine.change("StageStart");
 			signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		}

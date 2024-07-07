@@ -13,11 +13,5 @@ if (iFrames < 0 || (iFrames & 3) < 2) {
 		onDraw();
 }
 
-if (weaponIconTimer > 0 && !is_undefined(weapon)) {
-	iconPalette.activate();
-	weapon.draw_icon(x - 8, y - 30 * image_yscale);
-	iconPalette.deactivate();
-}
-
 x = _x;
 y = _y;
