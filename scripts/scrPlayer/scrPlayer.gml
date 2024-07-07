@@ -4,7 +4,7 @@
 /// @func player_gravity()
 /// @desc Works like the entity_gravity function, but takes the player's gravity locks into account
 function player_gravity() {
-    var _grav = grav * !lockpool.is_locked(PlayerAction.GRAVITY);
+    var _grav = grav * !player_is_action_locked(PlayerAction.GRAVITY);
     entity_gravity(_grav);
 }
 
@@ -64,8 +64,7 @@ function player_handle_shooting() {
 		if (shootTimer == 0) {
 			isShooting = false;
 			shootAnimation = 0;
-			if (!is_undefined(shootStandStillLock))
-				shootStandStillLock = shootStandStillLock.release();
+			shootStandStillLock.deactivate();
 		}
 	}
 }
@@ -73,7 +72,7 @@ function player_handle_shooting() {
 /// @self {prtPlayer}
 /// @func player_handle_switch_weapons()
 function player_handle_switch_weapons() {
-	if (loadoutSize <= 0 || lockpool.is_locked(PlayerAction.WEAPON_CHANGE)) {
+	if (loadoutSize <= 0 || player_is_action_locked(PlayerAction.WEAPON_CHANGE)) {
 		quickSwitchTimer = 0;
 		weaponIconTimer = 0;
 		return;
@@ -119,7 +118,7 @@ function player_handle_switch_weapons() {
 function player_try_climbing() {
     ladderInstance = noone;
     
-    if (yDir == 0 || lockpool.is_locked(PlayerAction.CLIMB))
+    if (yDir == 0 || player_is_action_locked(PlayerAction.CLIMB))
         return false;
     
     if (yDir != gravDir)
@@ -136,7 +135,7 @@ function player_try_climbing() {
 ///
 /// @returns {bool}  Whether the player can slide (true), or not (false)
 function player_try_sliding() {
-	if (!ground || lockpool.is_locked(PlayerAction.SLIDE))
+	if (!ground || player_is_action_locked(PlayerAction.SLIDE))
         return false;
     
     var _input = inputs.is_pressed(InputActions.SLIDE) || (yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide);
@@ -260,21 +259,18 @@ function player_fire_weapon(_params = {}, _player = self) {
 		isShooting = true;
 		shootAnimation = _params.shootAnimation;
 		shootTimer = 17;
-		
-		if (!is_undefined(shootStandStillLock))
-			shootStandStillLock = shootStandStillLock.release();
+		shootStandStillLock.deactivate();
 		
 		var _standstill = _params[$ "standstill"] ?? false;
 		if (_standstill || isClimbing) {
-			if (xDir != 0 && !lockpool.is_locked(PlayerAction.TURN_GROUND))
+			if (xDir != 0 && !player_is_action_locked(PlayerAction.TURN_GROUND))
 				image_xscale = xDir;
 		}
 		if (_standstill)
-			shootStandStillLock = lockpool.add_lock(PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND);
-		
-		var _gunOffset/*:Vector2*/ = player_gun_offset();
+			shootStandStillLock.activate();
 		
 		// Make the bullet
+		var _gunOffset = player_gun_offset();
 		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? -1),
@@ -309,8 +305,12 @@ function player_get_character(_player = self) {
 /// @desc Gets the relative position of the player's gun/arm cannon
 ///		  Mainly used to get a base offset when furing a weapon
 ///
+/// @param {prtPlayer}  [player]  The player entity to check against. Defaults to the calling instance.
+///
 /// @returns {Vector2}  Gun offset
-function player_gun_offset() {
+function player_gun_offset(_player = self) {
+	PLAYER_ONLY_FUNCTION
+	
 	var _offset/*:Vector2*/ = [16, 4];
 	if (isClimbing)
 		_offset[@Vector2.y] -= 2;
@@ -341,6 +341,21 @@ function player_refresh_palette_body(_player = self) {
 		if (!is_undefined(player))
 			player.hudElement.ammoPalette = array_slice(bodyPalette.outputColours, 0, 3);
 	}
+}
+
+/// @func player_is_action_locked(player_action, player)
+/// @desc Checks if the specified player action is locked on the given player entity
+///
+/// @param {int}  player_action
+/// @param {prtPlayer}  [player]
+function player_is_action_locked(_action, _player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	var _result = _player.lockpool.is_locked(_action);
+	if (!is_undefined(_player.player))
+		_result |= _player.player.lockpool.is_locked(_action);
+	
+	return _result;
 }
 
 /// @func player_refresh_palette_icon()

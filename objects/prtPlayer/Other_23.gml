@@ -23,23 +23,25 @@ stateMachine.add("StageStart", {
 		gravEnabled = false;
 		visible = false;
 		
-		introLock = lockpool.add_lock(PlayerAction.SHOOT, PlayerAction.CHARGE, PlayerAction.PHYSICS);
-		if (!is_undefined(player))
-			pauseLock = player.canPause.add_lock();
+		introLock.add_actions(PlayerAction.PHYSICS);
+		introLock.activate();
+		pauseLock.activate();
 	},
 	leave: function() {
 		isIntro = false;
-		introLock = introLock.release();
 		canTakeDamage = true;
 		gravEnabled = true;
 		visible = true;
+		
+		introLock.deactivate();
+		introLock.remove_actions(PlayerAction.PHYSICS);
+		pauseLock.deactivate();
 	}
 });
 // ================================
 stateMachine.add("Intro", {
 	enter: function() {
 		isIntro = true;
-		introLock = lockpool.add_lock(PlayerAction.SHOOT, PlayerAction.CHARGE);
 		canTakeDamage = false;
 		collideWithSolids = false;
 		gravEnabled = false;
@@ -47,6 +49,10 @@ stateMachine.add("Intro", {
 		ignoreCamera = true;
 		animator.play("teleport-idle");
 		animator.update();
+		
+		introLock.activate();
+		pauseLock.activate();
+		
 		y = game_view().top_edge(0);
 	},
 	tick: function() {
@@ -71,9 +77,8 @@ stateMachine.add("Intro", {
 		interactWithWater = true;
 		ignoreCamera = false;
 		
-		introLock = introLock.release();
-		if (!is_undefined(pauseLock))
-			pauseLock = pauseLock.release();
+		introLock.deactivate();
+		pauseLock.deactivate();
 	}
 });
 // ================================
@@ -83,14 +88,14 @@ stateMachine.add("_StandardGround", {
 			|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP));
 		if (_jumpInput) {
 			var _downJumpSlide = yDir == gravDir && options_data().downJumpSlide,
-				_canJump = !lockpool.is_locked(PlayerAction.JUMP) && !_downJumpSlide;
+				_canJump = !player_is_action_locked(PlayerAction.JUMP) && !_downJumpSlide;
 			if (_canJump) {
 				stateMachine.change("Jump");
 				return;
 			}
 		}
 		
-		if (xDir != 0 && !lockpool.is_locked(PlayerAction.TURN_GROUND))
+		if (xDir != 0 && !player_is_action_locked(PlayerAction.TURN_GROUND))
 			image_xscale = xDir;
 	},
 	posttick: function() {
@@ -122,7 +127,7 @@ stateMachine.add("_StandardGround", {
 			
 			xspeed.value = 0;
 			
-			if (xDir != 0 && !lockpool.is_locked(PlayerAction.MOVE_GROUND))
+			if (xDir != 0 && !player_is_action_locked(PlayerAction.MOVE_GROUND))
 				stateMachine.change(stepFrames > 0 ? "Sidestep" : "Walk");
 		}
 	});
@@ -138,7 +143,7 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			if (xDir == 0 || lockpool.is_locked(PlayerAction.MOVE_GROUND)) {
+			if (xDir == 0 || player_is_action_locked(PlayerAction.MOVE_GROUND)) {
 				stateMachine.change("Idle");
 				return;
 			}
@@ -157,7 +162,7 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			var _move_locked = lockpool.is_locked(PlayerAction.MOVE_GROUND);
+			var _move_locked = player_is_action_locked(PlayerAction.MOVE_GROUND);
 			xspeed.value = walkSpeed * xDir * !_move_locked;
 			
 			if (_move_locked)
@@ -177,7 +182,7 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			var _move_locked = lockpool.is_locked(PlayerAction.MOVE_GROUND);
+			var _move_locked = player_is_action_locked(PlayerAction.MOVE_GROUND);
 			
 			if (xDir != 0 && !_move_locked) {
 				stateMachine.change("Walk");
@@ -195,9 +200,9 @@ stateMachine.add("_StandardAir", {
 		groundInstance = noone;
 	},
 	tick: function() {
-		xspeed.value = airSpeed * xDir * !lockpool.is_locked(PlayerAction.MOVE_AIR);
+		xspeed.value = airSpeed * xDir * !player_is_action_locked(PlayerAction.MOVE_AIR);
 		
-		if (xDir != 0 && !lockpool.is_locked(PlayerAction.TURN_AIR))
+		if (xDir != 0 && !player_is_action_locked(PlayerAction.TURN_AIR))
 			image_xscale = xDir;
 	},
 	posttick: function() {
@@ -255,7 +260,7 @@ stateMachine.add("_StandardAir", {
 stateMachine.add("Slide", {
 	enter: function() {
 		isSliding = true;
-		slideLock = lockpool.add_lock(PlayerAction.SHOOT);
+		slideLock.activate();
 		
 		xspeed.value = slideSpeed * image_xscale;
 		yspeed.clear_all();
@@ -285,7 +290,7 @@ stateMachine.add("Slide", {
 		var _freeSpaceAbove = !test_move_y(-slideMaskHeightDelta * gravDir);
 		if (ground && _freeSpaceAbove && inputs.is_pressed(InputActions.JUMP)) {
 			var _downJumpSlide = yDir == gravDir && options_data().downJumpSlide,
-				_canJump = !lockpool.is_locked(PlayerAction.JUMP) && !_downJumpSlide;
+				_canJump = !player_is_action_locked(PlayerAction.JUMP) && !_downJumpSlide;
 			if (_canJump) {
 				stateMachine.change("Jump");
 				return;
@@ -299,7 +304,7 @@ stateMachine.add("Slide", {
 			return;
 		}
 		
-		if (xDir == -image_xscale && !lockpool.is_locked(PlayerAction.TURN_GROUND)) {
+		if (xDir == -image_xscale && !player_is_action_locked(PlayerAction.TURN_GROUND)) {
 			if (_freeSpaceAbove) {
 				stateMachine.change("Idle");
 				return;
@@ -309,7 +314,7 @@ stateMachine.add("Slide", {
 			xspeed.value = slideSpeed * image_xscale;
 		}
 		
-		var _shouldEnd = xcoll != 0 || stateMachine.timer >= slideFrames || lockpool.is_locked(PlayerAction.SLIDE);
+		var _shouldEnd = xcoll != 0 || stateMachine.timer >= slideFrames || player_is_action_locked(PlayerAction.SLIDE);
 		if (_shouldEnd && (_freeSpaceAbove || _freeSpaceBelow)) {
 			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
 			stateMachine.change(xDir == image_xscale ? "Walk" : "Idle");
@@ -317,7 +322,7 @@ stateMachine.add("Slide", {
 	},
 	leave: function() {
 		isSliding = false;
-		slideLock = slideLock.release();
+		slideLock.deactivate();
 		mask_index = maskNormal;
 	}
 });
@@ -337,13 +342,13 @@ stateMachine.add("Climb", {
 		isClimbing = true;
 	},
 	tick: function() {
-		yspeed.value = climbSpeed * yDir * !isShooting * !lockpool.is_locked(PlayerAction.CLIMB);
+		yspeed.value = climbSpeed * yDir * !isShooting * !player_is_action_locked(PlayerAction.CLIMB);
 		animator.set_time_scale(abs(yspeed.value) != 0);
 		
 		if (animator.timeScale.value == 0)
 			animator.reset_frame_counter();
 		
-		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !lockpool.is_locked(PlayerAction.JUMP))
+		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !player_is_action_locked(PlayerAction.JUMP))
 			stateMachine.change("Fall");
 	},
 	posttick: function() {
@@ -388,10 +393,9 @@ stateMachine.add("Hurt", {
 		hitTimer = 0;
 		iFrames = INFINITE_I_FRAMES;
 		animator.play("hurt");
+		hitstunLock.activate();
 		
-		hitstunLock = lockpool.add_lock(PlayerAction.SHOOT);
-		
-		if (!lockpool.is_locked(PlayerAction.MOVE)) {
+		if (!player_is_action_locked(PlayerAction.MOVE)) {
 			xspeed.value = image_xscale * -0.5;
 			yspeed.value = (-1.5 * gravDir) * (yspeed.value * gravDir <= 0);
 		}
@@ -406,7 +410,7 @@ stateMachine.add("Hurt", {
 		isHurt = false;
 		iFrames = 60;
 		hitTimer = 0;
-		hitstunLock = hitstunLock.release();
+		hitstunLock.deactivate();
 	}
 });
 // ================================
@@ -445,10 +449,10 @@ stateMachine.add("Death", {
 		
 		if (!is_undefined(player)) {
 			player.hudElement.healthpoints = healthpoints;
-			pauseLock = player.canPause.add_lock();
+			pauseLock.activate();
 			defer(DeferType.STEP, function(__) /*=>*/ { restart_room(); }, GAME_SPEED * 3, true, true);
 		}
 		
 		instance_destroy();
-	},
+	}
 });

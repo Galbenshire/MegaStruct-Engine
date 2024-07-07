@@ -1,6 +1,7 @@
 /// @func Player(id)
 /// @desc Represents the player: the one playing the game
-///		  Stores data relevant to them, such as their health, costume, & weapon ammo
+///		  Stores data relevant to them, such as the player entity they're controlling,
+///		  their inputs, and the playable character they have selected
 ///
 /// @param {number}  id  Player's ID. Notes which player they are (e.g. 0 = Player 1)
 function Player(_id/*:number*/) constructor {
@@ -10,7 +11,7 @@ function Player(_id/*:number*/) constructor {
 	character = CharacterType.MEGA; // Which playable character this player is set to be
 	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
 	inputs = new InputMap();
-	canPause = new LockStack(); // Allows the player to pause the game during a level
+	lockpool = new PlayerLockPool();
 	hudElement = new PlayerHUD();
 	
 	#endregion

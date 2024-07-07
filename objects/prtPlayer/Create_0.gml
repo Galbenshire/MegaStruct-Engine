@@ -59,12 +59,12 @@ iconPalette = new ColourReplacer(
 );
 
 // Lock Pool
-lockpool = new PlayerLockStack();
-introLock = undefined; /// @is {PlayerLockStackLock}
-slideLock = undefined; /// @is {PlayerLockStackLock}
-shootStandStillLock = undefined; /// @is {PlayerLockStackLock} This lock is for staying on the ground after using a weapon like Metal Blade
-hitstunLock = undefined; /// @is {PlayerLockStackLock}
-pauseLock = undefined; /// @is {LockStackLock}
+lockpool = new PlayerLockPool();
+introLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE);
+slideLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT);
+shootStandStillLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND); // This lock is for staying on the ground after using a weapon like Metal Blade
+hitstunLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT);
+pauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 
 // Bool flags for when specific actions are ocurring
 // Makes it easier to check if the player is performing a specific action

@@ -168,7 +168,7 @@
     {"id":{"name":"clsLockStack","path":"scripts/clsLockStack/clsLockStack.yy",},},
     {"id":{"name":"clsOptionsData","path":"scripts/clsOptionsData/clsOptionsData.yy",},},
     {"id":{"name":"clsPlayer","path":"scripts/clsPlayer/clsPlayer.yy",},},
-    {"id":{"name":"clsPlayerLockStack","path":"scripts/clsPlayerLockStack/clsPlayerLockStack.yy",},},
+    {"id":{"name":"clsPlayerLockPool","path":"scripts/clsPlayerLockPool/clsPlayerLockPool.yy",},},
     {"id":{"name":"clsReticle","path":"scripts/clsReticle/clsReticle.yy",},},
     {"id":{"name":"clsSignalBus","path":"scripts/clsSignalBus/clsSignalBus.yy",},},
     {"id":{"name":"clsSpriteAtlas","path":"scripts/clsSpriteAtlas/clsSpriteAtlas.yy",},},

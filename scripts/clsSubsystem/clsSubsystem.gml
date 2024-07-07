@@ -24,7 +24,8 @@ function Subsystem_Core() : Subsystem() constructor {
 		// Set some global variables
 		global.roomName = room_get_name(room);
 		global.roomIsLevel = asset_has_tags(global.roomName, "room_level");
-		show_debug_message("{0} -- Instance Count: {1}, Is Level: {2}", global.roomName, instance_count, global.roomIsLevel);
+		global.section = noone;
+        global.roomTimer = 0;
 		
         // Setup the view
         view_enabled = true;
@@ -36,15 +37,15 @@ function Subsystem_Core() : Subsystem() constructor {
         game_view().reset_all();
         
         // Misc. Stuff
-        global.section = noone;
-        global.roomTimer = 0;
+        
         game_set_speed(GAME_SPEED, gamespeed_fps);
         queue_unpause();
         signal_bus().clear_all();
+        show_debug_message("{0} -- Instance Count: {1}, Is Level: {2}", global.roomName, instance_count, global.roomIsLevel);
     };
     
     static roomEnd = function() {
-        global.player.canPause.release_all_locks();
+        global.player.lockpool.remove_all_switches();
     };
     
     static drawEnd = function() {
@@ -284,15 +285,15 @@ function Subsystem_HUD() : Subsystem() constructor {
 /// @desc Handles level-specific actions
 function Subsystem_Level() : Subsystem() constructor {
 	active = false;
-    canPause = true;
+	pauseStack = new LockStack();
     data = {}; // Data specific to the current level
     
     static stepEnd = function() {
-		if (!active || !canPause || global.paused || global.switchingSections)
+		if (!active || pauseStack.is_locked() || global.paused || global.switchingSections)
 			return;
 		
 		with (global.player) {
-			if (inputs.is_pressed(InputActions.PAUSE) && !canPause.is_locked())
+			if (inputs.is_pressed(InputActions.PAUSE))
 				instance_create_depth(0, 0, other.system.depth - 10, objPauseMenu);
 		}
     };
@@ -343,7 +344,7 @@ function Subsystem_Level() : Subsystem() constructor {
     };
     
     static roomEnd = function() {
-		canPause = true;
+		pauseStack.remove_all_switches();
     };
 }
 

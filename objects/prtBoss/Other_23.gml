@@ -51,11 +51,8 @@ stateMachine.add("!!Intro_Spawn_", {
         isFinishedSpawn = false;
         visible = true;
         
-        var _player = instance_nearest(x, y, prtPlayer);
-        introLock = _player.lockpool.add_lock(PlayerAction.MOVE, PlayerAction.JUMP,
-            PlayerAction.SLIDE | PlayerAction.SHOOT,
-            PlayerAction.CHARGE | PlayerAction.TURN,
-            PlayerAction.CLIMB);
+        introLock.activate();
+        introPauseLock.activate();
 	},
 	posttick: function() {
         if (isFinishedSpawn) {
@@ -152,6 +149,7 @@ stateMachine.add("!!Intro_End", {
         gravEnabled = introCache.gravEnabled;
         grav = introCache.grav;
         collideWithSolids = introCache.collideWithSolids;
-        introLock = introLock.release();
+        introLock.deactivate();
+        introPauseLock.deactivate();
 	}
 });

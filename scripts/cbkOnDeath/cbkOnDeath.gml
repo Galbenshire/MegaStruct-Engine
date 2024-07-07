@@ -32,7 +32,7 @@ function cbkOnDeath_prtPlayer(_damageSource) {
     // If the player is about to fall onto a spike,
     // make sure it looks like they're actually hitting it
     if (ground && ycoll * gravDir > 0 && is_object_type(objDamageZone, _damageSource.attacker)) {
-		if (!lockpool.is_locked(PlayerAction.SPRITE_CHANGE)) {
+		if (!player_is_action_locked(PlayerAction.SPRITE_CHANGE)) {
 			animator.play("fall");
 			animator.update();
 		}

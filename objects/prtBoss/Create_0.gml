@@ -10,7 +10,12 @@ animator = new FrameAnimationPlayer(); /// @is {FrameAnimationPlayer}
 hudElement = undefined; /// @is {BossHUD?}
 
 // Variables to store various lockpool locks
-introLock = undefined; /// @is {PlayerLockStackLock}
+introLock = new PlayerLockPoolSwitch(global.player.lockpool,
+	PlayerAction.MOVE, PlayerAction.TURN,
+	PlayerAction.JUMP, PlayerAction.SLIDE,
+	PlayerAction.SHOOT, PlayerAction.CHARGE,
+	PlayerAction.CLIMB);
+introPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 
 // Bool flags for when specific actions are ocurring
 isInactive = true;

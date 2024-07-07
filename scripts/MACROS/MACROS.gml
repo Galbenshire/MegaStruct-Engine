@@ -212,22 +212,53 @@ enum SolidType {
 #region Player Macros
 
 // Represents various actions a player can perform
-// Used by the lockpool system
+// Used by the lockstack system
 enum PlayerAction {
+	// If locked, the player entity will no longer standard entity physics
+	// (i.e. no colliding with solids, no gravity, no interaction with water)
 	PHYSICS,
+	
+	// If locked, the player will no longer experience gravity
 	GRAVITY,
+	
+	// Halts player movement on the ground if locked
 	MOVE_GROUND,
+	
+	// Halts player movement in the air if locked
 	MOVE_AIR,
+	
+	// Prevents turning on the ground if locked
 	TURN_GROUND,
+	
+	// Prevents turning in the air if locked
 	TURN_AIR,
+	
+	// If locked, the player can no longer jump (also covers jumping off a ladder)
 	JUMP,
+	
+	// If locked, the player can no longer climb (covers both getting on a ladder, and moving on one)
 	CLIMB,
+	
+	// Disables sliding if locked
 	SLIDE,
+	
+	// Disables shootin if locked
 	SHOOT,
+	
+	// Disables weapon charging if locked
 	CHARGE,
+	
+	// If locked, the player's animations are frozen to the last state they were in
 	SPRITE_CHANGE,
+	
+	// Disables weapon quick switching if locked
 	WEAPON_CHANGE,
 	
+	// If locked, the player entity can no longer receive input from the player user
+	// (does not prevent input from other sources)
+	INPUT,
+	
+	// The number of player actions in the system
 	COUNT,
 	
 	//-- Special Shortcuts

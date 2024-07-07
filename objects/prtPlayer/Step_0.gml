@@ -1,7 +1,7 @@
 if (global.paused)
 	exit;
 
-if (!is_undefined(player)) {
+if (!is_undefined(player) && !player_is_action_locked(PlayerAction.INPUT)) {
     inputs.held = player.inputs.held;
     inputs.pressed |= player.inputs.pressed;
     inputs.released |= player.inputs.released;
@@ -17,7 +17,7 @@ repeat(_gameTicks) {
     event_user(EVENT_ENTITY_TICK);
 
     // =====  Standard Entity Stuff =====
-    if (!lockpool.is_locked(PlayerAction.PHYSICS)) {
+    if (!player_is_action_locked(PlayerAction.PHYSICS)) {
 		entity_horizontal_movement();
 		entity_vertical_movement();
 		entity_check_ground();

@@ -13,7 +13,7 @@ with (global.weaponList[WeaponType.BUSTER]) {
     
     onTick = function(_player) {
 		with (_player) {
-			if (!inputs.is_pressed(InputActions.SHOOT) || lockpool.is_locked(PlayerAction.SHOOT))
+			if (!inputs.is_pressed(InputActions.SHOOT) || player_is_action_locked(PlayerAction.SHOOT))
 				return;
 			
 			var _shotData = {

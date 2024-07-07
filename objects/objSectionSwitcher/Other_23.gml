@@ -118,7 +118,7 @@ stateMachine.add("ToNewSection", {
 		playerInstance.yspeed.value = playerMoveYSpeed;
 		
 		animatePlayer = array_contains(persistentAnimations, playerInstance.animator.currentAnimationName)
-			&& !playerInstance.lockpool.is_locked(PlayerAction.SPRITE_CHANGE);
+			&& !player_is_action_locked(PlayerAction.SPRITE_CHANGE, playerInstance);
 	},
 	tick: function() {
 		if (stateTimer < scrollDuration) {

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"clsPlayerLockStack",
+  "%Name":"clsPlayerLockPool",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"clsPlayerLockStack",
+  "name":"clsPlayerLockPool",
   "parent":{
     "name":"Classes",
     "path":"folders/_System/Classes.yy",
