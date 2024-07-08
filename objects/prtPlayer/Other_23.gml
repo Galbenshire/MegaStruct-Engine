@@ -261,6 +261,8 @@ stateMachine.add("Slide", {
 	enter: function() {
 		isSliding = true;
 		slideLock.activate();
+		if (!isCharging)
+			slideLock.add_actions(PlayerAction.CHARGE);
 		
 		xspeed.value = slideSpeed * image_xscale;
 		yspeed.clear_all();
@@ -323,6 +325,7 @@ stateMachine.add("Slide", {
 	leave: function() {
 		isSliding = false;
 		slideLock.deactivate();
+		slideLock.remove_actions(PlayerAction.CHARGE);
 		mask_index = maskNormal;
 	}
 });
@@ -393,7 +396,10 @@ stateMachine.add("Hurt", {
 		hitTimer = 0;
 		iFrames = INFINITE_I_FRAMES;
 		animator.play("hurt");
+		
 		hitstunLock.activate();
+		if (!isCharging)
+			hitstunLock.add_actions(PlayerAction.CHARGE);
 		
 		if (!player_is_action_locked(PlayerAction.MOVE)) {
 			xspeed.value = image_xscale * -0.5;
@@ -411,6 +417,7 @@ stateMachine.add("Hurt", {
 		iFrames = 60;
 		hitTimer = 0;
 		hitstunLock.deactivate();
+		hitstunLock.remove_actions(PlayerAction.CHARGE);
 	}
 });
 // ================================

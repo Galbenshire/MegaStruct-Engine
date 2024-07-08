@@ -23,11 +23,7 @@ function player_handle_sections() {
 		_checkY = clamp(y, _section.top + 4, _section.bottom - 4),
 		_transition = instance_position(_checkX, _checkY, objScreenTransition);
 	if (instance_exists(_transition)) {
-		var _isValid = inside_section_point(_transition.centerX, _transition.centerY);
-		if (_transition.image_angle == 90)
-			_isValid &= isClimbing;
-		
-		if (_isValid) {
+		if (isClimbing || _transition.image_angle != 90) {
 			x = _checkX;
 			y = _checkY;
 			
@@ -189,15 +185,15 @@ function player_equip_weapon(_weaponOrLoadout, _player = self) {
 		if (is_undefined(_weapon))
 			return;
 		
+		if (!is_undefined(player)) {
+			player.hudElement.ammoVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
+			player.hudElement.ammo = _weapon.ammo;
+		}
+		
 		if (!is_undefined(weapon))
 			weapon.onUnequip(self);
 		weapon = _weapon;
 		weapon.onEquip(self);
-		
-		if (!is_undefined(player)) {
-			player.hudElement.ammoVisible = !weapon.has_flag(WeaponFlags.NO_AMMO);
-			player.hudElement.ammo = weapon.ammo;
-		}
 	}
 }
 

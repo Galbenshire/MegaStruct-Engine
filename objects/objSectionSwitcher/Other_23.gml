@@ -42,6 +42,9 @@ stateMachine.add("Init", {
 		x = gameViewRef.xView;
 		y = gameViewRef.yView;
 		objSystem.camera.active = false;
+		
+		// Reset player palette
+		player_refresh_palette(playerInstance);
 	},
 	tick: function() {
 		// Deactivate objects not visible during screen transitions

@@ -7,6 +7,10 @@ function cbkOnSetDamage_objCutMan(_damageSource) {
     
     if (_damageSource.attacker.object_index == objBusterShot)
         _damageSource.set_damage(3);
+    if (_damageSource.attacker.object_index == objBusterShotHalfCharge)
+        _damageSource.set_damage(3);
+    if (_damageSource.attacker.object_index == objBusterShotCharged)
+        _damageSource.set_damage(4);
 }
 
 /// @func cbkOnHurt_objCutMan(damage_source)

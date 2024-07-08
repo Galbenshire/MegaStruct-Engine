@@ -12,8 +12,8 @@
   "duration":1.195828,
   "name":"sfxBuster",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"Weapons",
+    "path":"folders/SFX/Weapons.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

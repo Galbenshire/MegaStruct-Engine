@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"sfxIceSlasher",
+  "%Name":"sfxBusterHalfCharge",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,8 +9,8 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.208707,
-  "name":"sfxIceSlasher",
+  "duration":1.242268,
+  "name":"sfxBusterHalfCharge",
   "parent":{
     "name":"Weapons",
     "path":"folders/SFX/Weapons.yy",
@@ -19,7 +19,7 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sfxIceSlasher.wav",
+  "soundFile":"sfxBusterHalfCharge.wav",
   "type":0,
   "volume":1.0,
 }

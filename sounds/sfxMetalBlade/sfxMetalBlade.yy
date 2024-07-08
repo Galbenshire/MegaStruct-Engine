@@ -12,8 +12,8 @@
   "duration":1.381587,
   "name":"sfxMetalBlade",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"Weapons",
+    "path":"folders/SFX/Weapons.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
