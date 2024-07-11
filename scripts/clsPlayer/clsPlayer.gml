@@ -40,7 +40,7 @@ function Player(_id/*:number*/) constructor {
 		assert(is_a_player(_body), "only objects that inherit from prtPlayer can be used as the player's body");
 		
 		body = _body;
-		body.player = self;
+		body.playerUser = self;
 		body.playerID = id;
 		
 		return self;

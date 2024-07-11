@@ -43,8 +43,8 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     
     iFrames = 60;
     
-    if (!is_undefined(player))
-        player.hudElement.healthpoints = healthpoints;
+    if (!is_undefined(playerUser))
+        playerUser.hudElement.healthpoints = healthpoints;
 }
 
 /// @func cbkOnHurt_prtBoss(damage_source)

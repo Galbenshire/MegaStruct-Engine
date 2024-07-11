@@ -52,6 +52,8 @@ function player_handle_sections() {
 /// @func player_handle_shooting()
 /// @desc Handles the act of the player shooting
 function player_handle_shooting() {
+	autoFireTimer--;
+	
 	if (!is_undefined(weapon))
 		weapon.onTick(self);
 	
@@ -166,6 +168,23 @@ function player_add_weapon(_weaponID, _player = self) {
 	}
 }
 
+/// @func player_can_fire_shot(player)
+/// @desc Helper function for if the player is trying to shoot
+///		  Mainly used by weapons
+/// @param {prtPlayer}  [player]  The player trying to shoot. Defaults to the calling instance.
+///
+/// @returns {bool}  Whether the player can fire a shot (true), or not (false)
+function player_can_fire_shot(_player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	if (player_is_action_locked(PlayerAction.SHOOT, _player))
+		return false;
+	
+	return options_data().autoFire
+		? _player.inputs.is_held(InputActions.SHOOT) && _player.autoFireTimer <= 0
+		: _player.inputs.is_pressed(InputActions.SHOOT);
+}
+
 /// @func player_equip_weapon(weapon_or_loadout_index, player)
 /// @desc Makes a player entity equip a weapon
 ///		  This can either be an actual Weapon instance,
@@ -185,9 +204,9 @@ function player_equip_weapon(_weaponOrLoadout, _player = self) {
 		if (is_undefined(_weapon))
 			return;
 		
-		if (!is_undefined(player)) {
-			player.hudElement.ammoVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
-			player.hudElement.ammo = _weapon.ammo;
+		if (!is_undefined(playerUser)) {
+			playerUser.hudElement.ammoVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
+			playerUser.hudElement.ammo = _weapon.ammo;
 		}
 		
 		if (!is_undefined(weapon))
@@ -213,6 +232,7 @@ function player_equip_weapon(_weaponOrLoadout, _player = self) {
 ///		- offsetY: y-offset from the player, in addition to the base offset from the player's "gun" position
 ///		- depthOffset: Depth of the bullet relative to the player. Defaults to one value in front of the player
 ///		- standstill: A boolean for if the player should be put in a standstill. Defaults to false.
+///		- autoShootDelay: Controls rate of fire when Auto-Fire is enabled
 /// @param {prtPlayer}  [_player]
 ///
 /// @returns {instance}  The projectile. Returns `noone` if something prevented a projectile being created.
@@ -244,13 +264,16 @@ function player_fire_weapon(_params = {}, _player = self) {
 	}
 	
 	with (_player) {
-		if (!is_undefined(player) && !is_undefined(_weapon))
-			player.hudElement.ammo = _weapon.ammo;
+		if (!is_undefined(playerUser) && !is_undefined(_weapon))
+			playerUser.hudElement.ammo = _weapon.ammo;
 		
 		isShooting = true;
 		shootAnimation = _params.shootAnimation;
 		shootTimer = 17;
 		shootStandStillLock.deactivate();
+		
+		if (_params[$ "autoShootDelay"] ?? false)
+			autoFireTimer = _params.autoShootDelay;
 		
 		var _standstill = _params[$ "standstill"] ?? false;
 		if (_standstill || isClimbing) {
@@ -331,8 +354,8 @@ function player_refresh_palette(_player = self) {
 			paletteCache.set_output_colour_at(i, _characterPalette[i]);
 		}
 		
-		if (!is_undefined(player))
-			player.hudElement.ammoPalette = array_slice(palette.outputColours, 0, 3);
+		if (!is_undefined(playerUser))
+			playerUser.hudElement.ammoPalette = array_slice(palette.outputColours, 0, 3);
 	}
 }
 
@@ -345,8 +368,8 @@ function player_is_action_locked(_action, _player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	var _result = _player.lockpool.is_locked(_action);
-	if (!is_undefined(_player.player))
-		_result |= _player.player.lockpool.is_locked(_action);
+	if (!is_undefined(_player.playerUser))
+		_result |= _player.playerUser.lockpool.is_locked(_action);
 	
 	return _result;
 }

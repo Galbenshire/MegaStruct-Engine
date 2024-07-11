@@ -15,7 +15,7 @@ stateMachine = new EntityState("Idle");
 
 // Player stuff
 playerID = -1; // Which player is controlling this object
-player = undefined; /// @is {Player} A reference to the player struct using this as a body. If `undefined`, it's not controlled by a player
+playerUser = undefined; /// @is {Player} A reference to the player struct using this as a body. If `undefined`, it's not controlled by a player
 
 // Input
 inputs = new InputMap();

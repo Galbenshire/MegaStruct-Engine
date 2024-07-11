@@ -1,14 +1,13 @@
-draw_set_valign(fa_top);
+draw_set_text_align(fa_left, fa_top);
+draw_text(gameViewRef.left_edge(16), gameViewRef.top_edge(16), string("OPTIONS MENU ({0})", currentSubmenu.name));
 
-array_foreach(options, function(_option, _i) {
+array_foreach(currentSubmenu.options, function(_option, _i) {
     draw_set_halign(fa_left);
     draw_set_colour(_i == optionIndex ? c_yellow : c_white);
-    draw_text(gameViewRef.left_edge(16), gameViewRef.top_edge(16 * (_i + 1)), _option.label);
+    draw_text(gameViewRef.left_edge(16), gameViewRef.top_edge(48 + 16 * _i), _option.label);
     
-    if (struct_exists(_option, "display")) {
-        draw_set_halign(fa_right);
-        draw_text(gameViewRef.right_edge(-16), gameViewRef.top_edge(16 * (_i + 1)), _option.display);
-    }
+    draw_set_halign(fa_right);
+    draw_text(gameViewRef.right_edge(-16), gameViewRef.top_edge(48 + 16 * _i), _option.display);
 });
 
 draw_reset_text_align();

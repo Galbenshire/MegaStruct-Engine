@@ -37,6 +37,7 @@ function OptionsData() constructor {
     
     // Other
     gameSpeed = 1;
+    chargeBar = false;
     
     #endregion
     

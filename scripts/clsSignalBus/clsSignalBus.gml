@@ -86,9 +86,9 @@ function SignalBus() constructor {
     
     #region Functions - Other
     
-    /// @method clear_all()
+    /// @method clear_all_signals()
 	/// @desc Clears ALL signals of all of their listeners
-    static clear_all = function() {
+    static clear_all_signals = function() {
         var _signalNames = get_all_signal_names(),
             _signalCount = array_length(_signalNames);
         
@@ -130,13 +130,13 @@ function SignalBus() constructor {
             _listenerCount = array_length(_signal);
         
         for (var i = _listenerCount - 1; i >= 0; i--) {
-            var _listener = _signal[i];
-            if (!_listener.owner_exists())
-                continue;
+            var _listener = _signal[i],
+				_ownerExists = _listener.owner_exists();
             
-            _listener.callback(_data);
+            if (_ownerExists)
+				_listener.callback(_data);
             
-            if (_listener.oneShot) {
+            if (!_ownerExists || _listener.oneShot) {
                 delete _listener;
                 array_delete(_signal, i, 1);
             }
@@ -146,6 +146,31 @@ function SignalBus() constructor {
             struct_remove(signals, _name);
     };
     
+    /// @method prune_all_signals()
+	/// @desc Removes any stale listeners still connected to all signals in the system
+    static prune_all_signals = function() {
+		var _signalNames = get_all_signal_names(),
+            _signalCount = array_length(_signalNames);
+        
+        for (var i = 0; i < _signalCount; i++)
+            prune_signal(_signalNames[i]);
+    };
+    
+    /// @method prune_signal(name)
+	/// @desc Removes any stale listeners still connected to the given signal
+	///
+	/// @param {string}  name  Name of the signal to prune
+    static prune_signal = function(_name) {
+		var _signal = get_signal(_name),
+            _listenerCount = array_length(_signal);
+        
+        for (var i = _listenerCount - 1; i >= 0; i--) {
+			var _listener = _signal[i];
+            if (!_listener.owner_exists())
+                disconnect_from_signal(_listener);
+        }
+    };
+    
     #endregion
 }
 
@@ -153,14 +178,14 @@ function SignalBus() constructor {
 /// @desc Represents an instance/struct listening to a specific signal
 ///
 /// @param {string}  signal  Name of the signal
-/// @param {instance|struct}  owner  The instance (or struct) this listener belongs to
+/// @param {instance|weak_reference}  owner  The instance (or struct) this listener belongs to
 /// @param {function<struct, void>}  callback  Callback to perform upon hearing the signal
 /// @param {bool}  [one_shot]  If true, this listener only functions once. Defaults to false.
 function SignalListener(_signal, _owner, _callback, _oneShot = false) constructor {
 	signalName = _signal; /// @is {string}
-    
-    owner = _owner; /// @is {instance|struct}
-    ownerIsInstance = (instanceof(owner) == "instance"); /// @is {bool}
+	
+	ownerIsInstance = (instanceof(_owner) == "instance"); /// @is {bool}
+    owner = ownerIsInstance ? _owner : weak_ref_create(_owner); /// @is {instance|weak_reference}
     
     callback = method(owner, _callback); /// @is {function<struct, void>}
     oneShot = _oneShot; /// @is {bool}
@@ -171,10 +196,8 @@ function SignalListener(_signal, _owner, _callback, _oneShot = false) constructo
 	/// @returns {bool}  If the owner exists (true) or not (false)
     static owner_exists = function() {
 		// Use instance_exists if the owner is an instance.
-		// Otherwise, it's a struct, so let's just say true.
-		// A weak ref should probably be used here,
-		// but my brain is already wrapped trying to get structs to work here
-		return ownerIsInstance ? instance_exists(owner) : true;
+		// Otherwise, it's a struct, so check if the struct ref still exists
+		return ownerIsInstance ? instance_exists(owner) : weak_ref_alive(owner);
     };
 }
 

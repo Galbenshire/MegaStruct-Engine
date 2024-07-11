@@ -397,6 +397,7 @@ stateMachine.add("Hurt", {
 		iFrames = INFINITE_I_FRAMES;
 		animator.play("hurt");
 		
+		shootStandStillLock.deactivate();
 		hitstunLock.activate();
 		if (!isCharging)
 			hitstunLock.add_actions(PlayerAction.CHARGE);
@@ -426,7 +427,7 @@ stateMachine.add("Death", {
 		canTakeDamage = false;
 		canDieToPits = false;
 		
-		if (!is_undefined(player)) {
+		if (!is_undefined(playerUser)) {
 			audio_stop_all();
 			
 			if (!diedToAPit) {
@@ -454,8 +455,8 @@ stateMachine.add("Death", {
 		healthpoints = 0;
 		play_sfx(sfxDeath);
 		
-		if (!is_undefined(player)) {
-			player.hudElement.healthpoints = healthpoints;
+		if (!is_undefined(playerUser)) {
+			playerUser.hudElement.healthpoints = healthpoints;
 			pauseLock.activate();
 			defer(DeferType.STEP, function(__) /*=>*/ { restart_room(); }, GAME_SPEED * 3, true, true);
 		}

@@ -48,7 +48,7 @@ function __debug_view_options_data() {
 	
 	var _options = options_data();
 	
-    var _view = dbg_view("Options Data", false, -1, -1, 340, 450);
+    var _view = dbg_view("Options Data", false, -1, -1, 340, 480);
     
     var _display = dbg_text_separator("Display");
     dbg_slider_int(ref_create(_options, "screenSize"), 1, floor(_options.MAX_SCALE), "Screen Size");
@@ -73,6 +73,7 @@ function __debug_view_options_data() {
     
     var _controls = dbg_text_separator("Other");
     dbg_slider(ref_create(_options, "gameSpeed"), 0.1, 2, "Game Speed", 0.01);
+    dbg_checkbox(ref_create(_options, "chargeBar"), "Charge Bar");
 }
 
 /// @func __debug_view_room_select()
@@ -83,7 +84,7 @@ function __debug_view_room_select() {
 		_roomList = array_map(_roomIDs, function(_room, i) /*=>*/ {return string("{0}:{1}", room_get_name(_room), int64(_room))});
 	array_sort(_roomList, true);
 	
-	var _view = dbg_view("Room Selector", false, -1, -1, 400, 200);
+	var _view = dbg_view("Room Selector", false, -1, -1, 400, 250);
 	
 	var _currentRoom = dbg_section("Current Room");
 	dbg_watch(ref_create(global, "roomName"), "Current Room: ");

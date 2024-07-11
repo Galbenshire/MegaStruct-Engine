@@ -1,10 +1,10 @@
 if (global.paused)
 	exit;
 
-if (!is_undefined(player) && !player_is_action_locked(PlayerAction.INPUT)) {
-    inputs.held = player.inputs.held;
-    inputs.pressed |= player.inputs.pressed;
-    inputs.released |= player.inputs.released;
+if (!is_undefined(playerUser) && !player_is_action_locked(PlayerAction.INPUT)) {
+    inputs.held = playerUser.inputs.held;
+    inputs.pressed |= playerUser.inputs.pressed;
+    inputs.released |= playerUser.inputs.released;
 }
 
 var _gameTicks = global.gameTimeScale.integer;

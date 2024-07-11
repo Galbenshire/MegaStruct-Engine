@@ -1,17 +1,26 @@
 if (is_screen_fading())
     exit;
 
+var _sDir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
+if (_sDir != 0) {
+    submenuIndex = modf(submenuIndex + _sDir, submenuCount);
+    currentSubmenu = submenus[submenuIndex];
+    optionCount = array_length(currentSubmenu.options);
+    optionIndex = 0;
+    currentOption = currentSubmenu.options[optionIndex];
+}
+
 var _yDir = inputs.is_pressed(InputActions.DOWN) - inputs.is_pressed(InputActions.UP);
 if (_yDir != 0) {
-    do {
-        optionIndex = modf(optionIndex + _yDir, optionCount);
-        currentOption = options[optionIndex];
-    } until(struct_exists(currentOption, "onSelect") || struct_exists(currentOption, "onXDirInput"));
+    optionIndex = modf(optionIndex + _yDir, optionCount);
+    currentOption = currentSubmenu.options[optionIndex];
 }
 
 var _xDir = inputs.is_pressed(InputActions.RIGHT) - inputs.is_pressed(InputActions.LEFT);
-if (_xDir != 0 && struct_exists(currentOption, "onXDirInput")) {
+if (_xDir != 0) {
     currentOption.onXDirInput(_xDir);
-} else if (inputs.is_any_pressed(InputActions.PAUSE, InputActions.JUMP) && struct_exists(currentOption, "onSelect")) {
-    currentOption.onSelect();
+    currentOption.onUpdateLabel();
 }
+
+if (inputs.is_pressed(InputActions.SHOOT))
+    go_to_room(rmTitleScreen);

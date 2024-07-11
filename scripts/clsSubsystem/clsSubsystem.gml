@@ -40,7 +40,7 @@ function Subsystem_Core() : Subsystem() constructor {
         
         game_set_speed(GAME_SPEED, gamespeed_fps);
         queue_unpause();
-        signal_bus().clear_all();
+        signal_bus().prune_all_signals();
         show_debug_message("{0} -- Instance Count: {1}, Is Level: {2}", global.roomName, instance_count, global.roomIsLevel);
     };
     

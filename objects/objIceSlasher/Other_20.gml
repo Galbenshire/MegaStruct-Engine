@@ -8,14 +8,15 @@ with (global.weaponList[WeaponType.ICE_SLASHER]) {
 	
 	onTick = function(_player) {
 		with (_player) {
-			if (!inputs.is_pressed(InputActions.SHOOT) || player_is_action_locked(PlayerAction.SHOOT))
+			if (!player_can_fire_shot())
 				return;
 			
 			var _shotData = {
 				object: objIceSlasher,
 				limit: 2,
 				cost: 1,
-				shootAnimation: 1
+				shootAnimation: 1,
+				autoShootDelay: 14
 			};
 			
 			var _shot = player_fire_weapon(_shotData);
