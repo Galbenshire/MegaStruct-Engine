@@ -1,5 +1,5 @@
 options = [
-    ["START GAME", function() /*=>*/ { go_to_room(lvlCutMan); }],
+    ["START GAME", function() /*=>*/ { go_to_level(lvlSections); }],
     ["OPTIONS", function() /*=>*/ { go_to_room(rmOptions); }]
 ];
 optionCount = array_length(options);

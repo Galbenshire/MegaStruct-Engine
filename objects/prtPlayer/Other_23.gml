@@ -458,7 +458,7 @@ stateMachine.add("Death", {
 		if (!is_undefined(playerUser)) {
 			playerUser.hudElement.healthpoints = healthpoints;
 			pauseLock.activate();
-			defer(DeferType.STEP, function(__) /*=>*/ { restart_room(); }, GAME_SPEED * 3, true, true);
+			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint.room); }, GAME_SPEED * 3, true, true);
 		}
 		
 		instance_destroy();

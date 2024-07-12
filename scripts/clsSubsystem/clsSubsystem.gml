@@ -23,7 +23,7 @@ function Subsystem_Core() : Subsystem() constructor {
     static roomStart = function() {
 		// Set some global variables
 		global.roomName = room_get_name(room);
-		global.roomIsLevel = asset_has_tags(global.roomName, "room_level");
+		global.roomIsLevel = is_room_level(room);
 		global.section = noone;
         global.roomTimer = 0;
 		
@@ -288,6 +288,15 @@ function Subsystem_Level() : Subsystem() constructor {
 	pauseStack = new LockStack();
     data = {}; // Data specific to the current level
     
+    checkpoint = {
+		room: lvlTest,
+		x: 0,
+		y: 0,
+		dir: 1
+	};
+    
+    __startLevel = false; // flag to known when we're starting a level
+    
     static stepEnd = function() {
 		if (!active || pauseStack.is_locked() || global.paused || global.switchingSections)
 			return;
@@ -305,18 +314,45 @@ function Subsystem_Level() : Subsystem() constructor {
 		if (!active)
 			return;
 		
-		assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
 		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
 		
-		var _player = global.player;
+		var _spawn_x = undefined,
+			_spawn_y = undefined,
+			_spawn_dir = 1;
 		
-		// Calculate spawn coordinates
-		// (Will be more elaborate once I add checkpoints & teleporting)
-		var _spawn_x = objDefaultSpawn.x,
-			_spawn_y = objDefaultSpawn.y;
+		if (__startLevel) {
+			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
+			checkpoint.room = room;
+			checkpoint.x = objDefaultSpawn.x;
+			checkpoint.y = objDefaultSpawn.y;
+			checkpoint.dir = objDefaultSpawn.image_xscale;
 			
+			_spawn_x = checkpoint.x;
+			_spawn_y = checkpoint.y;
+			_spawn_dir = checkpoint.dir;
+			
+			data = {};
+			
+			// Other things to do here:
+			// - clear the "pickups" list
+		} else { // Respawning from a checkpoint
+			_spawn_x = checkpoint.x;
+			_spawn_y = checkpoint.y;
+			_spawn_dir = checkpoint.dir;
+			
+			// Other things to do here:
+			// - remove pickups already in the "pickups" list
+		}
+		
+		assert(!is_undefined(_spawn_x) && !is_undefined(_spawn_y), "No spawn conditions could be found");
+		
+		global.section = find_section_at(_spawn_x, _spawn_y);
+		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
+		
 		// Spawn the player
+		var _player = global.player;
 		with (spawn_player_entity(_spawn_x, _spawn_y, LAYER_ENTITY, _player.character)) {
+			image_xscale = _spawn_dir;
 			_player.set_body(self);
 			_player.generate_loadout();
 			_player.hudElement.healthpoints = healthpoints;
@@ -326,22 +362,20 @@ function Subsystem_Level() : Subsystem() constructor {
 			signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		}
 		
-		global.section = find_section_at(_spawn_x, _spawn_y);
-		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
-		
 		system.camera.active = true;
 		system.camera.stepEnd();
 		
 		var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
 		array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), false); });
 		
-		data = {};
-		
 		defer(DeferType.STEP_BEGIN, function() {
 			deactivate_game_objects(false);
 			activate_game_objects();
 		}, 0, true, true);
-		instance_create_depth(0, 0, system.depth + 1, objReady);
+		
+		var _ready = instance_create_depth(0, 0, system.depth + 1, objReady);
+		_ready.text = string("READY\n{0}", __startLevel ? "(stage start)" : "(checkpoint)");
+		__startLevel = false;
     };
     
     static roomEnd = function() {

@@ -91,5 +91,10 @@ function __debug_view_room_select() {
 	
 	var _nextRoom = dbg_section("Next Room");
 	dbg_drop_down(ref_create(global, "nextRoom"), string_join_ext(",", _roomList), "Select Room");
-	dbg_button("Go to Room", function() /*=>*/ { go_to_room(global.nextRoom); });
+	dbg_button("Go to Room", function () {
+		if (is_room_level(global.nextRoom))
+			go_to_level(global.nextRoom);
+		else
+			go_to_room(global.nextRoom);
+	});
 }
