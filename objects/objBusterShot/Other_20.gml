@@ -15,9 +15,9 @@ with (global.weaponList[WeaponType.BUSTER]) {
 		__handle_charge_state();
 		__chargeTimer++;
 		
-		if (!is_undefined(__player.playerUser)) {
-			__player.playerUser.hudElement.ammoVisible = options_data().chargeBar;
-			__player.playerUser.hudElement.ammo = __barAmount;
+		if (!is_undefined(__hudElement)) {
+			__hudElement.ammoVisible = options_data().chargeBar;
+			__hudElement.ammo = __barAmount;
 		}
 	};
 	
@@ -26,6 +26,9 @@ with (global.weaponList[WeaponType.BUSTER]) {
 		__barAmount = 0;
 		__chargeToggle = false;
 		__change_charge_state(0);
+		
+		if (is_player_controlled(__player))
+			__hudElement = __player.playerUser.hudElement;
 	};
 	
 	onUnequip = function(_player) {
@@ -33,22 +36,29 @@ with (global.weaponList[WeaponType.BUSTER]) {
 		stop_sfx(sfxCharged);
 		__player.isCharging = false;
 		__player = noone;
+		__hudElement = undefined;
 	};
 	
 	// == Weapon Specific ==
 	
-	// - Constats (in spirit)
+	// - Constants (in spirit)
+	
 	__preChargeDuration = 20;
 	__chargeDuration = 57;
 	__outlineChargeColours = [ $000000, $2000A8, $5800E4, $9858F8 ];
 	__fullChargeColours = [ colours[PaletteWeapon.primary], colours[PaletteWeapon.secondary], $000000 ];
 	
 	// - Variables
+	
 	__chargeState = 0; // 0 - not charging; 1 - pre charging; 2 - charging; 3 - fully charged;
 	__chargeTimer = 0;
 	__barAmount = 0;
 	__chargeToggle = false;
+	
+	// - References
+	
 	__player = noone;
+	__hudElement = undefined;
 	
 	// - Functions -- Charge State
 	
@@ -89,8 +99,8 @@ with (global.weaponList[WeaponType.BUSTER]) {
 				
 				var _outlineCol = __outlineChargeColours[_index];
 				__player.palette.set_output_colour_at(PalettePlayer.outline, _outlineCol);
-				if (!is_undefined(__player.playerUser))
-					__player.playerUser.hudElement.ammoPalette[PalettePlayer.outline] = _outlineCol;
+				if (!is_undefined(__hudElement))
+					__hudElement.ammoPalette[PalettePlayer.outline] = _outlineCol;
 				
 				__barAmount = remap(0, __chargeDuration, 0, 28, __chargeTimer);
 				
@@ -112,8 +122,8 @@ with (global.weaponList[WeaponType.BUSTER]) {
 				for (var i = 0; i < 3; i++) {
 					var _chargeCol = __fullChargeColours[modf(_chargeCycle + i, 3)];
 					__player.palette.set_output_colour_at(i, _chargeCol);
-					if (!is_undefined(__player.playerUser))
-						__player.playerUser.hudElement.ammoPalette[i] = _chargeCol;
+					if (!is_undefined(__hudElement))
+						__hudElement.ammoPalette[i] = _chargeCol;
 				}
 				
 				if (!__player_can_charge() || (__chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {

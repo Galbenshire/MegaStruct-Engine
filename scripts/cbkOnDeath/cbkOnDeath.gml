@@ -68,7 +68,7 @@ function cbkOnDeath_prtBoss(_damageSource) {
 }
 
 /// @func cbkOnDeath_prtProjectile(damage_source)
-/// @desc Default onDeath callback for pojectiles
+/// @desc Default onDeath callback for projectiles
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
 function cbkOnDeath_prtProjectile(_damage_source) {

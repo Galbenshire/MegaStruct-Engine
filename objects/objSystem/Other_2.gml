@@ -45,6 +45,9 @@ if (!variable_global_exists("__gameInit")) {
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");
 	
+	// Global Player Stats
+	global.bolts = 0;
+	
 	// Likely to change a lot
 	global.gameTimeScale = new Fractional(1); /// @is {Fractional}
 	global.previousRoom = room; /// @is {room}

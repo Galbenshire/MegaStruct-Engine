@@ -201,18 +201,14 @@ function player_equip_weapon(_weaponOrLoadout, _player = self) {
 		else if (is_numeric(_weaponOrLoadout))
 			_weapon = array_at(loadout, _weaponOrLoadout);
 		
-		if (is_undefined(_weapon))
-			return;
-		
-		if (!is_undefined(playerUser)) {
-			playerUser.hudElement.ammoVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
-			playerUser.hudElement.ammo = _weapon.ammo;
-		}
+		if (!is_undefined(playerUser))
+			playerUser.hudElement.assign_weapon(_weapon);
 		
 		if (!is_undefined(weapon))
 			weapon.onUnequip(self);
 		weapon = _weapon;
-		weapon.onEquip(self);
+		if (!is_undefined(weapon))
+			weapon.onEquip(self);
 	}
 }
 
@@ -264,8 +260,12 @@ function player_fire_weapon(_params = {}, _player = self) {
 	}
 	
 	with (_player) {
-		if (!is_undefined(playerUser) && !is_undefined(_weapon))
-			playerUser.hudElement.ammo = _weapon.ammo;
+		if (is_player_controlled() && !is_undefined(_weapon)) {
+			var _hud = playerUser.hudElement;
+			
+			if (_hud.ammoWeapon == _weapon.id)
+				_hud.ammo = _weapon.ammo;
+		}
 		
 		isShooting = true;
 		shootAnimation = _params.shootAnimation;
@@ -386,6 +386,16 @@ function player_is_action_locked(_action, _player = self) {
 /// @returns {bool}  Whether the instance is a player (true), or not (false)
 function is_a_player(_scope = self) {
     return is_object_type(prtPlayer, _scope);
+}
+
+/// @func is_player_controlled(scope)
+/// @desc Checks if the specified player entity is being controlled by a player user.
+///
+/// @param {prtPlayer}  [scope]  The player entity to check. Defaults to the calling instance.
+///
+/// @returns {bool}  Whether the player is being controlled (true), or not (false)
+function is_player_controlled(_scope = self) {
+	return is_a_player(_scope) ? !is_undefined(_scope.playerUser) : false;
 }
 
 /// @func spawn_player_entity(x, y, depth_or_layer, character_id)

@@ -278,6 +278,11 @@ function Subsystem_HUD() : Subsystem() constructor {
         playerHUD.draw(_hudX, _hudY);
         for (var i = 0; i < _bossCount; i++)
 			bossHUD[i].draw(_hudX + 24, _hudY);
+		
+		_hudX = game_view().right_edge(-8);
+		draw_set_text_align(fa_right, fa_top);
+		draw_text(_hudX, _hudY, string("Bolts: {0}", global.bolts));
+		draw_reset_text_align();
     };
 }
 
@@ -287,7 +292,7 @@ function Subsystem_Level() : Subsystem() constructor {
 	active = false;
 	pauseStack = new LockStack();
     data = {}; // Data specific to the current level
-    
+    pickups = [];
     checkpoint = {
 		room: lvlTest,
 		x: 0,
@@ -295,7 +300,7 @@ function Subsystem_Level() : Subsystem() constructor {
 		dir: 1
 	};
     
-    __startLevel = false; // flag to known when we're starting a level
+    __startLevel = false; // flag to know when we're starting a level
     
     static stepEnd = function() {
 		if (!active || pauseStack.is_locked() || global.paused || global.switchingSections)
@@ -316,9 +321,9 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
 		
-		var _spawn_x = undefined,
-			_spawn_y = undefined,
-			_spawn_dir = 1;
+		var _spawnX = undefined,
+			_spawnY = undefined,
+			_spawnDir = 1;
 		
 		if (__startLevel) {
 			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
@@ -327,32 +332,32 @@ function Subsystem_Level() : Subsystem() constructor {
 			checkpoint.y = objDefaultSpawn.y;
 			checkpoint.dir = objDefaultSpawn.image_xscale;
 			
-			_spawn_x = checkpoint.x;
-			_spawn_y = checkpoint.y;
-			_spawn_dir = checkpoint.dir;
+			_spawnX = checkpoint.x;
+			_spawnY = checkpoint.y;
+			_spawnDir = checkpoint.dir;
 			
 			data = {};
-			
-			// Other things to do here:
-			// - clear the "pickups" list
+			pickups = [];
 		} else { // Respawning from a checkpoint
-			_spawn_x = checkpoint.x;
-			_spawn_y = checkpoint.y;
-			_spawn_dir = checkpoint.dir;
+			_spawnX = checkpoint.x;
+			_spawnY = checkpoint.y;
+			_spawnDir = checkpoint.dir;
 			
-			// Other things to do here:
-			// - remove pickups already in the "pickups" list
+			with (prtPickup) {
+				if (array_contains(other.pickups, pickupID))
+					instance_destroy();
+			}
 		}
 		
-		assert(!is_undefined(_spawn_x) && !is_undefined(_spawn_y), "No spawn conditions could be found");
+		assert(!is_undefined(_spawnX) && !is_undefined(_spawnY), "No spawn conditions could be found");
 		
-		global.section = find_section_at(_spawn_x, _spawn_y);
+		global.section = find_section_at(_spawnX, _spawnY);
 		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
 		
 		// Spawn the player
 		var _player = global.player;
-		with (spawn_player_entity(_spawn_x, _spawn_y, LAYER_ENTITY, _player.character)) {
-			image_xscale = _spawn_dir;
+		with (spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, _player.character)) {
+			image_xscale = _spawnDir;
 			_player.set_body(self);
 			_player.generate_loadout();
 			_player.hudElement.healthpoints = healthpoints;

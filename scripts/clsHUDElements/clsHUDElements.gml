@@ -24,6 +24,21 @@ function PlayerHUD() constructor {
     ammo = FULL_HEALTHBAR;
     ammoPalette = [ $EC7000, $F8B838, $000000 ]; /// @is {PaletteHealthBar}
     ammoVisible = false;
+    ammoWeapon = WeaponType.BUSTER;
+    
+    /// -- assign_weapon(weapon)
+	/// Tells the HUD element to use the specified weapon for the ammo bar
+	/// Various ammo-related variables will be updated accordingly
+    static assign_weapon = function(_weapon) {
+		if (is_undefined(_weapon)) {
+			ammoVisible = false;
+			return;
+		}
+		
+		ammoWeapon = _weapon.id;
+		ammoVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
+		ammo = _weapon.ammo;
+    };
     
     /// -- draw(x, y)
 	/// Draws the Player's HUD onto the screen
