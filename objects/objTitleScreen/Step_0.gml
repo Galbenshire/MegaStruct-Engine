@@ -3,7 +3,7 @@ if (is_screen_fading())
 
 var _inputs = global.player.inputs;
 
-var _y_dir = _inputs.is_pressed(InputActions.DOWN) - _inputs.is_pressed(InputActions.UP);
+var _y_dir = _inputs.is_pressed(InputActions.UP) - _inputs.is_pressed(InputActions.DOWN);
 if (_y_dir != 0)
     currentOption = modf(currentOption + _y_dir, optionCount);
 
