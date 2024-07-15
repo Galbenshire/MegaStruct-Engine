@@ -43,7 +43,7 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 			(colour_get_green(_whitemaskBlends[i]) / 255) * _blendChannels[1] * 255,
 			(colour_get_blue(_whitemaskBlends[i]) / 255) * _blendChannels[2] * 255,
 		);
-		global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, i, _x, _y, image_xscale, image_yscale, _colour, image_alpha);
+		global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, i, x, y, image_xscale, image_yscale, _colour, image_alpha);
 	}
 }
 

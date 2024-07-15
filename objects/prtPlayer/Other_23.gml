@@ -127,8 +127,12 @@ stateMachine.add("_StandardGround", {
 			
 			xspeed.value = 0;
 			
-			if (xDir != 0 && !player_is_action_locked(PlayerAction.MOVE_GROUND))
-				stateMachine.change(stepFrames > 0 ? "Sidestep" : "Walk");
+			if (xDir != 0 && !player_is_action_locked(PlayerAction.MOVE_GROUND)) {
+				var _canSidestep = (stepFrames > 0);
+				if (stateMachine.is_previous_state("Walk"))
+					_canSidestep &= (stateMachine.timer >= 2);
+				stateMachine.change(_canSidestep ? "Sidestep" : "Walk");
+			}
 		}
 	});
 // --------------------------------
@@ -303,6 +307,7 @@ stateMachine.add("Slide", {
 		if (!ground) {
 			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
 			stateMachine.change("Fall");
+			coyoteTimer = COYOTE_FALL_BUFFER;
 			return;
 		}
 		

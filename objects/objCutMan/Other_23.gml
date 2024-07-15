@@ -113,7 +113,7 @@ stateMachine.add("Hurt", {
 			if (instance_exists(cutterInstance)) {
 				stateMachine.change("Run");
 			} else {
-				var _wasPosing = (stateMachine.get_previous_state() == "CutterPose");
+				var _wasPosing = stateMachine.is_previous_state("CutterPose");
 				stateMachine.change(_wasPosing || (random(1) < 0.33) ? "ThrowCutter" : "CutterPose");
 			}
 		}

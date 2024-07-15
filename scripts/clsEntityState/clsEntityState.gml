@@ -22,6 +22,16 @@ function EntityState(_initState, _execEnter = true) constructor {
         return timer < 0;  
     };
     
+    /// @method is_previous_state(state_name)
+    /// @desc Checks if the state machine's previous state was the one specified
+    ///
+    /// @param {string}  state_name  Name of the state to check for
+    ///
+    /// @returns {bool}  Whether the previous state was the one given (true) or not (false)
+    static is_previous_state = function(_stateName) {
+		return __state.get_previous_state() == _stateName;
+    };
+    
     /// @method posttick()
 	/// @desc Runs the `posttick` function of the current state
     static posttick = function() {
@@ -95,7 +105,7 @@ function EntityState(_initState, _execEnter = true) constructor {
     };
     
     /// @method get_previous_state()
-	/// @desc Returns the previous state the system is in.
+	/// @desc Returns the previous state the system was in.
 	///
 	/// @returns {string}  The previous state
     static get_previous_state = function() {
