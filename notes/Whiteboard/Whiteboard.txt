@@ -20,17 +20,19 @@
 - Also used by the player object to update palette according to weapon
 
 
-// === The player entity holds two palettes ===
-- Body palette
-    - Uses a Player Palette
-    - Used to colour the player's sprite
-    - On Refresh
-        - Pull from the colours of the current playable character
-        - If the player has a weapon active, apply its colours next
-
-
-var _params = {
-    xOffset: 12,
-    yOffset: 2,
-    
-};
+// === LEVEL START SEQUENCE ===
+- Check if any sections have been defined for the current level
+    (i.e. instances of objSection)
+- If this is the start of a level (i.e. the "start_level" flag has been set)
+    - Set the checkpoint to the starting position of the room
+    - Clear the level data
+    - Clear the pickups array
+- Get the spawn coordinates from the checkpoint
+- Find the section at the given spawn position
+- Remove any pickups placed in the level that are in the pickups array
+- Spawn the player(s)
+- Focus the camera on the players
+- Hide any costruction layers
+- Deactivate any instances outside of the current section (defer it to a Step Begin tho)
+- Spawn READY text. Each player will start their teleport sequence once it is done.
+- Clear the "start_level" flag

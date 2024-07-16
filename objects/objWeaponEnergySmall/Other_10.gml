@@ -3,13 +3,9 @@ __collected = true;
 
 with (__collectPlayer) {
     if (is_undefined(weapon))
-        break;
-    if (weapon.has_flag(WeaponFlags.NO_AMMO))
-        break;
+        exit;
+    if (weapon.has_flag(WeaponFlags.NO_AMMO) || weapon.ammo >= FULL_HEALTHBAR)
+        exit;
     
-    weapon.change_ammo(other.ammoToRestore);
-    if (playerUser.hudElement.ammoWeapon == weapon.id)
-        playerUser.hudElement.ammo = weapon.ammo;
+    player_restore_ammo(other.ammoToRestore, weapon);
 }
-
-play_sfx(sfxEnergyRestore);

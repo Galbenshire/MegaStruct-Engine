@@ -333,6 +333,21 @@ function player_gun_offset(_player = self) {
 	return _offset;
 }
 
+/// @func player_is_action_locked(player_action, player)
+/// @desc Checks if the specified player action is locked on the given player entity
+///
+/// @param {int}  player_action
+/// @param {prtPlayer}  [player]
+function player_is_action_locked(_action, _player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	var _result = _player.lockpool.is_locked(_action);
+	if (!is_undefined(_player.playerUser))
+		_result |= _player.playerUser.lockpool.is_locked(_action);
+	
+	return _result;
+}
+
 /// @func player_refresh_palette(player)
 /// @desc Updates the player's palette
 ///
@@ -359,19 +374,35 @@ function player_refresh_palette(_player = self) {
 	}
 }
 
-/// @func player_is_action_locked(player_action, player)
-/// @desc Checks if the specified player action is locked on the given player entity
-///
-/// @param {int}  player_action
-/// @param {prtPlayer}  [player]
-function player_is_action_locked(_action, _player = self) {
+/// @func player_restore_ammo(value, weapon, player)
+/// @desc Restores a player's weapon ammo by the given amount
+function player_restore_ammo(_value, _weapon, _player = self) {
 	PLAYER_ONLY_FUNCTION
 	
-	var _result = _player.lockpool.is_locked(_action);
-	if (!is_undefined(_player.playerUser))
-		_result |= _player.playerUser.lockpool.is_locked(_action);
+	var _restorer = instance_exists(objHealthRestoreEffect)
+		? instance_nearest(0, 0, objHealthRestoreEffect)
+		: instance_create_layer(0, 0, LAYER_SYSTEM, objHealthRestoreEffect);
 	
-	return _result;
+	var _weaponIndex = array_get_index(_restorer.ammo[0], _weapon);
+	if (_weaponIndex == NOT_FOUND) {
+		array_push(_restorer.ammo[0], _weapon);
+		array_push(_restorer.ammo[1], _value);
+		_restorer.ammoCount++;
+	} else {
+		_restorer.ammo[_weaponIndex] += _value;
+	}
+}
+
+/// @func player_restore_health(value, player)
+/// @desc Restores a player's health by the given amount
+function player_restore_health(_value, _player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	var _restorer = instance_exists(objHealthRestoreEffect)
+		? instance_nearest(0, 0, objHealthRestoreEffect)
+		: instance_create_layer(0, 0, LAYER_SYSTEM, objHealthRestoreEffect);
+	
+	_restorer.healthpoints += _value;
 }
 
 #endregion

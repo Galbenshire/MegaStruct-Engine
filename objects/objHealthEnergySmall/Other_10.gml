@@ -2,8 +2,8 @@
 __collected = true;
 
 with (__collectPlayer) {
-    healthpoints = clamp(healthpoints + other.healthToRestore, 0, healthpointsStart);
-    playerUser.hudElement.healthpoints = healthpoints;
+    if (healthpoints >= healthpointsStart)
+        exit;
+    
+    player_restore_health(other.healthToRestore);
 }
-
-play_sfx(sfxEnergyRestore);

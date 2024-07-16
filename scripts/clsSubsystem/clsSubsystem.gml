@@ -321,10 +321,6 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
 		
-		var _spawnX = undefined,
-			_spawnY = undefined,
-			_spawnDir = 1;
-		
 		if (__startLevel) {
 			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
 			checkpoint.room = room;
@@ -332,29 +328,24 @@ function Subsystem_Level() : Subsystem() constructor {
 			checkpoint.y = objDefaultSpawn.y;
 			checkpoint.dir = objDefaultSpawn.image_xscale;
 			
-			_spawnX = checkpoint.x;
-			_spawnY = checkpoint.y;
-			_spawnDir = checkpoint.dir;
-			
 			data = {};
 			pickups = [];
-		} else { // Respawning from a checkpoint
-			_spawnX = checkpoint.x;
-			_spawnY = checkpoint.y;
+		}
+		
+		var _spawnX = checkpoint.x,
+			_spawnY = checkpoint.y,
 			_spawnDir = checkpoint.dir;
-			
+		
+		global.section = find_section_at(_spawnX, _spawnY);
+		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
+		
+		if (!array_empty(pickups)) {
 			with (prtPickup) {
 				if (array_contains(other.pickups, pickupID))
 					instance_destroy();
 			}
 		}
 		
-		assert(!is_undefined(_spawnX) && !is_undefined(_spawnY), "No spawn conditions could be found");
-		
-		global.section = find_section_at(_spawnX, _spawnY);
-		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
-		
-		// Spawn the player
 		var _player = global.player;
 		with (spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, _player.character)) {
 			image_xscale = _spawnDir;
@@ -363,12 +354,10 @@ function Subsystem_Level() : Subsystem() constructor {
 			_player.hudElement.healthpoints = healthpoints;
 			player_equip_weapon(0);
 			player_refresh_palette();
-			stateMachine.change("StageStart");
-			signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 		}
 		
 		system.camera.active = true;
-		system.camera.stepEnd();
+		system.camera.stepEnd(); // Get the camera to focus on the player
 		
 		var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
 		array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), false); });
@@ -378,8 +367,17 @@ function Subsystem_Level() : Subsystem() constructor {
 			activate_game_objects();
 		}, 0, true, true);
 		
+		// The default level start sequence
+		// (might offer an option in the future to override this)
 		var _ready = instance_create_depth(0, 0, system.depth + 1, objReady);
 		_ready.text = string("READY\n{0}", __startLevel ? "(stage start)" : "(checkpoint)");
+		with (prtPlayer) {
+			if (is_player_controlled()) {
+				stateMachine.change("StageStart");
+				signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
+			}
+		}
+		
 		__startLevel = false;
     };
     

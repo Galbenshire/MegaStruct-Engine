@@ -45,10 +45,34 @@ function Player(_id/*:number*/) constructor {
 		
 		return self;
 	};
+	
+	/// @method set_body_healthpoints(value)
+	/// @desc Sets the healthpoints on the player entity this user is controlling
+	///
+	/// @param {number}  value  The new health value
+	///
+	/// @returns {Player}  A reference to this struct. Useful for method chaining.
+	static set_body_healthpoints = function(_value) {
+		if (instance_exists(body))
+			body.healthpoints = clamp(_value, 0, body.healthpointsStart);
+		return self;
+	};
     
     #endregion
     
     #region Functions - Other
+    
+    /// @method change_body_healthpoints(value)
+	/// @desc Changes the healthpoints of the player's body by a specific amount
+	///
+	/// @param {number}  value  How much to change health by
+	///
+	/// @returns {Player}  A reference to this struct. Useful for method chaining.
+	static change_body_healthpoints = function(_value) {
+		if (instance_exists(body))
+			body.healthpoints = clamp(body.healthpoints + _value, 0, body.healthpointsStart);
+		return self;
+	};
     
     /// @method generate_loadout()
 	/// @desc Generates a weapon loadout for the player's body
