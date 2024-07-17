@@ -15,6 +15,8 @@ repeat(_gameTicks) {
 		iFrames = approach(iFrames, 0, 1);
 	
     event_user(EVENT_ENTITY_TICK);
+    if (entity_is_dead()) // If the player ends up dying during this tick, cut the Step Event short
+		exit;
 
     // =====  Standard Entity Stuff =====
     if (!player_is_action_locked(PlayerAction.PHYSICS)) {
@@ -26,6 +28,8 @@ repeat(_gameTicks) {
     }
     
     event_user(EVENT_ENTITY_POSTTICK);
+    if (entity_is_dead())
+		exit;
     
     inputs.pressed = 0;
     inputs.released = 0;

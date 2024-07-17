@@ -2,6 +2,9 @@
 stateMachine.posttick();
 stateMachine.update_timer();
 
+if (entity_is_dead())
+	exit;
+
 player_handle_switch_weapons();
 player_handle_shooting();
 

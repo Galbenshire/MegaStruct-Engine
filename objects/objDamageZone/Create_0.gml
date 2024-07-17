@@ -1,3 +1,5 @@
+event_inherited();
+
 target = noone;
 
 boundsLeft = bbox_left - 1;

@@ -110,6 +110,7 @@ stateMachine.add("_StandardGround", {
 		}
 		
 		if (!ground) {
+			move_and_collide_y(gravDir);
 			stateMachine.change("Fall");
 			coyoteTimer = COYOTE_FALL_BUFFER;
 		}
@@ -125,7 +126,10 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			xspeed.value = 0;
+			if (is_object_type(objIce, groundInstance))
+				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
+			else
+				xspeed.value = 0;
 			
 			if (xDir != 0 && !player_is_action_locked(PlayerAction.MOVE_GROUND)) {
 				var _canSidestep = (stepFrames > 0);
@@ -166,13 +170,14 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			var _move_locked = player_is_action_locked(PlayerAction.MOVE_GROUND);
-			xspeed.value = walkSpeed * xDir * !_move_locked;
-			
-			if (_move_locked)
+			if (player_is_action_locked(PlayerAction.MOVE_GROUND))
 				stateMachine.change("Idle");
 			else if (xDir == 0)
 				stateMachine.change(brakeFrames > 0 ? "Brake" : "Idle");
+			else if (is_object_type(objIce, groundInstance))
+				xspeed.value = approach(xspeed.value, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
+			else
+				xspeed.value = walkSpeed * xDir;
 		}
 	});
 // --------------------------------
@@ -458,6 +463,7 @@ stateMachine.add("Death", {
 		}
 		
 		healthpoints = 0;
+		lifeState = LifeState.DEAD_ONSCREEN;
 		play_sfx(sfxDeath);
 		
 		if (!is_undefined(playerUser)) {

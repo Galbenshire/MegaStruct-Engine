@@ -4,6 +4,7 @@
 // until the white side is in the direction you want solid.
 //
 // Note: only works in the cardinal directions (i.e. up, down, left, right)
+event_inherited();
 
 image_angle = round_to(wrap_angle(image_angle), 90);
 

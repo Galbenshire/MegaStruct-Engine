@@ -1,5 +1,6 @@
 // Entities are your in-game actors
 // Enemies, pickups, the player? All entities.
+event_inherited();
 
 image_speed = 0;
 
@@ -40,9 +41,6 @@ despawnRange = (despawnRange < 0) ? infinity : despawnRange;
 
 inWater = interactWithWater && place_meeting(x, y, objWater); /// @is {bool}
 bubbleTimer = 0; /// @is {int}
-
-subPixelX = 0; /// @is {number}
-subPixelY = 0; /// @is {number}
 
 // Callbacks
 // - Spawning

@@ -203,8 +203,10 @@ enum SolidType {
 #macro MAX_SLOPE_STEEPNESS 1
 
 // -- Player Specific
-#macro COYOTE_FALL_BUFFER 6
+#macro COYOTE_FALL_BUFFER 5
 #macro JUMP_BUFFER 4
+#macro DEFAULT_ICE_DECEL_IDLE 0.025
+#macro DEFAULT_ICE_DECEL_WALK 0.03
 
 #endregion
 

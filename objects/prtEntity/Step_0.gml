@@ -17,6 +17,8 @@ repeat(global.gameTimeScale.integer) {
 	}
 	
     event_user(EVENT_ENTITY_TICK);
+    if (entity_is_dead()) // If the entity ends up dying during this tick, cut the Step Event short
+		exit;
 
     // =====  Standard Entity Stuff =====
     entity_horizontal_movement();
@@ -26,6 +28,8 @@ repeat(global.gameTimeScale.integer) {
     entity_water();
     
     event_user(EVENT_ENTITY_POSTTICK);
+    if (entity_is_dead())
+		exit;
 }
 
 entity_update_subpixels();

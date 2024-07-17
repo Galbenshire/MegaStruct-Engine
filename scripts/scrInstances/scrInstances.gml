@@ -80,5 +80,7 @@ function instance_create(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 ///
 /// @returns {bool}  Whether the instance is related to the object_index (true), or not (false)
 function is_object_type(_obj, _scope = self) {
+	if (!instance_exists(_obj))
+		return false;
     return _scope.object_index == _obj || object_is_ancestor(_scope.object_index, _obj);
 }

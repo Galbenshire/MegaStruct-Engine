@@ -1,3 +1,5 @@
+event_inherited();
+
 splashDirection = array_reduce(splashDirection, function(_prev, _curr, i) /*=>*/ {return _prev | (1 << _curr)}, 0); /// @is {int}
 
 // A reference to the "lines" that make up the bounding box,
