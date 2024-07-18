@@ -26,6 +26,8 @@ function cbkOnDraw_prtEntity(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  Unused here
 function cbkOnDraw_prtPlayer(_whiteflash) {
+	global.spriteAtlas_Player.sprite = skinSprite;
+	
 	if (palette.isSupported) {
 		palette.activate();
         global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);

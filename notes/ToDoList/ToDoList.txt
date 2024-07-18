@@ -7,16 +7,9 @@
         --- Destroy entity once killed. Despawning does not count
         --- Destroy entity once killed or despawned
     -- Custom spawn conditions (e.g. only appear if the camera is moving right)
-- Checkpoint system
-    -- Likely also means being able to tell when a level has started, and when it should end
-- Items
-    -- Picking them up
-    -- Refilling health/ammo
-    -- Preventin picked up items from respawning again
 - Better Options Menu
 - Actual Pause Menu
 - Music
-- Auto-Fire (higher priority)
 - Velocity-altering gimmicks
     -- Conveyor Belts
     -- MM6 Springs
@@ -26,5 +19,8 @@
 - Lives System
 - More player weapons
     -- How to do shields for this engine?
-- Rework lockstack system
-    -- Rather than "adding & removing" locks, think of the locks as more like switches
+    -- How to tackle Rush Coil/Jet
+- More playable characters
+    -- Proto Man
+    -- Bass
+    -- Player specific weapons

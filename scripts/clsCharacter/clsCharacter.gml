@@ -12,6 +12,8 @@ function Character(_config = {}) constructor {
 	colours = _config.colours; /// @is {PalettePlayer}
 	loadout = _config.loadout; /// @is {array<int>} A list of weapons this character will have available to them
 	
+	onGetGunOffset = method(undefined, _config[$ "onGetGunOffset"] ?? __base_gun_offset);
+	
 	#endregion
 	
 	#region Functions - Getters
@@ -41,6 +43,20 @@ function Character(_config = {}) constructor {
 	/// @returns {array<int>}  A copy of this characters's loadout.
 	static get_name = function(_upper = false) {
 		return _upper ? string_upper(name) : name;
+	};
+	
+	#endregion
+	
+	#region Functions - Other
+	
+	/// @func __base_gun_offset(player)
+	static __base_gun_offset = function(_player) {
+		var _offset/*:Vector2*/ = [16, 4];
+		if (_player.isClimbing)
+			_offset[@Vector2.y] -= 2;
+		else if (!_player.ground)
+			_offset[@Vector2.y] -= 5;
+		return _offset;
 	};
 	
 	#endregion

@@ -284,7 +284,7 @@ function player_fire_weapon(_params = {}, _player = self) {
 			shootStandStillLock.activate();
 		
 		// Make the bullet
-		var _gunOffset = player_gun_offset();
+		var _gunOffset = player_get_character().onGetGunOffset(self);
 		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? -1),
@@ -312,25 +312,6 @@ function player_fire_weapon(_params = {}, _player = self) {
 function player_get_character(_player = self) {
 	PLAYER_ONLY_FUNCTION
 	return global.characterList[_player.characterID];
-}
-
-/// @self {prtPlayer}
-/// @func player_gun_offset()
-/// @desc Gets the relative position of the player's gun/arm cannon
-///		  Mainly used to get a base offset when furing a weapon
-///
-/// @param {prtPlayer}  [player]  The player entity to check against. Defaults to the calling instance.
-///
-/// @returns {Vector2}  Gun offset
-function player_gun_offset(_player = self) {
-	PLAYER_ONLY_FUNCTION
-	
-	var _offset/*:Vector2*/ = [16, 4];
-	if (isClimbing)
-		_offset[@Vector2.y] -= 2;
-	else if (!ground)
-		_offset[@Vector2.y] -= 5;
-	return _offset;
 }
 
 /// @func player_is_action_locked(player_action, player)

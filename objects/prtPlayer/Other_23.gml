@@ -183,7 +183,6 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Brake", {
 		enter: function() {
-			xspeed.value = brakeSpeed * image_xscale;
 			animator.play("brake");
 		},
 		tick: function() {
@@ -191,14 +190,16 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			var _move_locked = player_is_action_locked(PlayerAction.MOVE_GROUND);
-			
-			if (xDir != 0 && !_move_locked) {
+			if (player_is_action_locked(PlayerAction.MOVE_GROUND))
+				stateMachine.change("Idle");
+			else if (xDir != 0)
 				stateMachine.change("Walk");
-				return;
-			}
+			else if (is_object_type(objIce, groundInstance))
+				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
+			else
+				xspeed.value = brakeSpeed * image_xscale;
 			
-			if (stateTimer >= brakeFrames || _move_locked)
+			if (stateMachine.timer >= brakeFrames && !stateMachine.has_just_changed())
 				stateMachine.change("Idle");
 		}
 	});

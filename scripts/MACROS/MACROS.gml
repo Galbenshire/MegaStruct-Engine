@@ -352,6 +352,7 @@ enum Vector2 {
 
 enum WeaponType {
 	BUSTER,
+	BUSTER_PROTO,
 	ICE_SLASHER,
 	METAL_BLADE,
 	
