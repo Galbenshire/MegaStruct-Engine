@@ -10,6 +10,8 @@ Toggles fullscreen
 == F4
 Toggles pixel perfect resolution
 
+// The following are only available when DEBUG_ENABLED is set to 1
+
 == F5
 Toggles the debug overlay
 In addition to the standard features, two custom views are available here
@@ -27,3 +29,7 @@ Use the numpad to move the camera around
 Toggles the visibility of various dev layers
 (i.e. collision objects, sections, transition objects, etc.)
 This only works inside of a level
+
+== F9
+Toggles a "Free Movement" mode for player entities controlled by the player user
+They can be moved about throughout the level, intangible to anything

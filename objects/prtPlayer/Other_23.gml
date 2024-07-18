@@ -14,6 +14,7 @@
 // - Climb
 // - Hurt
 // - Death
+// - Debug_FreeMovement
 
 // ================================
 stateMachine.add("StageStart", {
@@ -474,5 +475,54 @@ stateMachine.add("Death", {
 		}
 		
 		instance_destroy();
+	}
+});
+// ================================
+stateMachine.add("Debug_FreeMovement", {
+	enter: function() {
+		isFreeMovement = true;
+		gravEnabled = false;
+		collideWithSolids = false;
+		canTakeDamage = false;
+		interactWithWater = false;
+		xspeed.clear_all();
+		yspeed.clear_all();
+		freeMovementLock.activate();
+		play_sfx(sfxYasichi);
+	},
+	tick: function() {
+		var _spd = 2 + (2 * inputs.is_held(InputActions.SHOOT)) + (6 * inputs.is_held(InputActions.SLIDE));
+		
+		x += _spd * xDir;
+		y += _spd * yDir;
+		image_alpha = (stateMachine.timer mod 80) / 80;
+		
+		var _cellDir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
+		if (_cellDir != 0) {
+			if (inputs.is_held(InputActions.SLIDE))
+				skinCellY = modf(skinCellY + _cellDir, global.spriteAtlas_Player.rows);
+			else
+				skinCellX = modf(skinCellX + _cellDir, global.spriteAtlas_Player.columns);
+		}
+		
+		if (stateMachine.timer mod 4 == 0) {
+			with (instance_create_depth(x + irandom_range(-16, 16), y + irandom_range(-16, 16), depth - 1, objGenericEffect)) {
+				sprite_index = sprShine;
+				image_xscale = choose(-1, 1);
+				image_yscale = choose(-1, 1);
+				animSpeed = 0.2;
+				destroyOnAnimEnd = true;
+			}
+		}
+	},
+	leave: function() {
+		image_alpha = 1;
+		isFreeMovement = false;
+		gravEnabled = true;
+		collideWithSolids = true;
+		canTakeDamage = true;
+		interactWithWater = true;
+		freeMovementLock.deactivate();
+		play_sfx(sfxYasichi);
 	}
 });

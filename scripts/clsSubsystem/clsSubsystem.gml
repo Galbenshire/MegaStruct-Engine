@@ -181,9 +181,25 @@ function Subsystem_Debug() : Subsystem() constructor {
 				}
 			}
 			
-			if (keyboard_check_pressed(vk_f8) && global.roomIsLevel) {
-				var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID , LAYER_TRANSITION];
-				array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), !layer_get_visible(_layer)); });
+			if (global.roomIsLevel) {
+				if (keyboard_check_pressed(vk_f8)) {
+					var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID , LAYER_TRANSITION];
+					array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), !layer_get_visible(_layer)); });
+				}
+				
+				if (keyboard_check_pressed(vk_f9)) {
+					with (global.player) {
+						if (!instance_exists(body))
+							break;
+						if (body.isIntro)
+							break;
+						
+						if (body.isFreeMovement)
+							body.stateMachine.change("Idle");
+						else
+							body.stateMachine.change("Debug_FreeMovement");
+					}
+				}
 			}
         }
     };

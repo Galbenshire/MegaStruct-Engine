@@ -23,7 +23,7 @@ function player_handle_sections() {
 		_checkY = clamp(y, _section.top + 4, _section.bottom - 4),
 		_transition = instance_position(_checkX, _checkY, objScreenTransition);
 	if (instance_exists(_transition)) {
-		if (isClimbing || _transition.image_angle != 90) {
+		if (isClimbing || isFreeMovement || _transition.image_angle != 90) {
 			x = _checkX;
 			y = _checkY;
 			
@@ -287,7 +287,7 @@ function player_fire_weapon(_params = {}, _player = self) {
 		var _gunOffset = player_get_character().onGetGunOffset(self);
 		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
-			_bulletDepth = depth + (_params[$ "depthOffset"] ?? -1),
+			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),
 			_bulletObj = _params.object;
 		
 		var _bullet = spawn_entity(_bulletX, _bulletY, _bulletDepth, _bulletObj, {

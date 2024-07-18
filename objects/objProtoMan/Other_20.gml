@@ -21,7 +21,7 @@ global.characterList[CharacterType.PROTO] = new Character({
     
     onGetGunOffset: function(_player) {
 		var _offset/*:Vector2*/ = [16, 6];
-		if (_player.isClimbing || !_player.ground)
+		if (_player.isClimbing)
 			_offset[@Vector2.y] -= 2;
 		return _offset;
     }
