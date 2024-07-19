@@ -1,6 +1,7 @@
 options = [
-    ["START GAME (CUT MAN)", function() /*=>*/ { go_to_level(lvlCutMan); }],
-    ["START GAME (TEST ROOM)", function() /*=>*/ { go_to_level(lvlSections); }],
+    ["CUT MAN STAGE", function() /*=>*/ { go_to_level(lvlCutMan); }],
+    ["METAL MAN STAGE", function() /*=>*/ { go_to_level(lvlMetalMan); }],
+    ["TEST ROOM", function() /*=>*/ { go_to_level(lvlSections); }],
     [string("CHARACTER: {0}", global.player.get_character().name), function () {
         global.player.character = (global.player.character != CharacterType.MEGA) ? CharacterType.MEGA : CharacterType.PROTO;
         options[1][0] = string("CHARACTER: {0}", global.player.get_character().name);

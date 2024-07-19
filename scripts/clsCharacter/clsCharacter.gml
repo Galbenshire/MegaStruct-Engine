@@ -52,10 +52,8 @@ function Character(_config = {}) constructor {
 	/// @func __base_gun_offset(player)
 	static __base_gun_offset = function(_player) {
 		var _offset/*:Vector2*/ = [16, 4];
-		if (_player.isClimbing)
+		if (_player.isClimbing || !_player.ground)
 			_offset[@Vector2.y] -= 2;
-		else if (!_player.ground)
-			_offset[@Vector2.y] -= 5;
 		return _offset;
 	};
 	
