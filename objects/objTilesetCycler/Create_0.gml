@@ -1,4 +1,10 @@
 tilemap = layer_tilemap_get_id(tilemapLayer);
+if (tilemap == NOT_FOUND) {
+    show_debug_message("No tilemap could be found for objTilesetCycler");
+    instance_destroy();
+    exit;
+}
+
 tilesets = [];
 durations = [];
 tilesetCount = 0;

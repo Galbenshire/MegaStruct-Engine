@@ -1,13 +1,14 @@
 {
   "$GMObject":"",
-  "%Name":"objTilesetCycler",
+  "%Name":"objSpriteLayerAnimator",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":4,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"objTilesetCycler",
+  "name":"objSpriteLayerAnimator",
   "overriddenProperties":[],
   "parent":{
     "name":"Visuals",
@@ -31,14 +32,16 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"tilemapLayer","filters":[],"listItems":[],"multiselect":false,"name":"tilemapLayer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"spriteLayer","filters":[],"listItems":[],"multiselect":false,"name":"spriteLayer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
+    {"$GMObjectProperty":"v1","%Name":"totalFrames","filters":[],"listItems":[],"multiselect":false,"name":"totalFrames","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":1,},
+    {"$GMObjectProperty":"v1","%Name":"frameDuration","filters":[],"listItems":[],"multiselect":false,"name":"frameDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprTilesetCycler",
-    "path":"sprites/sprTilesetCycler/sprTilesetCycler.yy",
+    "name":"sprSpriteLayerAnimator",
+    "path":"sprites/sprSpriteLayerAnimator/sprSpriteLayerAnimator.yy",
   },
   "spriteMaskId":null,
   "visible":false,
