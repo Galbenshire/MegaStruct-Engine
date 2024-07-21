@@ -73,3 +73,18 @@ function draw_set_text_align(_halign, _valign) {
 	draw_set_halign(_halign);
 	draw_set_valign(_valign);
 }
+
+/// @func multiply_colours(colour_1, colour_2)
+/// @desc Generates a new colour by multiplying the channels of the two given colours
+///
+/// @param {int}  colour_1
+/// @param {int}  colour_2
+function multiply_colours(_col1, _col2) {
+	return make_color_rgb(
+		(colour_get_red(_col1) / 255) * (colour_get_red(_col2) / 255) * 255,
+		(colour_get_green(_col1) / 255) * (colour_get_green(_col2) / 255) * 255,
+		(colour_get_blue(_col1) / 255) * (colour_get_blue(_col2) / 255) * 255,
+	);
+}
+// Wisconsin?
+#macro multiply_colors multiply_colours

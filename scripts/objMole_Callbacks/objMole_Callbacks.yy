@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"objMole_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objMole_Callbacks",
+  "parent":{
+    "name":"Mole",
+    "path":"folders/Enemies/Mole.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

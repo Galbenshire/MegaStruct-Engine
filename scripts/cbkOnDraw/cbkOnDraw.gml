@@ -4,7 +4,7 @@
 // By default, this will occur in the Draw Event, and the following will already be accounted for:
 // - If the entity can even be drawn this frame  (e.g. they might be dead)
 // - Whether or not they're in a subpixel position
-// - Whether or not they're experiencing white-flashing fom i-frames
+// - Whether or not they're experiencing white-flashing from i-frames
 //
 // == Parameters
 // whiteflash (bool) - Determines if the entity has a white-flash effect (true) or not (false)
@@ -37,14 +37,8 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 	
 	// Shaders aren't working? Then let's go for our backup: whitemasks
 	var _whitemaskBlends = array_create_ext(4, function(i) /*=>*/ {return (i == 0) ? c_white : palette.outputColours[i - 1]});
-	var _blendChannels = [ colour_get_red(image_blend) / 255, colour_get_green(image_blend) / 255, colour_get_blue(image_blend) / 255 ];
-	
 	for (var i = 0; i < 4; i++) {
-		var _colour = make_color_rgb(
-			(colour_get_red(_whitemaskBlends[i]) / 255) * _blendChannels[0] * 255,
-			(colour_get_green(_whitemaskBlends[i]) / 255) * _blendChannels[1] * 255,
-			(colour_get_blue(_whitemaskBlends[i]) / 255) * _blendChannels[2] * 255,
-		);
+		var _colour = multiply_colours(image_blend, _whitemaskBlends[i]);
 		global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, i, x, y, image_xscale, image_yscale, _colour, image_alpha);
 	}
 }
