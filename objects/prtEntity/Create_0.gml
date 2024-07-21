@@ -19,8 +19,10 @@ hitIgnoreList = []; /// @is {array<prtEntity>}
 
 reticle = (targetingPreset != "No Target") ? (new Reticle()) : undefined; /// @is {Reticle}
 
-xspeed = new Fractional(); /// @is {Fractional}
-yspeed = new Fractional(); /// @is {Fractional}
+xspeed = new Fractional();
+yspeed = new Fractional();
+externalXForce = new Fractional();
+externalYForce = new Fractional();
 
 xcoll = 0;
 xcollInstance = noone; /// @is {instance}

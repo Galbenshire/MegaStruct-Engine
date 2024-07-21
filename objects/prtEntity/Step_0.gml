@@ -21,6 +21,7 @@ repeat(global.gameTimeScale.integer) {
 		exit;
 
     // =====  Standard Entity Stuff =====
+    entity_handle_external_forces();
     entity_horizontal_movement();
     entity_vertical_movement();
     entity_check_ground();

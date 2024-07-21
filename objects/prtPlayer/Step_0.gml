@@ -20,6 +20,7 @@ repeat(_gameTicks) {
 
     // =====  Standard Entity Stuff =====
     if (!player_is_action_locked(PlayerAction.PHYSICS)) {
+    	entity_handle_external_forces();
 		entity_horizontal_movement();
 		entity_vertical_movement();
 		entity_check_ground();

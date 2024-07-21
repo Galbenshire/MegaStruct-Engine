@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"objCrusher_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objCrusher_Callbacks",
+  "parent":{
+    "name":"Crusher",
+    "path":"folders/Gimmicks/Crusher.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

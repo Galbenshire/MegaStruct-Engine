@@ -137,6 +137,32 @@ function entity_gravity(_force = grav) {
 }
 
 /// @self {prtEntity}
+/// @func entity_handle_external_forces()
+/// @desc Entity interactions with movement-based gimmicks
+function entity_handle_external_forces() {
+	externalXForce.value = 0;
+	externalYForce.value = 0;
+	
+	// Conveyor Belts
+	if (place_meeting(x, y, objConveyorBeltArea) && ground && !asset_has_tags(object_index, "ignore_coveyor", asset_object)) {
+		var _belt = instance_place(x, y, objConveyorBeltArea);
+		if (instance_exists(_belt))
+			externalXForce.value += _belt.force * sign(_belt.image_xscale);
+	}
+	
+	externalXForce.update();
+	externalYForce.update();
+	
+	if (collideWithSolids) {
+		move_and_collide_x(externalXForce.integer);
+		move_and_collide_y(externalYForce.integer);
+	} else {
+		move_x(externalXForce.integer);
+		move_y(externalYForce.integer);
+	}
+}
+
+/// @self {prtEntity}
 /// @func entity_horizontal_movement()
 /// @desc Moves an entity horizontally
 function entity_horizontal_movement() {
