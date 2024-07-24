@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"objPierogear_Callbacks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"objPierogear_Callbacks",
+  "parent":{
+    "name":"Pierobot",
+    "path":"folders/Enemies/Pierobot.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
