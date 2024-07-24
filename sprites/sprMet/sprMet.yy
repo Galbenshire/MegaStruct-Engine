@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Met",
-    "path":"folders/Enemies/Met.yy",
+    "path":"folders/Enemies/MM1/Met.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

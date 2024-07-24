@@ -6,7 +6,7 @@
   "name":"objFlyingShell_Callbacks",
   "parent":{
     "name":"Flying Shell",
-    "path":"folders/Enemies/Flying Shell.yy",
+    "path":"folders/Enemies/MM1/Flying Shell.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

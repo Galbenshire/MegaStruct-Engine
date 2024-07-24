@@ -49,7 +49,7 @@
   "origin":9,
   "parent":{
     "name":"Big Eye",
-    "path":"folders/Enemies/Big Eye.yy",
+    "path":"folders/Enemies/MM1/Big Eye.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

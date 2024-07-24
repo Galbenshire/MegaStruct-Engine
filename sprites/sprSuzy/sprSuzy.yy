@@ -47,7 +47,7 @@
   "origin":0,
   "parent":{
     "name":"Suzy",
-    "path":"folders/Enemies/Suzy.yy",
+    "path":"folders/Enemies/MM1/Suzy.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

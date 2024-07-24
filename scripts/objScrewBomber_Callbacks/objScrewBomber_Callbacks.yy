@@ -6,7 +6,7 @@
   "name":"objScrewBomber_Callbacks",
   "parent":{
     "name":"Screw Bomber",
-    "path":"folders/Enemies/Screw Bomber.yy",
+    "path":"folders/Enemies/MM1/Screw Bomber.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

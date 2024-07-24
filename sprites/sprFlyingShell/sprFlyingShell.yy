@@ -27,7 +27,7 @@
   "origin":4,
   "parent":{
     "name":"Flying Shell",
-    "path":"folders/Enemies/Flying Shell.yy",
+    "path":"folders/Enemies/MM1/Flying Shell.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

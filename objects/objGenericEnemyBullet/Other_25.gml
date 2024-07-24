@@ -3,6 +3,6 @@ if (!is_undefined(onPostTick))
 	onPostTick();
 
 if (deathOnSolids && (xcoll != 0 || ycoll != 0))
-    onDeath(new DamageSourceSelf());
+    entity_kill_self();
 if (lifeDuration > 0 && lifeTimer >= lifeDuration)
-	onDeath(new DamageSourceSelf());
+	entity_kill_self();

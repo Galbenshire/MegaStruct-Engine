@@ -6,7 +6,7 @@
   "name":"objMole_Callbacks",
   "parent":{
     "name":"Mole",
-    "path":"folders/Enemies/Mole.yy",
+    "path":"folders/Enemies/MM2/Mole.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

@@ -17,7 +17,7 @@
   ],
   "parent":{
     "name":"Flying Shell",
-    "path":"folders/Enemies/Flying Shell.yy",
+    "path":"folders/Enemies/MM1/Flying Shell.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

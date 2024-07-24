@@ -35,6 +35,35 @@ function cbkOnGuard_prtEntity(_damageSource) {
         show_debug_message("Guard - {0} (against {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
 }
 
+// == Callback Presets ==
+
+/// @func cbkOnGuard_alwaysIgnore(damage_source)
+/// @desc A simple "ignore all shots" onGuard callback
+///       All attacks will be ignored
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnGuard_alwaysIgnore(_damageSource) {
+    _damageSource.guard = GuardType.IGNORE;
+}
+
+/// @func cbkOnGuard_alwaysReflect(damage_source)
+/// @desc A simple "reflect all shots" onGuard callback
+///       All non-penetrating attacks will be reflected
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnGuard_alwaysReflect(_damageSource) {
+    _damageSource.guard = GuardType.REFLECT;
+}
+
+/// @func cbkOnGuard_alwaysReflectOrIgnore(damage_source)
+/// @desc A simple "reflect/ignore all shots" onGuard callback
+///       All attacks will be reflected or ignored (depending on the attacker's `penetrate` variable)
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnGuard_alwaysReflectOrIgnore(_damageSource) {
+    _damageSource.guard = GuardType.REFLECT_OR_IGNORE;
+}
+
 /// @func cbkOnGuard_imageIndex(damage_source)
 /// @desc A simple "reflect shots" onGuard callback
 ///       When the entity's image_index is a value other than 0,

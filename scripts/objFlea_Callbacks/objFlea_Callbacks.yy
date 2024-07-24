@@ -6,7 +6,7 @@
   "name":"objFlea_Callbacks",
   "parent":{
     "name":"Flea",
-    "path":"folders/Enemies/Flea.yy",
+    "path":"folders/Enemies/MM1/Flea.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

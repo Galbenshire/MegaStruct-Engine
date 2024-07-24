@@ -46,7 +46,7 @@
   "origin":4,
   "parent":{
     "name":"Pierobot",
-    "path":"folders/Enemies/Pierobot.yy",
+    "path":"folders/Enemies/MM2/Pierobot.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

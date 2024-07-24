@@ -6,7 +6,7 @@
   "name":"objPierogear_Callbacks",
   "parent":{
     "name":"Pierobot",
-    "path":"folders/Enemies/Pierobot.yy",
+    "path":"folders/Enemies/MM2/Pierobot.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

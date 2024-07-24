@@ -6,7 +6,7 @@
   "name":"objSniperJoe_Callbacks",
   "parent":{
     "name":"Sniper Joe",
-    "path":"folders/Enemies/Sniper Joe.yy",
+    "path":"folders/Enemies/MM2/Sniper Joe.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

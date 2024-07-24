@@ -6,7 +6,7 @@
   "name":"objBeak_Callbacks",
   "parent":{
     "name":"Beak",
-    "path":"folders/Enemies/Beak.yy",
+    "path":"folders/Enemies/MM1/Beak.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

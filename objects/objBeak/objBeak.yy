@@ -19,7 +19,7 @@
   ],
   "parent":{
     "name":"Beak",
-    "path":"folders/Enemies/Beak.yy",
+    "path":"folders/Enemies/MM1/Beak.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

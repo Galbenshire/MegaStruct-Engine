@@ -26,7 +26,7 @@
   "origin":4,
   "parent":{
     "name":"Beak",
-    "path":"folders/Enemies/Beak.yy",
+    "path":"folders/Enemies/MM1/Beak.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

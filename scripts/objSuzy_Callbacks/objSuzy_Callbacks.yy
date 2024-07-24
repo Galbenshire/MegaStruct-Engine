@@ -6,7 +6,7 @@
   "name":"objSuzy_Callbacks",
   "parent":{
     "name":"Suzy",
-    "path":"folders/Enemies/Suzy.yy",
+    "path":"folders/Enemies/MM1/Suzy.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

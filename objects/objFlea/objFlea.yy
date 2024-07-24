@@ -15,7 +15,7 @@
   ],
   "parent":{
     "name":"Flea",
-    "path":"folders/Enemies/Flea.yy",
+    "path":"folders/Enemies/MM1/Flea.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

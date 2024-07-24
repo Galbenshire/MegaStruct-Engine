@@ -18,7 +18,7 @@
   ],
   "parent":{
     "name":"Pierobot",
-    "path":"folders/Enemies/Pierobot.yy",
+    "path":"folders/Enemies/MM2/Pierobot.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

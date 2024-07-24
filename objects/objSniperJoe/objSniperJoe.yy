@@ -17,7 +17,7 @@
   ],
   "parent":{
     "name":"Sniper Joe",
-    "path":"folders/Enemies/Sniper Joe.yy",
+    "path":"folders/Enemies/MM2/Sniper Joe.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

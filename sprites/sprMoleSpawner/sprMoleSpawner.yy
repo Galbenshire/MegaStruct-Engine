@@ -45,7 +45,7 @@
   "origin":0,
   "parent":{
     "name":"Mole",
-    "path":"folders/Enemies/Mole.yy",
+    "path":"folders/Enemies/MM2/Mole.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

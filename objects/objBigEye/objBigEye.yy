@@ -18,7 +18,7 @@
   ],
   "parent":{
     "name":"Big Eye",
-    "path":"folders/Enemies/Big Eye.yy",
+    "path":"folders/Enemies/MM1/Big Eye.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

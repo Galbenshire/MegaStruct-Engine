@@ -112,12 +112,8 @@ function entity_entity_collision(_damage = contactDamage, _subject = other) {
 		other.onAttackEnd(_damageSource);
 	}
 	
-	if (pierces == PierceType.NEVER || (pierces == PierceType.ON_KILLS_ONLY && !_damageSource.hasKilled)) {
-		var _selfDamage = new DamageSourceSelf();
-		_selfDamage.hasKilled = true;
-		onDeath(_selfDamage);
-		delete _selfDamage;
-	}
+	if (pierces == PierceType.NEVER || (pierces == PierceType.ON_KILLS_ONLY && !_damageSource.hasKilled))
+		entity_kill_self();
 	
 	delete _damageSource;
 }
@@ -144,7 +140,7 @@ function entity_handle_external_forces() {
 	externalYForce.value = 0;
 	
 	// Conveyor Belts
-	if (place_meeting(x, y, objConveyorBeltArea) && ground && !asset_has_tags(object_index, "ignore_coveyor", asset_object)) {
+	if (place_meeting(x, y, objConveyorBeltArea) && ground && !asset_has_tags(object_index, "ignore_conveyor", asset_object)) {
 		var _belt = instance_place(x, y, objConveyorBeltArea);
 		if (instance_exists(_belt))
 			externalXForce.value += _belt.force * sign(_belt.image_xscale);
@@ -404,6 +400,15 @@ function entity_is_dead(_scope = self) {
 /// @returns {bool}  If the entity is solid to the target (true) or not (false)
 function entity_is_solid_to_entity(_target, _scope = self) {
 	return _target != _scope && !entity_is_dead(_scope) && (entity_get_faction_solids(_scope) & _target.factionLayer > 0);
+}
+
+/// @func entity_kill_self(scope)
+/// @desc Tells the specified entity to kill itself, by calling its onDeath callback
+function entity_kill_self(_scope = self) {
+	var _selfDamage = new DamageSourceSelf(_scope);
+	_selfDamage.hasKilled = true;
+	_scope.onDeath(_selfDamage);
+	delete _selfDamage;
 }
 
 #endregion

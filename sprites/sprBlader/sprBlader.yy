@@ -27,7 +27,7 @@
   "origin":4,
   "parent":{
     "name":"Blader",
-    "path":"folders/Enemies/Blader.yy",
+    "path":"folders/Enemies/MM1/Blader.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

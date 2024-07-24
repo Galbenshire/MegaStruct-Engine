@@ -22,7 +22,7 @@
   ],
   "parent":{
     "name":"Pierobot",
-    "path":"folders/Enemies/Pierobot.yy",
+    "path":"folders/Enemies/MM2/Pierobot.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -54,7 +54,7 @@
   },
   "spriteMaskId":null,
   "tags":[
-    "ignore_coveyor",
+    "ignore_conveyor",
   ],
   "visible":true,
 }

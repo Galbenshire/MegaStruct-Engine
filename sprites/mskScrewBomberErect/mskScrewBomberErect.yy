@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"Screw Bomber",
-    "path":"folders/Enemies/Screw Bomber.yy",
+    "path":"folders/Enemies/MM1/Screw Bomber.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

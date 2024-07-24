@@ -70,23 +70,27 @@ function get_xcoll_candidates(_range, _scope = self) {
     
     with (_scope) {
         for (var i = 0; i < _count; i++) {
-            if (_list[| i].id == self.id)
+			var _candidate = _list[| i];
+			
+            if (_candidate.id == self.id)
                 continue;
-            if (is_object_type(prtEntity, _list[| i]) && !entity_is_solid_to_entity(_scope, _list[| i]))
+            if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
                 continue;
+            if (is_object_type(objCustomSolid, _candidate) && !array_contains(_candidate.entityWhitelist, self.object_index))
+				continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
             
-            switch (_list[| i].solidType) {
+            switch (_candidate.solidType) {
                 case SolidType.SOLID: // Always a candidate
                 case SolidType.SLOPE_SOLID:
                     _valid = 1;
                     break;
                 case SolidType.LEFT_SOLID: // Only count if we're moving to the left, and aren't already inside it
-                    _valid = (_range >= 0) && (bbox_right <= _list[| i].bbox_left);
+                    _valid = (_range >= 0) && (bbox_right <= _candidate.bbox_left);
                     break;
                 case SolidType.RIGHT_SOLID: // Only count if we're moving to the right, and aren't already inside it
-                    _valid = (_range < 0) && (bbox_left >= _list[| i].bbox_right);
+                    _valid = (_range < 0) && (bbox_left >= _candidate.bbox_right);
                     break;
                 case SolidType.SLOPE: // Always a candidate, but should be last in the array
                     _valid = 2;
@@ -94,9 +98,9 @@ function get_xcoll_candidates(_range, _scope = self) {
             }
             
             if (_valid == 1)
-                array_insert(_results, 0, _list[| i]);
+                array_insert(_results, 0, _candidate);
             else if (_valid == 2)
-                array_push(_results, _list[| i]);
+                array_push(_results, _candidate);
         }
     }
     
@@ -122,44 +126,48 @@ function get_ycoll_candidates(_range, _scope = self) {
     
     with (_scope) {
         for (var i = 0; i < _count; i++) {
-            if (_list[| i].id == self.id)
+			var _candidate = _list[| i];
+			
+            if (_candidate.id == self.id)
                 continue;
-            if (is_object_type(prtEntity, _list[| i]) && !entity_is_solid_to_entity(_scope, _list[| i]))
-            	continue;
+            if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+				continue;
+            if (is_object_type(objCustomSolid, _candidate) && !array_contains(_candidate.entityWhitelist, self.object_index))
+				continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
             
-            switch (_list[| i].solidType) {
+            switch (_candidate.solidType) {
                 case SolidType.SOLID: // Always a candidate
                     _valid = 1;
                     break;
                 case SolidType.TOP_SOLID: // Only count if we're moving down, and aren't already inside it
-                    _valid = _range >= 0 && (bbox_bottom <= _list[| i].bbox_top);
+                    _valid = _range >= 0 && (bbox_bottom <= _candidate.bbox_top);
                     break;
                 case SolidType.BOTTOM_SOLID: // Only count if we're moving up, and aren't already inside it
-                    _valid = _range < 0 && (bbox_top >= _list[| i].bbox_bottom);
+                    _valid = _range < 0 && (bbox_top >= _candidate.bbox_bottom);
                     break;
                 case SolidType.GRAV_DIR_SOLID: // Only count if we're moving in the direction of gravity, and aren't already inside it
-                	_valid = _range * gravDir >= 0 && !place_meeting(x, y, _list[| i]);
+                	_valid = _range * gravDir >= 0 && !place_meeting(x, y, _candidate);
                 	break;
                 case SolidType.SLOPE: // The entity's x-center must be within the slope
-                    var _is_steep = slope_is_steep(_list[| i]),
-                        _xscale = _list[| i].image_xscale,
-                        _left_bounds = _list[| i].bbox_left - _bboxWidth * (_is_steep && _xscale < 0),
-                        _right_bounds = _list[| i].bbox_right + _bboxWidth * (_is_steep && _xscale > 0);
+                    var _is_steep = slope_is_steep(_candidate),
+                        _xscale = _candidate.image_xscale,
+                        _left_bounds = _candidate.bbox_left - _bboxWidth * (_is_steep && _xscale < 0),
+                        _right_bounds = _candidate.bbox_right + _bboxWidth * (_is_steep && _xscale > 0);
                     _valid = 2 * (_bboxXCenter >= _left_bounds && _bboxXCenter < _right_bounds);
                     break;
                 case SolidType.SLOPE_SOLID: // Depends on if the solid is exposed on either sides
-                    var _left_bounds = _list[| i].bbox_left - _bboxWidth * _list[| i].exposedLeft,
-                        _right_bounds = _list[| i].bbox_right + _bboxWidth * _list[| i].exposedRight;
+                    var _left_bounds = _candidate.bbox_left - _bboxWidth * _candidate.exposedLeft,
+                        _right_bounds = _candidate.bbox_right + _bboxWidth * _candidate.exposedRight;
                     _valid = _bboxXCenter >= _left_bounds && _bboxXCenter < _right_bounds;
                     break;
             }
             
             if (_valid == 1)
-                array_insert(_results, 0, _list[| i]);
+                array_insert(_results, 0, _candidate);
             else if (_valid == 2)
-                array_push(_results, _list[| i]);
+                array_push(_results, _candidate);
         }
     }
     

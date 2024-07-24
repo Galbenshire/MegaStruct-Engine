@@ -12,7 +12,7 @@ function cbkOnSpawn_objSniperJoe() {
 }
 
 /// @func cbkOnGuard_objSniperJoe(damage_source)
-/// @desc objSnipeJoe onGuard callback
+/// @desc objSniperJoe onGuard callback
 function cbkOnGuard_objSniperJoe(_damageSource) {
     if (image_index != 0)
         return;
