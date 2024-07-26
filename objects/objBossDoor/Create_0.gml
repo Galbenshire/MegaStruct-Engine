@@ -12,10 +12,10 @@ startYScale = image_yscale;
 doorOpener = new Fractional(doorOpenSpeed);
 isOpen = false;
 
-boundsLeft = bbox_left + 3;
-boundsTop = bbox_top + 3;
-boundRight = bbox_right - 3;
-boundBottom = bbox_bottom - 3;
+boundsLeft = bbox_left + 2;
+boundsTop = bbox_top + 2;
+boundRight = bbox_right - 2;
+boundBottom = bbox_bottom - 2;
 
 __canOpen = false;
 __isInsideView = false;

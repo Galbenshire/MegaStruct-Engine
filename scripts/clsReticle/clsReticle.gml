@@ -173,7 +173,7 @@ function fnsReticle_onRetarget_PickAtRandom() {
         _owner = owner;
     with (prtEntity) {
         if (entity_can_target_entity(self, _owner))
-            array_push(_entities, self);
+            array_push(_entities, self.id);
     }
     
     if (array_length(_entities) <= 0)

@@ -13,6 +13,7 @@ factionMask = array_reduce(factionMask, function(_prev, _curr, i) /*=>*/ {return
 factionTargetWhitelist = array_reduce(factionTargetWhitelist, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
 factionSolidWhitelist = array_reduce(factionSolidWhitelist, function(_prev, _curr, i) /*=>*/ {return _prev | _curr}, 0); /// @is {int}
 
+damageTable = new DamageTable();
 hitTimer = 9999;
 lastHitBy = noone; /// @is {prtEntity}
 hitIgnoreList = []; /// @is {array<prtEntity>}
@@ -69,11 +70,11 @@ switch (targetingPreset) {
 		reticle.set_on_update(fnsReticle_onUpdate_AlwaysRetarget);
 		reticle.set_on_retarget(fnsReticle_onRetarget_PickNearest);
 		break;
-	case "SwitchRegularly":
+	case "Switch Regularly":
 		reticle.set_on_update(fnsReticle_onUpdate_SwitchRegularly);
 		reticle.set_on_retarget(fnsReticle_onRetarget_PickAtRandom);
 		break;
-	case "PickOnce":
+	case "Pick Once":
 		reticle.set_on_retarget(fnsReticle_onRetarget_PickAtRandom);
 		break;
 }

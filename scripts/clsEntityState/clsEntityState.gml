@@ -14,6 +14,18 @@ function EntityState(_initState, _execEnter = true) constructor {
     
     #region Entity State Functions
     
+    /// @method change_substate(new_substate)
+	/// @desc Changes the substate of the currently running state
+	///
+	/// @param {number}  new_substate  The new substate
+	///
+	/// @returns {EntityState}  A reference to this struct. Useful for method chaining.
+    static change_substate = function(_newSubstate) {
+        timer = 0;
+        substate = _newSubstate;
+        return self;
+    };
+    
     /// @method has_just_changed()
 	/// @desc Returns if the state machine has just recently changed state
 	///

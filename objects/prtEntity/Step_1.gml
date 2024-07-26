@@ -32,7 +32,9 @@ switch (lifeState) {
 		break;
 	
 	case LifeState.DEAD_OFFSCREEN:
-		if (entity_within_respawn_range()) {
+		// The room timer check is to ensure things aren't spawning right away on room start,
+		// before we even deactivated instances outside of the starting section
+		if (entity_within_respawn_range() && global.roomTimer != 0) {
 			lifeState = LifeState.ALIVE;
 			inWater = interactWithWater && place_meeting(x, y, objWater);
 			onSpawn();

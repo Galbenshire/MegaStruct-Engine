@@ -297,6 +297,11 @@ function player_fire_weapon(_params = {}, _player = self) {
 		_bullet.owner = id;
 		_bullet.playerID = playerID;
 		
+		signal_bus().emit_signal("playerShot", {
+			player: other.id,
+			projectile: _bullet
+		});
+		
 		return _bullet;
 	}
 	

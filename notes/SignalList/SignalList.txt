@@ -1,3 +1,13 @@
+==== PLAYER RELATED ====
+
+=== playerShot(player, projectile) ===
+-- The player has just fired a weapon
+- @param {prtPlayer}  player  The player entity that just fired a shot
+- @param {instance}  projectile  The projectile being fired
+
+
+==== MISC. ====
+
 === appSurfaceResize() ===
 -- The application surface has been resized
 

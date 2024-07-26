@@ -52,6 +52,7 @@ function FrameAnimationPlayer() constructor {
 		_anim.frames = array_length(_framesDurations);
 		_anim.frameDurations = _framesDurations;
 		_anim.resetFrame = _resetFrame;
+		_anim.flags = array_create(_anim.frames);
 		
 		animationMap[$ _anim.id] = _anim;
 		

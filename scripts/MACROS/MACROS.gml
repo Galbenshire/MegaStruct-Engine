@@ -387,7 +387,10 @@ enum DeferType {
 	
 	DRAW,
 	DRAW_BEGIN,
-	DRAW_END
+	DRAW_END,
+	
+	ROOM_START,
+	ROOM_END
 }
 
 // -- Pausing

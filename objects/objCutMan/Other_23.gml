@@ -23,7 +23,7 @@ stateMachine.add("Run", {
 		if (reticle.distance_to_target_x() <= 48) {
 			if (cutterExists || airThrowTimer > 0) {
 				stateMachine.change("Jump");
-				xspeed.value = calculate_arc_speed(x, y, reticle.x, y, yspeed.value, grav);
+				xspeed.value = calculate_horizontal_jump_speed(reticle.x - x, yspeed.value, grav);
 			} else {
 				stateMachine.change((random(1) < 0.375) ? "CutterPose" : "ThrowCutter");
 				xspeed.value = 0;
@@ -77,15 +77,11 @@ stateMachine.add("ThrowCutter", {
 		
 		if (stateMachine.substate == 0) {
 			if (shootFlag) {
-				show_debug_message("threw cutter");
-				
 				cutterInstance = spawn_entity(x, y, depth, objCutManCutter);
 				cutterInstance.xspeed.value = 3 * image_xscale;
 				cutterInstance.owner = self;
+				set_velocity_vector(3, point_direction(x, y, reticle.x, reticle.y), cutterInstance);
 				cutterExists = true;
-				
-				var _direction = point_direction(x, y, reticle.x, reticle.y);
-				set_velocity_vector(3, _direction, cutterInstance);
 				
 				stateMachine.substate++;
 				stateMachine.timer = 0;

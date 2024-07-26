@@ -13,7 +13,8 @@
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
 function cbkOnSetDamage_prtEntity(_damageSource) {
-    // todo - damage calculation
+    with (_damageSource)
+        set_damage(other.damageTable.evaluate_damage(attacker, damage));
 }
 
 /// @func cbkOnSetDamage_prtPlayer(damage_source)
@@ -33,4 +34,5 @@ function cbkOnSetDamage_prtPlayer(_damageSource) {
 /// @param {DamageSource}  damage_source  Details on the attack
 function cbkOnSetDamage_prtBoss(_damageSource) {
     _damageSource.set_damage(1); // All attacks deal 1 damage by default
+    cbkOnSetDamage_prtEntity(_damageSource); // Weaknesses then get applied
 }

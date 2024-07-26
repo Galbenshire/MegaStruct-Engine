@@ -1,3 +1,124 @@
+#region Leaps & Bounds
+
+/// @func calculate_arc_speed(start_x, start_y, end_x, end_y, yspeed, grav, limit)
+/// @desc Given a jump speed, this function calculates the speed needed to get from one position to another
+///
+/// @param {number}  start_x  x-coordinate of the starting position
+/// @param {number}  start_y  y-coordinate of the starting position
+/// @param {number}  end_x  x-coordinate of the target position
+/// @param {number}  end_y  y-coordinate of the target position
+/// @param {number}  yspeed  vertical speed during the arc
+/// @param {number}  grav  The gravity in effect during the arc
+/// @param {number}  [limit]  Maximum possible speed. Defaults to 8.
+///
+/// @returns {number}  The speed required to achieve the jump height
+function calculate_arc_speed(_startX, _startY, _endX, _endY, _yspeed, _grav, _limit = 8) {
+	if (_yspeed == 0 || _grav == 0)
+		return 0;
+	
+	var _airTime = max(0, -_yspeed / _grav),
+		_maxYDelta = _yspeed * _airTime + 0.5 * _grav * power(_airTime, 2),
+		_yDelta = _endY - _startY;
+	
+	if (sign(_maxYDelta) != sign(_maxYDelta - _yDelta))
+		_yDelta = _maxYDelta - sign(_maxYDelta);
+	
+	var _radical = power(_yspeed, 2) - 4 * (_grav / 2) * (-_yDelta);
+    if (_radical <= 0) {
+        // if nonsense somehow, than quit
+        show_debug_message("nonsense radical in {0}", _GMFUNCTION_);
+        return 0;
+    }
+    
+    // figure out time it'll take for the projetile's y to reach the same as the target
+    _airTime = (-_yspeed + sqrt(_radical)) / _grav;
+    
+    // if the answer given is nonsense, then try subtracting the quadratic instead of adding
+    if (_airTime <= 0) {
+        _airTime = (-_yspeed - sqrt(_radical)) / _grav;
+        
+        // if still nonsense somehow, then quit
+        if (_airTime <= 0) {
+            show_debug_message("nonsense airtime in {0}", _GMFUNCTION_);
+            return 0;
+        }
+    }
+    
+    var _xspeed = (_endX - _startX) / _airTime;
+    if (_limit > 0)
+		_xspeed = clamp(_xspeed, -_limit, _limit);
+	
+	return _xspeed;
+}
+
+/// @func calculate_horizontal_jump_speed(distance, yspeed, grav, limit)
+/// @desc Given distance, vertical speed, & gravity, calculate the horizontal speed needed to cover said distance
+///
+/// @param {number}  distance  The horizontal distance to cover in the jump
+/// @param {number}  yspeed  The vertical speed of the jump
+/// @param {number}  grav  The gravity in effect during the jump
+/// @param {number}  [limit]  Maximum speed allowed. Defaults to 8.
+///
+/// @returns {number}  The speed required to cover the jump distance
+function calculate_horizontal_jump_speed(_distance, _yspeed, _grav, _limit = 8) {
+	if (_grav == 0 || _yspeed == 0) {
+		show_debug_message("no {0} supplied to {1}", (_grav == 0) ? "gravity" : "yspeed", _GMFUNCTION_);
+		return 0;
+	} else if (_grav * _yspeed < 0) {
+		show_debug_message("incompatible yspeed & gravity supplied to {0}", _GMFUNCTION_);
+		return 0;
+	}
+	
+	_limit = abs(_limit);
+	
+	var _airTime = (2 * _yspeed) / _grav,
+		_xspeed = _distance / _airTime;
+	
+	return clamp(_xspeed, -_limit, _limit);
+}
+
+/// @func calculate_jump_velocity(distance, height, grav, x_limit, y_limit)
+/// @desc Returns a velocity vector that covers a jump of the given distance, height, & gravity
+///
+/// @param {number}  distance  The horizontal distance to cover in the jump
+/// @param {number}  height  The height of the jump
+/// @param {number}  grav  The gravity in effect during the jump
+/// @param {number}  [x_limit]  Maximum horizontal speed allowed. Defaults to 8.
+/// @param {number}  [y_limit]  Maximum vertical speed allowed. Defaults to 10.
+///
+/// @returns {Vector2}  The velocity required to cover the jump
+function calculate_jump_velocity(_distance, _height, _grav, _xLimit = 8, _yLimit = 10) {
+	var _velocity/*:Vector2*/ = array_create(Vector2.sizeof);
+	_velocity[@Vector2.y] = calculate_vertical_jump_speed(_height, _grav, _yLimit);
+	_velocity[@Vector2.x] = calculate_horizontal_jump_speed(_distance, _velocity[Vector2.y], _grav, _xLimit);
+	return _velocity;
+}
+
+/// @func calculate_vertical_jump_speed(height, grav, limit)
+/// @desc Given a height & gravity, calculate the speed needed to achieve a jump of that height
+///
+/// @param {number}  height  The height of the jump
+/// @param {number}  grav  The gravity in effect during the jump
+/// @param {number}  [limit]  Maximum speed allowed. Defaults to 10.
+///
+/// @returns {number}  The speed required to achieve the jump height
+function calculate_vertical_jump_speed(_height, _grav, _limit = 10) {
+	if (_grav == 0 || _height == 0) {
+		show_debug_message("no {0} supplied to {1}", (_grav == 0) ? "gravity" : "height", _GMFUNCTION_);
+		return 0;
+	} else if (_grav * _height < 0) {
+		show_debug_message("incompatible height & gravity supplied to {0}", _GMFUNCTION_);
+		return 0;
+	}
+	
+	_limit = abs(_limit);
+	
+	var _yspeed = sqrt(2 * _grav * _height) * -sign(_grav);
+	return clamp(_yspeed, -_limit, _limit);
+}
+
+#endregion
+
 #region Lerping
 
 /// @func invlerp(a, b, amt)
@@ -124,84 +245,6 @@ function approach(_start, _end, _amount) {
 	return (_start < _end)
 		? min(_start + _amount, _end) 
 		: max(_start - _amount, _end);
-}
-
-/// @func calculate_arc_speed(start_x, start_y, end_x, end_y, yspeed, grav, limit)
-/// @desc Given a jump speed, this function calculates the speed needed to get from one position to another
-///
-/// @param {number}  start_x  x-coordinate of the starting position
-/// @param {number}  start_y  y-coordinate of the starting position
-/// @param {number}  end_x  x-coordinate of the target position
-/// @param {number}  end_y  y-coordinate of the target position
-/// @param {number}  yspeed  vertical speed during the arc
-/// @param {number}  grav  The gravity in effect during the arc
-/// @param {number}  [limit]  Maximum possible speed. Defaults to 8.
-///
-/// @returns {number}  The speed required to achieve the jump height
-function calculate_arc_speed(_startX, _startY, _endX, _endY, _yspeed, _grav, _limit = 8) {
-	if (_yspeed == 0 || _grav == 0)
-		return 0;
-	
-	var _airTime = max(0, -_yspeed / _grav),
-		_maxYDelta = _yspeed * _airTime + 0.5 * _grav * power(_airTime, 2),
-		_yDelta = _endY - _startY;
-	
-	if (sign(_maxYDelta) != sign(_maxYDelta - _yDelta))
-		_yDelta = _maxYDelta - sign(_maxYDelta);
-	
-	var _radical = power(_yspeed, 2) - 4 * (_grav / 2) * (-_yDelta);
-    if (_radical <= 0) {
-        // if nonsense somehow, than quit
-        show_debug_message("nonsense radical in {0}", _GMFUNCTION_);
-        return 0;
-    }
-    
-    // figure out time it'll take for the projetile's y to reach the same as the target
-    _airTime = (-_yspeed + sqrt(_radical)) / _grav;
-    
-    // if the answer given is nonsense, then try subtracting the quadratic instead of adding
-    if (_airTime <= 0) {
-        _airTime = (-_yspeed - sqrt(_radical)) / _grav;
-        
-        // if still nonsense somehow, then quit
-        if (_airTime <= 0) {
-            show_debug_message("nonsense airtime in {0}", _GMFUNCTION_);
-            return 0;
-        }
-    }
-    
-    var _xDelta = _endX - _startX,
-		_newXSpeed = _xDelta / _airTime;
-    
-    if (_limit > 0) {
-		_limit = abs(_limit);
-		_newXSpeed = clamp(_newXSpeed, -_limit, _limit);
-    }
-	
-	return _newXSpeed;
-}
-
-/// @func calculate_jump_speed(height, grav, limit)
-/// @desc Calculates the speed needed to achieve a jump of a given height, taking graity into account
-///
-/// @param {number}  height  The height of the jump
-/// @param {number}  grav  The gravity in effect during the jump
-/// @param {number}  [limit]  Maximum possible speed. Defaults to 10.
-///
-/// @returns {number}  The speed required to achieve the jump height
-function calculate_jump_speed(_height, _grav, _limit = 10) {
-	_height = abs(_height);
-	_grav = abs(_grav);
-	_limit = abs(_limit);
-	
-	if (_grav > 0) {
-		show_debug_message("no gravity supplied to calculate_jump_speed");
-		return 0;
-	}
-	
-	var _yspeed = -sqrt(abs(2 * _grav * _height));
-	_yspeed = min(_yspeed, _limit);
-	return _yspeed;
 }
 
 /// @func distance_to_point_target(x, y, target)
