@@ -4,6 +4,7 @@
 #macro GAME_SPEED 60 // How fast the game is expected to be (in FPS)
 #macro GAME_WIDTH 256 // Resolution width of the game (in pixels)
 #macro GAME_HEIGHT 224 // Resolution height of the game (in pixels)
+#macro CONSOLE_MAX_LINES 16 // Maximum number of lines allowed in the debug console
 
 #endregion
 
@@ -27,6 +28,7 @@ assert(__init == 1, "Only one instance of {0} can be present at any time.", inst
 #macro INFINITE_RANGE -1
 #macro INFINITE_I_FRAMES -1
 #macro NO_CONTROLLER -1
+#macro NO_SURFACE -1
 #macro NOT_FOUND -1
 
 #endregion
@@ -280,6 +282,23 @@ enum PlayerAction {
 // These enums represent fixed-size arrays
 // Could be more useful than structs at times, since they use less memory
 
+enum CheckpointData {
+	room, /// @is {room}
+	x, /// @is {number}
+	y, /// @is {number}
+	dir, /// @is {number}
+	name, /// @is {string}
+	sizeof
+}
+
+enum ConsoleLine {
+	text, /// @is {string}
+	colour, /// @is {int}
+	lifetime, /// @is {int}
+	alpha, /// @is {number}
+	sizeof
+}
+
 enum Line {
 	x1, /// @is {number}
 	y1, /// @is {number}
@@ -388,6 +407,10 @@ enum DeferType {
 	DRAW,
 	DRAW_BEGIN,
 	DRAW_END,
+	
+	DRAW_GUI,
+	DRAW_GUI_BEGIN,
+	DRAW_GUI_END,
 	
 	ROOM_START,
 	ROOM_END

@@ -11,7 +11,6 @@
 - Actual Pause Menu
 - Music
 - Velocity-altering gimmicks
-    -- Conveyor Belts
     -- MM6 Springs
     -- Wind
     -- etc.
@@ -21,6 +20,7 @@
     -- How to do shields for this engine?
     -- How to tackle Rush Coil/Jet
 - More playable characters
-    -- Proto Man
     -- Bass
     -- Player specific weapons
+- Debug Map System
+    -- Ability to visit checkpoints

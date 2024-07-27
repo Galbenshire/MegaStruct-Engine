@@ -9,10 +9,20 @@ if (!variable_global_exists("__gameInit")) {
 	global.shadersSupported = shaders_are_supported(); /// @is {bool}
 	global.shadersCompiled = {}; /// @is {struct}
 	
+	if (!global.shadersSupported)
+		print("ERROR: Shaders not supported on your system", 0, $0010A8);
+	
 	var _shaders = asset_get_ids(asset_shader),
-    	_shaderCount = array_length(_shaders);
-	for (var i = 0; i < _shaderCount; i++)
-		struct_set(global.shadersCompiled, shader_get_name(_shaders[i]), shader_is_compiled(_shaders[i]));
+		_shaderCount = array_length(_shaders);
+	for (var i = 0; i < _shaderCount; i++) {
+		var _shaderName = shader_get_name(_shaders[i]),
+			_shaderCompiled = shader_is_compiled(_shaders[i]);
+		
+		struct_set(global.shadersCompiled, _shaderName, _shaderCompiled);
+		
+		if (!_shaderCompiled)
+			print(string("ERROR: Shader {0} did not compile", _shaderName), 0, $0010A8);
+	}
 	
 	// ===== Custom Assets =====
 	show_debug_message("Building Custom Assets...");

@@ -1,11 +1,8 @@
-var _checkpoint = objSystem.level.checkpoint;
+/// @description Activate Checkpoint
+var _levelSystem = objSystem.level;
 
-if (_checkpoint.room == room && _checkpoint.x == __x && _checkpoint.y == __y)
+if (array_equals(_levelSystem.checkpoint, data))
     exit;
 
-_checkpoint.room = room;
-_checkpoint.x = __x;
-_checkpoint.y = __y;
-_checkpoint.dir = __dir;
-
+_levelSystem.checkpoint = variable_clone(data);
 show_debug_message("--checkpoint--");

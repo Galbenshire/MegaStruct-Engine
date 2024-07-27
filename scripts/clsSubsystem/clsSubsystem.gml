@@ -116,10 +116,17 @@ function Subsystem_Debug() : Subsystem() constructor {
     freeRoamX = 0;
     freeRoamY = 0;
     
+    // Since checkpoints can get destroyed mid-game,
+    // we need to store a list here
+    checkpointList = [];
+    
     instanceCountActive = 0;
     instanceCountRoomStart = 0;
     instanceListNames = "---- Objects ----";
 	instanceListCounts = "---- Counts ----";
+	
+	consoleLog = [];
+	consoleLogCount = 0;
     
     static stepBegin = function() {
         // Exit/Restart the game
@@ -159,6 +166,27 @@ function Subsystem_Debug() : Subsystem() constructor {
                 game_window().center_window();
         }
         
+        // Screenshot
+        if (keyboard_check_pressed(vk_f10)) {
+			var _depth = layer_get_depth(LAYER_SYSTEM) - 10,
+				_screenshotFile = "",
+				_screenshotID = -1;
+			
+			do {
+				_screenshotID++;
+				_screenshotFile = string("{0}\screenshots\\screenshot_{1}.png", working_directory, _screenshotID);
+			} until(!file_exists(_screenshotFile));
+			
+			var _defer = defer(DeferType.DRAW_GUI_END, function (__) { 
+				screen_save(screenshotFile);
+				print("SCREENSHOT SAVED", 0, c_orange, true);
+				show_debug_message("Saved screenshot at {0}", screenshotFile);
+				play_sfx(sfxBolt);
+			}, 0, true, true);
+			_defer.depth = layer_get_depth(LAYER_SYSTEM) - 10;
+			_defer.screenshotFile = _screenshotFile;
+        }
+        
         // Debug Exclusive Operations
         if (DEBUG_ENABLED) {
 			if (keyboard_check_pressed(vk_f5))
@@ -170,14 +198,17 @@ function Subsystem_Debug() : Subsystem() constructor {
 			}
 			
 			if (keyboard_check_pressed(vk_f7)) {
-				freeRoamEnabled = !freeRoamEnabled;
-				
 				if (freeRoamEnabled) {
+					freeRoamEnabled = false;
+					camera_set_begin_script(view_camera[0], -1);
+				} else if (keyboard_check(vk_shift)) {
+					if (global.roomIsLevel && !instance_exists(objMapper))
+						instance_create_layer(0, 0, LAYER_SYSTEM, objMapper);
+				} else if (!instance_exists(objMapper)) {
+					freeRoamEnabled = true;
 					freeRoamX = game_view().xView;
 					freeRoamY = game_view().yView;
 					camera_set_begin_script(view_camera[0], __camera_debug_free_roam);
-				} else {
-					camera_set_begin_script(view_camera[0], -1);
 				}
 			}
 			
@@ -212,6 +243,25 @@ function Subsystem_Debug() : Subsystem() constructor {
 			freeRoamX += 2 * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
 			freeRoamY += 2 * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
         }
+        
+        var _consoleCount = consoleLogCount,
+			i = _consoleCount - 1;
+		repeat(_consoleCount) {
+			var _line = consoleLog[i];
+			
+			_line[ConsoleLine.lifetime]--;
+			
+			if (_line[ConsoleLine.lifetime] <= 0) {
+				_line[ConsoleLine.alpha] -= 1/60;
+				
+				if (_line[ConsoleLine.alpha] <= 0) {
+					array_delete(consoleLog, i, 1);
+					consoleLogCount--;
+				}
+			}
+			
+			i--;
+		}
     };
     
     static roomStart = function() {
@@ -220,6 +270,14 @@ function Subsystem_Debug() : Subsystem() constructor {
 			instanceCountRoomStart = instance_count;
 			instanceListNames = "---- Objects ----";
 			instanceListCounts = "---- Counts ----";
+			
+			if (global.roomIsLevel) {
+				checkpointList = [];
+				with (objDefaultSpawn)
+					array_push(other.checkpointList, checkpointData);
+				with (objCheckpoint)
+					array_push(other.checkpointList, data);
+			}
         }	
     };
     
@@ -237,6 +295,28 @@ function Subsystem_Debug() : Subsystem() constructor {
 			draw_reset_colour();
         }
     };
+    
+    static drawGUI = function() {
+		draw_set_text_align(fa_left, fa_bottom);
+		
+		var _consoleX = 0,
+			_consoleY = window_get_height(),
+			_consoleCount = consoleLogCount,
+			i = _consoleCount - 1;
+		
+		repeat(_consoleCount) {
+			var _line = consoleLog[i],
+				_text = _line[ConsoleLine.text],
+				_colour = _line[ConsoleLine.colour],
+				_alpha = _line[ConsoleLine.alpha];
+			draw_text_colour(_consoleX, _consoleY, _text, _colour, _colour, _colour, _colour, _alpha);
+			
+			_consoleY -= 10;
+			i--;
+		}
+		
+		draw_reset_text_align();
+    }
 }
 
 /// @func Subsystem_Flasher()
@@ -309,12 +389,7 @@ function Subsystem_Level() : Subsystem() constructor {
 	pauseStack = new LockStack();
     data = {}; // Data specific to the current level
     pickups = [];
-    checkpoint = {
-		room: lvlTest,
-		x: 0,
-		y: 0,
-		dir: 1
-	};
+    checkpoint = array_create(CheckpointData.sizeof); /// @is {CheckpointData}
     
     __startLevel = false; // flag to know when we're starting a level
     
@@ -339,18 +414,14 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		if (__startLevel) {
 			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
-			checkpoint.room = room;
-			checkpoint.x = objDefaultSpawn.x;
-			checkpoint.y = objDefaultSpawn.y;
-			checkpoint.dir = objDefaultSpawn.image_xscale;
-			
+			checkpoint = variable_clone(objDefaultSpawn.checkpointData);
 			data = {};
 			pickups = [];
 		}
 		
-		var _spawnX = checkpoint.x,
-			_spawnY = checkpoint.y,
-			_spawnDir = checkpoint.dir;
+		var _spawnX = checkpoint[CheckpointData.x],
+			_spawnY = checkpoint[CheckpointData.y],
+			_spawnDir = checkpoint[CheckpointData.dir];
 		
 		global.section = find_section_at(_spawnX, _spawnY);
 		assert(global.section != noone, "Spawn coordinates are outside of any defined section");

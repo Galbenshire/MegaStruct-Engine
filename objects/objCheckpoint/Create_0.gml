@@ -3,6 +3,6 @@
 // Its position in the room determines the location of the checkpoint
 // Flip it horizontally in the room editor to set the direction Mega Man faces on respawning
 
-__x = x;
-__y = y;
-__dir = sign_nonzero(image_xscale);
+name = (string_length(name) > 0) ? name : string("Checkpoint_{0}_{1}", x, y);
+
+data = [room, x, y, sign_nonzero(image_xscale), name]; /// @is {CheckpointData}

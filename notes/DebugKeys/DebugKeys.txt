@@ -10,6 +10,9 @@ Toggles fullscreen
 == F4
 Toggles pixel perfect resolution
 
+== F10
+Take a screenshot
+
 // The following are only available when DEBUG_ENABLED is set to 1
 
 == F5
@@ -24,6 +27,12 @@ Toggles between 60FPS & 1FPS
 == F7
 Toggles "Free Roam Camera" mode
 Use the numpad to move the camera around
+== F7+Shift
+Toggles a map. Allows for warping to various checkpoints across the level
+This only works inside of a level
+Numpad 2,4,6,8 moves the map
+Numpad 7 & 9 selects a checkpoint from the level
+Numpad 0 warps to the currently selected checkpoint
 
 == F8
 Toggles the visibility of various dev layers

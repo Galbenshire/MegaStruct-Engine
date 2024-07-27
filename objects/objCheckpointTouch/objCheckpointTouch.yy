@@ -4,6 +4,7 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"eventNum":0,"eventType":4,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objCheckpointTouch",
@@ -13,8 +14,8 @@
     "path":"folders/Level Objects.yy",
   },
   "parentObjectId":{
-    "name":"prtAlwaysActive",
-    "path":"objects/prtAlwaysActive/prtAlwaysActive.yy",
+    "name":"objCheckpoint",
+    "path":"objects/objCheckpoint/objCheckpoint.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

@@ -29,7 +29,7 @@ function InputReader() constructor {
         var _options_data = options_data(),
             _key = _options_data.keys[_index],
             _button = _options_data.buttons[_index],
-            _input = keyboard_check(_key);
+            _input = keyboard_check(_key) && !is_keyboard_used_debug_overlay();
         
 		if (controller != NO_CONTROLLER) {
             _input |= gamepad_button_check(controller, _button);

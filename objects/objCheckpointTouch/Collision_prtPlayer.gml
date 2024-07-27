@@ -2,5 +2,5 @@
 if (!is_player_controlled(other))
     exit;
 
-event_perform_object(objCheckpoint, ev_other, ev_user0);
+event_user(0);
 instance_destroy();

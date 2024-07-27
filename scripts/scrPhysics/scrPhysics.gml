@@ -1,3 +1,110 @@
+/// @func check_for_solids(x, y, scope)
+/// @desc Checks if a given entity would overlap with solid collisions at the location specified
+///
+/// @param {number}  x  x-position to check at
+/// @param {number}  y  y-position to check at
+/// @param {prtEntity}  [scope]  The instance to get with. Defaults to the calling instance.
+///
+/// @return {bool}  Whether there's a collision at the given location (true) or not (false)
+function check_for_solids(_x, _y, _scope = self) {
+	var _list = global.__collisionList,
+		_result = false;
+	
+	with (_scope) {
+		var _cacheX = x,
+			_cacheY = y;
+		x = _x;
+		y = _y;
+		
+		var _bboxWidth = bbox_width(),
+			_bboxXCenter = bbox_x_center(),
+			_count = instance_place_list(x, y, prtCollidable, _list, true);
+		
+		for (var i = 0; i < _count; i++) {
+			var _candidate = _list[| i];
+			
+			if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+                continue;
+            if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
+				continue;
+			
+			switch (_candidate.solidType) {
+				case SolidType.SOLID: // Yep, you're touching a solid
+                    _result = true;
+                    break;
+                case SolidType.SLOPE: // Strap in...
+					var _isSteepSlope = slope_is_steep(_candidate),
+                        _slopeXscale = _candidate.image_xscale,
+                        _leftBounds = _candidate.bbox_left - _bboxWidth * (_isSteepSlope && _slopeXscale < 0),
+                        _rightBounds = _candidate.bbox_right + _bboxWidth * (_isSteepSlope && _slopeXscale > 0);
+                    
+                    if (_bboxXCenter >= _leftBounds && _bboxXCenter < _rightBounds) { // The center of the checker is within bounds
+						var _slopeX = slope_is_steep(_candidate) ? bbox_horizontal(-_candidate.image_xscale) : _bboxXCenter,
+							_slopeY = slope_y_at(_candidate, _slopeX),
+							_yDistance = _slopeY - bbox_vertical(-_candidate.image_yscale);
+						_result = (_yDistance * _candidate.image_yscale) >= 0;
+                    }
+					break;
+                case SolidType.SLOPE_SOLID: // We should check this solid's exposed sides
+					var _leftBounds = _candidate.bbox_left - _bboxWidth * _candidate.exposedLeft,
+                        _rightBounds = _candidate.bbox_right + _bboxWidth * _candidate.exposedRight;
+                    _result = _bboxXCenter >= _leftBounds && _bboxXCenter < _rightBounds;
+					break;
+			}
+			
+			if (_result)
+				break;
+		}
+		
+		x = _cacheX;
+		y = _cacheY;
+	}
+	
+	ds_list_clear(_list);
+	return _result;
+}
+
+/// @func check_for_solids_point(x, y, scope)
+/// @desc Version of check_for_solids that uses a single point
+///
+/// @param {number}  x  x-position to check at
+/// @param {number}  y  y-position to check at
+/// @param {prtEntity}  [scope]  The instance to get with. Defaults to the calling instance.
+///
+/// @return {bool}  Whether there's a collision at the given location (true) or not (false)
+function check_for_solids_point(_x, _y, _scope = self) {
+	var _list = global.__collisionList,
+		_count = instance_position_list(_x, _y, prtCollidable, _list, true),
+		_result = false;
+	
+	for (var i = 0; i < _count; i++) {
+		var _candidate = _list[| i];
+			
+		if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+            continue;
+        if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(_scope))
+			continue;
+		
+		switch (_candidate.solidType) {
+			case SolidType.SOLID: // Yep, you're touching a solid
+			case SolidType.SLOPE_SOLID:
+                _result = true;
+                break;
+            case SolidType.SLOPE: // Much simpler than the check_for_solids version
+				var _slopeY = slope_y_at(_candidate, _x),
+					_yDistance = _slopeY - bbox_vertical(-_candidate.image_yscale);
+				_result = (_yDistance * _candidate.image_yscale) >= 0;
+				break;
+		}
+		
+		if (_result)
+			break;
+	}
+	
+	ds_list_clear(_list);
+	return _result;
+}
+
 /// @func distance_to_collidable_x(collidable, direction, scope)
 /// @desc Finds the horizontal distance from a given collidable to a given entity.
 ///		  The solid type of the collidable will be taken into account.
@@ -76,7 +183,7 @@ function get_xcoll_candidates(_range, _scope = self) {
                 continue;
             if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
                 continue;
-            if (is_object_type(objCustomSolid, _candidate) && !array_contains(_candidate.entityWhitelist, self.object_index))
+            if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
 				continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
@@ -132,7 +239,7 @@ function get_ycoll_candidates(_range, _scope = self) {
                 continue;
             if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
 				continue;
-            if (is_object_type(objCustomSolid, _candidate) && !array_contains(_candidate.entityWhitelist, self.object_index))
+            if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
 				continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
@@ -151,16 +258,16 @@ function get_ycoll_candidates(_range, _scope = self) {
                 	_valid = _range * gravDir >= 0 && !place_meeting(x, y, _candidate);
                 	break;
                 case SolidType.SLOPE: // The entity's x-center must be within the slope
-                    var _is_steep = slope_is_steep(_candidate),
-                        _xscale = _candidate.image_xscale,
-                        _left_bounds = _candidate.bbox_left - _bboxWidth * (_is_steep && _xscale < 0),
-                        _right_bounds = _candidate.bbox_right + _bboxWidth * (_is_steep && _xscale > 0);
-                    _valid = 2 * (_bboxXCenter >= _left_bounds && _bboxXCenter < _right_bounds);
+                    var _isSteepSlope = slope_is_steep(_candidate),
+                        _slopeXscale = _candidate.image_xscale,
+                        _leftBounds = _candidate.bbox_left - _bboxWidth * (_isSteepSlope && _slopeXscale < 0),
+                        _rightBounds = _candidate.bbox_right + _bboxWidth * (_isSteepSlope && _slopeXscale > 0);
+                    _valid = 2 * (_bboxXCenter >= _leftBounds && _bboxXCenter < _rightBounds);
                     break;
                 case SolidType.SLOPE_SOLID: // Depends on if the solid is exposed on either sides
-                    var _left_bounds = _candidate.bbox_left - _bboxWidth * _candidate.exposedLeft,
-                        _right_bounds = _candidate.bbox_right + _bboxWidth * _candidate.exposedRight;
-                    _valid = _bboxXCenter >= _left_bounds && _bboxXCenter < _right_bounds;
+                    var _leftBounds = _candidate.bbox_left - _bboxWidth * _candidate.exposedLeft,
+                        _rightBounds = _candidate.bbox_right + _bboxWidth * _candidate.exposedRight;
+                    _valid = _bboxXCenter >= _leftBounds && _bboxXCenter < _rightBounds;
                     break;
             }
             

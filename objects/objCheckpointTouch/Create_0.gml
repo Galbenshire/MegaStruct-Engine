@@ -3,6 +3,9 @@
 // - It's triggered from the player touching it, rather than when it comes onscreen
 // - The position of the checkpoint is set manually by the user
 
-__x = (targetX != -1) ? targetX : bbox_x_center();
-__y = (targetY != -1) ? targetY : bbox_bottom - 16;
-__dir = sign_nonzero(targetDir);
+var _x = (targetX != -1) ? targetX : bbox_x_center(),
+    _y = (targetY != -1) ? targetY : bbox_bottom - 16;
+
+name = (string_length(name) > 0) ? name : string("Checkpoint_{0}_{1}", _x, _y);
+
+data = [room, _x, _y, sign_nonzero(targetDir), name]; /// @is {CheckpointData}
