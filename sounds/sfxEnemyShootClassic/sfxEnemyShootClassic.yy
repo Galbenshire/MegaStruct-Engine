@@ -12,8 +12,8 @@
   "duration":1.149388,
   "name":"sfxEnemyShootClassic",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"Enemies",
+    "path":"folders/SFX/Enemies.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

@@ -12,8 +12,8 @@
   "duration":0.600091,
   "name":"sfxMenuSelect",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"UI",
+    "path":"folders/SFX/UI.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

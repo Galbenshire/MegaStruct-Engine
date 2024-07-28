@@ -3,7 +3,7 @@ options = [
     ["METAL MAN STAGE", function() /*=>*/ { go_to_level(lvlMetalMan); }],
     ["TEST ROOM", function() /*=>*/ { go_to_level(lvlSections); }],
     [string("CHARACTER: {0}", global.player.get_character().name), function () {
-        global.player.character = (global.player.character != CharacterType.MEGA) ? CharacterType.MEGA : CharacterType.PROTO;
+        global.player.character = modf(global.player.character + 1, CharacterType.COUNT);
         options[1][0] = string("CHARACTER: {0}", global.player.get_character().name);
     }],
     ["OPTIONS", function() /*=>*/ { go_to_room(rmOptions); }]

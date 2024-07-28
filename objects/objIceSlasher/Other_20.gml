@@ -3,7 +3,7 @@ global.weaponList[WeaponType.ICE_SLASHER] = new Weapon(WeaponType.ICE_SLASHER);
 with (global.weaponList[WeaponType.ICE_SLASHER]) {
     object = objIceSlasher;
     set_name("Ice Slasher");
-	set_icon(sprWeaponIcons, 3);
+	set_icon(sprWeaponIcons, 4);
 	colours = [ $F85800, $F8F8F8 ];
 	
 	onTick = function(_player) {

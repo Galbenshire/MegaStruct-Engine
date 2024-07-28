@@ -3,7 +3,7 @@ global.weaponList[WeaponType.METAL_BLADE] = new Weapon(WeaponType.METAL_BLADE);
 with (global.weaponList[WeaponType.METAL_BLADE]) {
     object = objMetalBlade;
     set_name("Metal Blade");
-	set_icon(sprWeaponIcons, 2);
+	set_icon(sprWeaponIcons, 3);
 	colours = [ $007088, $A8E0FF ];
 	
 	onTick = function(_player) {

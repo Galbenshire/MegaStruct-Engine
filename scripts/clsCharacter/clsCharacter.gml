@@ -54,6 +54,22 @@ function Character(_config = {}) constructor {
 		var _offset/*:Vector2*/ = [16, 4];
 		if (_player.isClimbing || !_player.ground)
 			_offset[@Vector2.y] -= 2;
+		
+		switch (_player.shootAnimation) {
+			case 3: // Aim Up
+				_offset[@Vector2.x] -= 11;
+				_offset[@Vector2.y] -= 11;
+				break;
+			case 4: // Aim Diagonal Up
+				_offset[@Vector2.x] -= 3;
+				_offset[@Vector2.y] -= 6;
+				break;
+			case 5: // Aim Diagonal Down
+				_offset[@Vector2.x] -= 2;
+				_offset[@Vector2.y] += 6;
+				break;
+		}
+		
 		return _offset;
 	};
 	

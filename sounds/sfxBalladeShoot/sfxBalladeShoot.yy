@@ -1,6 +1,6 @@
 {
   "$GMSound":"",
-  "%Name":"sfxMenuMove",
+  "%Name":"sfxBalladeShoot",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -9,17 +9,17 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":0.258821,
-  "name":"sfxMenuMove",
+  "duration":0.3561,
+  "name":"sfxBalladeShoot",
   "parent":{
-    "name":"UI",
-    "path":"folders/SFX/UI.yy",
+    "name":"SFX",
+    "path":"folders/SFX.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sfxMenuMove.wav",
+  "soundFile":"sfxBalladeShoot.wav",
   "type":0,
   "volume":1.0,
 }

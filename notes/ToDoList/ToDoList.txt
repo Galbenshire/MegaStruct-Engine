@@ -7,8 +7,9 @@
         --- Destroy entity once killed. Despawning does not count
         --- Destroy entity once killed or despawned
     -- Custom spawn conditions (e.g. only appear if the camera is moving right)
-- Better Options Menu
-- Actual Pause Menu
+- UI System
+    -- Better Options Menu
+    -- Actual Pause Menu
 - Music
 - Velocity-altering gimmicks
     -- MM6 Springs
@@ -19,8 +20,3 @@
 - More player weapons
     -- How to do shields for this engine?
     -- How to tackle Rush Coil/Jet
-- More playable characters
-    -- Bass
-    -- Player specific weapons
-- Debug Map System
-    -- Ability to visit checkpoints

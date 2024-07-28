@@ -12,8 +12,8 @@
   "duration":0.500045,
   "name":"sfxPause",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"UI",
+    "path":"folders/SFX/UI.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

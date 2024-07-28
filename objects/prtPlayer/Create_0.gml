@@ -26,9 +26,11 @@ yDir = 0;
 canMinJump = false; // Allows the player to cut their jump by releasing the jump button
 coyoteTimer = 0;
 jumpBufferTimer = 0;
+midairJumps = 0;
 
 // Sliding
 slideMaskHeightDelta = abs(sprite_get_bbox_height(maskNormal) - sprite_get_bbox_height(maskSlide)); /// @is {number}
+slideBoostActive = false;
 
 // Shooting
 shootTimer = 0;

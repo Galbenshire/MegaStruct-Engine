@@ -84,6 +84,10 @@ stateMachine.add("Intro", {
 });
 // ================================
 stateMachine.add("_StandardGround", {
+	enter: function() {
+		slideBoostActive = false;
+		midairJumps = 0;
+	},
 	tick: function() {
 		var _jumpInput = inputs.is_pressed(InputActions.JUMP)
 			|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP));
@@ -120,6 +124,7 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Idle", {
 		enter: function() {
+			stateMachine.inherit();
 			animator.play("idle");
 		},
 		tick: function() {
@@ -143,6 +148,7 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Sidestep", {
 		enter: function() {
+			stateMachine.inherit();
 			move_and_collide_x(xDir);
 			move_and_collide_y(gravDir);
 			animator.play("sidestep");
@@ -164,6 +170,7 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Walk", {
 		enter: function() {
+			stateMachine.inherit();
 			animator.play("walk");
 		},
 		tick: function() {
@@ -184,6 +191,7 @@ stateMachine.add("_StandardGround", {
 // --------------------------------
 	stateMachine.add_child("_StandardGround", "Brake", {
 		enter: function() {
+			stateMachine.inherit();
 			animator.play("brake");
 		},
 		tick: function() {
@@ -211,7 +219,8 @@ stateMachine.add("_StandardAir", {
 		groundInstance = noone;
 	},
 	tick: function() {
-		xspeed.value = airSpeed * xDir * !player_is_action_locked(PlayerAction.MOVE_AIR);
+		var _airSpeed = slideBoostActive ? slideSpeed : airSpeed;
+		xspeed.value = _airSpeed * xDir * !player_is_action_locked(PlayerAction.MOVE_AIR);
 		
 		if (xDir != 0 && !player_is_action_locked(PlayerAction.TURN_AIR))
 			image_xscale = xDir;
@@ -263,8 +272,24 @@ stateMachine.add("_StandardAir", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			if (coyoteTimer > 0 && inputs.is_pressed(InputActions.JUMP))
+			if (inputs.is_pressed(InputActions.JUMP) && (coyoteTimer > 0 || midairJumps < maxMidairJumps)) {
+				if (coyoteTimer <= 0) {
+					midairJumps++;
+					slideBoostActive = false;
+					play_sfx(sfxBalladeShoot);
+					
+					for (var i = -1; i <= 1; i += 2) {
+						with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objGenericEffect)) {
+							sprite_index = sprSlideDust;
+							image_xscale = i;
+							animSpeed = 0.2;
+							destroyOnAnimEnd = true;
+							xspeed.value = i;
+						}
+					}
+				}
 				stateMachine.change("Jump");
+			}
 		}
 	});
 // ================================
@@ -305,6 +330,7 @@ stateMachine.add("Slide", {
 			var _downJumpSlide = yDir == gravDir && options_data().downJumpSlide,
 				_canJump = !player_is_action_locked(PlayerAction.JUMP) && !_downJumpSlide;
 			if (_canJump) {
+				slideBoostActive = canSlideBoost;
 				stateMachine.change("Jump");
 				return;
 			}
@@ -355,6 +381,8 @@ stateMachine.add("Climb", {
 		groundInstance = noone;
 		gravEnabled = false;
 		isClimbing = true;
+		slideBoostActive = false;
+		midairJumps = 0;
 	},
 	tick: function() {
 		yspeed.value = climbSpeed * yDir * !isShooting * !player_is_action_locked(PlayerAction.CLIMB);

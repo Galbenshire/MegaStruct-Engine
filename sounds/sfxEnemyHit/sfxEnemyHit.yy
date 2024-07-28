@@ -12,8 +12,8 @@
   "duration":1.358367,
   "name":"sfxEnemyHit",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"Enemies",
+    "path":"folders/SFX/Enemies.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
