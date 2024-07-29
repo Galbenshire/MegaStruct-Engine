@@ -1,7 +1,7 @@
 /// @description Entity Collision
 // =====  If the chain is not lethal, =====
 // =====  let's save ourselves the hassle and just run the base event =====
-if (!isChainLethal) {
+if (isChainLethal == "No" || (isChainLethal == "Retract Only" && phase == 3)) {
     event_inherited();
     exit;
 }

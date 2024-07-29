@@ -17,9 +17,10 @@ Take a screenshot
 
 == F5
 Toggles the debug overlay
-In addition to the standard features, two custom views are available here
+In addition to the standard features, three custom views are available here
   - A view to edit options data on the fly
   - A room selector
+  - The ability to take a "snapshot", listing all the entities active at the time of the "snapshot"
 
 == F6
 Toggles between 60FPS & 1FPS

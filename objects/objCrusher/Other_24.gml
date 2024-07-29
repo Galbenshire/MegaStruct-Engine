@@ -25,8 +25,8 @@ switch (phase) {
         }
         break;
     
-    case 3:
-        yspeed.value = -1 * gravDir;
+    case 3: // Retracting
+        yspeed.value = -retractSpeed * gravDir;
         if (y <= ystart) {
             y = ystart;
             phase = 0;

@@ -44,7 +44,7 @@ with (global.weaponList[WeaponType.BUSTER]) {
 	// - Constants (in spirit)
 	
 	__preChargeDuration = 20;
-	__chargeDuration = 57;
+	__chargeDuration = 56;
 	__outlineChargeColours = [ $000000, $2000A8, $5800E4, $9858F8 ];
 	__fullChargeColours = [ colours[PaletteWeapon.primary], colours[PaletteWeapon.secondary], $000000 ];
 	

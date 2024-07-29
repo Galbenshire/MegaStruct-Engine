@@ -86,7 +86,9 @@
     {"$GMFolder":"","%Name":"Metal Blade","folderPath":"folders/Weapons/Metal Blade.yy","name":"Metal Blade","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Proto Buster","folderPath":"folders/Weapons/Proto Buster.yy","name":"Proto Buster","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
-  "IncludedFiles":[],
+  "IncludedFiles":[
+    {"$GMIncludedFile":"","%Name":"ReadMe.txt","CopyToMask":-1,"filePath":"datafiles","name":"ReadMe.txt","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+  ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{

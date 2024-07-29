@@ -45,7 +45,7 @@ function GameWindow() constructor {
 	
 	#region Misc.
 	
-	static __deferWindowCenter = time_source_create(time_source_global, 1, time_source_units_frames, function() {
+	static __deferWindowCenter = time_source_create(time_source_global, 2, time_source_units_frames, function() {
 		window_center();
 	}); /// Time source to delay window centering by a single frame
 	

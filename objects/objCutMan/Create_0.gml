@@ -19,5 +19,6 @@ damageTable.add_source(objBusterShotCharged, 4);
 damageTable.add_source(objProtoShot, 2);
 damageTable.add_source(objProtoShotHalfCharge, 2);
 damageTable.add_source(objProtoShotCharged, 4);
+damageTable.add_source(objBassShot, 2);
 damageTable.add_source(objIceSlasher, 0);
 damageTable.add_source(objMetalBlade, 1);
