@@ -331,18 +331,19 @@ function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 ///
 /// @returns {bool}  If the entity can step (true) or not (false)
 function entity_can_attack_entity(_target, _scope = self) {
-	return _target != _scope && _target.canTakeDamage && _target.iFrames == 0
+	return _target != _scope && _target.canTakeDamage && _target.iFrames == 0 && _target.hitTimer >= _scope.attackDelay
 		&& !entity_is_dead(_target) && (_scope.factionMask & _target.factionLayer > 0);
 }
 
-/// @func entity_can_step(scope)
+/// @func entity_can_step(ignore_frozen, scope)
 /// @desc Checks if the specified entity is able to perform their Step Event
 ///
+/// @param {bool}  [ignore_frozen]  Whether or not to ignore the entity's frozen state. Defaults to false.
 /// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
 ///
 /// @returns {bool}  If the entity can step (true) or not (false)
-function entity_can_step(_scope = self) {
-	return !global.paused && !entity_is_dead(_scope);
+function entity_can_step(_ignoreFrozen = false, _scope = self) {
+	return !global.paused && (_ignoreFrozen || frozenTimer <= 0) && !entity_is_dead(_scope);
 }
 
 /// @func entity_can_target_entity(target, scope)

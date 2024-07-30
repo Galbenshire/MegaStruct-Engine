@@ -16,6 +16,7 @@ global.characterList[CharacterType.MEGA] = new Character({
     loadout: [
         WeaponType.BUSTER,
         WeaponType.ICE_SLASHER,
-        WeaponType.METAL_BLADE
+        WeaponType.METAL_BLADE,
+        WeaponType.SEARCH_SNAKE
     ]
 });

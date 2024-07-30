@@ -50,6 +50,7 @@
         "PierceType.ON_KILLS_ONLY",
         "PierceType.ALWAYS",
       ],"multiselect":false,"name":"pierces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"PierceType.ALWAYS","varType":6,},
+    {"$GMObjectProperty":"v1","%Name":"attackDelay","filters":[],"listItems":[],"multiselect":false,"name":"attackDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"factionLayer","filters":[],"listItems":[
         "Faction.PICKUP",
         "Faction.PLAYER",
@@ -98,6 +99,7 @@
         "Faction.NEUTRAL",
         "Faction.NEUTRAL_PROJECTILE",
       ],"multiselect":true,"name":"factionSolidWhitelist","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":6,},
+    {"$GMObjectProperty":"v1","%Name":"maxSlopeSteepness","filters":[],"listItems":[],"multiselect":false,"name":"maxSlopeSteepness","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_MAX_SLOPE_STEEPNESS","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"gravEnabled","filters":[],"listItems":[],"multiselect":false,"name":"gravEnabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"grav","filters":[],"listItems":[],"multiselect":false,"name":"grav","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"gravDir","filters":[],"listItems":[],"multiselect":false,"name":"gravDir","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
@@ -110,6 +112,7 @@
         "SectionSwitchBehaviour.VISIBLE",
         "SectionSwitchBehaviour.PERSISTANT",
       ],"multiselect":false,"name":"sectionSwitchBehaviour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"SectionSwitchBehaviour.HIDDEN","varType":6,},
+    {"$GMObjectProperty":"v1","%Name":"canBeFrozen","filters":[],"listItems":[],"multiselect":false,"name":"canBeFrozen","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"interactWithWater","filters":[],"listItems":[],"multiselect":false,"name":"interactWithWater","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"waterGravMod","filters":[],"listItems":[],"multiselect":false,"name":"waterGravMod","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY_WATER_MODIFIER","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"canMakeBubble","filters":[],"listItems":[],"multiselect":false,"name":"canMakeBubble","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},

@@ -30,7 +30,7 @@ xcollInstance = noone; /// @is {instance}
 ycoll = 0;
 ycollInstance = noone; /// @is {instance}
 
-ground = true;
+ground = gravEnabled; /// @is {bool}
 groundInstance = noone; /// @is {instance}
 
 ladderInstance = noone; /// @is {instance}
@@ -44,6 +44,10 @@ despawnRange = (despawnRange < 0) ? infinity : despawnRange;
 
 inWater = interactWithWater && place_meeting(x, y, objWater); /// @is {bool}
 bubbleTimer = 0; /// @is {int}
+
+frozenTimer = 0;
+frozenGraphicType = 0;
+frozenPhysicsEnabled = false;
 
 // Callbacks
 // - Spawning

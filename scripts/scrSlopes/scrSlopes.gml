@@ -1,13 +1,14 @@
-/// @func slope_is_steep(slope)
+/// @func slope_is_steep(slope, scope)
 /// @desc Given a slope, this function checks if it is too steep to be climbed.
 ///		  Entities will treat a steep slope like a wall if they try to move into it.
 ///		  If already standing on it, they will slide down it.
 ///
 /// @param {objSlope}  slope  The slope to check the steepness of.
+/// @param {prtEntity}  [scope]  The instance to check against. Defaults to the calling instance.
 ///
 /// @return {bool}  Whether this slope is steep (true) or not (false)
-function slope_is_steep(_slope) {
-    return abs(_slope.steepness) > MAX_SLOPE_STEEPNESS;
+function slope_is_steep(_slope, _scope = self) {
+    return abs(_slope.steepness) > _scope.maxSlopeSteepness;
 }
 
 /// @func slope_x_at(slope, y, rounded)

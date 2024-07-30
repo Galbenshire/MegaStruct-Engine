@@ -10,3 +10,5 @@ bulletLimitCost = 1;
 // Since projectiles should only be spawned by other entities, this should be fine
 if (!is_undefined(reticle))
     reticle.update();
+
+ground = false; // Projectiles usually have no gravity, so they'll start with no ground

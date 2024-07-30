@@ -33,7 +33,6 @@ function cbkOnHurt_objBlocky(_damageSource) {
         with (spawn_entity(x, _canY, depth, objBlockyCan)) {
             xspeed.value = (2 - (0.5 * i)) * other.image_xscale;
             yspeed.value = -4.5 + 0.75 * i;
-            ground = false;
             palette = other.palette;
         }
     }

@@ -147,16 +147,19 @@ function Subsystem_Debug() : Subsystem() constructor {
 			if (keyboard_check_pressed(vk_f2) && !fullscreen) {
                 var _newScale = screenSize + 1;
                 set_screen_size(_newScale > MAX_SCALE ? 1 : _newScale);
+                print(string("Screen Scale: {0}", screenSize));
                 _updateScreen = true;
                 _recenterScreen = true;
             }
             if (keyboard_check_pressed(vk_f3)) {
                 set_fullscreen(!fullscreen);
+                print(string("Fullscreen: {0}", fullscreen ? "ON" : "OFF"));
                 _updateScreen = true;
                 _recenterScreen |= !fullscreen;
             }
             if (keyboard_check_pressed(vk_f4)) {
                 set_pixel_perfect(!pixelPerfect);
+                print(string("Pixel Perfect: {0}", pixelPerfect ? "ON" : "OFF"));
                 _updateScreen = true;
             }
             
@@ -193,8 +196,12 @@ function Subsystem_Debug() : Subsystem() constructor {
 				show_debug_overlay(!is_debug_overlay_open());
 			
 			if (keyboard_check_pressed(vk_f6)) {
-				var _newFPS = (game_get_speed(gamespeed_fps) == 60) ? 1 : 60;
-				game_set_speed(_newFPS, gamespeed_fps);
+				if (game_get_speed(gamespeed_fps) != 60) {
+					game_set_speed(60, gamespeed_fps);
+				} else {
+					var _newFPS = keyboard_check(vk_shift) ? 1 : 5;
+					game_set_speed(_newFPS, gamespeed_fps);
+				}
 			}
 			
 			if (keyboard_check_pressed(vk_f7)) {

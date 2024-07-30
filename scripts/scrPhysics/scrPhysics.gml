@@ -123,7 +123,7 @@ function distance_to_collidable_x(_collidable, _direction, _scope = self) {
         case SolidType.SLOPE:
             if (sign(_direction) != sign(_collidable.image_xscale)) {
                 var _slopeX = slope_x_at(_collidable, bbox_vertical(-_collidable.image_yscale, _scope)),
-                    _startX = slope_is_steep(_collidable) ? bbox_horizontal(-_collidable.image_xscale, _scope) : bbox_x_center(_scope);
+                    _startX = slope_is_steep(_collidable, _scope) ? bbox_horizontal(-_collidable.image_xscale, _scope) : bbox_x_center(_scope);
                 return _slopeX - _startX;
             }
             break;
@@ -154,7 +154,7 @@ function distance_to_collidable_y(_collidable, _direction, _scope = self) {
     // Slopes are treated differently
     // But only if the entity is not approaching the flat end
     if (_collidable.solidType == SolidType.SLOPE && sign(_direction) != sign(_collidable.image_yscale)) {
-        var _x = slope_is_steep(_collidable) ? bbox_horizontal(-_collidable.image_xscale, _scope) : bbox_x_center(_scope),
+        var _x = slope_is_steep(_collidable, _scope) ? bbox_horizontal(-_collidable.image_xscale, _scope) : bbox_x_center(_scope),
             _slopeY = slope_y_at(_collidable, _x);
         return _slopeY - bbox_vertical(-_collidable.image_yscale, _scope);
     }

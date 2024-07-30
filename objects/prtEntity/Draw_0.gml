@@ -11,12 +11,20 @@ var _x = x,
 x += subPixelX;
 y += subPixelY;
 
-if (_iFrameInterval == 2) {
-	onDraw(false);
-} else {
+if (_iFrameInterval == 1) {
 	gpu_set_fog(true, c_white, 0, 0);
 	onDraw(true);
 	gpu_set_fog(false, 0, 0, 0);
+} else if (frozenTimer > 42 || (frozenTimer > 0 && frozenTimer mod 4 == 0)) {
+	gpu_set_fog(true, $FF7800, 0, 0);
+	onDraw(true);
+	gpu_set_fog(false, 0, 0, 0);
+	
+	gpu_set_blendmode(bm_add);
+    onDraw(false);
+    gpu_set_blendmode(bm_normal);
+} else {
+	onDraw(false);
 }
 
 x = _x;
