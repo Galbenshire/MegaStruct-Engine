@@ -42,6 +42,6 @@ switch (lifeState) {
 		break;
 	
 	default:
-		assert(false, "Invalid value in lifeState for {0}", object_get_name(object_index));
+		assert(false, $"Invalid lifeState value ({lifeState}) for {object_get_name(object_index)}");
 		break;
 }

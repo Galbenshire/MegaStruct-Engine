@@ -13,12 +13,12 @@
 
 #macro ENFORCE_SINGLETON static __init = 0;\
 __init++;\
-assert(__init == 1, "Only one instance of {0} can be present at any time.", instanceof(self));
+assert(__init == 1, $"Only one instance of {instanceof(self)} can be present at any time.");
 
 #macro DEBUG_VIEW_HTML5_CHECK if (is_html5()) { return; }
 
 #macro PLAYER_ONLY_FUNCTION assert(is_a_player(_player),\
-"{0} can only be used by an object that inherits from {1}", _GMFUNCTION_, object_get_name(prtPlayer));
+$"{_GMFUNCTION_} can only be used by an object that inherits from {object_get_name(prtPlayer)}");
 
 #endregion
 
@@ -421,5 +421,12 @@ enum DeferType {
 // -- Pausing
 #macro QUEUED_PAUSE 1
 #macro QUEUED_UNPAUSE -1
+
+// -- Warning Level
+enum WarningLevel {
+	SHOW,
+	ERROR,
+	VERBOSE
+}
 
 #endregion

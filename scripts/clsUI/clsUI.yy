@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"clsUI",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsUI",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

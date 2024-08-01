@@ -1,43 +1,31 @@
-/// @func assert(condition, message, ...values)
+/// @func assert(condition, message)
 /// @desc Crashes the game if the given condition evaluates to false.
 ///		  Can optionally provide an error message too.
 ///
 /// @param {bool}  condition  Will crash the game if this is false
 /// @param {string}  [message]  Message to display, should the assertion fail
-/// @param {any}  [...values]  The values to be inserted at the placeholder positions in the message
-function assert(_condition/*:bool*/, _msg/*:string*/ = "") {
-	var _values = array_create(max(argument_count - 2, 0));
-	for (var i = 2; i < argument_count; i++)
-		_values[i - 2] = argument[i];
-	
-	assert_ext(_condition, _msg, _values);
-}
-
-/// @func assert_ext(condition, message, values)
-/// @desc Crashes the game if the given condition evaluates to false.
-///		  Can optionally provide an error message too.
-///
-/// @param {bool}  condition  Will crash the game if this is false
-/// @param {string}  [message]  Message to display, should the assertion fail
-/// @param {array<any>}  [values]  The values to be inserted at the placeholder positions in the message
-function assert_ext(_condition/*:bool*/, _msg/*:string*/ = "", _values/*:array<any>*/ = []) {
+function assert(_condition/*:bool*/, _msg/*:string*/ = "FATAL ASSERTION FAILURE") {
 	if (_condition)
 		return;
-	
-	_msg = (_msg != "") ? _msg : "FATAL ASSERTION FAILURE";
-	_msg = string_ext(_msg, _values);
-	
 	show_error(_msg, true);
 }
 
 /// @func print(message, warning_level, colour, no_console)
 /// @desc This function not only displays the given message in the Output Window,
 ///		  but will also display the message on-screen for the user to see
-function print(_msg, _warningLevel = 0, _colour = c_white, _noConsole = false) {
+///
+/// @param {string}  message
+/// @param {int}  [warning_level]
+/// @param {int}  [colour]
+/// @param {bool}  [no_console]
+function print(_msg, _warningLevel = WarningLevel.VERBOSE, _colour = c_white, _noConsole = false) {
 	if (!_noConsole)
 		show_debug_message(_msg);
 	
 	with (objSystem.debug) {
+		if (_warningLevel > consoleWarningLevel)
+			return;
+		
 		var _line/*:ConsoleLine*/ = array_create(ConsoleLine.sizeof);
 		_line[@ConsoleLine.text] = _msg;
 		_line[@ConsoleLine.colour] = _colour;
@@ -52,4 +40,10 @@ function print(_msg, _warningLevel = 0, _colour = c_white, _noConsole = false) {
 			consoleLogCount--;
 		}
 	}
+}
+
+/// @func print_err(message)
+/// @desc Prints the given error message
+function print_err(_msg) {
+	print(_msg, WarningLevel.ERROR, $0010A8);
 }

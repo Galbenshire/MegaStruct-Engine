@@ -125,6 +125,7 @@ function Subsystem_Debug() : Subsystem() constructor {
     instanceListNames = "---- Objects ----";
 	instanceListCounts = "---- Counts ----";
 	
+	consoleWarningLevel = WarningLevel.ERROR;
 	consoleLog = [];
 	consoleLogCount = 0;
     
@@ -147,19 +148,19 @@ function Subsystem_Debug() : Subsystem() constructor {
 			if (keyboard_check_pressed(vk_f2) && !fullscreen) {
                 var _newScale = screenSize + 1;
                 set_screen_size(_newScale > MAX_SCALE ? 1 : _newScale);
-                print(string("Screen Scale: {0}", screenSize));
+                print($"Screen Scale: {screenSize}", WarningLevel.SHOW);
                 _updateScreen = true;
                 _recenterScreen = true;
             }
             if (keyboard_check_pressed(vk_f3)) {
                 set_fullscreen(!fullscreen);
-                print(string("Fullscreen: {0}", fullscreen ? "ON" : "OFF"));
+                print($"Fullscreen: {fullscreen ? "ON" : "OFF"}", WarningLevel.SHOW);
                 _updateScreen = true;
                 _recenterScreen |= !fullscreen;
             }
             if (keyboard_check_pressed(vk_f4)) {
                 set_pixel_perfect(!pixelPerfect);
-                print(string("Pixel Perfect: {0}", pixelPerfect ? "ON" : "OFF"));
+                print($"Pixel Perfect: {pixelPerfect ? "ON" : "OFF"}", WarningLevel.SHOW);
                 _updateScreen = true;
             }
             
@@ -182,8 +183,8 @@ function Subsystem_Debug() : Subsystem() constructor {
 			
 			var _defer = defer(DeferType.DRAW_GUI_END, function (__) { 
 				screen_save(screenshotFile);
-				print("SCREENSHOT SAVED", 0, c_orange, true);
-				show_debug_message("Saved screenshot at {0}", screenshotFile);
+				print("SCREENSHOT SAVED", WarningLevel.SHOW, c_orange, true);
+				show_debug_message($"Saved screenshot at {screenshotFile}");
 				play_sfx(sfxBolt);
 			}, 0, true, true);
 			_defer.depth = layer_get_depth(LAYER_SYSTEM) - 10;
@@ -306,8 +307,8 @@ function Subsystem_Debug() : Subsystem() constructor {
     static drawGUI = function() {
 		draw_set_text_align(fa_left, fa_bottom);
 		
-		var _consoleX = 0,
-			_consoleY = window_get_height(),
+		var _consoleX = 4,
+			_consoleY = window_get_height() - 4,
 			_consoleCount = consoleLogCount,
 			i = _consoleCount - 1;
 		
@@ -536,7 +537,7 @@ function Subsystem_Pause() : Subsystem() constructor {
 				break;
 			
 			default:
-				assert(false, string("pauseQueue set to an invalid value: {0}", pauseQueue));
+				assert(false, $"pauseQueue set to an invalid value: {pauseQueue}");
 				break;
 		}
 		

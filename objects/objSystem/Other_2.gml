@@ -10,7 +10,7 @@ if (!variable_global_exists("__gameInit")) {
 	global.shadersCompiled = {}; /// @is {struct}
 	
 	if (!global.shadersSupported)
-		print("ERROR: Shaders not supported on your system", 0, $0010A8);
+		print_err("ERROR: Shaders not supported on your system");
 	
 	var _shaders = asset_get_ids(asset_shader),
 		_shaderCount = array_length(_shaders);
@@ -21,7 +21,7 @@ if (!variable_global_exists("__gameInit")) {
 		struct_set(global.shadersCompiled, _shaderName, _shaderCompiled);
 		
 		if (!_shaderCompiled)
-			print(string("ERROR: Shader {0} did not compile", _shaderName), 0, $0010A8);
+			print_err($"ERROR: Shader {_shaderName} did not compile");
 	}
 	
 	// ===== Custom Assets =====

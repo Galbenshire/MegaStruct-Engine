@@ -22,4 +22,4 @@ timer = 0;
 event_user(0);
 time_source_start(mapSurfaceUpdater);
 
-print(string("Checkpoint Count: {0}", checkpointDataCount));
+print($"Checkpoint Count: {checkpointDataCount}");

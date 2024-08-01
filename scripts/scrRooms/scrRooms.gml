@@ -1,4 +1,7 @@
 /// @func go_to_level(level)
+/// @desc Takes the game to a room tagged as a level, performing any extra steps necessary
+///
+/// @param {room}  level  The level to go to (make sure it has the "room_level" tag)
 function go_to_level(_level) {
 	assert(is_room_level(_level), "calling go_to_level to a room not tagged as a level");
 	
@@ -8,6 +11,9 @@ function go_to_level(_level) {
 
 /// @func go_to_room(room, instant)
 /// @desc Helper function to switch rooms
+///
+/// @param {room}  room  The new room to go to
+/// @param {bool}  [instant]  If true, the screenfade is skipped. Defaults to false.
 function go_to_room(_room, _instant = false) {
 	if (_instant) {
 		global.previousRoom = room;
@@ -25,13 +31,20 @@ function go_to_room(_room, _instant = false) {
 	});
 }
 
-/// @func is_room_level()
+/// @func is_room_level(room)
+/// @desc Checks if the given room is tagged as a level
+///
+/// @param {room}  room  The room to check
+///
+/// @return {bool}  Whether this room is a level (true) or not (false)
 function is_room_level(_room) {
 	return asset_has_tags(_room, "room_level", asset_room);
 }
 
 /// @func restart_room(instant)
 /// @desc Resets the current room
+///
+/// @param {bool}  [instant]  If true, the screenfade is skipped. Defaults to false.
 function restart_room(_instant = false) {
 	go_to_room(room, _instant);
 }
