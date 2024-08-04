@@ -35,10 +35,9 @@ function OptionsSubmenu(_header) : UISubmenu() constructor {
     /// @method generate_neighbours()
 	/// @desc Gets this submenu's neighbour, using the given direction
     static generate_neighbours = function() {
-        var _listCount = array_length(itemList);
-        for (var i = 0; i < _listCount; i++) {
-			itemList[i].neighbourTop = itemList[modf(i - 1, _listCount)];
-			itemList[i].neighbourBottom = itemList[modf(i + 1, _listCount)];
+        for (var i = 0; i < itemListCount; i++) {
+			itemList[i].neighbourTop = itemList[modf(i - 1, itemListCount)];
+			itemList[i].neighbourBottom = itemList[modf(i + 1, itemListCount)];
         }
     };
     

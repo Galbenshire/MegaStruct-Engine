@@ -8,8 +8,8 @@ for (var i = 0; i < bgSpritesCount; i++) {
 draw_set_alpha(image_alpha);
 draw_set_text_align(fa_center, fa_top);
 
-draw_text(markers.header[Vector2.x], markers.header[Vector2.y], menu.currentSubmenu.header);
-menu.currentSubmenu.render(markers.body[Vector2.x], markers.body[Vector2.y]);
+draw_text(x + markers.header[Vector2.x], y + markers.header[Vector2.y], menu.currentSubmenu.header);
+menu.currentSubmenu.render(x + markers.body[Vector2.x], y + markers.body[Vector2.y]);
 
 draw_reset_text_align();
 draw_reset_colour();

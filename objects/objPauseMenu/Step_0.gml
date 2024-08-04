@@ -1,12 +1,12 @@
-if (!active)
-    return;
+if (is_screen_fading())
+    exit;
 
-if (global.player.inputs.is_pressed(InputActions.PAUSE)) {
-    screen_fade({
-        onFadeOutStart: function(_fader) /*=>*/ { active = false; },
-        onFadeOutEnd: function(_fader) /*=>*/ { visible = false; },
-        onFadeInEnd: function(_fader) /*=>*/ { instance_destroy(); }
-    });
-    
-    play_sfx(sfxMenuSelect);
+var _prevPhase = phase;
+
+switch (phase) {
+    case 0: // Standard Menu Stuff
+        menu.update();
+        break;
 }
+
+phaseTimer = (phaseTimer + 1) * (phase == _prevPhase);
