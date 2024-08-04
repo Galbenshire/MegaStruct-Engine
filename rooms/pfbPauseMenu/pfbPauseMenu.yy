@@ -20,8 +20,8 @@
   ],
   "name":"pfbPauseMenu",
   "parent":{
-    "name":"_UI",
-    "path":"folders/Rooms/_UI.yy",
+    "name":"Pause Menu",
+    "path":"folders/_System/Menus/Pause Menu.yy",
   },
   "parentRoom":null,
   "physicsSettings":{

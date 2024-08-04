@@ -29,22 +29,62 @@ function InputMap() constructor {
 	/// @desc Checks if any of the given inputs have been held
 	///
 	/// @param {rest<type>}  [...inputs]  The input actions to check
+	///
+	/// @returns {bool}  If any input has been held (true) or not (false)
 	static is_any_held = function() {
-		var _value = 0;
-		for (var i = 0; i < argument_count; i++)
-			_value |= (1 << argument[i]);
-		return bool(held & _value);
+		for (var i = 0; i < argument_count; i++) {
+			if ((held & (1 << argument[i])) > 0)
+				return true;
+		}
+		
+		return false;
+	};
+	
+	/// @method is_any_held_ext(input_array)
+	/// @desc Checks if any of the given inputs have been held
+	///
+	/// @param {array<int>}  input_array  An array of input actions to check
+	///
+	/// @returns {bool}  If any input has been held (true) or not (false)
+	static is_any_held_ext = function(_inputs) {
+		var _count = array_length(_inputs);
+		for (var i = 0; i < _count; i++) {
+			if ((held & (1 << _inputs[i])) > 0)
+				return true;
+		}
+		
+		return false;
 	};
 	
 	/// @method is_any_pressed(...inputs)
 	/// @desc Checks if any of the given inputs have been pressed
 	///
 	/// @param {rest<type>}  [...inputs]  The input actions to check
+	///
+	/// @returns {bool}  If any input has been pressed (true) or not (false)
 	static is_any_pressed = function() {
-		var _value = 0;
-		for (var i = 0; i < argument_count; i++)
-			_value |= (1 << argument[i]);
-		return bool(pressed & _value);
+		for (var i = 0; i < argument_count; i++) {
+			if ((pressed & (1 << argument[i])) > 0)
+				return true;
+		}
+		
+		return false;
+	};
+	
+	/// @method is_any_pressed_ext(input_array)
+	/// @desc Checks if any of the given inputs have been pressed
+	///
+	/// @param {array<int>}  input_array  An array of input actions to check
+	///
+	/// @returns {bool}  If any input has been pressed (true) or not (false)
+	static is_any_pressed_ext = function(_inputs) {
+		var _count = array_length(_inputs);
+		for (var i = 0; i < _count; i++) {
+			if ((pressed & (1 << _inputs[i])) > 0)
+				return true;
+		}
+		
+		return false;
 	};
     
     /// @method is_held(input)

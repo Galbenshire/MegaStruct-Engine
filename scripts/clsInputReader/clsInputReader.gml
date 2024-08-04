@@ -11,6 +11,14 @@ function InputReader() constructor {
     controller = NO_CONTROLLER; /// @is {number} Controller index to use for this Input Reader (-1 means no controller)
     results = 0; // A bitmask number; each bit represents an input action
     
+    /// @method has_controller()
+	/// @desc Checks if the reader has an assigned controller
+	///
+	/// @returns {bool}  Whether the reader has a controller (true) or not (false)
+    static has_controller = function() {
+		return controller != NO_CONTROLLER;	
+    };
+    
     /// @method update()
 	/// @desc Updates the reader's results by reading each input action
     static update = function() {
