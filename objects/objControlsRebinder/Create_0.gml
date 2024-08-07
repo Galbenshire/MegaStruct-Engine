@@ -39,3 +39,5 @@ errorMessage = "";
 errorTimer = 0;
 
 controllerID = objSystem.input.reader.controller;
+
+play_sfx(sfxMenuSelect);

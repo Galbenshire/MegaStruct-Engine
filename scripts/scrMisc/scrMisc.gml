@@ -27,6 +27,16 @@ function defer(_type, _func, _delay = 0, _ignoreTimeScale = false, _ignorePause 
 	return noone; // Failsafe
 }
 
+/// @func event_user_scope(numb)
+/// @desc Version of event_user that can be called on a specific instance
+///
+/// @param {int}  numb  The number of User Event to call, between 0 and 15.
+/// @param {instance}  [scope]  The instance to call this function on. Defaults to the calling instance.
+function event_user_scope(_numb, _scope = self) {
+	with (_scope)
+		event_user(_numb);
+}
+
 /// @func is_html5()
 /// @desc Checks if this game is running on HTML5
 ///

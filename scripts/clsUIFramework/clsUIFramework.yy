@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"clsUI",
+  "%Name":"clsUIFramework",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"clsUI",
+  "name":"clsUIFramework",
   "parent":{
     "name":"Classes",
     "path":"folders/_System/Classes.yy",

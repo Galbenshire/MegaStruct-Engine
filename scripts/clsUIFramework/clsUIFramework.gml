@@ -1,4 +1,4 @@
-function UIMenu() constructor {
+function UIFramework_Menu() constructor {
 	#region Variables
 	
     owner = other.id; /// @is {instance}
@@ -12,21 +12,43 @@ function UIMenu() constructor {
     isConfirmed = false;
     isCanceled = false;
     
-    submenus = {}; /// @is {struct}
-    currentSubmenu = undefined; /// @is {UISubmenu?}
-    previousSubmenu = undefined; /// @is {UISubmenu?}
-    defaultSubmenu = undefined; /// @is {UISubmenu?}
+    submenus = []; /// @is {array<UIFramework_Submenu>}
+    submenuCount = 0;
+    
+    currentSubmenu = undefined; /// @is {UIFramework_Submenu?}
+    previousSubmenu = undefined; /// @is {UIFramework_Submenu?}
+    defaultSubmenu = undefined; /// @is {UIFramework_Submenu?}
     canChangeSubmenu = true;
+    
+    __submenuIDFind = "";
     
     #endregion
     
     #region Functions - Managing UI Submenus
     
-    /// @method add_submenu(name)
-	/// @desc Creates a new UISubmenu for this submenu
-    static add_submenu = function(_name) {
-        submenus[$ _name] = new UISubmenu();
-        return submenus[$ _name];
+    /// @method add_submenu(submenu)
+	/// @desc Adds a UI Submenu into this menu
+    static add_submenu = function(_submenu) {
+		array_push(submenus, _submenu);
+        submenuCount++;
+        
+        _submenu.owner = owner;
+        _submenu.menu = self;
+        
+		with (_submenu) {
+			for (var i = 0; i < itemCount; i++) {
+				items[i].owner = owner;
+				items[i].menu = menu;
+				items[i].submenu = self;
+			}
+		}
+    };
+    
+    /// @method get_submenu(submenu_id)
+	/// @desc Gets a UI Submenu by its ID
+    static get_submenu = function(_submenuID) {
+		__submenuIDFind = _submenuID;
+		return array_find(submenus, function(_submenu, i) /*=>*/ {return _submenu.id == __submenuIDFind});
     };
     
     /// @method pass_submenu_focus(new_submenu)
@@ -73,25 +95,29 @@ function UIMenu() constructor {
     #endregion
 }
 
-function UISubmenu() constructor {
-    assert(is_instanceof(other, UIMenu), "UISubmenu should only be created by UIMenu (use add_submenu())");
-    
+function UIFramework_Submenu(_id) constructor {
     #region Variables
     
-    menu = other; /// @is {UIMenu}
-    owner = menu.owner; /// @is {instance}
+    id = _id
     
-    items = {}; /// @is {struct}
-    currentItem = undefined; /// @is {UIItem?}
-    previousItem = undefined; /// @is {UIItem?}
-    defaultItem = undefined; /// @is {UIItem?}
+    menu = undefined; /// @is {UIFramework_Menu}
+    owner = noone; /// @is {instance}
+    
+    items = []; /// @is {array<UIFramework_Item>}
+    itemCount = 0;
+    
+    currentItem = undefined; /// @is {UIFramework_Item?}
+    previousItem = undefined; /// @is {UIFramework_Item?}
+    defaultItem = undefined; /// @is {UIFramework_Item?}
     canChangeItem = true;
     
     // Neighbours - where to pass focus depending on direction
-    neighbourLeft = undefined; /// @is {UISubmenu?}
-    neighbourRight = undefined; /// @is {UISubmenu?}
-    neighbourTop = undefined; /// @is {UISubmenu?}
-    neighbourBottom = undefined; /// @is {UISubmenu?}
+    neighbourLeft = undefined; /// @is {UIFramework_Submenu?}
+    neighbourRight = undefined; /// @is {UIFramework_Submenu?}
+    neighbourTop = undefined; /// @is {UIFramework_Submenu?}
+    neighbourBottom = undefined; /// @is {UIFramework_Submenu?}
+    
+    __itemIDFind = "";
     
     #endregion
     
@@ -112,9 +138,8 @@ function UISubmenu() constructor {
 		if (!is_undefined(onFocusEnter))
 			onFocusEnter();
 		
-		var _item = currentItem ?? defaultItem;
-		if (!is_undefined(_item))
-			_item.gain_focus();
+		if (!is_undefined(defaultItem))
+			defaultItem.gain_focus();
     };
     
     /// @method is_focused()
@@ -141,11 +166,52 @@ function UISubmenu() constructor {
     
     #region Functions - Managing UI Items
     
-    /// @method add_item(name)
-	/// @desc Creates a new UIItem for this submenu
-    static add_item = function(_name) {
-        items[$ _name] = new UIItem();
-        return items[$ _name];
+    /// @method add_item(item)
+	/// @desc Adds a UI Item into this submenu
+    static add_item = function(_item) {
+        array_push(items, _item);
+        itemCount++;
+        
+        _item.owner = owner;
+        _item.menu = menu;
+        _item.submenu = self;
+    };
+    
+    /// @method add_items_from_list(item_list, is_vertical, wrap_neighbours)
+	/// @desc Adds a list UI Items into this submenu
+    static add_items_from_list = function(_itemList, _isVertical, _wrapNeighbours) {
+		var _count = array_length(_itemList);
+		if (_count <= 0)
+			return;
+		
+		for (var i = 0; i < _count; i++) {
+			add_item(_itemList[i]);
+			
+			if (_isVertical) {
+				_itemList[i].neighbourTop = _itemList[modf(i - 1, _count)];
+				_itemList[i].neighbourBottom = _itemList[modf(i + 1, _count)];
+			} else {
+				_itemList[i].neighbourLeft = _itemList[modf(i - 1, _count)];
+				_itemList[i].neighbourRight = _itemList[modf(i + 1, _count)];
+			}
+        }
+        
+        if (_wrapNeighbours)
+			return;
+        if (_isVertical) {
+			_itemList[0].neighbourTop = undefined;
+			_itemList[_count - 1].neighbourBottom = undefined;
+        } else {
+			_itemList[0].neighbourLeft = undefined;
+			_itemList[_count - 1].neighbourRight = undefined;
+        }
+    };
+    
+    /// @method get_item(item_id)
+	/// @desc Gets a UI Item by its ID
+    static get_item = function(_itemID) {
+		__itemIDFind = _itemID;
+		return array_find(items, function(_item, i) /*=>*/ {return _item.id == __itemIDFind});
     };
     
     /// @method pass_item_focus(new_item)
@@ -170,7 +236,7 @@ function UISubmenu() constructor {
 	/// @desc Gets this submenu's neighbour, using the given direction
     static get_neighbour = function(_xDir, _yDir) {
 		if (!is_undefined(currentItem)) {
-			if (is_undefined(currentItem.get_neighbour(_xDir, _yDir)))
+			if (!is_undefined(currentItem.get_neighbour(_xDir, _yDir)))
 				return undefined;
 		}
 		
@@ -180,6 +246,16 @@ function UISubmenu() constructor {
             return (_yDir < 0) ? neighbourTop : neighbourBottom;
         
 		return undefined;
+    };
+    
+    /// @method render(x, y)
+	/// @desc Renders this item
+    static render = function(_x, _y) {
+		var i = 0;
+		repeat(itemCount) {
+			items[i].render(_x, _y);
+			i++;
+		}
     };
     
     /// @method update()
@@ -208,20 +284,20 @@ function UISubmenu() constructor {
     #endregion
 }
 
-function UIItem() constructor {
-    assert(is_instanceof(other, UISubmenu), "UIItem should only be created by UISubmenu (use add_item())");
-    
+function UIFramework_Item(_id) constructor {
     #region Variables
     
-    submenu = other; /// @is {UISubmenu}
-    menu = submenu.menu; /// @is {UIMenu}
-    owner = submenu.owner; /// @is {instance}
+    id = _id;
+    
+    submenu = undefined; /// @is {UIFramework_Submenu}
+    menu = undefined; /// @is {UIFramework_Menu}
+    owner = noone; /// @is {instance}
     
     // Neighbours - where to pass focus depending on direction
-    neighbourLeft = undefined; /// @is {UIItem?}
-    neighbourRight = undefined; /// @is {UIItem?}
-    neighbourTop = undefined; /// @is {UIItem?}
-    neighbourBottom = undefined; /// @is {UIItem?}
+    neighbourLeft = undefined; /// @is {UIFramework_Item?}
+    neighbourRight = undefined; /// @is {UIFramework_Item?}
+    neighbourTop = undefined; /// @is {UIFramework_Item?}
+    neighbourBottom = undefined; /// @is {UIFramework_Item?}
     
     #endregion
     
@@ -276,6 +352,12 @@ function UIItem() constructor {
 		if (_yDir != 0)
             return (_yDir < 0) ? neighbourTop : neighbourBottom;
 		return undefined;
+    };
+    
+    /// @method render(x, y)
+	/// @desc Renders this item
+    static render = function(_x, _y) {
+		//...
     };
     
     /// @method update()

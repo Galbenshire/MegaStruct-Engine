@@ -1,9 +1,7 @@
-for (var i = 0; i < bgSpritesCount; i++) {
-    with (bgSprites[i])
-        draw_sprite_ext(sprite_index, image_index, other.x + x, other.y + y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
-}
-
-menu.submenus.weapons.render(x + markers.weapons[Vector2.x], y + markers.weapons[Vector2.y]);
+guiTemplate.draw(x, y);
+weaponSubmenu.render(x + guiPositionWeapons[Vector2.x], y + guiPositionWeapons[Vector2.y]);
+optionsSubmenu.render(x + guiPositionOptions[Vector2.x], y + guiPositionOptions[Vector2.y]);
+playerSubmenu.render(x + guiPositionPlayer[Vector2.x], y + guiPositionPlayer[Vector2.y]);
 
 draw_reset_text_align();
 draw_reset_colour();

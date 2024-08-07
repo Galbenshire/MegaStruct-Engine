@@ -25,6 +25,20 @@ function array_empty(_array) {
 	return array_length(_array) <= 0;
 }
 
+/// @func array_find(array, predicate, offset, length)
+/// @desc This function is used to find the first array element that satisfies a condition.
+///
+/// @param {array}  array  The array to use
+/// @param {function<any,int,bool>}  predicate  The Predicate Method to run on each element
+/// @param {int}  [offset]  The offset, or starting index, in the array. Defaults to 0, the first index.
+/// @param {int}  [length]  The number of elements to traverse. Defaults to infinity, which means traverse the whole array.
+///
+/// @returns {any?}  The first element found, or `undefined` if nothing is found
+function array_find(_array, _predicate, _offset = 0, _length = infinity) {
+	var _index = array_find_index(_array, _predicate, _offset, _length);
+	return (_index != NOT_FOUND) ? _array[_index] : undefined;
+}
+
 /// @func array_slice(array, offset, length)
 /// @desc Returns a portion of the given array
 ///
