@@ -35,10 +35,12 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v1","%Name":"depthOffset","filters":[],"listItems":[],"multiselect":false,"name":"depthOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"healthpointsStart","filters":[],"listItems":[],"multiselect":false,"name":"healthpointsStart","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"contactDamage","filters":[],"listItems":[],"multiselect":false,"name":"contactDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"canTakeDamage","filters":[],"listItems":[],"multiselect":false,"name":"canTakeDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"canDealDamage","filters":[],"listItems":[],"multiselect":false,"name":"canDealDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"collisionPriority","filters":[],"listItems":[],"multiselect":false,"name":"collisionPriority","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"penetrate","filters":[],"listItems":[
         "PenetrateType.NONE",
         "PenetrateType.NO_DAMAGE",

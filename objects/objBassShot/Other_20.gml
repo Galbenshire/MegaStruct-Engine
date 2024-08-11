@@ -9,7 +9,7 @@ with (global.weaponList[WeaponType.BUSTER_BASS]) {
     
     onTick = function(_player) {
 		with (_player) {
-			if (player_is_action_locked(PlayerAction.SHOOT) || !inputs.is_held(InputActions.SHOOT) || autoFireTimer > 0)
+			if (player_shot_input(true))
 				return;
 			
 			if (isShooting)

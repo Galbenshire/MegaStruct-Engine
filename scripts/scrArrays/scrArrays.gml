@@ -64,20 +64,22 @@ function choose_from_array(_array) {
     return _array[irandom(_count - 1)];
 }
 
-/// @func ds_list_to_array(list)
+/// @func ds_list_to_array(list, destroy_list)
 /// @desc Converts a DS List to an array.
-///		  NOTE: This will destroy the original list.
 ///
 /// @param {ds_list}  list  The list to convert
+/// @param {bool}  list  Whether to destroy the list given afterwards (true) or not (false). Defaults to true.
 ///
 /// @returns {array}  An array version of the list
-function ds_list_to_array(_list) {
+function ds_list_to_array(_list, _destroyList = true) {
 	var _count = ds_list_size(_list),
         _array = array_create(_count);
     
     for (var i = 0; i < _count; i++)
         _array[i] = _list[| i];
     
-    ds_list_destroy(_list);
+    if (_destroyList)
+		ds_list_destroy(_list);
+    
     return _array;
 }

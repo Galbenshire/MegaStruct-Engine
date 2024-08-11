@@ -74,9 +74,6 @@ if (!variable_global_exists("__gameInit")) {
 	global.osInfo = os_get_info(); /// @is {ds_map}
 	global.player = new Player(0); /// @is {Player}
 	
-	// Not intended to be accessed outside of system-specific code
-	global.__collisionList = ds_list_create(); /// @is {ds_list}
-	
 	// ===== Load Settings =====
 	options_data().load_from_file();
 	game_window().update_screen();

@@ -7,9 +7,6 @@
         --- Destroy entity once killed. Despawning does not count
         --- Destroy entity once killed or despawned
     -- Custom spawn conditions (e.g. only appear if the camera is moving right)
-- UI System
-    -- Better Options Menu
-    -- Actual Pause Menu
 - Music
 - Velocity-altering gimmicks
     -- MM6 Springs

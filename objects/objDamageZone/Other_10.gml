@@ -6,7 +6,6 @@ with (target) {
     var _spikeHit = (xcollInstance == other.id)
         || (ycoll * gravDir < 0 && ycollInstance == other.id)
         || (ground && groundInstance == other.id && in_range(bbox_x_center(), other.bbox_left, other.bbox_right));
-    
     if (!_spikeHit)
         exit;
     

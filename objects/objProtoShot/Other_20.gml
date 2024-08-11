@@ -69,7 +69,7 @@ with (global.weaponList[WeaponType.BUSTER_PROTO]) {
 			case 0: // No Charge
 				__barAmount = 0;
 				
-				if (player_can_fire_shot(__player))
+				if (player_shot_input(, __player))
 					__fire_buster_shot(0);
 				else if (!__player.isShooting && __player_can_charge())
 					__change_charge_state(1);

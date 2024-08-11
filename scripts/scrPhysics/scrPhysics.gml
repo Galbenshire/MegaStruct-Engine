@@ -7,7 +7,7 @@
 ///
 /// @return {bool}  Whether there's a collision at the given location (true) or not (false)
 function check_for_solids(_x, _y, _scope = self) {
-	var _list = global.__collisionList,
+	var _list = ds_list_create(),
 		_result = false;
 	
 	with (_scope) {
@@ -60,7 +60,7 @@ function check_for_solids(_x, _y, _scope = self) {
 		y = _cacheY;
 	}
 	
-	ds_list_clear(_list);
+	ds_list_destroy(_list);
 	return _result;
 }
 
@@ -73,7 +73,7 @@ function check_for_solids(_x, _y, _scope = self) {
 ///
 /// @return {bool}  Whether there's a collision at the given location (true) or not (false)
 function check_for_solids_point(_x, _y, _scope = self) {
-	var _list = global.__collisionList,
+	var _list = ds_list_create(),
 		_count = instance_position_list(_x, _y, prtCollidable, _list, true),
 		_result = false;
 	
@@ -101,7 +101,7 @@ function check_for_solids_point(_x, _y, _scope = self) {
 			break;
 	}
 	
-	ds_list_clear(_list);
+	ds_list_destroy(_list);
 	return _result;
 }
 
@@ -170,7 +170,7 @@ function distance_to_collidable_y(_collidable, _direction, _scope = self) {
 ///
 /// @return {array<prtCollidable>}  An array of collidables that the entity could collide with
 function get_xcoll_candidates(_range, _scope = self) {
-    var _list = global.__collisionList,
+    var _list = ds_list_create(),
         _results = [];
     var _count = collision_rectangle_list(bbox_x_center(_scope), _scope.bbox_top, bbox_horizontal(_range, _scope) + _range, _scope.bbox_bottom,
         prtCollidable, false, false, _list, false);
@@ -211,7 +211,7 @@ function get_xcoll_candidates(_range, _scope = self) {
         }
     }
     
-    ds_list_clear(_list);
+    ds_list_destroy(_list);
     return _results;
 }
 
@@ -223,7 +223,7 @@ function get_xcoll_candidates(_range, _scope = self) {
 ///
 /// @return {array<prtCollidable>}  An array of collidables that the entity could collide with
 function get_ycoll_candidates(_range, _scope = self) {
-    var _list = global.__collisionList,
+    var _list = ds_list_create(),
         _results = [],
         _bboxEdge = bbox_vertical(_range, _scope),
         _bboxWidth = bbox_width(_scope),
@@ -278,7 +278,7 @@ function get_ycoll_candidates(_range, _scope = self) {
         }
     }
     
-    ds_list_clear(_list);
+    ds_list_destroy(_list);
     return _results;
 }
 

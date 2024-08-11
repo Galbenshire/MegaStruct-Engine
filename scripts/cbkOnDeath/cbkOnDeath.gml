@@ -71,9 +71,9 @@ function cbkOnDeath_prtBoss(_damageSource) {
 /// @desc Default onDeath callback for projectiles
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnDeath_prtProjectile(_damage_source) {
+function cbkOnDeath_prtProjectile(_damageSource) {
     if (DEBUG_ENABLED)
-        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damage_source.attacker.object_index));
+        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
     
     lifeState = LifeState.DEAD_ONSCREEN;
     visible = false;

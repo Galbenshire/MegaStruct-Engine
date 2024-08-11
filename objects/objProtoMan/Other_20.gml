@@ -16,7 +16,8 @@ global.characterList[CharacterType.PROTO] = new Character({
     loadout: [
         WeaponType.BUSTER_PROTO,
         WeaponType.ICE_SLASHER,
-        WeaponType.METAL_BLADE
+        WeaponType.METAL_BLADE,
+        WeaponType.SEARCH_SNAKE
     ],
     
     onGetGunOffset: function(_player) {

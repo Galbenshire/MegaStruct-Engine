@@ -25,6 +25,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"respawnRange","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"INFINITE_RANGE",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"despawnRange","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"INFINITE_RANGE",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"sectionSwitchBehaviour","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"SectionSwitchBehaviour.VISIBLE",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"depthOffset","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"50",},
   ],
   "parent":{
     "name":"Collisions",

@@ -48,7 +48,7 @@
   "origin":4,
   "parent":{
     "name":"Mega Buster",
-    "path":"folders/Weapons/Mega Buster.yy",
+    "path":"folders/Weapons/_Busters/Mega Buster.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

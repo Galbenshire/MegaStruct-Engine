@@ -1,12 +1,12 @@
 if (global.paused || !canDealDamage || global.gameTimeScale.integer <= 0)
     exit;
 
-var _entityList = global.__collisionList,
-	_numEntities = collision_rectangle_list(boundsLeft, boundsTop, boundRight, boundBottom, prtPlayer, false, true, _entityList, true);
+var _entitiesArr = collision_rectangle_array(boundsLeft, boundsTop, boundRight, boundBottom, prtPlayer, false, true, true),
+	_numEntities = array_length(_entitiesArr);
 
-for (var i = 0; i < _numEntities; ++i) {
-	target = _entityList[| i];
+var i = 0;
+repeat(_numEntities) {
+	target = _entitiesArr[i];
 	event_user(0);
+	i++;
 }
-
-ds_list_clear(_entityList);

@@ -12,7 +12,7 @@
   ],
   "parent":{
     "name":"Proto Buster",
-    "path":"folders/Weapons/Proto Buster.yy",
+    "path":"folders/Weapons/_Busters/Proto Buster.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",

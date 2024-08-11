@@ -17,7 +17,7 @@
   ],
   "parent":{
     "name":"Bass Buster",
-    "path":"folders/Weapons/Bass Buster.yy",
+    "path":"folders/Weapons/_Busters/Bass Buster.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",

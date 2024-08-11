@@ -3,6 +3,7 @@
 event_inherited();
 
 image_speed = 0;
+depth += depthOffset;
 
 healthpoints = healthpointsStart;
 lifeState = LifeState.DEAD_OFFSCREEN; /// @is {int}

@@ -17,6 +17,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"walkSpeed","path":"objects/prtPlayer/prtPlayer.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1.375",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"skinSprite","path":"objects/prtPlayer/prtPlayer.yy",},"resource":{"name":"sprPlayerSkinBlues","path":"sprites/sprPlayerSkinBlues/sprPlayerSkinBlues.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sprPlayerSkinBlues",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"onSetDamage","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"cbkOnSetDamage_objProtoMan",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"onSpawn","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"cbkOnSpawn_objProtoMan",},
   ],
   "parent":{
     "name":"Proto Man",

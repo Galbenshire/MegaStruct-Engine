@@ -168,19 +168,21 @@ function player_add_weapon(_weaponID, _player = self) {
 	}
 }
 
-/// @func player_can_fire_shot(player)
-/// @desc Helper function for if the player is trying to shoot
-///		  Mainly used by weapons
+/// @func player_shot_input(auto_fire, player)
+/// @desc Helper function for if the player is trying to input a shoot action.
+///		  This function will check if the player is in a state where they are able to do so.
+///		  Mainly used by weapons to know if the player is trying to shoot a projectile.
+/// @param {bool}  [auto_fire]  Whether the function sould use the auto-fire beaviour (true) or not (false). Defaults to whatever is set in options_data
 /// @param {prtPlayer}  [player]  The player trying to shoot. Defaults to the calling instance.
 ///
 /// @returns {bool}  Whether the player can fire a shot (true), or not (false)
-function player_can_fire_shot(_player = self) {
+function player_shot_input(_autoFire = options_data().autoFire, _player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	if (player_is_action_locked(PlayerAction.SHOOT, _player))
 		return false;
 	
-	return options_data().autoFire
+	return _autoFire
 		? _player.inputs.is_held(InputActions.SHOOT) && _player.autoFireTimer <= 0
 		: _player.inputs.is_pressed(InputActions.SHOOT);
 }

@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Proto Buster",
-    "path":"folders/Weapons/Proto Buster.yy",
+    "path":"folders/Weapons/_Busters/Proto Buster.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

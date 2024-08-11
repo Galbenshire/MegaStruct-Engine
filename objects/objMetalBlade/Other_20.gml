@@ -8,7 +8,7 @@ with (global.weaponList[WeaponType.METAL_BLADE]) {
 	
 	onTick = function(_player) {
         with (_player) {
-            if (!player_can_fire_shot())
+            if (!player_shot_input())
 				return;
             
             var _shotData = {

@@ -15,13 +15,18 @@ if (!canDealDamage || contactDamage == 0)
 if (!place_meeting(x, y, prtEntity))
 	exit;
 
-var _entityList = global.__collisionList,
-	_numEntities = instance_place_list(x, y, prtEntity, _entityList, true);
+var _entityArr = instance_place_array(x, y, prtEntity, true),
+	_numEntities = array_length(_entityArr);
+array_sort(_entityArr, function(_a, _b) /*=>*/ {return _a.collisionPriority < _b.collisionPriority});
 
-for (var i = 0; i < _numEntities; ++i) {
-	var _subject = _entityList[| i];
+var i = 0;
+repeat(_numEntities) {
+	var _subject = _entityArr[i];
 	if (entity_can_attack_entity(_subject))
 		entity_entity_collision(contactDamage, _subject);
+	
+	if (!canDealDamage || contactDamage == 0 || entity_is_dead())
+		break;
+	
+	i++;
 }
-
-ds_list_clear(_entityList);

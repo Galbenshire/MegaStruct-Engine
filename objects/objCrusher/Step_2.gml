@@ -20,16 +20,18 @@ if (global.paused || global.gameTimeScale.integer <= 0)
 if (!canDealDamage || contactDamage == 0)
 	exit;
 
-var _entityList = global.__collisionList,
-	_numEntities = 0;
-	
-_numEntities += instance_place_list(x, y, prtEntity, _entityList, true); // The Base
-_numEntities += collision_rectangle_list(x - 3, chainStartY, x + 3, chainEndY, prtEntity, true, true, _entityList, true); // The Chain
+var _entityArr = array_concat(
+	instance_place_array(x, y, prtEntity, true),
+	collision_rectangle_array(x - 3, chainStartY, x + 3, chainEndY, prtEntity, true, true, true)
+);
+var _numEntities = array_length(_entityArr);
+array_sort(_entityArr, function(_a, _b) /*=>*/ {return _a.collisionPriority < _b.collisionPriority});
 
-for (var i = 0; i < _numEntities; ++i) {
-	var _subject = _entityList[| i];
+var i = 0;
+repeat(_numEntities) {
+	var _subject = _entityArr[i];
 	if (entity_can_attack_entity(_subject) && !(_subject.lastHitBy == self && hitTimer <= 0))
 		entity_entity_collision(contactDamage, _subject);
+	
+	i++;
 }
-
-ds_list_clear(_entityList);

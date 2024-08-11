@@ -313,6 +313,10 @@ function entity_within_respawn_range(_scope = self) {
 ///
 /// @returns {instance}  An instance of the entity specified
 function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
+	// Disable depthOffset
+	// (it's only meant for entities added via the Room Editor anyways)
+	_vars.depthOffset = 0;
+	
 	var _entity = instance_create(_x, _y, _depthOrLayer, _obj, _vars);
 	_entity.lifeState = LifeState.ALIVE;
 	_entity.onSpawn();
