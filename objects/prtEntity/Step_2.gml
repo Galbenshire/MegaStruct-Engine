@@ -23,7 +23,7 @@ var i = 0;
 repeat(_numEntities) {
 	var _subject = _entityArr[i];
 	if (entity_can_attack_entity(_subject))
-		entity_entity_collision(contactDamage, _subject);
+		entity_entity_collision(contactDamage, _subject, _subject);
 	
 	if (!canDealDamage || contactDamage == 0 || entity_is_dead())
 		break;

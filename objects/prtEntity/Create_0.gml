@@ -19,6 +19,9 @@ hitTimer = 9999;
 lastHitBy = noone; /// @is {prtEntity}
 hitIgnoreList = []; /// @is {array<prtEntity>}
 
+hitboxes = []; /// @is {array<prtHitbox>}
+hitboxCount = 0;
+
 reticle = (targetingPreset != "No Target") ? (new Reticle()) : undefined; /// @is {Reticle}
 
 xspeed = new Fractional();

@@ -19,6 +19,7 @@ function cbkOnDeath_prtEntity(_damageSource) {
     
     lifeState = LifeState.DEAD_ONSCREEN;
     instance_create_depth(bbox_x_center(), bbox_y_center(), depth, objExplosion);
+    entity_clear_hitboxes();
 }
 
 /// @func cbkOnDeath_prtPlayer(damage_source)
@@ -65,6 +66,8 @@ function cbkOnDeath_prtBoss(_damageSource) {
 		with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
 			set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
 	}
+	
+	entity_clear_hitboxes();
 }
 
 /// @func cbkOnDeath_prtProjectile(damage_source)

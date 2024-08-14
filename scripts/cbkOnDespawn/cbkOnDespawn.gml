@@ -15,6 +15,8 @@
 function cbkOnDespawn_prtEntity() {
     if (DEBUG_ENABLED)
         show_debug_message("Despawn - {0} ({1}, {2})", object_get_name(object_index), x, y);
+    
+    entity_clear_hitboxes();
 }
 
 /// @func cbkOnDespawn_prtPlayer()

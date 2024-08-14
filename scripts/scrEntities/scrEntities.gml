@@ -37,83 +37,51 @@ function entity_check_ground() {
 		push_entities_y(_distanceToMove);
 }
 
-/// @self {prtEntity}
-/// @func entity_entity_collision(damage, subject)
+/// @func entity_entity_collision(damage, subject, subject_hitbox, attacker, attacker_hitbox)
 /// @desc Makes one entity attempt to apply damage to another entity
 ///
-/// @param {number}  [damage]  How much damage the attack will deal. Defaults to the entity's contactDamage.
-/// @param {prtEntity}  [suject]  The entity to deal damage to. Defaults to `other`.
-function entity_entity_collision(_damage = contactDamage, _subject = other) {
-	if (array_contains(hitIgnoreList, _subject))
+/// @param {number}  damage  How much damage the attack will deal.
+/// @param {prtEntity}  subject  The entity to deal damage to.
+/// @param {prtHitbox|prtEntity}  [subject_hitbox]  Which hitbox of the subject we're attacking. Defaults to the subject itself.
+function entity_entity_collision(_damage, _subject, _subjectHitbox = _subject, _attacker = self, _attackerHitbox = self) {
+	if (array_contains(_attacker.hitIgnoreList, _subject))
 		return;
 	
-	var _damageSource = new DamageSource(self, _subject, _damage);
-	_subject.onSetDamage(_damageSource);
-	
-	_subject.onGuard(_damageSource);
-	if (_damageSource.damage == 0)
-		_damageSource.guard = (_damageSource.guard == GuardType.DAMAGE) ? GuardType.FORCE_REFLECT : max(GuardType.REFLECT, _damageSource.guard);
-	
-	var _wasGuarded = false;
-	switch (_damageSource.guard) {
-		case GuardType.DAMAGE: // There is no guard. Damage will occur.
-			break;
+	var _damageSource = new DamageSource(_attacker, _attackerHitbox, _subject, _subjectHitbox, _damage);
+	with (_damageSource) {
+		calculate_damage();
+		calculate_guard();
 		
-		case GuardType.REFLECT: // Depends on the attacker's penetrate variable
-			if (penetrate == PenetrateType.NONE)
-				onReflected(_damageSource);
-			else if (penetrate == PenetrateType.NO_DAMAGE_AND_COLLISION)
-				array_push(hitIgnoreList, _subject);
+		if (guard == GuardType.REFLECT && attacker.penetrate == PenetrateType.NO_DAMAGE_AND_COLLISION)
+			array_push(attacker.hitIgnoreList, subject);
+		if (attack_is_reflected())
+			attacker.onReflected(self);
+		
+		if (attack_is_guarded())
+			return;
+		
+		attacker.onAttackBegin(self);
+		
+		if (!has_flag(DamageFlags.NO_DAMAGE)) {
+			var _mockDamage = has_flag(DamageFlags.MOCK_DAMAGE);
 			
-			_wasGuarded = penetrate != PenetrateType.BYPASS_GUARD;
-			break;
-		
-		case GuardType.IGNORE: // Pass through the subject with no effect
-			_wasGuarded = true;
-			break;
-		
-		case GuardType.REFLECT_OR_IGNORE: // Depends on the attacker's penetrate variable, but always causes no damage
-			if (penetrate == PenetrateType.NONE)
-				onReflected(_damageSource);
-			_wasGuarded = true;
-			break;
-		
-		case GuardType.FORCE_REFLECT: // Always causes the reflected callback
-			onReflected(_damageSource);
-			_wasGuarded = true;
-			break;
-	}
-	
-	if (_wasGuarded) {
-		delete _damageSource;
-		return;
-	}
-	
-	onAttackBegin(_damageSource);
-	if (_damageSource.has_flag(DamageFlags.NO_DAMAGE)) {
-		delete _damageSource;
-		return;
-	}
-	
-	with (_damageSource.subject) {
-		var _mockDamage = _damageSource.has_flag(DamageFlags.MOCK_DAMAGE);
-		if (!_mockDamage)
-			healthpoints -= _damageSource.damage;
-		
-		lastHitBy = other;
-		onHurt(_damageSource);
-		hitTimer = 0;
-		
-		if (healthpoints <= 0 && !_mockDamage) {
-			_damageSource.hasKilled = true;
-			onDeath(_damageSource);
+			subject.healthpoints -= damage * !_mockDamage;
+			subject.onHurt(self);
+			
+			if (subject.healthpoints <= 0 && !_mockDamage) {
+				hasKilled = true;
+				subject.onDeath(self);
+			}
+			
+			subject.lastHitBy = attacker;
+			subject.hitTimer = 0;
+			
+			attacker.onAttackEnd(self);
 		}
 		
-		other.onAttackEnd(_damageSource);
+		if (attacker.pierces == PierceType.NEVER || (attacker.pierces == PierceType.ON_KILLS_ONLY && !hasKilled))
+			entity_kill_self(_attacker);
 	}
-	
-	if (pierces == PierceType.NEVER || (pierces == PierceType.ON_KILLS_ONLY && !_damageSource.hasKilled))
-		entity_kill_self();
 	
 	delete _damageSource;
 }
@@ -174,6 +142,17 @@ function entity_horizontal_movement() {
 		}
 	} else {
 		move_x(xspeed.integer);
+	}
+}
+
+/// @self {prtEntity}
+/// @func entity_update_hitboxes()
+/// @desc Updates an entity's hitboxes
+function entity_update_hitboxes() {
+	var i = 0;
+	repeat(hitboxCount) {
+		event_user_scope(0, hitboxes[i]);
+		i++;
 	}
 }
 
@@ -360,6 +339,19 @@ function entity_can_step(_ignoreFrozen = false, _scope = self) {
 function entity_can_target_entity(_target, _scope = self) {
 	return _target != _scope && _target.canTakeDamage && _target.isTargetable
 		&& !entity_is_dead(_target) && (entity_get_faction_targets(_scope) & _target.factionLayer > 0);
+}
+
+/// @func entity_clear_hitboxes(scope)
+/// @desc Removes all hitboxes associated with the specified entities
+///
+/// @param {prtEntity}  [scope]  The instance to perform this on. Defaults to the calling instance.
+function entity_clear_hitboxes(_scope = self) {
+	with (_scope) {
+		for (var i = 0; i < hitboxCount; i++)
+			instance_destroy(hitboxes[i]);
+		hitboxes = [];
+		hitboxCount = 0;
+	}
 }
 
 /// @func entity_get_faction_targets(target, scope)

@@ -13,8 +13,10 @@
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
 function cbkOnSetDamage_prtEntity(_damageSource) {
-    with (_damageSource)
-        set_damage(other.damageTable.evaluate_damage(attacker, damage));
+    with (_damageSource) {
+        var _dmg = other.damageTable.evaluate_damage(attacker, damage);
+        set_damage(_dmg);
+    }
 }
 
 /// @func cbkOnSetDamage_prtPlayer(damage_source)

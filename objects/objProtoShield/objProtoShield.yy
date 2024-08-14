@@ -53,8 +53,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprProtoShield",
-    "path":"sprites/sprProtoShield/sprProtoShield.yy",
+    "name":"mskProtoShield",
+    "path":"sprites/mskProtoShield/mskProtoShield.yy",
   },
   "spriteMaskId":null,
   "visible":false,

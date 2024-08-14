@@ -9,7 +9,7 @@ with (target) {
     if (!_spikeHit)
         exit;
     
-    var _damageSource = new DamageSource(other, self, other.contactDamage);
+    var _damageSource = new DamageSource(other.id, other.id, self.id, self.id, other.contactDamage);
 		
 	healthpoints -= _damageSource.damage;
 	onHurt(_damageSource);

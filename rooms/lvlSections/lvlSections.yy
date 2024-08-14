@@ -89,6 +89,7 @@
     {"name":"inst_27936F90","path":"rooms/lvlSections/lvlSections.yy",},
     {"name":"inst_6E7F7767","path":"rooms/lvlSections/lvlSections.yy",},
     {"name":"inst_6152CB94","path":"rooms/lvlSections/lvlSections.yy",},
+    {"name":"inst_551EACE9","path":"rooms/lvlSections/lvlSections.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -119,6 +120,7 @@
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"objWeaponEnergySmall","path":"objects/objWeaponEnergySmall/objWeaponEnergySmall.yy",},"propertyId":{"name":"ammoToRestore","path":"objects/objWeaponEnergySmall/objWeaponEnergySmall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"10",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":640.0,"y":1008.0,},
         {"$GMRInstance":"v1","%Name":"inst_27936F90","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_27936F90","objectId":{"name":"objTestCheckSolid","path":"objects/objTestCheckSolid/objTestCheckSolid.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":128.0,"y":48.0,},
+        {"$GMRInstance":"v1","%Name":"inst_551EACE9","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_551EACE9","objectId":{"name":"objTestHitboxes","path":"objects/objTestHitboxes/objTestHitboxes.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":1168.0,"y":272.0,},
       ],"layers":[],"name":"_Entities","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"_Transitions","depth":150,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_564BFFEC","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_564BFFEC","objectId":{"name":"objScreenTransition","path":"objects/objScreenTransition/objScreenTransition.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":14.0,"x":512.0,"y":448.0,},

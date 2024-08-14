@@ -16,7 +16,7 @@ function activate_game_objects(_section = global.section) {
 /// @param {bool}  [reset_entities]  If true, entities are not reset when deactivated. Defaults to true.
 /// @param {objSection}  [section]  The section to check against. Defaults to the current section.
 function deactivate_game_objects(_resetEntities = true, _section = global.section) {
-    static __specialObjects = [];
+    static __specialObjects = [prtHitbox];
     static __specialObjectCount = array_length(__specialObjects);
     
     var _switchingSections = global.switchingSections;

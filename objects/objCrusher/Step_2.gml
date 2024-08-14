@@ -31,7 +31,7 @@ var i = 0;
 repeat(_numEntities) {
 	var _subject = _entityArr[i];
 	if (entity_can_attack_entity(_subject) && !(_subject.lastHitBy == self && hitTimer <= 0))
-		entity_entity_collision(contactDamage, _subject);
+		entity_entity_collision(contactDamage, _subject, _subject);
 	
 	i++;
 }

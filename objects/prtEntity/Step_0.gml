@@ -38,3 +38,4 @@ repeat(global.gameTimeScale.integer) {
 }
 
 entity_update_subpixels();
+entity_update_hitboxes();
