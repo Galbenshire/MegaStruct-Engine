@@ -3,7 +3,7 @@ event_inherited();
 image_alpha = 0.5;
 
 onSpawn = function() {
-    print("Shield Time", WarningLevel.SHOW);
+    cbkOnSpawn_prtEntity();
     
     instance_create_depth(x, y, depth - 1, prtHitbox, {
         sprite_index: mskProtoShield,
@@ -13,7 +13,7 @@ onSpawn = function() {
         canDealDamage: true
     });
     
-    var _hitbox = hitbox_create_simple(0, 64, 16, 32, true, false, true);
+    var _hitbox = hitbox_create_simple(-8, 32, 16, 32, true, false, true);
     _hitbox.image_blend = c_red;
 };
 onDraw = function(__) {

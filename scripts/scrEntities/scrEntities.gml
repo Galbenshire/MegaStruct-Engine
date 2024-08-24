@@ -304,45 +304,117 @@ function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 
 #endregion
 
-#region Other
+#region Boolean Checks
 
-/// @func entity_can_attack_entity(target, scope)
-/// @desc Checks if the specified entity would be able to attack (i.e. collide with) the targeted entity
-///
-/// @param {prtEntity}  target  The instance to check.
-/// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
-///
-/// @returns {bool}  If the entity can step (true) or not (false)
-function entity_can_attack_entity(_target, _scope = self) {
-	return _target != _scope && _target.canTakeDamage && _target.iFrames == 0 && _target.hitTimer >= _scope.attackDelay
-		&& !entity_is_dead(_target) && (_scope.factionMask & _target.factionLayer > 0);
-}
+	#region Entity/Entity Collisions
+		
+	/// @func entity_can_deal_damage(ignore_dead, scope)
+	/// @desc Checks if an entity is currently able to deal damage to other entities
+	///
+	/// @param {bool}  [ignore_dead]  Whether we should ignore if the entity is dead or not. Defaults to false
+	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity can deal damage (true) or not (false)
+	function entity_can_deal_damage(_ignoreDead = false, _scope = self) {
+		return _scope.canDealDamage && _scope.contactDamage != 0 && (_ignoreDead || !entity_is_dead(_scope));
+	}
+	
+	/// @func entity_can_attack_target(target, attacker)
+	/// @desc Checks if an entity would be able to attack (i.e. collide with & damage) another entity, or its hitbox
+	///
+	/// @param {prtEntity|prtHitbox}  target  The entity (or its hitbox) to check.
+	/// @param {prtEntity}  [attacker]  The instance that's attacking the target. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity can damage this target (true) or not (false)
+	function entity_can_attack_target(_target, _attacker = self) {
+		var _targetIsHitbox = is_object_type(prtHitbox, _target),
+			_targetEntity = _targetIsHitbox ? _target.owner : _target,
+			_canTakeDamage = _targetIsHitbox ? hitbox_can_take_damage(_target) : entity_can_take_damage(false, _target);
+		return _canTakeDamage && _targetEntity != _attacker
+			&& _targetEntity.hitTimer >= _attacker.attackDelay && (_attacker.factionMask & _targetEntity.factionLayer) > 0;
+	}
+	
+	/// @func entity_can_take_damage(ignore_dead, scope)
+	/// @desc Checks if an entity is currently able to receive damage from other entities
+	///
+	/// @param {bool}  [ignore_dead]  Whether we should ignore if the entity is dead or not. Defaults to false
+	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity can take damage (true) or not (false)
+	function entity_can_take_damage(_ignoreDead = false, _scope = self) {
+		return _scope.canTakeDamage && _scope.iFrames == 0 && (_ignoreDead || !entity_is_dead(_scope));
+	}
+	
+	#endregion
 
-/// @func entity_can_step(ignore_frozen, scope)
-/// @desc Checks if the specified entity is able to perform their Step Event
-///
-/// @param {bool}  [ignore_frozen]  Whether or not to ignore the entity's frozen state. Defaults to false.
-/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
-///
-/// @returns {bool}  If the entity can step (true) or not (false)
-function entity_can_step(_ignoreFrozen = false, _scope = self) {
-	return !global.paused && (_ignoreFrozen || frozenTimer <= 0) && !entity_is_dead(_scope);
-}
+	#region Targetting
+		
+	/// @func entity_can_target_entity(target, hunter)
+	/// @desc Checks if an entity would be able to target another entity
+	///
+	/// @param {prtEntity}  target  The instance to target.
+	/// @param {prtEntity}  [hunter]  The entity attempting to target. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity can step (true) or not (false)
+	function entity_can_target_entity(_target, _hunter = self) {
+		return _target != _hunter && entity_is_targetable(false, _target) && (entity_faction_targets(_hunter) & _target.factionLayer > 0);
+	}
+		
+	/// @func entity_is_targetable(ignore_dead, scope)
+	/// @desc Checks if the specified entity can be targetted by other entities
+	///
+	/// @param {bool}  [ignore_dead]  Whether we should ignore if the entity is dead or not. Defaults to false
+	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity is alive (true) or not (false)
+	function entity_is_targetable(_ignoreDead = false, _scope = self) {
+		return _scope.canTakeDamage && _scope.isTargetable && (_ignoreDead || !entity_is_dead(_scope));
+	}
+		
+	#endregion
 
-/// @func entity_can_target_entity(target, scope)
-/// @desc Checks if the specified entity would be able to target another entity
-///
-/// @param {prtEntity}  target  The instance to target.
-/// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
-///
-/// @returns {bool}  If the entity can step (true) or not (false)
-function entity_can_target_entity(_target, _scope = self) {
-	return _target != _scope && _target.canTakeDamage && _target.isTargetable
-		&& !entity_is_dead(_target) && (entity_get_faction_targets(_scope) & _target.factionLayer > 0);
-}
+	#region Other
+	
+	/// @func entity_can_step(ignore_frozen, scope)
+	/// @desc Checks if an entity is able to perform their Step Event
+	///
+	/// @param {bool}  [ignore_frozen]  Whether or not to ignore the entity's frozen state. Defaults to false.
+	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity can step (true) or not (false)
+	function entity_can_step(_ignoreFrozen = false, _scope = self) {
+		return !global.paused && (_ignoreFrozen || frozenTimer <= 0) && !entity_is_dead(_scope);
+	}
+	
+	/// @func entity_is_dead(scope)
+	/// @desc Checks if an entity is dead
+	///
+	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity is alive (true) or not (false)
+	function entity_is_dead(_scope = self) {
+		return _scope.lifeState != LifeState.ALIVE;
+	}
+	
+	/// @func entity_is_solid_to_entity(collidee, collider)
+	/// @desc Checks if an entity can be seen as solid to another entity
+	///
+	/// @param {prtEntity}  collidee  The entity to check the solidity of.
+	/// @param {prtEntity}  [collider]  The instance to check against. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity is solid to the collider (true) or not (false)
+	function entity_is_solid_to_entity(_collidee, _collider = self) {
+		return _collidee != _collider && !entity_is_dead(_collidee) && (entity_faction_solids(_collidee) & _collider.factionLayer > 0);
+	}
+	
+	#endregion
+
+#endregion
+
+#region Misc.
 
 /// @func entity_clear_hitboxes(scope)
-/// @desc Removes all hitboxes associated with the specified entities
+/// @desc Removes all hitboxes associated with the specified entity
 ///
 /// @param {prtEntity}  [scope]  The instance to perform this on. Defaults to the calling instance.
 function entity_clear_hitboxes(_scope = self) {
@@ -354,7 +426,7 @@ function entity_clear_hitboxes(_scope = self) {
 	}
 }
 
-/// @func entity_get_faction_targets(target, scope)
+/// @func entity_faction_targets(target, scope)
 /// @desc Gets the factions the specified entity is able to target.
 ///		  If the entity's `factionTargetWhitelist` variable is a non-zero value, that value will be used.
 ///		  Otherwise, the value of `factionMask` gets returned instead.
@@ -362,11 +434,11 @@ function entity_clear_hitboxes(_scope = self) {
 /// @param {prtEntity}  [scope]  The instance to get the value from. Defaults to the calling instance.
 ///
 /// @returns {int}  The factions this entity can target, in a bitmask form
-function entity_get_faction_targets(_scope = self) {
+function entity_faction_targets(_scope = self) {
 	return (_scope.factionTargetWhitelist > 0) ? _scope.factionTargetWhitelist : _scope.factionMask;
 }
 
-/// @func entity_get_faction_solids(target, scope)
+/// @func entity_faction_solids(target, scope)
 /// @desc Gets the factions the specified entity acts solid towards.
 ///		  If the entity's `factionSolidWhitelist` variable is a non-zero value, that value will be used.
 ///		  Otherwise, the entity is treated as being solid to all entities.
@@ -374,29 +446,8 @@ function entity_get_faction_targets(_scope = self) {
 /// @param {prtEntity}  [scope]  The instance to get the value from. Defaults to the calling instance.
 ///
 /// @returns {int}  The factions this entity is solid towards, in a bitmask form
-function entity_get_faction_solids(_scope = self) {
+function entity_faction_solids(_scope = self) {
 	return (_scope.factionSolidWhitelist > 0) ? _scope.factionSolidWhitelist : 0xFFFFFFFF;
-}
-
-/// @func entity_is_dead(scope)
-/// @desc Checks if the specified entity is dead
-///
-/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
-///
-/// @returns {bool}  If the entity is alive (true) or not (false)
-function entity_is_dead(_scope = self) {
-	return _scope.lifeState != LifeState.ALIVE;
-}
-
-/// @func entity_is_solid_to_entity(target, scope)
-/// @desc Checks if the specified entity is solid to another entity
-///
-/// @param {prtEntity}  target  The instance to check against.
-/// @param {prtEntity}  [scope]  The instance that's performing this check. Defaults to the calling instance.
-///
-/// @returns {bool}  If the entity is solid to the target (true) or not (false)
-function entity_is_solid_to_entity(_target, _scope = self) {
-	return _target != _scope && !entity_is_dead(_scope) && (entity_get_faction_solids(_scope) & _target.factionLayer > 0);
 }
 
 /// @func entity_kill_self(scope)

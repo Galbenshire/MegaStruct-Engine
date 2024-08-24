@@ -7,7 +7,6 @@
   "inheritLayers":false,
   "instanceCreationOrder":[
     {"name":"inst_48FEADF8","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
-    {"name":"inst_A4DE19F","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
     {"name":"inst_73663566","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
     {"name":"inst_25F2E15B","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
     {"name":"inst_167E2914","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
@@ -164,6 +163,7 @@
     {"name":"inst_6F3E6A68","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
     {"name":"inst_4582C8DE","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
     {"name":"inst_549FE3C","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
+    {"name":"inst_A4DE19F","path":"rooms/lvlMetalMan/lvlMetalMan.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -181,7 +181,6 @@
       ],"layers":[],"name":"_System","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"_Fader","depth":50,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[],"layers":[],"name":"_Fader","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"_Entities","depth":100,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
-        {"$GMRInstance":"v1","%Name":"inst_A4DE19F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_A4DE19F","objectId":{"name":"objDefaultSpawn","path":"objects/objDefaultSpawn/objDefaultSpawn.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":128.0,"y":160.0,},
         {"$GMRInstance":"v1","%Name":"inst_7417CF61","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7417CF61","objectId":{"name":"objConveyorBeltArea","path":"objects/objConveyorBeltArea/objConveyorBeltArea.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":18.0,"scaleY":1.0,"x":0.0,"y":160.0,},
         {"$GMRInstance":"v1","%Name":"inst_2056E574","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_2056E574","objectId":{"name":"objConveyorBeltArea","path":"objects/objConveyorBeltArea/objConveyorBeltArea.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":-12.0,"scaleY":1.0,"x":512.0,"y":160.0,},
         {"$GMRInstance":"v1","%Name":"inst_40E18ECD","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_40E18ECD","objectId":{"name":"objConveyorBeltArea","path":"objects/objConveyorBeltArea/objConveyorBeltArea.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":-12.0,"scaleY":1.0,"x":608.0,"y":112.0,},
@@ -229,6 +228,7 @@
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":4264.0,"y":608.0,},
         {"$GMRInstance":"v1","%Name":"inst_69FFB3EB","colour":4294967295,"frozen":false,"hasCreationCode":true,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_69FFB3EB","objectId":{"name":"objMetalMan","path":"objects/objMetalMan/objMetalMan.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":-1.0,"scaleY":1.0,"x":5064.0,"y":624.0,},
         {"$GMRInstance":"v1","%Name":"inst_A7513C5","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_A7513C5","objectId":{"name":"objCheckpoint","path":"objects/objCheckpoint/objCheckpoint.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":4736.0,"y":560.0,},
+        {"$GMRInstance":"v1","%Name":"inst_A4DE19F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_A4DE19F","objectId":{"name":"objDefaultSpawn","path":"objects/objDefaultSpawn/objDefaultSpawn.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":128.0,"y":160.0,},
       ],"layers":[],"name":"_Entities","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"_Transitions","depth":150,"effectEnabled":true,"effectType":null,"gridX":16,"gridY":16,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v1","%Name":"inst_1AF2F0A6","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1AF2F0A6","objectId":{"name":"objScreenTransition","path":"objects/objScreenTransition/objScreenTransition.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":-90.0,"scaleX":1.0,"scaleY":16.0,"x":2560.0,"y":224.0,},

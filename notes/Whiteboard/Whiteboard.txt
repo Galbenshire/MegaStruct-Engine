@@ -1,38 +1,61 @@
-// === SCREEN SHAKER ===
---- On a game frame
-- Update shake offset
-- Update timer
-- Apply offset
+// === Various forms of entity-entity collisions (and the conditions to check for) ===
+- entity attack entity
+    - the target entity must be able to be damaged (incl. dead check)
+    - the target is not the attacking entity (self-harm bad)
+    - the target's faction layer matches the attacker's mask
+- entity attack hitbox
+    - the target hitbox must be able to be damaged (incl. dead check)
+    - the hitbox does not belong to the attacking entity (i.e. trying to hurt self)
+    - the faction layer of the hitbox's owner matches the attacker's mask
+- hitbox attack entity
+    - the target entity must be able to be damaged (incl. dead check)
+    - the hitbox does not belong to the target (i.e. trying to hurt self)
+    - the faction layer of the target matches the attacker's owner's mask
+- hitbox attack hitbox
+    - the target hitbox must be able to be damaged (incl. dead check)
+    - the target is not the attacking hitbox (self-harm bad)
+    - the two hitboxes do not belong to the same entity (i.e. trying to hurt self)
+    - the faction layer of the target's owner matches the attacker's owner's mask
 
---- On a non-game frame
-- Apply offset
+entity_can_attack_target(_target, _attacker = self) {
+    var _targetIsHitbox = is_object_type(prtHitbox, _target),
+        _targetEntity = _targetIsHitbox ? _target.owner : _target,
+        _canTakeDamage = _targetIsHitbox ? hitbox_can_take_damage(false, _target) : entity_can_take_damage(false, _target);
+    return _canTakeDamage && _targetEntity != _attacker && (_attacker.factionMask & _targetEntity.factionLayer > 0);
+}
 
 
 
-// === PALETTE TYPES ===
---- Player Palette
-- Six colours (primary, secondary, outline, skin, face, eyes)
-- Used by the player object
+// === When is an entity able to deal damage? ===
+- entity flagged to deal damage
+- contact damage is not 0
+- is not dead (optional)
 
---- Weapon Palette
-- Two colours (primary, secondary)
-- Used for weapon icons
-- Also used by the player object to update palette according to weapon
+// === When is an entity able to receive damage? ===
+- entity flagged to take damage
+- does not have any i-frames
+- hit buffer is empty
+- is not dead (optional)
 
+// === When is an entity able to hurt another entity? ===
+- the target entity is able to be damaged (incl. dead check)
+- the target is not the attacking entity (self-harm bad)
+- the target's faction layer matches the attacker's mask
 
-// === LEVEL START SEQUENCE ===
-- Check if any sections have been defined for the current level
-    (i.e. instances of objSection)
-- If this is the start of a level (i.e. the "start_level" flag has been set)
-    - Set the checkpoint to the starting position of the room
-    - Clear the level data
-    - Clear the pickups array
-- Get the spawn coordinates from the checkpoint
-- Find the section at the given spawn position
-- Remove any pickups placed in the level that are in the pickups array
-- Spawn the player(s)
-- Focus the camera on the players
-- Hide any costruction layers
-- Deactivate any instances outside of the current section (defer it to a Step Begin tho)
-- Spawn READY text. Each player will start their teleport sequence once it is done.
-- Clear the "start_level" flag
+// === When is an entity's hitbox able to deal damage? ===
+- hitbox flagged as active
+- hitbox flagged to deal damage
+- entity contact damage is not 0
+- entity is not dead (optional)
+
+// === When is an entity able to receive damage via their hitbox? ===
+- hitbox flagged as active
+- hitbox flagged to take damage
+- entity does not have any i-frames
+- entity hit buffer is empty
+- entity is not dead (optional)
+
+// === When is an entity's hitbox able to hurt another entity? ===
+- the target entity is able to be damaged (incl. dead check)
+- the target is not the attacking entity (self-harm bad)
+- the target's faction layer matches the attacker's mask

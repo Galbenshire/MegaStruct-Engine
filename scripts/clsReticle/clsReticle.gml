@@ -88,7 +88,7 @@ function Reticle() constructor {
     static is_target_valid = function(_target = target) {
         if (!instance_exists(_target))
             return false;
-        return !entity_is_dead(_target) && _target.canTakeDamage && (entity_get_faction_targets(owner) & _target.factionLayer > 0);
+        return !entity_is_dead(_target) && _target.canTakeDamage && (entity_faction_targets(owner) & _target.factionLayer > 0);
     };
     
     /// -- switch_target(new_target)
@@ -149,7 +149,7 @@ function fnsReticle_onUpdate_AlwaysRetarget() {
 function fnsReticle_onUpdate_Generic() {
     if (owner.hitTimer <= 100 || irandom(500))
         return;
-    if (point_distance(owner.x, owner.y, x, y) > 80)
+    if (distance_to_target() > 80)
         clear_target();
 }
 

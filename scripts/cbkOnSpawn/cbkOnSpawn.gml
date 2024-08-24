@@ -15,6 +15,7 @@ function cbkOnSpawn_prtEntity() {
         show_debug_message("Spawn - {0} ({1}, {2})", object_get_name(object_index), x, y);
     
     healthpoints = healthpointsStart;
+    hitTimer = 9999;
     
     if (!is_undefined(reticle)) {
     	reticle.clear_target();

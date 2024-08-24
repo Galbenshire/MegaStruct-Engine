@@ -52,7 +52,7 @@
         "PierceType.ON_KILLS_ONLY",
         "PierceType.ALWAYS",
       ],"multiselect":false,"name":"pierces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"PierceType.ALWAYS","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"attackDelay","filters":[],"listItems":[],"multiselect":false,"name":"attackDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v1","%Name":"attackDelay","filters":[],"listItems":[],"multiselect":false,"name":"attackDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"factionLayer","filters":[],"listItems":[
         "Faction.PICKUP",
         "Faction.PLAYER",

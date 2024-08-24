@@ -30,7 +30,7 @@ array_sort(_entityArr, function(_a, _b) /*=>*/ {return _a.collisionPriority < _b
 var i = 0;
 repeat(_numEntities) {
 	var _subject = _entityArr[i];
-	if (entity_can_attack_entity(_subject) && !(_subject.lastHitBy == self && hitTimer <= 0))
+	if (entity_can_attack_target(_subject) && !(_subject.lastHitBy == self && hitTimer == 0))
 		entity_entity_collision(contactDamage, _subject, _subject);
 	
 	i++;

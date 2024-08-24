@@ -23,7 +23,7 @@ function check_for_solids(_x, _y, _scope = self) {
 		for (var i = 0; i < _count; i++) {
 			var _candidate = _list[| i];
 			
-			if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+			if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
                 continue;
             if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
 				continue;
@@ -80,7 +80,7 @@ function check_for_solids_point(_x, _y, _scope = self) {
 	for (var i = 0; i < _count; i++) {
 		var _candidate = _list[| i];
 			
-		if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+		if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
             continue;
         if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(_scope))
 			continue;
@@ -181,7 +181,7 @@ function get_xcoll_candidates(_range, _scope = self) {
 			
             if (_candidate.id == self.id)
                 continue;
-            if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+            if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
                 continue;
             if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
 				continue;
@@ -237,7 +237,7 @@ function get_ycoll_candidates(_range, _scope = self) {
 			
             if (_candidate.id == self.id)
                 continue;
-            if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_scope, _candidate))
+            if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
 				continue;
             if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
 				continue;

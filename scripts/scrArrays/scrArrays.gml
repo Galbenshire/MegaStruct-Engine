@@ -68,7 +68,7 @@ function choose_from_array(_array) {
 /// @desc Converts a DS List to an array.
 ///
 /// @param {ds_list}  list  The list to convert
-/// @param {bool}  list  Whether to destroy the list given afterwards (true) or not (false). Defaults to true.
+/// @param {bool}  destroy_list  Whether to destroy the list given afterwards (true) or not (false). Defaults to true.
 ///
 /// @returns {array}  An array version of the list
 function ds_list_to_array(_list, _destroyList = true) {

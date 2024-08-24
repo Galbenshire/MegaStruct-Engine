@@ -9,7 +9,7 @@
   "managed":true,
   "name":"objDamageZone",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtCollidable","path":"objects/prtCollidable/prtCollidable.yy",},"propertyId":{"name":"solidType","path":"objects/prtCollidable/prtCollidable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"SolidType.SOLID",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtCollidable","path":"objects/prtCollidable/prtCollidable.yy",},"propertyId":{"name":"solidType","path":"objects/prtCollidable/prtCollidable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"SolidType.SOLID",},
   ],
   "parent":{
     "name":"Collisions",
@@ -33,8 +33,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"contactDamage","filters":[],"listItems":[],"multiselect":false,"name":"contactDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"7","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"canDealDamage","filters":[],"listItems":[],"multiselect":false,"name":"canDealDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"contactDamage","filters":[],"listItems":[],"multiselect":false,"name":"contactDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"7","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"canDealDamage","filters":[],"listItems":[],"multiselect":false,"name":"canDealDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"True","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
