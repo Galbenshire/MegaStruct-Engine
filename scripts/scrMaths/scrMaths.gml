@@ -292,6 +292,23 @@ function modf(_x, _divisor = 1) {
 	return _x - floor(_x / _divisor) * _divisor;
 }
 
+/// @func wrap(value, min, max)
+/// @desc With this function you can wrap an input value within a specified range.
+///
+/// @param {number}  value  The value to wrap.
+/// @param {number}  min  The minimum value to wrap within.
+/// @param {number}  max  The maximum value to wrap within.
+///
+/// @returns {number}  The wrapped value
+function wrap(_val, _min, _max) {
+	var _range = _max - _min;
+	if (_range == 0)
+		return _min;
+	
+	var _result = _val - floor_to(_val - _min, _range);
+	return (_result == _max) ? _min : _result;
+}
+
 /// @func wrap_angle(x)
 /// @desc Takes an angle & keeps it within a [0, 360) range. If it undershoots or overshoots, the angle will wraparound.
 ///

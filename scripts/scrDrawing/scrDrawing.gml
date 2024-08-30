@@ -1,3 +1,5 @@
+#region Drawing Stuff
+
 /// @func draw_mm_healthbar(x, y, value, colours)
 /// @desc Draws a Mega Man style health/ammo bar
 ///
@@ -67,13 +69,40 @@ function draw_rectangle_width_colour(_x1/*:number*/, _y1/*:number*/, _x2/*:numbe
 // American?
 #macro draw_rectangle_width_color draw_rectangle_width_colour
 
-/// @func draw_reset_colour()
-/// @desc Resets text colour to its defaults
-function draw_reset_colour() {
-	draw_set_colour(c_white);
+#endregion
+
+#region Clipping Region (soon to be obsolete once the Scissor Region drops)
+
+/// @func draw_reset_clipping_region()
+/// @desc Resets the clipping region defined using `draw_set_clipping_region`
+function draw_reset_clipping_region() {
+	gpu_set_stencil_enable(false);
 }
-// Burgers?
-#macro draw_reset_color draw_reset_colour
+
+/// @func draw_set_clipping_region(x, y, width, height, invert)
+/// @desc Sets up a clipping region where drawing can only occur within the bounds specified
+function draw_set_clipping_region(_x, _y, _width, _height, _invert = false) {
+	// Enable the stencil buffer, and set the whole region to a value of 8
+	gpu_set_stencil_enable(true);
+	draw_clear_stencil(8);
+	
+	// Draw a rectangle to "carve out" a region from the stencil
+	gpu_set_stencil_func(cmpfunc_always);
+	gpu_set_stencil_pass(stencilop_zero);
+	gpu_set_colorwriteenable(false, false, false, false);
+	draw_rectangle(_x, _y, _x + _width, _y + _height, false);
+	gpu_set_colorwriteenable(true, true, true, true);
+	
+	// Now set the stencil to only allow drawing within the carved out region
+	// (or outside it, if set to invert)
+	gpu_set_stencil_ref(4);
+	gpu_set_stencil_func(_invert ? cmpfunc_lessequal : cmpfunc_greaterequal);
+	gpu_set_stencil_pass(stencilop_replace);
+}
+
+#endregion
+
+#region Text Align
 
 /// @func draw_reset_text_align()
 /// @desc Resets text alginment to its defaults
@@ -91,6 +120,18 @@ function draw_set_text_align(_halign, _valign) {
 	draw_set_valign(_valign);
 }
 
+#endregion
+
+#region Colours
+
+/// @func draw_reset_colour()
+/// @desc Resets text colour to its defaults
+function draw_reset_colour() {
+	draw_set_colour(c_white);
+}
+// Burgers?
+#macro draw_reset_color draw_reset_colour
+
 /// @func multiply_colours(colour_1, colour_2)
 /// @desc Generates a new colour by multiplying the channels of the two given colours
 ///
@@ -105,3 +146,5 @@ function multiply_colours(_col1, _col2) {
 }
 // Wisconsin?
 #macro multiply_colors multiply_colours
+
+#endregion

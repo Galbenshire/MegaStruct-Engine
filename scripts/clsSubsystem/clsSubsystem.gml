@@ -248,8 +248,9 @@ function Subsystem_Debug() : Subsystem() constructor {
 			instanceCountActive = instance_count;
 		
         if (freeRoamEnabled) {
-			freeRoamX += 2 * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
-			freeRoamY += 2 * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
+			var _spd = 2 + 6 * keyboard_check(vk_numpad5);
+			freeRoamX += _spd * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
+			freeRoamY += _spd * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
         }
         
         var _consoleCount = consoleLogCount,

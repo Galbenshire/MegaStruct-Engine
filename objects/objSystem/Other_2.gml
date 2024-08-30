@@ -88,7 +88,6 @@ if (!variable_global_exists("__gameInit")) {
 	// ===== Other Stuff =====
 	show_debug_message("Other Operations...");
 	math_set_epsilon(0.0001);
-	surface_depth_disable(true);
 	
 	// ===== Finish =====
 	show_debug_message("...Initialisation Finished");

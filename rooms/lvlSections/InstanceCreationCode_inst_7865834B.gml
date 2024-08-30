@@ -1,1 +1,1 @@
-addToWhiteList(objTestCheckSolid);
+self.add_to_whitelist(objTestCheckSolid);

@@ -30,6 +30,7 @@ $"{_GMFUNCTION_} can only be used by an object that inherits from {object_get_na
 #macro NO_CONTROLLER -1
 #macro NO_SURFACE -1
 #macro NOT_FOUND -1
+#macro USE_SECTION_EDGE -1
 
 #endregion
 

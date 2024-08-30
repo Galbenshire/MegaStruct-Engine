@@ -9,7 +9,7 @@ with (global.weaponList[WeaponType.BUSTER_BASS]) {
     
     onTick = function(_player) {
 		with (_player) {
-			if (player_shot_input(true))
+			if (!player_shot_input(true))
 				return;
 			
 			if (isShooting)

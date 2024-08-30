@@ -4,7 +4,7 @@ array_foreach(spriteElements, function(_el, i) /*=>*/ { layer_sprite_speed(_el, 
 spriteElementCount = array_length(spriteElements);
 
 if (spriteElementCount <= 0) {
-    show_debug_message("No sprite elements could be found for objSpriteLayerAnimator");
+    print_err($"No sprite elements could be found for objSpriteLayerAnimator ({x}, {y})");
     instance_destroy();
     exit;
 }
@@ -16,8 +16,8 @@ spriteFrames = [];
 spriteTypeCount = 0;
 
 // Function - call this in Creation Code to add a sprite element for this animator to animate
-// e.g addSpriteType(sprMM2Conveyor, [0, 1, 2, 3]);
-function addSpriteType(_sprite, _imgIndexes) {
+// e.g add_sprite_type(sprMM2Conveyor, [0, 1, 2, 3]);
+function add_sprite_type(_sprite, _imgIndexes) {
     array_push(spriteTypes, _sprite);
     array_push(spriteFrames, array_create(totalFrames));
     

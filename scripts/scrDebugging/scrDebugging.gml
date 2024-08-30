@@ -10,6 +10,25 @@ function assert(_condition/*:bool*/, _msg/*:string*/ = "FATAL ASSERTION FAILURE"
 	show_error(_msg, true);
 }
 
+/// @func draw_debug_boxed_text(string)
+/// @desc Draws a translucent box in the left corner of the screen, with text inside
+///		  Intended for debug purposes
+///
+/// @param {string}  string
+function draw_debug_boxed_text(_str) {
+	var _boxWidth = (string_width(_str) * 0.5) + 8,
+		_boxHeight = (string_height(_str) * 0.5) + 8;
+	var _gameView = game_view(),
+		_left = _gameView.left_edge(0),
+		_top = _gameView.top_edge(0);
+	
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	draw_sprite_ext(sprDot, 0, _left, _top, _boxWidth, _boxHeight, 0, c_black, 0.75);
+	draw_text_transformed(_left + 4, _top + 4, _str, 0.5, 0.5, 0);
+	draw_reset_text_align();
+}
+
 /// @func print(message, warning_level, colour, no_console)
 /// @desc This function not only displays the given message in the Output Window,
 ///		  but will also display the message on-screen for the user to see

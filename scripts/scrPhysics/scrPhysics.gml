@@ -25,7 +25,7 @@ function check_for_solids(_x, _y, _scope = self) {
 			
 			if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
                 continue;
-            if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
+            if (is_object_type(objCustomSolid, _candidate) && !_candidate.is_solid_to_entity(self))
 				continue;
 			
 			switch (_candidate.solidType) {
@@ -82,7 +82,7 @@ function check_for_solids_point(_x, _y, _scope = self) {
 			
 		if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
             continue;
-        if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(_scope))
+        if (is_object_type(objCustomSolid, _candidate) && !_candidate.is_solid_to_entity(_scope))
 			continue;
 		
 		switch (_candidate.solidType) {
@@ -183,7 +183,7 @@ function get_xcoll_candidates(_range, _scope = self) {
                 continue;
             if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
                 continue;
-            if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
+            if (is_object_type(objCustomSolid, _candidate) && !_candidate.is_solid_to_entity(self))
 				continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
@@ -239,7 +239,7 @@ function get_ycoll_candidates(_range, _scope = self) {
                 continue;
             if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
 				continue;
-            if (is_object_type(objCustomSolid, _candidate) && !_candidate.isSolidToEntity(self))
+            if (is_object_type(objCustomSolid, _candidate) && !_candidate.is_solid_to_entity(self))
 				continue;
             
             var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
