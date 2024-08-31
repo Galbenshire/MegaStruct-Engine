@@ -18,8 +18,8 @@
   "resourceType":"GMTileSet",
   "resourceVersion":"2.0",
   "spriteId":{
-    "name":"bgGeminiManAnimated_0",
-    "path":"sprites/bgGeminiManAnimated_0/bgGeminiManAnimated_0.yy",
+    "name":"bgGeminiManAnimated_1",
+    "path":"sprites/bgGeminiManAnimated_1/bgGeminiManAnimated_1.yy",
   },
   "spriteNoExport":false,
   "textureGroupId":{

@@ -38,10 +38,9 @@ switch (alignY) {
 }
 
 for (var i = 0; i < layerCount; i++) {
-    with (layers[i]) {
-        x += other.offsetXAbsolute + ((other.offsetXRelative + _xAdjust) * parallaxX);
-        y += other.offsetYAbsolute + ((other.offsetYRelative + _yAdjust) * parallaxY);
-        widthSegments = wrapX ? ceil(other.areaWidth / width) + 1 : 1;
-        heightSegments = wrapY ? ceil(other.areaHeight / height) + 1 : 1;
-    }
+    var _layer/*:ParallaxLayer*/ = layers[i];
+    _layer[@ParallaxLayer.x] += offsetXAbsolute + ((offsetXRelative + _xAdjust) * _layer[ParallaxLayer.parallaxX]);
+    _layer[@ParallaxLayer.y] += offsetYAbsolute + ((offsetYRelative + _yAdjust) * _layer[ParallaxLayer.parallaxY]);
+    _layer[@ParallaxLayer.widthSegments] = _layer[ParallaxLayer.wrapX] ? ceil(areaWidth / _layer[ParallaxLayer.width]) + 1 : 1;
+    _layer[@ParallaxLayer.heightSegments] = _layer[ParallaxLayer.wrapY] ? ceil(areaHeight / _layer[ParallaxLayer.height]) + 1 : 1;
 }
