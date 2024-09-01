@@ -80,4 +80,5 @@ function cbkOnDeath_prtProjectile(_damageSource) {
     
     lifeState = LifeState.DEAD_ONSCREEN;
     visible = false;
+    entity_clear_hitboxes();
 }

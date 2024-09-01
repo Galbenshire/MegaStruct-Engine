@@ -12,8 +12,8 @@
   "duration":0.197642,
   "name":"sfxEnergyRestore",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"Player",
+    "path":"folders/SFX/Player.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

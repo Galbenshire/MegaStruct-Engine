@@ -12,8 +12,8 @@
   "duration":1.507846,
   "name":"sfxDeath",
   "parent":{
-    "name":"SFX",
-    "path":"folders/SFX.yy",
+    "name":"Player",
+    "path":"folders/SFX/Player.yy",
   },
   "preload":false,
   "resourceType":"GMSound",
