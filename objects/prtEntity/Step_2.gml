@@ -1,7 +1,7 @@
 /// @description Entity Collision
 // =====  Destroy if dead & unable to respawn =====
 if (entity_is_dead()) {
-	if (!respawn)
+	if (!entity_can_respawn())
 		instance_destroy();
 	exit;
 }

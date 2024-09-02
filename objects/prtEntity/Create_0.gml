@@ -53,6 +53,8 @@ frozenTimer = 0;
 frozenGraphicType = 0;
 frozenPhysicsEnabled = false;
 
+__isKilled = false; // Used for respawn checks
+
 // Callbacks
 // - Spawning
 onSpawn = method(id, onSpawn); /// @is {function<void>}

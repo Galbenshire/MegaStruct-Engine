@@ -4,7 +4,7 @@ var _gameView = game_view(),
     _spawn_y = y;
 
 lastSpawnedShell = spawn_entity(_spawn_x, _spawn_y, depth, objFlyingShell);
-lastSpawnedShell.respawn = false;
+lastSpawnedShell.respawnType = RespawnType.DISABLED;
 lastSpawnedShell.moveSpeed = shellMoveSpeed;
 lastSpawnedShell.bulletSpeed = shellBulletSpeed;
 lastSpawnedShell.bulletCount = shellBulletCount;

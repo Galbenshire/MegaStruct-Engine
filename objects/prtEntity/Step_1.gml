@@ -1,7 +1,7 @@
 /// @description Spawning & Variable Resetting
 // =====  Reset variables if dead =====
 if (entity_is_dead()) {
-	if (!respawn) {
+	if (!entity_can_respawn()) {
 		instance_destroy();
 		exit;
 	}
@@ -34,7 +34,7 @@ switch (lifeState) {
 	case LifeState.DEAD_OFFSCREEN:
 		// The room timer check is to ensure things aren't spawning right away on room start,
 		// before we even deactivated instances outside of the starting section
-		if (entity_within_respawn_range() && global.roomTimer != 0) {
+		if (entity_within_respawn_range() && entity_can_respawn(false) && global.roomTimer != 0) {
 			lifeState = LifeState.ALIVE;
 			inWater = interactWithWater && place_meeting(x, y, objWater);
 			onSpawn();

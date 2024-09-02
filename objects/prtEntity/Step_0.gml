@@ -1,6 +1,6 @@
 /// @description General Behaviour
 if (!entity_can_step(true)) {
-	if (entity_is_dead() && !respawn)
+	if (entity_is_dead() && !entity_can_respawn())
 		instance_destroy();
 	exit;
 }

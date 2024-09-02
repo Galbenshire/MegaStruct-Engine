@@ -15,5 +15,22 @@
 - Save File System
 - Lives System
 - More player weapons
-    -- How to do shields for this engine?
     -- How to tackle Rush Coil/Jet
+- Item Drop System
+
+
+==== Potential System Reworks ====
+* RespawnType (replaces `respawn` bool)
+    - ENABLED: Able to respawn, even when killed (equivalent to `true` in bool system)
+    - DISABLE_ON_DEATH: Disable respawning when killed. Regain it during a section switch
+    - DESTROY_ON_DEATH: Destroy entity once killed. Despawning does not count
+    - DISABLED: Destroy entity once killed or despawned
+* Change in how entity callbacks are defined
+    - moved out of Variable Definitions; entirely defined via the Create Event
+* change Weapons from using the prototype pattern to inheriting from a base Weapon constructor
+    - might do the same thing for playable characters too
+        -- this could also mean having a singular player object, instead of one for each character type
+* making the UI system better
+    - swap out the method callbacks so they use static methods
+* entity-entity collisions
+    - could it better if it followed Megamix's approach less rigidly?

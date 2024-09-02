@@ -33,7 +33,7 @@ if (place_meeting(x, y, prtPlayer)) {
 		event_user(0);
 		
 		if (__collected) {
-			if (respawn && canOnlyCollectOnce)
+			if (respawnType == RespawnType.ENABLED && canOnlyCollectOnce)
 				array_push(objSystem.level.pickups, pickupID);
 			instance_destroy();
 		}

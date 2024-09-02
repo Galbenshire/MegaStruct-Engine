@@ -42,11 +42,12 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
             
             if (_resetEntities && (sectionSwitchBehaviour != SectionSwitchBehaviour.PERSISTANT || entity_is_dead())) {
                 lifeState = LifeState.DEAD_ONSCREEN;
+                __isKilled = false;
                 onDespawn();
                 event_perform(ev_step, ev_step_begin);
                 lifeState = LifeState.DEAD_OFFSCREEN;
                 
-                if (!respawn)
+                if (!instance_exists(id))
                     continue;
             }
             

@@ -1,61 +1,12 @@
-// === Various forms of entity-entity collisions (and the conditions to check for) ===
-- entity attack entity
-    - the target entity must be able to be damaged (incl. dead check)
-    - the target is not the attacking entity (self-harm bad)
-    - the target's faction layer matches the attacker's mask
-- entity attack hitbox
-    - the target hitbox must be able to be damaged (incl. dead check)
-    - the hitbox does not belong to the attacking entity (i.e. trying to hurt self)
-    - the faction layer of the hitbox's owner matches the attacker's mask
-- hitbox attack entity
-    - the target entity must be able to be damaged (incl. dead check)
-    - the hitbox does not belong to the target (i.e. trying to hurt self)
-    - the faction layer of the target matches the attacker's owner's mask
-- hitbox attack hitbox
-    - the target hitbox must be able to be damaged (incl. dead check)
-    - the target is not the attacking hitbox (self-harm bad)
-    - the two hitboxes do not belong to the same entity (i.e. trying to hurt self)
-    - the faction layer of the target's owner matches the attacker's owner's mask
+==== Entity Can Respawn ====
+-- Destroy Check (checking if this entity must be destroyed)
+- RespawnType.ENABLED: yes
+- RespawnType.DISABLE_ON_DEATH: yes
+- RespawnType.DESTROY_ON_DEATH: if not killed
+- RespawnType.DISABLED: no
 
-entity_can_attack_target(_target, _attacker = self) {
-    var _targetIsHitbox = is_object_type(prtHitbox, _target),
-        _targetEntity = _targetIsHitbox ? _target.owner : _target,
-        _canTakeDamage = _targetIsHitbox ? hitbox_can_take_damage(false, _target) : entity_can_take_damage(false, _target);
-    return _canTakeDamage && _targetEntity != _attacker && (_attacker.factionMask & _targetEntity.factionLayer > 0);
-}
-
-
-
-// === When is an entity able to deal damage? ===
-- entity flagged to deal damage
-- contact damage is not 0
-- is not dead (optional)
-
-// === When is an entity able to receive damage? ===
-- entity flagged to take damage
-- does not have any i-frames
-- hit buffer is empty
-- is not dead (optional)
-
-// === When is an entity able to hurt another entity? ===
-- the target entity is able to be damaged (incl. dead check)
-- the target is not the attacking entity (self-harm bad)
-- the target's faction layer matches the attacker's mask
-
-// === When is an entity's hitbox able to deal damage? ===
-- hitbox flagged as active
-- hitbox flagged to deal damage
-- entity contact damage is not 0
-- entity is not dead (optional)
-
-// === When is an entity able to receive damage via their hitbox? ===
-- hitbox flagged as active
-- hitbox flagged to take damage
-- entity does not have any i-frames
-- entity hit buffer is empty
-- entity is not dead (optional)
-
-// === When is an entity's hitbox able to hurt another entity? ===
-- the target entity is able to be damaged (incl. dead check)
-- the target is not the attacking entity (self-harm bad)
-- the target's faction layer matches the attacker's mask
+-- Regular Check
+- RespawnType.ENABLED: yes
+- RespawnType.DISABLE_ON_DEATH: if not killed
+- RespawnType.DESTROY_ON_DEATH: if not killed
+- RespawnType.DISABLED: no

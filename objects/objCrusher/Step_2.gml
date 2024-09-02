@@ -8,7 +8,7 @@ if (isChainLethal == "No" || (isChainLethal == "Retract Only" && phase == 3)) {
 
 // =====  Destroy if dead & unable to respawn =====
 if (entity_is_dead()) {
-	if (!respawn)
+	if (!entity_can_respawn())
 		instance_destroy();
 	exit;
 }

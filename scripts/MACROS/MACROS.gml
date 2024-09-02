@@ -85,6 +85,13 @@ enum LifeState {
 	DEAD_OFFSCREEN
 }
 
+enum RespawnType {
+	ENABLED,
+	DISABLE_ON_DEATH,
+	DESTROY_ON_DEATH,
+	DISABLED
+}
+
 // Represents how entities react during a section switch
 enum SectionSwitchBehaviour {
 	// The entity will be deactivated right as the section switch occurs

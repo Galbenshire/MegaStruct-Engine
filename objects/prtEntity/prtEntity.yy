@@ -106,7 +106,12 @@
     {"$GMObjectProperty":"v1","%Name":"grav","filters":[],"listItems":[],"multiselect":false,"name":"grav","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"gravDir","filters":[],"listItems":[],"multiselect":false,"name":"gravDir","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"maxFallSpeed","filters":[],"listItems":[],"multiselect":false,"name":"maxFallSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_FALL_SPEED","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"respawn","filters":[],"listItems":[],"multiselect":false,"name":"respawn","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"respawnType","filters":[],"listItems":[
+        "RespawnType.ENABLED",
+        "RespawnType.DISABLE_ON_DEATH",
+        "RespawnType.DESTROY_ON_DEATH",
+        "RespawnType.DISABLED",
+      ],"multiselect":false,"name":"respawnType","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"RespawnType.ENABLED","varType":6,},
     {"$GMObjectProperty":"v1","%Name":"respawnRange","filters":[],"listItems":[],"multiselect":false,"name":"respawnRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"despawnRange","filters":[],"listItems":[],"multiselect":false,"name":"despawnRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"sectionSwitchBehaviour","filters":[],"listItems":[

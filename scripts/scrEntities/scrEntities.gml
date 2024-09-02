@@ -70,6 +70,7 @@ function entity_entity_collision(_damage, _subject, _subjectHitbox = _subject, _
 			
 			if (subject.healthpoints <= 0 && !_mockDamage) {
 				hasKilled = true;
+				subject.__isKilled = true;
 				subject.onDeath(self);
 			}
 			
@@ -374,6 +375,23 @@ function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 	#endregion
 
 	#region Other
+	
+	/// @func entity_can_respawn(destroy_check, scope)
+	/// @desc Checks if an entity is able to respawn
+	///
+	/// @param {bool}  [destroy_check]  Whether or not this check is in the context of destroying an entity that can't respawn. Defaults to true.
+	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
+	///
+	/// @returns {bool}  If the entity can respawn (true) or not (false)
+	function entity_can_respawn(_destroyCheck = true, _scope = self) {
+		switch (_scope.respawnType) {
+			case RespawnType.ENABLED: return true;
+			case RespawnType.DISABLE_ON_DEATH: return _destroyCheck || !_scope.__isKilled;
+			case RespawnType.DESTROY_ON_DEATH: return !_scope.__isKilled;
+			case RespawnType.DISABLED: return false;
+		}
+		return false;
+	}
 	
 	/// @func entity_can_step(ignore_frozen, scope)
 	/// @desc Checks if an entity is able to perform their Step Event

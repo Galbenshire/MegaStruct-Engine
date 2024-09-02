@@ -35,7 +35,7 @@ do {
 } until(!array_contains(moleX, _moleX) || _attempts > 64);
 
 var _mole = spawn_entity(_moleX, _moleY, depth, objMole, { image_yscale: spawnYDir });
-_mole.respawn = false;
+_mole.respawnType = RespawnType.DISABLED;
 _mole.emitSparks = molesMakeSparks;
 
 moles[_moleIndex] = _mole;
