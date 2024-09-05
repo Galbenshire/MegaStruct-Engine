@@ -4,6 +4,7 @@ intendedXSpeed = 0;
 jumpTimer = 0;
 eggCounter = 0;
 
+// Callbacks
 onSpawn = function() {
     cbkOnSpawn_prtEntity();
     jumpTimer = 0;

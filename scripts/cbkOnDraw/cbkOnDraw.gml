@@ -11,6 +11,8 @@
 //      This would be important for if you're using shaders to draw
 //
 
+#region Base Callbacks
+
 /// @func cbkOnDraw_prtEntity(whiteflash)
 /// @desc Default onDraw callback for all entities
 ///
@@ -21,7 +23,7 @@ function cbkOnDraw_prtEntity(_whiteflash) {
 
 /// @func cbkOnDraw_prtPlayer(whiteflash)
 /// @desc Default onDraw callback for players.
-///       prtPlayer calls onDraw a it differently from regular entities;
+///       prtPlayer calls onDraw a bit differently from regular entities;
 ///       the `whiteflash` variable is not used here
 ///
 /// @param {bool}  whiteflash  Unused here
@@ -43,6 +45,10 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 	}
 }
 
+#endregion
+
+#region Available Presets
+
 /// @func cbkOnDraw_colourReplacer(whiteflash)
 /// @desc onDraw callback preset for when an entity uses a ColourReplacer palette
 ///
@@ -56,3 +62,5 @@ function cbkOnDraw_colourReplacer(_whiteflash) {
         palette.deactivate();
     }
 }
+
+#endregion

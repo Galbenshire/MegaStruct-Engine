@@ -10,4 +10,13 @@ jumps = [
     [3, -4]
 ]; /// @is {array<Vector2>}
 
-event_user(0);
+// Callbacks
+onSpawn = function() {
+    cbkOnSpawn_prtEntity();
+    isJumping = false;
+    timer = 0;
+    mask_index = sprite_index;
+};
+onDraw = method(id, cbkOnDraw_colourReplacer);
+
+event_user(0); // Init Palette

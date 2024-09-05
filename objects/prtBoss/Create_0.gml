@@ -27,5 +27,11 @@ isFighting = false;
 
 introCache = {}; // Store some variables, so we can restore them after the intro
 
+// Callbacks
+onHurt = method(id, cbkOnHurt_prtBoss);
+onDeath = method(id, cbkOnDeath_prtBoss);
+onSetDamage = method(id, cbkOnSetDamage_prtBoss);
+
+// Event User Inits
 event_user(EVENT_ANIMATION_INIT);
 event_user(EVENT_STATEMACHINE_INIT);

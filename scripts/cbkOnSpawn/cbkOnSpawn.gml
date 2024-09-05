@@ -8,6 +8,8 @@
 //
 // `onSpawn` is best used to reset an entity to their initial state
 
+#region Base Callbacks
+
 /// @func cbkOnSpawn_prtEntity()
 /// @desc Default onSpawn callback for all entities
 function cbkOnSpawn_prtEntity() {
@@ -29,10 +31,14 @@ function cbkOnSpawn_prtEntity() {
 /// @desc Default onSpawn callback for players
 function cbkOnSpawn_prtPlayer() {
     if (DEBUG_ENABLED)
-        show_debug_message("Player Spawn ({0}, {1})", x, y);
+        show_debug_message($"Player Spawn ({x}, {y})");
     
     healthpoints = healthpointsStart;
 }
+
+#endregion
+
+#region Available Presets
 
 /// @func cbkOnSpawn_phaseReset()
 /// @desc A simple onSpawn callback intended to reset an entity.
@@ -45,3 +51,5 @@ function cbkOnSpawn_phaseReset() {
     phase = 0;
     phaseTimer = 0;
 }
+
+#endregion

@@ -4,6 +4,7 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":20,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":22,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objProtoMan",
@@ -16,8 +17,6 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"brakeFrames","path":"objects/prtPlayer/prtPlayer.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"13",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"walkSpeed","path":"objects/prtPlayer/prtPlayer.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"1.375",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"skinSprite","path":"objects/prtPlayer/prtPlayer.yy",},"resource":{"name":"sprPlayerSkinBlues","path":"sprites/sprPlayerSkinBlues/sprPlayerSkinBlues.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"sprPlayerSkinBlues",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"onSetDamage","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"cbkOnSetDamage_objProtoMan",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"onSpawn","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"cbkOnSpawn_objProtoMan",},
   ],
   "parent":{
     "name":"Proto Man",

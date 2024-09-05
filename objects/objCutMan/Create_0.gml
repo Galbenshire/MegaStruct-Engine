@@ -12,6 +12,17 @@ airThrowTimer = 0;
 
 shootFlag = false;
 
+// == Callbacks ==
+onHurt = function(_damageSource) {
+    cbkOnHurt_prtBoss(_damageSource);
+    stateMachine.change("Hurt");
+};
+onDeath = function(_damageSource) {
+    cbkOnDeath_prtBoss(_damageSource);
+    with (objCutManCutter)
+        instance_destroy();
+};
+
 // == Damage Table ==
 damageTable.add_source(objBusterShot, 2);
 damageTable.add_source(objBusterShotHalfCharge, 2);

@@ -8,6 +8,8 @@
 // damageSource (DamageSource) - this represents the current attack. Use `set_damage` to change the strength of the attack
 //
 
+#region Base Callbacks
+
 /// @func cbkOnSetDamage_prtEntity(damage_source)
 /// @desc Default onSetDamage callback for all entities
 ///
@@ -38,3 +40,5 @@ function cbkOnSetDamage_prtBoss(_damageSource) {
     _damageSource.set_damage(1); // All attacks deal 1 damage by default
     cbkOnSetDamage_prtEntity(_damageSource); // Weaknesses then get applied
 }
+
+#endregion

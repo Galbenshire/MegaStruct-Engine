@@ -6,6 +6,8 @@
 // damageSource (DamageSource) - this represents the current attack.
 //
 
+#region Base Callbacks
+
 /// @func cbkOnAttackEnd_prtEntity(damage_source)
 /// @desc Default onAttackEnd callback for all entities
 ///
@@ -13,3 +15,5 @@
 function cbkOnAttackEnd_prtEntity(_damageSource) {
     // ...    
 }
+
+#endregion

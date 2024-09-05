@@ -57,18 +57,18 @@ __isKilled = false; // Used for respawn checks
 
 // Callbacks
 // - Spawning
-onSpawn = method(id, onSpawn); /// @is {function<void>}
-onDespawn = method(id, onDespawn); /// @is {function<void>}
+onSpawn = method(id, cbkOnSpawn_prtEntity); /// @is {function<void>}
+onDespawn = method(id, cbkOnDespawn_prtEntity); /// @is {function<void>}
 // - Attacking
-onSetDamage = method(id, onSetDamage); /// @is {function<DamageSource, void>}
-onGuard = method(id, onGuard); /// @is {function<DamageSource, void>}
-onReflected = method(id, onReflected); /// @is {function<DamageSource, void>}
-onAttackBegin = method(id, onAttackBegin); /// @is {function<DamageSource, void>}
-onAttackEnd = method(id, onAttackEnd); /// @is {function<DamageSource, void>}
-onHurt = method(id, onHurt); /// @is {function<DamageSource, void>}
-onDeath = method(id, onDeath); /// @is {function<DamageSource, void>}
+onSetDamage = method(id, cbkOnSetDamage_prtEntity); /// @is {function<DamageSource, void>}
+onGuard = method(id, cbkOnGuard_prtEntity); /// @is {function<DamageSource, void>}
+onReflected = method(id, cbkOnReflected_prtEntity); /// @is {function<DamageSource, void>}
+onAttackBegin = method(id, cbkOnAttackBegin_prtEntity); /// @is {function<DamageSource, void>}
+onAttackEnd = method(id, cbkOnAttackEnd_prtEntity); /// @is {function<DamageSource, void>}
+onHurt = method(id, cbkOnHurt_prtEntity); /// @is {function<DamageSource, void>}
+onDeath = method(id, cbkOnDeath_prtEntity); /// @is {function<DamageSource, void>}
 // - Drawing
-onDraw = method(id, onDraw); /// @is {function<bool, void>}
+onDraw = method(id, cbkOnDraw_prtEntity); /// @is {function<bool, void>}
 
 // Setup Reticle based on preset
 switch (targetingPreset) {

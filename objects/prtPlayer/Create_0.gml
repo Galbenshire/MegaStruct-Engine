@@ -79,6 +79,14 @@ isFreeMovement = false;
 // temp vars
 ignoreCamera = false;
 
+// Callbacks
+onSpawn = method(id, cbkOnSpawn_prtPlayer); /// @is {function<void>}
+onDespawn = method(id, cbkOnDespawn_prtPlayer); /// @is {function<void>}
+onSetDamage = method(id, cbkOnSetDamage_prtPlayer); /// @is {function<DamageSource, void>}
+onHurt = method(id, cbkOnHurt_prtPlayer); /// @is {function<DamageSource, void>}
+onDeath = method(id, cbkOnDeath_prtPlayer); /// @is {function<DamageSource, void>}
+onDraw = method(id, cbkOnDraw_prtPlayer); /// @is {function<bool, void>}
+
 // Event User Inits
 event_user(EVENT_ANIMATION_INIT);
 event_user(EVENT_STATEMACHINE_INIT);

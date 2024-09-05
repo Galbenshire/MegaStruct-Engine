@@ -1,6 +1,7 @@
 event_inherited();
 
 owner = noone; /// @is {prtEntity}
+ground = false; // Projectiles usually have no gravity, so they'll start with no ground
 
 // Additional variables for when a projectile is from a player
 playerID = -1;
@@ -11,4 +12,6 @@ bulletLimitCost = 1;
 if (!is_undefined(reticle))
     reticle.update();
 
-ground = false; // Projectiles usually have no gravity, so they'll start with no ground
+// Callbacks
+onDeath = method(id, cbkOnDeath_prtProjectile);
+onReflected = method(id, cbkOnReflected_prtProjectile);

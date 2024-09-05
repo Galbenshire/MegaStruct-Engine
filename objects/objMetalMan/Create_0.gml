@@ -11,6 +11,29 @@ conveyorAreaList = [];
 
 playerShotListener = undefined;
 
+// == Callbacks ==
+onSpawn = function() {
+    cbkOnSpawn_prtEntity();
+    
+    distanceToMiddle = abs(x - game_view().center_x());
+    playerShotListener = signal_bus().connect_to_signal("playerShot", self, function(_data) {
+        if (_data.player == reticle.target)
+            jumpFlag = true;
+    });
+};
+onDespawn = function() {
+    cbkOnDespawn_prtEntity();
+    event_perform(ev_cleanup, 0);
+};
+onDeath = function(_damageSource) {
+    cbkOnDeath_prtBoss(_damageSource);
+    
+    with (objGenericEnemyBullet) {
+        if (owner == other.id)
+            instance_destroy();
+    }
+};
+
 // == Damage Table ==
 damageTable.add_source(objBusterShot, 1);
 damageTable.add_source(objBusterShotHalfCharge, 1);

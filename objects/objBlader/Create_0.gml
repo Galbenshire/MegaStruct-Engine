@@ -5,4 +5,8 @@ phaseTimer = 0;
 targetY = y;
 palette = undefined;
 
-event_user(0);
+// Callbacks
+onSpawn = method(id, cbkOnSpawn_phaseReset);
+onDraw = method(id, cbkOnDraw_colourReplacer);
+
+event_user(0); // Init Palette

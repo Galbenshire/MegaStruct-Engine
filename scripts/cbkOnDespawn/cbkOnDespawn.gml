@@ -10,6 +10,8 @@
 // This would be important for when an entity is deactivated during section switches,
 // as instance deactivation is not covered by the Cleanup Event
 
+#region Base Callbacks
+
 /// @func cbkOnDespawn_prtEntity()
 /// @desc Default onDespawn callback for all entities
 function cbkOnDespawn_prtEntity() {
@@ -23,5 +25,7 @@ function cbkOnDespawn_prtEntity() {
 /// @desc Default onDespawn callback for all entities
 function cbkOnDespawn_prtPlayer() {
     if (DEBUG_ENABLED)
-        show_debug_message("Player Despawn ({0}, {1})", x, y);
+        show_debug_message($"Player Despawn ({x}, {y})");
 }
+
+#endregion

@@ -10,6 +10,8 @@
 // damageSource (DamageSource) - this represents the current attack.
 //
 
+#region Base Callbacks
+
 /// @func cbkOnHurt_prtEntity(damage_source)
 /// @desc Default onHurt callback for all entities
 ///
@@ -61,3 +63,5 @@ function cbkOnHurt_prtBoss(_damageSource) {
     if (!is_undefined(hudElement))
         hudElement.healthpoints = healthpoints;
 }
+
+#endregion

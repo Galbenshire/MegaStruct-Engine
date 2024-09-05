@@ -34,7 +34,6 @@
     {"$GMObjectProperty":"v1","%Name":"maxFallSpeed","filters":[],"listItems":[],"multiselect":false,"name":"maxFallSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_FALL_SPEED","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"lifeDuration","filters":[],"listItems":[],"multiselect":false,"name":"lifeDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"30","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"destroyOnAnimEnd","filters":[],"listItems":[],"multiselect":false,"name":"destroyOnAnimEnd","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"onStep","filters":[],"listItems":[],"multiselect":false,"name":"onStep","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"undefined","varType":4,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

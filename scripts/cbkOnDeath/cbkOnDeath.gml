@@ -9,6 +9,8 @@
 // damageSource (DamageSource) - this represents the current attack.
 //
 
+#region Base Callbacks
+
 /// @func cbkOnDeath_prtEntity(damage_source)
 /// @desc Default onDeath callback for all entities
 ///
@@ -82,3 +84,5 @@ function cbkOnDeath_prtProjectile(_damageSource) {
     visible = false;
     entity_clear_hitboxes();
 }
+
+#endregion

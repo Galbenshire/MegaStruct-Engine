@@ -26,7 +26,9 @@
 // damageSource (DamageSource) - this represents the current attack. Change its `guard` value to cancel the attack
 //
 
-/// @func _fnsEntity_onGuard(damage_source)
+#region Base Callbacks
+
+/// @func cbkOnGuard_prtEntity(damage_source)
 /// @desc Default onGuard callback for all entities
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
@@ -35,7 +37,9 @@ function cbkOnGuard_prtEntity(_damageSource) {
         show_debug_message("Guard - {0} (against {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
 }
 
-// == Callback Presets ==
+#endregion
+
+#region Available Presets
 
 /// @func cbkOnGuard_alwaysIgnore(damage_source)
 /// @desc A simple "ignore all shots" onGuard callback
@@ -74,3 +78,5 @@ function cbkOnGuard_imageIndex(_damageSource) {
     if (image_index == 0)
         _damageSource.guard = GuardType.REFLECT;
 }
+
+#endregion

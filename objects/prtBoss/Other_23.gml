@@ -33,7 +33,7 @@ stateMachine.add("!!Intro_Start", {
 				assert(string_length(customIntroSpawnState) > 0, $"{object_get_name(object_index)} was set to have a custom intro spawn, but the spawn state was not specified");
 				stateMachine.change(customIntroSpawnState);
 			} else {
-				stateMachine.change(string("!!Intro_Spawn_{0}", introSpawnType));
+				stateMachine.change(string($"!!Intro_Spawn_{introSpawnType}"));
 			}
 		}
 	},

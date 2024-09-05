@@ -10,3 +10,11 @@ tailBit = (1 << 1);
 
 __spawnedBurrowed = false;
 __dealDamageDelay = -1;
+
+// Callbacks
+onSpawn = function() {
+    cbkOnSpawn_prtEntity();
+    event_user(2); // Set bitfield on spawn
+    __spawnedBurrowed = (burrowBitField == bitMask_FullyBuried);
+    event_user(0); // Calculate move speed
+};

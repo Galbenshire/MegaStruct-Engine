@@ -8,6 +8,8 @@
 // damageSource (DamageSource) - this represents the current attack.
 //
 
+#region Base Callbacks
+
 /// @func cbkOnReflected_prtEntity(damage_source)
 /// @desc Default onReflected callback for all entities
 ///
@@ -30,3 +32,5 @@ function cbkOnReflected_prtProjectile(_damage_source) {
     set_velocity_vector(6, 45 + 90 * (xspeed.value > 0));
     play_sfx(sfxReflect);
 }
+
+#endregion

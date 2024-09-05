@@ -5,4 +5,14 @@ phaseTimer = 0;
 bulletCount = 0;
 palette = undefined;
 
-event_user(0);
+// Callbacks
+onSpawn = function() {
+    cbkOnSpawn_prtEntity();
+    image_index = 0;
+    phase = 0;
+    phaseTimer = startTimerAt;
+};
+onGuard = method(id, cbkOnGuard_imageIndex);
+onDraw = method(id, cbkOnDraw_colourReplacer);
+
+event_user(0); // Init Palette
