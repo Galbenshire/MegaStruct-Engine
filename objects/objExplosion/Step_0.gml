@@ -4,7 +4,7 @@ if (global.paused)
 
 repeat(global.gameTimeScale.integer) {
 	if (image_index + animSpeed >= image_number) {
-		show_debug_message("Spawn item here");
+		event_user(0);
 		instance_destroy();
 		exit;
 	}

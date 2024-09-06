@@ -468,6 +468,31 @@ function entity_faction_solids(_scope = self) {
 	return (_scope.factionSolidWhitelist > 0) ? _scope.factionSolidWhitelist : 0xFFFFFFFF;
 }
 
+/// @func entity_item_drop(scope)
+/// @desc Spawns an explosion that will drop an item
+///		  Intended to be called when an entity dies
+function entity_item_drop(_scope = self) {
+	var _expl = instance_create(bbox_x_center(), bbox_y_center(), depth, objExplosion);
+	_expl.onItemDrop = onItemDrop;
+	
+	switch (_scope.itemDropType) {
+		case ItemDropType.NONE: break; // Nothing
+		case ItemDropType.CUSTOM: _expl.itemDrop = _scope.customItemDrop; break;
+		
+		case ItemDropType.RANDOM:
+			_expl.itemDrop = weighted_random(
+				[ objHealthEnergyBig, 20 ],
+				[ objWeaponEnergyBig, 20 ],
+				[ objHealthEnergySmall, 25 ],
+				[ objWeaponEnergySmall, 25 ],
+				[ objBoltBig, 25 ],
+				[ objBoltSmall, 120 ],
+				[ noone, 480 ]
+			);
+			break;
+	}
+}
+
 /// @func entity_kill_self(scope)
 /// @desc Tells the specified entity to kill itself, by calling its onDeath callback
 function entity_kill_self(_scope = self) {

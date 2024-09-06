@@ -28,7 +28,7 @@ function InputMap() constructor {
 	/// @method is_any_held(...inputs)
 	/// @desc Checks if any of the given inputs have been held
 	///
-	/// @param {rest<type>}  [...inputs]  The input actions to check
+	/// @param {rest<int>}  [...inputs]  The input actions to check
 	///
 	/// @returns {bool}  If any input has been held (true) or not (false)
 	static is_any_held = function() {
@@ -59,7 +59,7 @@ function InputMap() constructor {
 	/// @method is_any_pressed(...inputs)
 	/// @desc Checks if any of the given inputs have been pressed
 	///
-	/// @param {rest<type>}  [...inputs]  The input actions to check
+	/// @param {rest<int>}  [...inputs]  The input actions to check
 	///
 	/// @returns {bool}  If any input has been pressed (true) or not (false)
 	static is_any_pressed = function() {

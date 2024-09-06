@@ -20,7 +20,7 @@ function cbkOnDeath_prtEntity(_damageSource) {
         show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
     
     lifeState = LifeState.DEAD_ONSCREEN;
-    instance_create_depth(bbox_x_center(), bbox_y_center(), depth, objExplosion);
+    entity_item_drop();
     entity_clear_hitboxes();
 }
 

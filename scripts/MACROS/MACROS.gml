@@ -68,6 +68,18 @@ enum Faction {
 	NEUTRAL_FULL = Faction.NEUTRAL | Faction.NEUTRAL_PROJECTILE
 }
 
+// Determines what an entity can drop
+enum ItemDropType {
+	// Drop Nothing
+	NONE,
+	
+	// Drop from a random table
+	RANDOM,
+	
+	// User can determine what is dropped
+	CUSTOM
+}
+
 // The life states entities can have.
 // Used to flag if an entity is active, and is also used for spawning
 enum LifeState {
@@ -85,10 +97,18 @@ enum LifeState {
 	DEAD_OFFSCREEN
 }
 
+// Represents the "level" of respawning an entity is capable of
 enum RespawnType {
+	// Can always respawn
 	ENABLED,
+	
+	// Respawning is disabled upon death. Regained on section switched
 	DISABLE_ON_DEATH,
+	
+	// Entity is destroyed on death (but not from despawning)
 	DESTROY_ON_DEATH,
+	
+	// Entity is destroyed on either death or despawn
 	DISABLED
 }
 
@@ -372,6 +392,12 @@ enum SpriteAtlasCell {
 enum Vector2 {
 	x, /// @is {number}
 	y, /// @is {number}
+	sizeof
+}
+
+enum WeightedOutcome {
+	value, /// @is {any}
+	weight, /// @is {number}
 	sizeof
 }
 

@@ -42,6 +42,18 @@ function Reticle() constructor {
     
     #endregion
     
+    #region Functions - Direction
+    
+    /// -- direction_to_target()
+	/// Calculates the direction towards the target
+	///
+	/// @returns {number}  The direction towards the target
+    static direction_to_target = function() {
+    	return point_direction(owner.x, owner.y, x, y);
+    };
+    
+    #endregion
+    
     #region Functions - Distance
     
     /// -- distance_to_target()

@@ -125,6 +125,15 @@
     {"$GMObjectProperty":"v1","%Name":"canMakeBubble","filters":[],"listItems":[],"multiselect":false,"name":"canMakeBubble","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"bubbleXOffset","filters":[],"listItems":[],"multiselect":false,"name":"bubbleXOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"bubbleYOffset","filters":[],"listItems":[],"multiselect":false,"name":"bubbleYOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"itemDropType","filters":[],"listItems":[
+        "ItemDropType.NONE",
+        "ItemDropType.RANDOM",
+        "ItemDropType.CUSTOM",
+      ],"multiselect":false,"name":"itemDropType","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"ItemDropType.RANDOM","varType":6,},
+    {"$GMObjectProperty":"v1","%Name":"customItemDrop","filters":[
+        "GMObject",
+      ],"listItems":[],"multiselect":false,"name":"customItemDrop","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
+    {"$GMObjectProperty":"v1","%Name":"dropItemOnce","filters":[],"listItems":[],"multiselect":false,"name":"dropItemOnce","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

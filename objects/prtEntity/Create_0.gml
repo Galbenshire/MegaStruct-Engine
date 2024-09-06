@@ -69,6 +69,8 @@ onHurt = method(id, cbkOnHurt_prtEntity); /// @is {function<DamageSource, void>}
 onDeath = method(id, cbkOnDeath_prtEntity); /// @is {function<DamageSource, void>}
 // - Drawing
 onDraw = method(id, cbkOnDraw_prtEntity); /// @is {function<bool, void>}
+// - Item Drop
+onItemDrop = method(id, cbkOnItemDrop); /// @is {function<instance, void>}
 
 // Setup Reticle based on preset
 switch (targetingPreset) {
