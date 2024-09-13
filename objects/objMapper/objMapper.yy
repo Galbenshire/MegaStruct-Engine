@@ -16,10 +16,7 @@
     "name":"Objects",
     "path":"folders/_System/Objects.yy",
   },
-  "parentObjectId":{
-    "name":"prtAlwaysActive",
-    "path":"objects/prtAlwaysActive/prtAlwaysActive.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -39,5 +36,8 @@
   "solid":false,
   "spriteId":null,
   "spriteMaskId":null,
+  "tags":[
+    "active_always",
+  ],
   "visible":true,
 }

@@ -11,10 +11,7 @@
     "name":"Level Objects",
     "path":"folders/Level Objects.yy",
   },
-  "parentObjectId":{
-    "name":"prtAlwaysActive",
-    "path":"objects/prtAlwaysActive/prtAlwaysActive.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -37,5 +34,8 @@
     "path":"sprites/sprSectionMM9/sprSectionMM9.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "active_always",
+  ],
   "visible":true,
 }

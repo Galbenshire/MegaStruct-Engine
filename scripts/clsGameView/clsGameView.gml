@@ -125,7 +125,7 @@ function GameView() constructor {
 	///
 	/// @returns {number}  Right edge of the screen (in x-position), with an optional shift
 	static right_edge = function(_shift/*:number*/ = 0, _includeOffset/*:bool*/ = true) {
-		return left_edge(GAME_WIDTH + _shift, _includeOffset);
+		return get_x(_includeOffset) + GAME_WIDTH + _shift;
 	};
 	
 	/// @method view_top_edge(shift_by, include_offset)
@@ -147,7 +147,7 @@ function GameView() constructor {
 	///
 	/// @returns {number}  Bottom edge of the screen (in y-position), with an optional shift
 	static bottom_edge = function(_shift/*:number*/ = 0, _includeOffset/*:bool*/ = true) {
-		return top_edge(GAME_HEIGHT + _shift, _includeOffset);
+		return get_y(_includeOffset) + GAME_HEIGHT + _shift;
 	};
     
     #endregion

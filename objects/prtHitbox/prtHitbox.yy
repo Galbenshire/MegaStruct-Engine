@@ -43,5 +43,8 @@
   "solid":false,
   "spriteId":null,
   "spriteMaskId":null,
+  "tags":[
+    "active_always",
+  ],
   "visible":true,
 }

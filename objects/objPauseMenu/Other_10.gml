@@ -85,5 +85,7 @@ optionsSubmenu.neighbourLeft = weaponSubmenu;
 // === Screen Fade ===
 screen_fade({
     onFadeOutStart: function() /*=>*/ { queue_pause(); },
-    onFadeOutEnd: function() /*=>*/ { event_user(1); }
+    onFadeOutEnd: function() /*=>*/ { event_user(1); },
+    fadeOutDuration: 10,
+    fadeInDuration: 10
 });

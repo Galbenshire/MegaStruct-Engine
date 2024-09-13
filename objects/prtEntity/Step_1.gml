@@ -14,7 +14,7 @@ if (entity_is_dead()) {
     iFrames = 0;
 }
 
-if (global.paused || global.gameTimeScale.integer <= 0)
+if ((global.paused && !global.switchingSections) || global.gameTimeScale.integer <= 0)
 	exit;
 
 // =====  Respawning/Despawning =====
@@ -34,7 +34,7 @@ switch (lifeState) {
 	case LifeState.DEAD_OFFSCREEN:
 		// The room timer check is to ensure things aren't spawning right away on room start,
 		// before we even deactivated instances outside of the starting section
-		if (entity_within_respawn_range() && entity_can_respawn(false) && global.roomTimer != 0) {
+		if (entity_can_respawn(false) && entity_within_respawn_range() && global.roomTimer != 0) {
 			lifeState = LifeState.ALIVE;
 			inWater = interactWithWater && place_meeting(x, y, objWater);
 			onSpawn();

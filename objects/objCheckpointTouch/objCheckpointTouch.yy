@@ -43,5 +43,8 @@
     "path":"sprites/sprCheckpointTouch/sprCheckpointTouch.yy",
   },
   "spriteMaskId":null,
+  "tags":[
+    "active_always",
+  ],
   "visible":false,
 }

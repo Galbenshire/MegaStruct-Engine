@@ -109,7 +109,7 @@ function entity_handle_external_forces() {
 	externalYForce.value = 0;
 	
 	// Conveyor Belts
-	if (place_meeting(x, y, objConveyorBeltArea) && ground && !asset_has_tags(object_index, "ignore_conveyor", asset_object)) {
+	if (ground && place_meeting(x, y, objConveyorBeltArea) && !asset_has_tags(object_index, "ignore_conveyor", asset_object)) {
 		var _belt = instance_place(x, y, objConveyorBeltArea);
 		if (instance_exists(_belt))
 			externalXForce.value += _belt.force * sign(_belt.image_xscale);
@@ -239,20 +239,17 @@ function entity_within_despawn_range(_scope = self) {
     if (is_infinity(_scope.despawnRange))
         return true;
     
-    var _gameView = game_view(),
-		_entityLeft = _scope.bbox_left - _scope.despawnRange,
-        _entityTop = _scope.bbox_top - _scope.despawnRange,
-        _entityRight = _scope.bbox_right + _scope.despawnRange,
-        _entityBottom = _scope.bbox_bottom + _scope.despawnRange,
-        _screenLeft = _gameView.left_edge(0, false),
-        _screenTop = _gameView.top_edge(0, false),
-        _screenRight = _gameView.right_edge(0, false),
-        _screenBottom = _gameView.bottom_edge(0, false);
-    
-    return _entityLeft <= _screenRight
-		&& _entityTop <= _screenBottom
-		&& _entityRight >= _screenLeft
-		&& _entityBottom >= _screenTop;
+    var _gameView = game_view();
+    if (_scope.bbox_left > _gameView.right_edge(_scope.despawnRange, false))
+		return false;
+	if (_scope.bbox_right < _gameView.left_edge(-_scope.despawnRange, false))
+		return false;
+	if (_scope.bbox_top > _gameView.bottom_edge(_scope.despawnRange, false))
+		return false;
+	if (_scope.bbox_bottom < _gameView.top_edge(-_scope.despawnRange, false))
+		return false;
+	
+	return true;
 }
 
 /// @func entity_within_respawn_range(scope)
@@ -265,20 +262,17 @@ function entity_within_respawn_range(_scope = self) {
     if (is_infinity(_scope.respawnRange))
         return true;
     
-    var _gameView = game_view(),
-		_entityLeft = _scope.bbox_left - _scope.respawnRange,
-        _entityTop = _scope.bbox_top - _scope.respawnRange,
-        _entityRight = _scope.bbox_right + _scope.respawnRange,
-        _entityBottom = _scope.bbox_bottom + _scope.respawnRange,
-        _screenLeft = _gameView.left_edge(0, false),
-        _screenTop = _gameView.top_edge(0, false),
-        _screenRight = _gameView.right_edge(0, false),
-        _screenBottom = _gameView.bottom_edge(0, false);
-    
-    return _entityLeft <= _screenRight
-		&& _entityTop <= _screenBottom
-		&& _entityRight >= _screenLeft
-		&& _entityBottom >= _screenTop;
+	var _gameView = game_view();
+    if (_scope.bbox_left > _gameView.right_edge(_scope.respawnRange, false))
+		return false;
+	if (_scope.bbox_right < _gameView.left_edge(-_scope.respawnRange, false))
+		return false;
+	if (_scope.bbox_top > _gameView.bottom_edge(_scope.respawnRange, false))
+		return false;
+	if (_scope.bbox_bottom < _gameView.top_edge(-_scope.respawnRange, false))
+		return false;
+	
+	return true;
 }
 
 /// @func spawn_entity(x, y, depth_or_layer, object, var_struct)
@@ -471,6 +465,8 @@ function entity_faction_solids(_scope = self) {
 /// @func entity_item_drop(scope)
 /// @desc Spawns an explosion that will drop an item
 ///		  Intended to be called when an entity dies
+///
+/// @param {prtEntity}  [scope]  The instance to get the value from. Defaults to the calling instance.
 function entity_item_drop(_scope = self) {
 	var _expl = instance_create(bbox_x_center(), bbox_y_center(), depth, objExplosion);
 	_expl.onItemDrop = onItemDrop;

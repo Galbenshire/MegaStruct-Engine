@@ -10,7 +10,6 @@ var _width = image_xscale,
 image_xscale = 1;
 image_yscale = 1;
 autoGenerate = false;
-depthOffset = 0;
 
 for (var i = 0; i < _width; i++) {
     for (var j = 0; j < _height; j++) {
@@ -20,6 +19,7 @@ for (var i = 0; i < _width; i++) {
         ystart = y;
         
         var _temp = instance_copy(true);
+        _temp.depth = depth;
     }
 }
 

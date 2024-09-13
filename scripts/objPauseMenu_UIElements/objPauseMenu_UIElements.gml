@@ -86,7 +86,9 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
             
             screen_fade({
                 onFadeOutEnd: function(_fader) /*=>*/ { visible = false; },
-                onFadeInEnd: function(_fader) /*=>*/ { instance_destroy(); }
+                onFadeInEnd: function(_fader) /*=>*/ { instance_destroy(); },
+				fadeOutDuration: 10,
+				fadeInDuration: 10
             });
         }
     };

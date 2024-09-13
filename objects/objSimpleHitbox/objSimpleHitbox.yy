@@ -35,5 +35,8 @@
     "path":"sprites/sprDot/sprDot.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "tags":[
+    "active_always",
+  ],
+  "visible":false,
 }

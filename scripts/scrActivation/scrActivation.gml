@@ -16,14 +16,11 @@ function activate_game_objects(_section = global.section) {
 /// @param {bool}  [reset_entities]  If true, entities are not reset when deactivated. Defaults to true.
 /// @param {objSection}  [section]  The section to check against. Defaults to the current section.
 function deactivate_game_objects(_resetEntities = true, _section = global.section) {
-    static __specialObjects = [prtHitbox];
-    static __specialObjectCount = array_length(__specialObjects);
-    
     var _switchingSections = global.switchingSections;
     
     with (all) {
-        // Ignore all prtAlwaysActive objects
-        if (is_object_type(prtAlwaysActive))
+        // Ignore all objects tagged to always be active
+        if (asset_has_tags(object_index, "active_always"))
             continue;
         
         // Effects are destroyed
@@ -65,15 +62,11 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
         }
         
         // Anything else, deactivate them
-        // If they are a special object though, keep them if in the current section, or in a section switch
+        // If they're tagged as a special object though, keep them if in the current section, or in a section switch
         var _keep = false;
-        for (var i = 0; i < __specialObjectCount; i++) {
-            if (is_object_type(__specialObjects[i])) {
-                _keep = _switchingSections || place_meeting(x, y, _section);
-                break;
-            }
-        }
-        if (!_keep)
-            instance_deactivate_object(id);
+		if (asset_has_tags(object_index, "active_special"))
+			_keep = _switchingSections || place_meeting(x, y, _section);
+		if (!_keep)
+			instance_deactivate_object(id);
     }
 }
