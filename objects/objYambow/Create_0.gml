@@ -6,7 +6,6 @@ phaseTimer = 0;
 // Callbacks
 onSpawn = function() {
     cbkOnSpawn_prtEntity();
-    
     canDealDamage = false;
     canTakeDamage = false;
     gravEnabled = false;

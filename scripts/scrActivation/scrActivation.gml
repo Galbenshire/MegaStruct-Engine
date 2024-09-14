@@ -19,8 +19,8 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
     var _switchingSections = global.switchingSections;
     
     with (all) {
-        // Ignore all objects tagged to always be active
-        if (asset_has_tags(object_index, "active_always"))
+		// Ignore all objects tagged to always be active
+        if (asset_has_tags(object_index, "active_always", asset_object))
             continue;
         
         // Effects are destroyed
@@ -64,7 +64,7 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
         // Anything else, deactivate them
         // If they're tagged as a special object though, keep them if in the current section, or in a section switch
         var _keep = false;
-		if (asset_has_tags(object_index, "active_special"))
+		if (asset_has_tags(object_index, "active_special", asset_object))
 			_keep = _switchingSections || place_meeting(x, y, _section);
 		if (!_keep)
 			instance_deactivate_object(id);
