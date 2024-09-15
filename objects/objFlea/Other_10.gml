@@ -12,4 +12,4 @@ switch (colourPreset) {
 }
 
 if (!is_undefined(_colour))
-    palette = new ColourReplacer([ $FF7800 ], [ _colour ]);
+    palette = new ColourReplacerPalette([ $FF7800 ], [ _colour ]);

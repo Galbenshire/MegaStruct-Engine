@@ -15,5 +15,5 @@ onAttackEnd = function(_damageSource) {
 };
 
 // Palette
-palette = undefined; /// @is {ColourReplacer?}
+palette = undefined; /// @is {ColourReplacerPalette?}
 event_user(0);

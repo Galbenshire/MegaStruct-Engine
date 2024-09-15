@@ -7,9 +7,10 @@ x += subPixelX;
 y += subPixelY;
 
 if (weaponIconTimer > 0 && !is_undefined(weapon)) {
-	paletteCache.activate();
+	var _colReplacer = colour_replacer();
+	_colReplacer.activate(paletteCache);
 	weapon.draw_icon(x - 8, y - 30 * image_yscale);
-	paletteCache.deactivate();
+	_colReplacer.deactivate();
 }
 
 x = _x;

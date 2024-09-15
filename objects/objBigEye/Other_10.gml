@@ -13,4 +13,4 @@ switch (colourPreset) {
 }
 
 if (!is_undefined(_colours))
-    palette = new ColourReplacer([ $5800E4, $F8F8F8 ], _colours);
+    palette = new ColourReplacerPalette([ $5800E4, $F8F8F8 ], _colours);

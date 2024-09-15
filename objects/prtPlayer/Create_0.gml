@@ -51,7 +51,7 @@ skinCellX = 0;
 skinCellY = 0;
 
 // Palettes
-palette = new ColourReplacer(
+palette = new ColourReplacerPalette(
 	input_palette_player(),
 	player_get_character().get_colours()
 );

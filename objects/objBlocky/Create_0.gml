@@ -48,5 +48,5 @@ onHurt = function(_damageSource) {
 onDraw = method(id, cbkOnDraw_colourReplacer);
 
 // Palette
-palette = undefined; /// @is {ColourReplacer?}
+palette = undefined; /// @is {ColourReplacerPalette?}
 event_user(0);

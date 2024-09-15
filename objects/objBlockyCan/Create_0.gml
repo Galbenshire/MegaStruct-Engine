@@ -4,7 +4,7 @@ image_index = 2;
 
 isBouncing = false;
 deathTimer = 10;
-palette = undefined; /// @is {ColourReplacer?}
+palette = undefined; /// @is {ColourReplacerPalette?}
 
 // Callbacks
 onGuard = method(id, cbkOnGuard_alwaysReflectOrIgnore);

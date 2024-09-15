@@ -28,20 +28,24 @@ function cbkOnDraw_prtEntity(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  Unused here
 function cbkOnDraw_prtPlayer(_whiteflash) {
-	global.spriteAtlas_Player.sprite = skinSprite;
+	var _colReplacer = colour_replacer(),
+		_spriteAtlas = global.spriteAtlas_Player;
+	_spriteAtlas.sprite = skinSprite;
 	
-	if (palette.isSupported) {
-		palette.activate();
-        global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);
-        palette.deactivate();
+	if (_colReplacer.IS_SUPPORTED) {
+		_colReplacer.activate(palette);
+        _spriteAtlas.draw_cell_ext(skinCellX, skinCellY, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);
+        _colReplacer.deactivate();
         return;
 	}
 	
 	// Shaders aren't working? Then let's go for our backup: whitemasks
-	var _whitemaskBlends = array_create_ext(4, function(i) /*=>*/ {return (i == 0) ? c_white : palette.outputColours[i - 1]});
-	for (var i = 0; i < 4; i++) {
+	var _whitemaskBlends = array_create_ext(4, function(i) /*=>*/ {return (i == 0) ? c_white : palette.outputColours[i - 1]}),
+		i = 0;
+	repeat(4) {
 		var _colour = multiply_colours(image_blend, _whitemaskBlends[i]);
-		global.spriteAtlas_Player.draw_cell_ext(skinCellX, skinCellY, i, x, y, image_xscale, image_yscale, _colour, image_alpha);
+		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, i, x, y, image_xscale, image_yscale, _colour, image_alpha);
+		i++;
 	}
 }
 
@@ -57,9 +61,10 @@ function cbkOnDraw_colourReplacer(_whiteflash) {
     if (_whiteflash || is_undefined(palette)) {
         draw_self();
     } else {
-        palette.activate();
+		var _colReplacer = colour_replacer();
+        _colReplacer.activate(palette);
         draw_self();
-        palette.deactivate();
+        _colReplacer.deactivate();
     }
 }
 

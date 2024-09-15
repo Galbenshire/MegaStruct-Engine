@@ -12,4 +12,4 @@ switch (colourPreset) {
 }
 
 if (!is_undefined(_colour))
-    palette = new ColourReplacer([ $50DC58 ], [ _colour ]);
+    palette = new ColourReplacerPalette([ $50DC58 ], [ _colour ]);
