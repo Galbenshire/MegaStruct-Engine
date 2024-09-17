@@ -55,7 +55,7 @@ function player_handle_shooting() {
 	autoFireTimer--;
 	
 	if (!is_undefined(weapon))
-		weapon.onTick(self);
+		weapon.on_tick(self);
 	
 	if (isShooting) {
 		shootTimer = approach(shootTimer, 0, 1);
@@ -162,7 +162,7 @@ function player_add_weapon(_weaponID, _player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	with (_player) {
-		var _weapon = global.weaponList[_weaponID].instantiate();
+		var _weapon = weapon_create_from_id(_weaponID);
 		array_push(loadout, _weapon);
 		loadoutSize = array_length(loadout);
 	}
@@ -207,10 +207,10 @@ function player_equip_weapon(_weaponOrLoadout, _player = self) {
 			playerUser.hudElement.assign_weapon(_weapon);
 		
 		if (!is_undefined(weapon))
-			weapon.onUnequip(self);
+			weapon.on_unequip(self);
 		weapon = _weapon;
 		if (!is_undefined(weapon))
-			weapon.onEquip(self);
+			weapon.on_equip(self);
 	}
 }
 

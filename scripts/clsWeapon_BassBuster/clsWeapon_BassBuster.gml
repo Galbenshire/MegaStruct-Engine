@@ -1,13 +1,23 @@
-/// @description Weapon Setup
-global.weaponList[WeaponType.BUSTER_BASS] = new Weapon(WeaponType.BUSTER_BASS);
-with (global.weaponList[WeaponType.BUSTER_BASS]) {
-	object = objBusterShot;
-	set_name("Bass Buster");
-	set_icon(sprWeaponIcons, 2);
-	flags = WeaponFlags.NO_AMMO;
-    colours = [ $707070, $3898F8 ];
-    
-    onTick = function(_player) {
+function Weapon_BassBuster() : Weapon() constructor {
+    #region Static Data (consistent across all weapon instances)
+	
+	static id = WeaponType.BUSTER_BASS;
+	static colours = [ $707070, $3898F8 ]; /// @is {PaletteWeapon}
+	static flags = WeaponFlags.NO_AMMO;
+	
+	// - Icon
+	static icon = sprWeaponIcons;
+	static iconIndex = 2;
+	
+	// - Name
+	static name = "Bass Buster";
+	static shortName = "B.Buster";
+	
+	#endregion
+	
+	#region Callbacks
+	
+	static on_tick = function(_player) {
 		with (_player) {
 			if (!player_shot_input(true))
 				return;
@@ -46,9 +56,5 @@ with (global.weaponList[WeaponType.BUSTER_BASS]) {
 		}
 	};
 	
-	// == Weapon Specific ==
-	
-	__get_aim_data = function(_xDir, _yDir) {
-		
-	};
+	#endregion
 }

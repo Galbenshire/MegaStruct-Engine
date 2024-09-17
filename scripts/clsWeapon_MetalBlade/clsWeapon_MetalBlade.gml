@@ -1,13 +1,23 @@
-/// @description Weapon Setup
-global.weaponList[WeaponType.METAL_BLADE] = new Weapon(WeaponType.METAL_BLADE);
-with (global.weaponList[WeaponType.METAL_BLADE]) {
-    object = objMetalBlade;
-    set_name("Metal Blade");
-	set_icon(sprWeaponIcons, 3);
-	colours = [ $007088, $A8E0FF ];
+function Weapon_MetalBlade() : Weapon() constructor {
+    #region Static Data (consistent across all weapon instances)
 	
-	onTick = function(_player) {
-        with (_player) {
+	static id = WeaponType.METAL_BLADE;
+	static colours = [ $007088, $A8E0FF ]; /// @is {PaletteWeapon}
+	
+	// - Icon
+	static icon = sprWeaponIcons;
+	static iconIndex = 3;
+	
+	// - Name
+	static name = "Metal Blade";
+	static shortName = "M.Blade";
+	
+	#endregion
+	
+	#region Callbacks
+	
+	static on_tick = function(_player) {
+		with (_player) {
             if (!player_shot_input())
 				return;
             
@@ -36,4 +46,6 @@ with (global.weaponList[WeaponType.METAL_BLADE]) {
 			}
         }
 	};
-};
+	
+	#endregion
+}

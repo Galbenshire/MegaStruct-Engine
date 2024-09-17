@@ -1,0 +1,202 @@
+function Weapon_MegaBuster() : Weapon() constructor {
+    #region Static Data (consistent across all weapon instances)
+	
+	// == Base Weapon Statics ==
+	
+	static id = WeaponType.BUSTER;
+	static flags = WeaponFlags.NO_AMMO | WeaponFlags.CHARGE;
+	
+	// - Icon
+	static icon = sprWeaponIcons;
+	static iconIndex = 1;
+	
+	// - Name
+	static name = "Mega Buster";
+	static shortName = "M.Buster";
+	
+	// -- Top: NES
+    // -- Bottom: MM9 & 10
+	// static colours = [ $EC7000, $D8E800 ];
+	static colours = [ $EC7000, $F8B838 ]; /// @is {PaletteWeapon}
+	
+	// == Buster-Specific Statics ==
+	
+	static chargePreDuration = 20;
+	static chargeDuration = 56;
+	static chargeColoursOutline = [ $000000, $2000A8, $5800E4, $9858F8 ];
+	static chargeColoursFull = [ colours[PaletteWeapon.primary], colours[PaletteWeapon.secondary], $000000 ];
+	
+	#endregion
+	
+	#region Variables
+	
+	chargeState = 0; // 0 - not charging; 1 - pre charging; 2 - charging; 3 - fully charged;
+	chargeTimer = 0;
+	chargeToggle = false;
+	barAmount = 0;
+	
+	__player = noone;
+	__hudElement = undefined;
+	
+	#endregion
+	
+	#region Callbacks
+	
+	static on_tick = function(_player) {
+		handle_charge_state();
+		chargeTimer++;
+		
+		if (!is_undefined(__hudElement)) {
+			__hudElement.ammoVisible = options_data().chargeBar;
+			__hudElement.ammo = barAmount;
+		}
+	};
+	
+	static on_equip = function(_player) {
+		barAmount = 0;
+		chargeToggle = false;
+		
+		change_charge_state(0);
+		
+		__player = _player;
+		if (is_player_controlled(__player))
+			__hudElement = __player.playerUser.hudElement;
+	};
+	
+	static on_unequip = function(_player) {
+		stop_sfx(sfxCharging);
+		stop_sfx(sfxCharged);
+		__player.isCharging = false;
+		__player = noone;
+		__hudElement = undefined;
+	};
+	
+	#endregion
+	
+	#region Functions - Charging
+	
+	static change_charge_state = function(_newState) {
+		chargeState = _newState;
+		chargeTimer = -1;
+	};
+	
+	static handle_charge_state = function() {
+		__player.isCharging = (chargeState >= 2);
+        
+        switch (chargeState) {
+			case 0: // No Charge
+				barAmount = 0;
+				
+				if (player_shot_input(, __player))
+					fire_buster_shot(0);
+				else if (!__player.isShooting && player_can_charge())
+					change_charge_state(1);
+				break;
+            
+            case 1: // Pre Charge
+				barAmount = 0;
+				
+				if (!player_can_charge())
+					change_charge_state(0);
+				else if (chargeTimer >= chargePreDuration)
+					change_charge_state(2);
+				break;
+			
+			case 2: // Charging
+				if (chargeTimer == 0)
+					play_sfx(sfxCharging);
+				
+				var _index = round(remap(0, chargeDuration, 1, 3, chargeTimer));
+				_index *= (chargeTimer mod 6 <= 3);
+				_index = min(_index, 3);
+				
+				var _outlineCol = chargeColoursOutline[_index];
+				__player.palette.set_output_colour_at(PalettePlayer.outline, _outlineCol);
+				if (!is_undefined(__hudElement))
+					__hudElement.ammoPalette[PalettePlayer.outline] = _outlineCol;
+				
+				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
+				
+				if (!player_can_charge() || (chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {
+					if (!player_is_action_locked(PlayerAction.SHOOT, __player))
+						fire_buster_shot(1);
+				} else if (chargeTimer >= chargeDuration) {
+					change_charge_state(3);
+				}
+				break;
+			
+			case 3: // Fully Charged
+				if (chargeTimer == 0) {
+					stop_sfx(sfxCharging);
+					play_sfx(sfxCharged);
+				}
+				
+				var _chargeCycle = (chargeTimer div 3) mod 3;
+				for (var i = 0; i < 3; i++) {
+					var _chargeCol = chargeColoursFull[modf(_chargeCycle + i, 3)];
+					__player.palette.set_output_colour_at(i, _chargeCol);
+					if (!is_undefined(__hudElement))
+						__hudElement.ammoPalette[i] = _chargeCol;
+				}
+				
+				if (!player_can_charge() || (chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {
+					if (!player_is_action_locked(PlayerAction.SHOOT, __player))
+						fire_buster_shot(2);
+				}
+				break;
+        }
+	}
+	
+	#endregion
+	
+	#region Functions - Other
+	
+	static fire_buster_shot = function(_chargeLevel) {
+		with (__player) {
+			var _moveSpeed = 5,
+				_sfx = sfxBuster;
+			var _shotData = {
+				object: objBusterShot,
+				limit: 3,
+				cost: 0,
+				shootAnimation: 1,
+				autoShootDelay: 8
+			};
+			
+			if (_chargeLevel == 1) {
+				_shotData.object = objBusterShotHalfCharge;
+				_shotData.offsetX = -4;
+				_sfx = sfxBusterHalfCharge;
+			} else if (_chargeLevel >= 2) {
+				_shotData.object = objBusterShotCharged;
+				_shotData.offsetX = 4;
+				_moveSpeed = 5.5;
+				_sfx = sfxBusterCharged;
+			}
+			
+			var _shot = player_fire_weapon(_shotData);
+			if (_shot != noone) {
+				_shot.xspeed.value = _moveSpeed * image_xscale;
+				play_sfx(_sfx);
+				other.chargeToggle = (_chargeLevel <= 0 && options_data().chargeToggle);
+			}
+			
+			stop_sfx(sfxCharging);
+			stop_sfx(sfxCharged);
+			player_refresh_palette();
+			isCharging = false;
+			other.change_charge_state(0);
+		}
+	};
+	
+	static player_can_charge = function() {
+		if (player_is_action_locked(PlayerAction.SHOOT, __player))
+			return false;
+		
+		return options_data().chargeToggle
+			? chargeToggle
+			: __player.inputs.is_held(InputActions.SHOOT);
+	};
+	
+	#endregion
+}

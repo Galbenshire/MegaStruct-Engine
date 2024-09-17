@@ -1,12 +1,22 @@
-/// @description Weapon Setup
-global.weaponList[WeaponType.SKULL_BARRIER] = new Weapon(WeaponType.SKULL_BARRIER);
-with (global.weaponList[WeaponType.SKULL_BARRIER]) {
-    object = objSkullBarrier;
-    set_name("Skull Barrier");
-	set_icon(sprWeaponIcons, 6);
-	colours = [ $FCBC3C, $F0FC9C ];
+function Weapon_SkullBarrier() : Weapon() constructor {
+    #region Static Data
 	
-	onTick = function(_player) {
+	static id = WeaponType.SKULL_BARRIER;
+	static colours = [ $FCBC3C, $F0FC9C ]; /// @is {PaletteWeapon}
+	
+	// - Icon
+	static icon = sprWeaponIcons;
+	static iconIndex = 6;
+	
+	// - Name
+	static name = "Skull Barrier";
+	static shortName = "S.Barrier";
+	
+	#endregion
+	
+	#region Callbacks
+	
+	static on_tick = function(_player) {
 		with (_player) {
 			if (!player_shot_input(false))
 				return;
@@ -28,4 +38,6 @@ with (global.weaponList[WeaponType.SKULL_BARRIER]) {
 			}
 		}
 	};
-};
+	
+	#endregion
+}

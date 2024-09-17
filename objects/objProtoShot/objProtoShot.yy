@@ -1,9 +1,7 @@
 {
   "$GMObject":"",
   "%Name":"objProtoShot",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":20,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"objProtoShot",
   "overriddenProperties":[
