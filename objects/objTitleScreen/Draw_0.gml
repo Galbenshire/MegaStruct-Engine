@@ -1,7 +1,7 @@
 var _gameView = game_view();
 
 draw_set_text_align(fa_left, fa_top);
-draw_text_colour(_gameView.left_edge(), _gameView.top_edge(), $"{current_year}-{current_month}-{current_day}", $00B8F8, $00B8F8, $00B8F8, $00B8F8, 1);
+draw_text_colour(_gameView.left_edge(), _gameView.top_edge(), buildDate, $00B8F8, $00B8F8, $00B8F8, $00B8F8, 1);
 
 draw_set_text_align(fa_center, fa_top);
 draw_text_transformed(_gameView.center_x(), _gameView.top_edge(16), "Mega Struct\nEngine", 2, 2, 0);

@@ -82,9 +82,12 @@ function UIFramework_Menu() constructor {
         check_inputs();
         
 		if (canChangeSubmenu) {
-			var _nextSubmenu = currentSubmenu.get_neighbour(xDir, yDir);
+			var _prevSubmenu = currentSubmenu,
+				_nextSubmenu = currentSubmenu.get_neighbour(xDir, yDir);
 			if (!is_undefined(_nextSubmenu)) {
 				pass_submenu_focus(_nextSubmenu);
+				if (currentSubmenu != _prevSubmenu)
+					play_sfx(sfxMenuMove);
 				return;
 			}
 		}
@@ -123,9 +126,42 @@ function UIFramework_Submenu(_id) constructor {
     
     #region Callbacks
     
-    onFocusEnter = undefined; /// @is {function<void>} Called when this submenu gains focus
-    onFocusLeave = undefined; /// @is {function<void>} Called when this submenu loses focus
-    onTick = undefined; /// @is {function<InputMap, bool>} Called every frame while this submenu has focus
+    /// @method on_focus_enter()
+	/// @desc Called when this submenu gains focus
+    static on_focus_enter = function() {
+		//...	
+    };
+    
+    /// @method on_focus_leave()
+	/// @desc Called when this submenu loses focus
+    static on_focus_leave = function() {
+		//...	
+    };
+    
+    /// @method on_render(x, y)
+	/// @desc Called when this submenu is to be drawn
+	///
+	/// @param {number}  x  x-position to render at
+	/// @param {number}  y  y-position to render at
+    static on_render = function(_x, _y) {
+		// Basic render callback
+		// Recommended you override this for your own menus
+		var i = 0;
+		repeat(itemCount) {
+			items[i].render(_x, _y);
+			i++;
+		}
+    };
+    
+    /// @method on_tick(inputs)
+	/// @desc Called every frame while this submenu has focus
+	///
+	/// @param {InputMap}  inputs  Current inputs from this menu's input map
+	///
+	/// @returns {bool}  If the submenu should check for item changes afterwards (true) or not (false)
+    static on_tick = function(_inputs) {
+		return true;
+    };
     
     #endregion
     
@@ -135,9 +171,7 @@ function UIFramework_Submenu(_id) constructor {
 	/// @desc Sets this submenu as the current submenu in its menu
     static gain_focus = function() {
 		menu.currentSubmenu = self;
-		if (!is_undefined(onFocusEnter))
-			onFocusEnter();
-		
+		on_focus_enter();
 		if (!is_undefined(defaultItem))
 			defaultItem.gain_focus();
     };
@@ -156,8 +190,7 @@ function UIFramework_Submenu(_id) constructor {
 		if (!is_undefined(currentItem))
 			currentItem.release_focus();
 		
-		if (!is_undefined(onFocusLeave))
-			onFocusLeave();
+		on_focus_leave();
 		menu.currentSubmenu = undefined;
 		menu.previousSubmenu = self;
     };
@@ -168,6 +201,8 @@ function UIFramework_Submenu(_id) constructor {
     
     /// @method add_item(item)
 	/// @desc Adds a UI Item into this submenu
+	///
+	/// @param {UIFramework_Item}  item  The UI Item to add
     static add_item = function(_item) {
         array_push(items, _item);
         itemCount++;
@@ -178,7 +213,7 @@ function UIFramework_Submenu(_id) constructor {
     };
     
     /// @method add_items_from_list(item_list, is_vertical, wrap_neighbours)
-	/// @desc Adds a list UI Items into this submenu
+	/// @desc Adds a list of UI Items into this submenu
     static add_items_from_list = function(_itemList, _isVertical, _wrapNeighbours) {
 		var _count = array_length(_itemList);
 		if (_count <= 0)
@@ -217,15 +252,10 @@ function UIFramework_Submenu(_id) constructor {
     /// @method pass_item_focus(new_item)
 	/// @desc Changes focus from the current UIItem to the specified one
     static pass_item_focus = function(_newItem) {
-		var _prevItem = currentItem;
-		
 		if (!is_undefined(currentItem))
 			currentItem.release_focus();
 		if (!is_undefined(_newItem))
 			_newItem.gain_focus();
-		
-		if (currentItem != _prevItem)
-			play_sfx(sfxMenuMove);
     };
     
     #endregion
@@ -249,31 +279,26 @@ function UIFramework_Submenu(_id) constructor {
     };
     
     /// @method render(x, y)
-	/// @desc Renders this item
+	/// @desc Renders this submenu
     static render = function(_x, _y) {
-		var i = 0;
-		repeat(itemCount) {
-			items[i].render(_x, _y);
-			i++;
-		}
+		on_render(_x, _y);
     };
     
     /// @method update()
 	/// @desc Updates this submenu
     static update = function() {
-		if (!is_undefined(onTick)) {
-			var _terminate = onTick(menu.inputs) ?? false;
-			if (_terminate)
-				return;
-		}
-		
+		if (!on_tick(menu.inputs))
+			return;
         if (is_undefined(currentItem))
             return;
         
 		if (canChangeItem) {
-			var _nextItem = currentItem.get_neighbour(menu.xDir, menu.yDir);
+			var _prevItem = currentItem,
+				_nextItem = currentItem.get_neighbour(menu.xDir, menu.yDir);
 			if (!is_undefined(_nextItem)) {
 				pass_item_focus(_nextItem);
+				if (currentItem != _prevItem)
+					play_sfx(sfxMenuMove);
 				return;
 			}
 		}
@@ -303,13 +328,52 @@ function UIFramework_Item(_id) constructor {
     
     #region Callbacks
     
-    onFocusEnter = undefined; /// @is {function<void>}
-    onFocusLeave = undefined; /// @is {function<void>}
-    onTick = undefined; /// @is {function<InputMap, bool>}
-    onXDir = undefined; /// @is {function<int, void>}
-    onYDir = undefined; /// @is {function<int, void>}
-    onConfirm = undefined; /// @is {function<void>}
-    onCancel = undefined; /// @is {function<void>}
+    static on_confirm = function() {
+		//...
+    };
+    
+    static on_cancel = function() {
+		//...
+    };
+    
+    /// @method on_focus_enter()
+	/// @desc Called when this item gains focus
+    static on_focus_enter = function() {
+		//...	
+    };
+    
+    /// @method on_focus_leave()
+	/// @desc Called when this item loses focus
+    static on_focus_leave = function() {
+		//...	
+    };
+    
+    /// @method on_render(x, y)
+	/// @desc Called when this item is to be drawn
+	///
+	/// @param {number}  x  x-position to render at
+	/// @param {number}  y  y-position to render at
+    static on_render = function(_x, _y) {
+		//...
+    };
+    
+    /// @method on_tick(inputs)
+	/// @desc Called every frame while this item has focus
+	///
+	/// @param {InputMap}  inputs  Current inputs from this menu's input map
+	///
+	/// @returns {bool}  If the item should then check for more specific input types (true) or not (false)
+    static on_tick = function(_inputs) {
+		return true;
+    };
+    
+    static on_x_dir = function(_dir) {
+		//...
+    };
+    
+    static on_y_dir = function(_dir) {
+		//...
+    };
     
     #endregion
     
@@ -319,8 +383,7 @@ function UIFramework_Item(_id) constructor {
 	/// @desc Sets this item as the current item in its submenu
     static gain_focus = function() {
 		submenu.currentItem = self;
-		if (!is_undefined(onFocusEnter))
-			onFocusEnter();
+		on_focus_enter();
     };
     
     /// @method is_focused()
@@ -334,8 +397,7 @@ function UIFramework_Item(_id) constructor {
     /// @method release_focus()
 	/// @desc Unsets this item as the current item in its submenu
     static release_focus = function() {
-		if (!is_undefined(onFocusLeave))
-			onFocusLeave();
+		on_focus_leave();
 		submenu.currentItem = undefined;
 		submenu.previousItem = self;
     };
@@ -357,26 +419,23 @@ function UIFramework_Item(_id) constructor {
     /// @method render(x, y)
 	/// @desc Renders this item
     static render = function(_x, _y) {
-		//...
+		on_render(_x, _y);
     };
     
     /// @method update()
 	/// @desc Updates this item
     static update = function() {
-		if (!is_undefined(onTick)) {
-			var _terminate = onTick(menu.inputs) ?? false;
-			if (_terminate)
-				return;
-		}
+		if (!on_tick(menu.inputs))
+			return;
 		
-		if (menu.isConfirmed && !is_undefined(onConfirm))
-			onConfirm();
-		else if (menu.isCanceled && !is_undefined(onCancel))
-			onCancel();
-		else if (menu.xDir != 0 && !is_undefined(onXDir))
-            onXDir(menu.xDir);
-        else if (menu.yDir != 0 && !is_undefined(onYDir))
-            onYDir(menu.yDir);
+		if (menu.isConfirmed)
+			on_confirm();
+		else if (menu.isCanceled)
+			on_cancel();
+		else if (menu.xDir != 0)
+            on_x_dir(menu.xDir);
+        else if (menu.yDir != 0)
+            on_y_dir(menu.yDir);
     };
     
     #endregion

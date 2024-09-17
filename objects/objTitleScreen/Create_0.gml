@@ -12,5 +12,7 @@ options = [
 optionCount = array_length(options);
 currentOption = optionCount - 1;
 
+buildDate = date_date_string(GM_build_date);
+
 play_sfx(sfxImportantItem);
 array_reverse_ext(options);

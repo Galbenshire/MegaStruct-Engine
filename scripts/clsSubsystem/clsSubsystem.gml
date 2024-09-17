@@ -383,11 +383,6 @@ function Subsystem_HUD() : Subsystem() constructor {
         playerHUD.draw(_hudX, _hudY);
         for (var i = 0; i < _bossCount; i++)
 			bossHUD[i].draw(_hudX + 24, _hudY);
-		
-		_hudX = game_view().right_edge(-8);
-		draw_set_text_align(fa_right, fa_top);
-		draw_text(_hudX, _hudY, string("Bolts: {0}", global.bolts));
-		draw_reset_text_align();
     };
 }
 

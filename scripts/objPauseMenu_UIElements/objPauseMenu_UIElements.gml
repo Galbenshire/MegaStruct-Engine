@@ -1,8 +1,14 @@
+#region Menu
+
 function PauseMenu() : UIFramework_Menu() constructor {}
 
+#endregion
+
+#region Submenus
+
 function PauseMenu_Submenu_Weapons() : UIFramework_Submenu("weapons") constructor {
-    /// @method render(x, y)
-    static render = function(_x, _y) {
+    /// @method on_render(x, y)
+    static on_render = function(_x, _y) {
 		var i = 0;
 		repeat(itemCount) {
 			items[i].render(_x, _y);
@@ -13,8 +19,8 @@ function PauseMenu_Submenu_Weapons() : UIFramework_Submenu("weapons") constructo
 }
 
 function PauseMenu_Submenu_Options() : UIFramework_Submenu("options") constructor {
-    /// @method render(x, y)
-    static render = function(_x, _y) {
+    /// @method on_render(x, y)
+    static on_render = function(_x, _y) {
 		var i = 0;
 		repeat(itemCount) {
 			items[i].render(_x, _y);
@@ -27,8 +33,8 @@ function PauseMenu_Submenu_Options() : UIFramework_Submenu("options") constructo
 function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor {
 	palette = [ $A8D8FC, $FFFFFF, $000000 ];
 	
-    /// @method render(x, y)
-    static render = function(_x, _y) {
+    /// @method on_render(x, y)
+    static on_render = function(_x, _y) {
 		with (global.player.body) {
 			var _playerX = x,
 				_playerY = y,
@@ -50,17 +56,58 @@ function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor 
 			skinCellY = _cellY;
 			
 			draw_mm_healthbar_horizontal(_x - 20, _y + 8, healthpoints, other.palette);
+			
+			draw_set_text_align(fa_left, fa_top);
+			draw_sprite(sprBoltBig, 0, _x - 40, _y + 24);
+			draw_text(_x - 20, _y + 32, global.bolts);
 		}
     };
 }
+
+#endregion
+
+#region Items
 
 function PauseMenu_Item_Text(_id, _text) : UIFramework_Item(_id) constructor {
     text = _text;
     isConfirming = false;
     
-    onFocusLeave = function() /*=>*/ { isConfirming = false; };
+    static on_confirm = function() {
+		play_sfx(sfxMenuSelect);
+		
+		switch (id) {
+			case "options":
+				owner.phase = 10;
+				
+				screen_fade({
+					onFadeOutEnd: function() /*=>*/ { event_user_scope(2, owner); },
+					fadeOutDuration: 10,
+					fadeHoldDuration: 1,
+					fadeInDuration: 10
+				});
+				break;
+			
+			case "retry":
+				if (!isConfirming)
+					isConfirming = true;
+				else
+					restart_room();
+				break;
+			
+			case "exitstage":
+				if (!isConfirming)
+					isConfirming = true;
+				else
+					go_to_room(rmTitleScreen);
+				break;
+		}
+    };
     
-    static render = function(_x, _y) {
+    static on_focus_leave = function() {
+		isConfirming = false;
+    };
+    
+    static on_render = function(_x, _y) {
 		var _col = is_focused() ? c_yellow : c_white;
 		draw_set_text_align(fa_center, fa_top);
 		draw_text_colour(_x, _y, isConfirming ? "OK?" : text, _col, _col, _col, _col, 1);
@@ -71,7 +118,7 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
     weapon = _weapon;
     palette = [ $A8D8FC, $FFFFFF, $000000 ];
     
-    onConfirm = function() {
+    static on_confirm = function() {
         player_equip_weapon(weapon, global.player.body);
         player_refresh_palette(global.player.body);
         play_sfx(sfxMenuSelect);
@@ -93,7 +140,7 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
         }
     };
     
-    static render = function(_x, _y) {
+    static on_render = function(_x, _y) {
         shader_set(is_focused() ? shdPassthrough : shdGreyscale);
         
 		weapon.draw_icon(_x, _y);
@@ -106,3 +153,5 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
 		shader_reset();
     };
 }
+
+#endregion
