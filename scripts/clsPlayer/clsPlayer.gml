@@ -8,23 +8,11 @@ function Player(_id/*:number*/) constructor {
     #region Variables
 	
 	id = _id; /// @is {number} A reference to the player's ID (i.e. they are Player 1, 2, 3, ...)
-	character = CharacterType.MEGA; // Which playable character this player is set to be
+	characterID = CharacterType.MEGA; // ID of the playable character this player is set to be
 	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
 	inputs = new InputMap();
 	lockpool = new PlayerLockPool();
 	hudElement = new PlayerHUD();
-	
-	#endregion
-	
-	#region Functions - Getters
-	
-	/// -- get_character()
-	/// Gets the player's currently selected character
-	///
-	/// @returns {Character}  The current character
-	static get_character = function() {
-		return global.characterList[character];
-	};
 	
 	#endregion
 
@@ -73,19 +61,6 @@ function Player(_id/*:number*/) constructor {
 			body.healthpoints = clamp(body.healthpoints + _value, 0, body.healthpointsStart);
 		return self;
 	};
-    
-    /// @method generate_loadout()
-	/// @desc Generates a weapon loadout for the player's body
-	///		  This will be based on the player's currently selected character
-    static generate_loadout = function() {
-		if (!instance_exists(body))
-			return;
-		
-		var _loadout = get_character().loadout,
-			_loadoutSize = array_length(_loadout);
-		for (var i = 0; i < _loadoutSize; i++)
-			player_add_weapon(_loadout[i], body);
-    }
     
     #endregion
 }

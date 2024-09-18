@@ -1,4 +1,5 @@
 event_inherited();
+assert(!is_undefined(self[$ "character"]), "A player instance was made, but was not assigned a Character");
 
 mask_index = maskNormal;
 
@@ -53,7 +54,7 @@ skinCellY = 0;
 // Palettes
 palette = new ColourReplacerPalette(
 	input_palette_player(),
-	player_get_character().get_colours()
+	character.get_colours()
 );
 paletteCache = variable_clone(palette);
 

@@ -412,9 +412,6 @@ enum WeightedOutcome {
 #macro EVENT_ANIMATION_INIT 12
 #macro EVENT_STATEMACHINE_INIT 13
 
-#macro EVENT_CHARACTER_SETUP ev_user10
-#macro EVENT_WEAPON_SETUP ev_user10
-
 #macro EVENT_INTERVAL_ACTION 14
 
 #endregion

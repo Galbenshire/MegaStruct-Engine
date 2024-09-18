@@ -1,29 +1,55 @@
-/// @func Character(config)
+/// @func Character()
 /// @desc Represents a character that the player can play as in this engine
-///
-/// @param {struct}  config  A struct to configure this character
-function Character(_config = {}) constructor {
-    #region Variables
+function Character() constructor {
+	#region Static Data (consistent across all weapon instances)
 	
-	id = _config.id; /// @is {int} A reference to the character's ID corresponding to the CharacterType enum
-	
-	name = _config.name; /// @is {string} Character's name
-	object = _config.object; /// @is {prtPlayer} The object representing this character. When the player spawns into a level, this object will be created for them to control.
-	colours = _config.colours; /// @is {PalettePlayer}
-	loadout = _config.loadout; /// @is {array<int>} A list of weapons this character will have available to them
-	
-	onGetGunOffset = method(undefined, _config[$ "onGetGunOffset"] ?? __base_gun_offset);
+	static id = -1;
+	static name = "";
+	static object = prtPlayer; // The object representing this character. When the player spawns into a level, this object will be created for them to control.
+	static colours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
+	static loadout = []; /// @is {array<int>} A list of weapons this character will have available to them
 	
 	#endregion
 	
-	#region Functions - Getters
+	#region Functions
 	
 	/// -- get_colours()
 	/// Gets the colours of this character. It would be used as a base, changed by the player's current weapon.
 	///
 	/// @returns {PalettePlayer}  A copy of this characters's colours.
 	static get_colours = function() {
-		return variable_clone(colours);	
+		return variable_clone(colours);
+	};
+	
+	/// -- get_gun_offset(player)
+	/// Gets the position of this character's "gun", relative to the player's own position
+	///
+	/// @param {prtPlayer}  player  The player to check against.
+	///
+	/// @returns {Vector2}  The offset position of the "gun"
+	static get_gun_offset = function(_player) {
+		var _offset/*:Vector2*/ = [17, 4];
+		if (!_player.ground) {
+			_offset[@Vector2.x] -= 4;
+			_offset[@Vector2.y] -= 2;
+		}
+		
+		switch (_player.shootAnimation) {
+			case 3: // Aim Up
+				_offset[@Vector2.x] += (!_player.ground) ? -8 : -12;
+				_offset[@Vector2.y] -= 9;
+				break;
+			case 4: // Aim Diagonal Up
+				_offset[@Vector2.x] -= 3;
+				_offset[@Vector2.y] -= 6;
+				break;
+			case 5: // Aim Diagonal Down
+				_offset[@Vector2.x] -= 2;
+				_offset[@Vector2.y] += 6;
+				break;
+		}
+		
+		return _offset;
 	};
 	
 	/// -- get_loadout()
@@ -46,32 +72,20 @@ function Character(_config = {}) constructor {
 	};
 	
 	#endregion
+}
+
+/// @func character_create_from_id(id)
+/// @desc Generates an instance of a playable character
+///
+/// @param {int}  id  The ID of the character, corresponding to the CharacterType enum
+///
+/// @returns {Character}  A character instance
+function character_create_from_id(_id) {
+	switch (_id) {
+		case CharacterType.MEGA: return new Character_MegaMan(); break;
+		case CharacterType.PROTO: return new Character_ProtoMan(); break;
+		case CharacterType.BASS: return new Character_Bass(); break;
+	}
 	
-	#region Functions - Other
-	
-	/// @func __base_gun_offset(player)
-	static __base_gun_offset = function(_player) {
-		var _offset/*:Vector2*/ = [16, 4];
-		if (_player.isClimbing || !_player.ground)
-			_offset[@Vector2.y] -= 2;
-		
-		switch (_player.shootAnimation) {
-			case 3: // Aim Up
-				_offset[@Vector2.x] -= 11;
-				_offset[@Vector2.y] -= 11;
-				break;
-			case 4: // Aim Diagonal Up
-				_offset[@Vector2.x] -= 3;
-				_offset[@Vector2.y] -= 6;
-				break;
-			case 5: // Aim Diagonal Down
-				_offset[@Vector2.x] -= 2;
-				_offset[@Vector2.y] += 6;
-				break;
-		}
-		
-		return _offset;
-	};
-	
-	#endregion
+	return undefined;
 }

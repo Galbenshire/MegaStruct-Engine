@@ -438,11 +438,11 @@ function Subsystem_Level() : Subsystem() constructor {
 		}
 		
 		var _player = global.player;
-		with (spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, _player.character)) {
+		with (spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, _player.characterID)) {
 			image_xscale = _spawnDir;
 			_player.set_body(self);
-			_player.generate_loadout();
 			_player.hudElement.healthpoints = healthpoints;
+			player_generate_loadout();
 			player_equip_weapon(0);
 			player_refresh_palette();
 		}

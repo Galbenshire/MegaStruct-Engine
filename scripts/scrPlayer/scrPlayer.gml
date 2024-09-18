@@ -168,25 +168,6 @@ function player_add_weapon(_weaponID, _player = self) {
 	}
 }
 
-/// @func player_shot_input(auto_fire, player)
-/// @desc Helper function for if the player is trying to input a shoot action.
-///		  This function will check if the player is in a state where they are able to do so.
-///		  Mainly used by weapons to know if the player is trying to shoot a projectile.
-/// @param {bool}  [auto_fire]  Whether the function sould use the auto-fire beaviour (true) or not (false). Defaults to whatever is set in options_data
-/// @param {prtPlayer}  [player]  The player trying to shoot. Defaults to the calling instance.
-///
-/// @returns {bool}  Whether the player can fire a shot (true), or not (false)
-function player_shot_input(_autoFire = options_data().autoFire, _player = self) {
-	PLAYER_ONLY_FUNCTION
-	
-	if (player_is_action_locked(PlayerAction.SHOOT, _player))
-		return false;
-	
-	return _autoFire
-		? _player.inputs.is_held(InputActions.SHOOT) && _player.autoFireTimer <= 0
-		: _player.inputs.is_pressed(InputActions.SHOOT);
-}
-
 /// @func player_equip_weapon(weapon_or_loadout_index, player)
 /// @desc Makes a player entity equip a weapon
 ///		  This can either be an actual Weapon instance,
@@ -286,7 +267,7 @@ function player_fire_weapon(_params = {}, _player = self) {
 			shootStandStillLock.activate();
 		
 		// Make the bullet
-		var _gunOffset = player_get_character().onGetGunOffset(self);
+		var _gunOffset = character.get_gun_offset(self);
 		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),
@@ -310,15 +291,19 @@ function player_fire_weapon(_params = {}, _player = self) {
 	return noone; // failsafe
 }
 
-/// @func player_get_character(player)
-/// @desc Get the playable character the given player entity is set as
+/// @func player_generate_loadout()
+/// @desc Generates a weapon loadout for the player, based on its character
 ///
-/// @param {prtPlayer}  [player]  The player entity to check. Defaults to the calling instance.
-///
-/// @returns {Character}  The playable character set for this player
-function player_get_character(_player = self) {
+/// @param {prtPlayer}  [player]
+function player_generate_loadout(_player = self) {
 	PLAYER_ONLY_FUNCTION
-	return global.characterList[_player.characterID];
+	
+	with (_player) {
+		var _loadout = character.loadout,
+			_loadoutSize = array_length(_loadout);
+		for (var i = 0; i < _loadoutSize; i++)
+			player_add_weapon(_loadout[i]);
+	}
 }
 
 /// @func player_is_action_locked(player_action, player)
@@ -344,7 +329,7 @@ function player_refresh_palette(_player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	with (_player) {
-		var _characterPalette = global.characterList[characterID].get_colours();
+		var _characterPalette = character.get_colours();
 		
 		if (!is_undefined(weapon)) {
 			var _weaponPalette = weapon.get_colours();
@@ -393,6 +378,25 @@ function player_restore_health(_value, _player = self) {
 	_restorer.healthpoints += _value;
 }
 
+/// @func player_shot_input(auto_fire, player)
+/// @desc Helper function for if the player is trying to input a shoot action.
+///		  This function will check if the player is in a state where they are able to do so.
+///		  Mainly used by weapons to know if the player is trying to shoot a projectile.
+/// @param {bool}  [auto_fire]  Whether the function sould use the auto-fire beaviour (true) or not (false). Defaults to whatever is set in options_data
+/// @param {prtPlayer}  [player]  The player trying to shoot. Defaults to the calling instance.
+///
+/// @returns {bool}  Whether the player can fire a shot (true), or not (false)
+function player_shot_input(_autoFire = options_data().autoFire, _player = self) {
+	PLAYER_ONLY_FUNCTION
+	
+	if (player_is_action_locked(PlayerAction.SHOOT, _player))
+		return false;
+	
+	return _autoFire
+		? _player.inputs.is_held(InputActions.SHOOT) && _player.autoFireTimer <= 0
+		: _player.inputs.is_pressed(InputActions.SHOOT);
+}
+
 #endregion
 
 #region Other
@@ -427,9 +431,9 @@ function is_player_controlled(_scope = self) {
 ///
 /// @returns {prtPlayer}
 function spawn_player_entity(_x, _y, _depthOrLayer, _characterID) {
-	var _character = global.characterList[_characterID];
+	var _character = character_create_from_id(_characterID);
 	var _body = spawn_entity(_x, _y, _depthOrLayer, _character.object, {
-		characterID: _character.id
+		character: _character
 	});
 	return _body;
 }
