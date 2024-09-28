@@ -16,8 +16,8 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	
 	// -- Top: NES
     // -- Bottom: MM9 & 10
-	// static colours = [ $EC7000, $D8E800 ];
-	static colours = [ $EC7000, $F8B838 ]; /// @is {PaletteWeapon}
+	// static colours = [ $EC7000, $D8E800, $000000, $A8D8FC, $F8F8F8 ];
+	static colours = [ $EC7000, $F8B838, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// == Buster-Specific Statics ==
 	
@@ -109,11 +109,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				var _index = round(remap(0, chargeDuration, 1, 3, chargeTimer));
 				_index *= (chargeTimer mod 6 <= 3);
 				_index = min(_index, 3);
-				
-				var _outlineCol = chargeColoursOutline[_index];
-				__player.palette.set_output_colour_at(PalettePlayer.outline, _outlineCol);
-				if (!is_undefined(__hudElement))
-					__hudElement.ammoPalette[PalettePlayer.outline] = _outlineCol;
+				update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
 				
 				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
 				
@@ -132,12 +128,8 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				}
 				
 				var _chargeCycle = (chargeTimer div 3) mod 3;
-				for (var i = 0; i < 3; i++) {
-					var _chargeCol = chargeColoursFull[modf(_chargeCycle + i, 3)];
-					__player.palette.set_output_colour_at(i, _chargeCol);
-					if (!is_undefined(__hudElement))
-						__hudElement.ammoPalette[i] = _chargeCol;
-				}
+				for (var i = 0; i < 3; i++)
+					update_player_colour(i, chargeColoursFull[modf(_chargeCycle + i, 3)]);
 				
 				if (!player_can_charge() || (chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {
 					if (!player_is_action_locked(PlayerAction.SHOOT, __player))
@@ -196,6 +188,12 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		return options_data().chargeToggle
 			? chargeToggle
 			: __player.inputs.is_held(InputActions.SHOOT);
+	};
+	
+	static update_player_colour = function(_index, _colour) {
+		__player.palette.set_colour_at(_index, _colour);
+		if (!is_undefined(__hudElement))
+			__hudElement.ammoPalette[_index] = _colour;
 	};
 	
 	#endregion

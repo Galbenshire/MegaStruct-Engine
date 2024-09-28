@@ -8,7 +8,8 @@ y += subPixelY;
 
 if (weaponIconTimer > 0 && !is_undefined(weapon)) {
 	var _colReplacer = colour_replacer();
-	_colReplacer.activate(paletteCache);
+	_colReplacer.activate();
+	_colReplacer.apply_colours(weapon.colours);
 	weapon.draw_icon(x - 8, y - 30 * image_yscale);
 	_colReplacer.deactivate();
 }

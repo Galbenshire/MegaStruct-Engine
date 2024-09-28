@@ -30,7 +30,7 @@ if (!variable_global_exists("__gameInit")) {
 	global.spriteAtlas_Player = new SpriteAtlas({
 		sprite: sprPlayerSkinRockMan,
 		width: 50,
-		margin: 1,
+		margin: 0,
 		padding: 2,
 		xoffset: 25,
 		yoffset: 21

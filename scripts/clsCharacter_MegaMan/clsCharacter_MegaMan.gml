@@ -5,13 +5,21 @@ function Character_MegaMan() : Character() constructor {
 	static name = "Mega Man";
 	static object = objMegaMan;
 	
-	static colours = [
+	static defaultColours = [
+		// Main Colours
         $EC7000,
         $F8B838,
         $000000,
+        
+        // Less Important Colours
         $A8D8FC,
         $000000,
-        $FFFFFF
+        $FFFFFF,
+        
+        // Pretty Much Mugshot Exclusive
+        $8B0000,
+        $FFEEB3,
+        $3898F8
     ];
     
 	static loadout = [

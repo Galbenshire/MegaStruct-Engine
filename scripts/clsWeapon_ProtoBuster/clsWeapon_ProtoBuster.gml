@@ -4,7 +4,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
     // == Base Weapon Statics ==
 	
 	static id = WeaponType.BUSTER_PROTO;
-	static colours =  [ $0028DC, $BCBCBC ]; /// @is {PaletteWeapon}
+	static colours =  [ $0028DC, $BCBCBC, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	static flags = WeaponFlags.NO_AMMO | WeaponFlags.CHARGE;
 	
 	// - Icon
@@ -105,11 +105,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 				var _index = (chargeTimer <= (chargeDuration * 0.5))
 					? (chargeTimer mod 8 <= 4)
 					: (chargeTimer mod 4 <= 2);
-				
-				var _outlineCol = chargeColoursOutline[_index];
-				__player.palette.set_output_colour_at(PalettePlayer.outline, _outlineCol);
-				if (!is_undefined(__hudElement))
-					__hudElement.ammoPalette[PalettePlayer.outline] = _outlineCol;
+				update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
 				
 				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
 				
@@ -126,17 +122,10 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 				if (_chargeCycle == 0) {
 					player_refresh_palette(__player);
 				} else if (_chargeCycle == 2) {
-					var _outlineCol = chargeColoursOutline[(chargeTimer mod 16) < 8];
-					__player.palette.set_output_colour_at(PalettePlayer.outline, _outlineCol);
-					if (!is_undefined(__hudElement))
-						__hudElement.ammoPalette[PalettePlayer.outline] = _outlineCol;
+					update_player_colour(PalettePlayer.outline, chargeColoursOutline[(chargeTimer mod 16) < 8]);
 				} else if (_chargeCycle == 4) {
-					for (var i = 0; i < 3; i++) {
-						var _chargeCol = chargeColoursFull[i];
-						__player.palette.set_output_colour_at(i, _chargeCol);
-						if (!is_undefined(__hudElement))
-                            __hudElement.ammoPalette[i] = _chargeCol;
-					}
+					for (var i = 0; i < 3; i++)
+						update_player_colour(i, chargeColoursFull[i]);
 				}
 				
 				if (!player_can_charge() || (chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {
@@ -195,6 +184,12 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		return options_data().chargeToggle
 			? chargeToggle
 			: __player.inputs.is_held(InputActions.SHOOT);
+	};
+	
+	static update_player_colour = function(_index, _colour) {
+		__player.palette.set_colour_at(_index, _colour);
+		if (!is_undefined(__hudElement))
+			__hudElement.ammoPalette[_index] = _colour;
 	};
 	
 	#endregion

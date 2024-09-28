@@ -31,7 +31,7 @@ function PauseMenu_Submenu_Options() : UIFramework_Submenu("options") constructo
 }
 
 function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor {
-	palette = [ $A8D8FC, $FFFFFF, $000000 ];
+	healthPalette = [ $A8D8FC, $FFFFFF, $000000 ];
 	
     /// @method on_render(x, y)
     static on_render = function(_x, _y) {
@@ -55,7 +55,7 @@ function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor 
 			skinCellX = _cellX;
 			skinCellY = _cellY;
 			
-			draw_mm_healthbar_horizontal(_x - 20, _y + 8, healthpoints, other.palette);
+			draw_mm_healthbar_horizontal(_x - 20, _y + 8, healthpoints, other.healthPalette);
 			
 			draw_set_text_align(fa_left, fa_top);
 			draw_sprite(sprBoltBig, 0, _x - 40, _y + 24);
@@ -115,8 +115,12 @@ function PauseMenu_Item_Text(_id, _text) : UIFramework_Item(_id) constructor {
 }
 
 function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor {
+    static ammoPaletteUnselected = [ $E4E4E4, $FFFFFF, $000000 ];
+    static ammoPaletteSelected = [ $A8D8FC, $FFFFFF, $000000 ];
+    static iconPaletteUnselected = [ $616161, $A1A1A1, $000000, $DCDCDC, $FFFFFF ];
+    static iconPaletteSelected = [ $EC7000, $F8B838, $000000, $A8D8FC, $FFFFFF ];
+    
     weapon = _weapon;
-    palette = [ $A8D8FC, $FFFFFF, $000000 ];
     
     static on_confirm = function() {
         player_equip_weapon(weapon, global.player.body);
@@ -141,16 +145,20 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
     };
     
     static on_render = function(_x, _y) {
-        shader_set(is_focused() ? shdPassthrough : shdGreyscale);
-        
-		weapon.draw_icon(_x, _y);
-		draw_mm_healthbar_horizontal(_x + 24, _y + 8, weapon.ammo, palette);
+		var _isFocused = is_focused(),
+			_colReplacer = colour_replacer();
 		
-		var _col = is_focused() ? c_yellow : c_white;
+		_colReplacer.activate();
+		_colReplacer.apply_colours(_isFocused ? iconPaletteSelected : iconPaletteUnselected);
+		weapon.draw_icon(_x, _y);
+		_colReplacer.deactivate();
+		
+		var _col = _isFocused ? ammoPaletteSelected : ammoPaletteUnselected;
+		draw_mm_healthbar_horizontal(_x + 24, _y + 8, weapon.ammo, _col);
+		
+		_col = is_focused() ? c_yellow : c_white;
 		draw_set_text_align(fa_left, fa_top);
 		draw_text_colour(_x + 24, _y, weapon.get_name(true, true), _col, _col, _col, _col, 1);
-		
-		shader_reset();
     };
 }
 

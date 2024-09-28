@@ -5,13 +5,21 @@ function Character_ProtoMan() : Character() constructor {
 	static name = "Proto Man";
 	static object = objProtoMan;
 	
-	static colours = [
+	static defaultColours = [
+		// Main Colours
         $0028DC,
         $BCBCBC,
         $000000,
+        
+        // Less Important Colours
         $A5E7FF,
         $000000,
-        $FFFFFF
+        $FFFFFF,
+        
+        // Pretty Much Mugshot Exclusive
+        $1000A8,
+        $F8F8F8,
+        $3898F8
     ];
     
 	static loadout = [
@@ -20,21 +28,6 @@ function Character_ProtoMan() : Character() constructor {
         WeaponType.METAL_BLADE,
         WeaponType.SEARCH_SNAKE
     ];
-	
-	#endregion
-	
-	#region Functions
-	
-	static get_gun_offset = function(_player) {
-		var _offset/*:Vector2*/ = [10, 6];
-		if (_player.isClimbing) {
-			_offset[@Vector2.x] += 2;
-			_offset[@Vector2.y] -= 2;
-		} else if (!_player.ground) {
-			_offset[@Vector2.x] -= 1;
-		}
-		return _offset;
-	};
 	
 	#endregion
 }

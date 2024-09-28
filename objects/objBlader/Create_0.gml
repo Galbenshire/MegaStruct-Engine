@@ -3,7 +3,6 @@ event_inherited();
 phase = 0;
 phaseTimer = 0;
 targetY = y;
-palette = undefined;
 
 // Callbacks
 onSpawn = method(id, cbkOnSpawn_phaseReset);

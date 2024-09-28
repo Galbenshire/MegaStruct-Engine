@@ -6,50 +6,19 @@ function Character() constructor {
 	static id = -1;
 	static name = "";
 	static object = prtPlayer; // The object representing this character. When the player spawns into a level, this object will be created for them to control.
-	static colours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
+	static defaultColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
 	static loadout = []; /// @is {array<int>} A list of weapons this character will have available to them
 	
 	#endregion
 	
 	#region Functions
 	
-	/// -- get_colours()
-	/// Gets the colours of this character. It would be used as a base, changed by the player's current weapon.
+	/// -- get_default_colours()
+	/// Gets the default colours of this character. This is without any changes by weapons.
 	///
 	/// @returns {PalettePlayer}  A copy of this characters's colours.
-	static get_colours = function() {
-		return variable_clone(colours);
-	};
-	
-	/// -- get_gun_offset(player)
-	/// Gets the position of this character's "gun", relative to the player's own position
-	///
-	/// @param {prtPlayer}  player  The player to check against.
-	///
-	/// @returns {Vector2}  The offset position of the "gun"
-	static get_gun_offset = function(_player) {
-		var _offset/*:Vector2*/ = [17, 4];
-		if (!_player.ground) {
-			_offset[@Vector2.x] -= 4;
-			_offset[@Vector2.y] -= 2;
-		}
-		
-		switch (_player.shootAnimation) {
-			case 3: // Aim Up
-				_offset[@Vector2.x] += (!_player.ground) ? -8 : -12;
-				_offset[@Vector2.y] -= 9;
-				break;
-			case 4: // Aim Diagonal Up
-				_offset[@Vector2.x] -= 3;
-				_offset[@Vector2.y] -= 6;
-				break;
-			case 5: // Aim Diagonal Down
-				_offset[@Vector2.x] -= 2;
-				_offset[@Vector2.y] += 6;
-				break;
-		}
-		
-		return _offset;
+	static get_default_colours = function() {
+		return variable_clone(defaultColours);
 	};
 	
 	/// -- get_loadout()

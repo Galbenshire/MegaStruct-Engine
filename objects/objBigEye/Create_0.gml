@@ -4,7 +4,6 @@ isHighJumping = false;
 timer = 0;
 repeatCount = 0;
 intendedXSpeed = 0;
-palette = undefined;
 
 // Callbacks
 onSpawn = function() {

@@ -267,9 +267,9 @@ function player_fire_weapon(_params = {}, _player = self) {
 			shootStandStillLock.activate();
 		
 		// Make the bullet
-		var _gunOffset = character.get_gun_offset(self);
-		var _bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
-			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
+		event_user(0); // update gun offset
+		var _bulletX = x + (gunOffsetX + (_params[$ "offsetX"] ?? 0)) * image_xscale,
+			_bulletY = y + (gunOffsetY + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),
 			_bulletObj = _params.object;
 		
@@ -299,7 +299,7 @@ function player_generate_loadout(_player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	with (_player) {
-		var _loadout = character.loadout,
+		var _loadout = characterData.loadout,
 			_loadoutSize = array_length(_loadout);
 		for (var i = 0; i < _loadoutSize; i++)
 			player_add_weapon(_loadout[i]);
@@ -329,21 +329,17 @@ function player_refresh_palette(_player = self) {
 	PLAYER_ONLY_FUNCTION
 	
 	with (_player) {
-		var _characterPalette = character.get_colours();
+		var _characterPalette = characterData.get_default_colours();
 		
 		if (!is_undefined(weapon)) {
-			var _weaponPalette = weapon.get_colours();
-			_characterPalette[PalettePlayer.primary] = _weaponPalette[PaletteWeapon.primary];
-			_characterPalette[PalettePlayer.secondary] = _weaponPalette[PaletteWeapon.secondary];
+			_characterPalette[PalettePlayer.primary] = weapon.colours[PaletteWeapon.primary];
+			_characterPalette[PalettePlayer.secondary] = weapon.colours[PaletteWeapon.secondary];
 		}
 		
-		for (var i = 0; i < palette.colourCount; i++) {
-			palette.set_output_colour_at(i, _characterPalette[i]);
-			paletteCache.set_output_colour_at(i, _characterPalette[i]);
-		}
-		
+		for (var i = 0; i < palette.colourCount; i++)
+			palette.set_colour_at(i, _characterPalette[i]);
 		if (!is_undefined(playerUser))
-			playerUser.hudElement.ammoPalette = array_slice(palette.outputColours, 0, 3);
+			playerUser.hudElement.ammoPalette = array_slice(palette.colours, 0, 3);
 	}
 }
 
@@ -433,7 +429,7 @@ function is_player_controlled(_scope = self) {
 function spawn_player_entity(_x, _y, _depthOrLayer, _characterID) {
 	var _character = character_create_from_id(_characterID);
 	var _body = spawn_entity(_x, _y, _depthOrLayer, _character.object, {
-		character: _character
+		characterData: _character
 	});
 	return _body;
 }

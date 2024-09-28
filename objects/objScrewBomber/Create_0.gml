@@ -4,16 +4,17 @@ phase = 0;
 phaseTimer = 0;
 cooldownTimer = 0;
 bulletCount = 0;
-palette = undefined;
+mainHitbox = noone;
 
 // Callbacks
 onSpawn = function() {
     cbkOnSpawn_prtEntity();
-    mask_index = -1;
     phase = 0;
     phaseTimer = 0;
     bulletCount = 0;
     cooldownTimer = 0;
+    mainHitbox = hitbox_create_simple(-4, -8, bbox_width(), bbox_height(), true, false, canTakeDamage);
+    //mainHitbox.visible = true;
 };
 onDraw = method(id, cbkOnDraw_colourReplacer);
 

@@ -1,15 +1,16 @@
 /// @description Init Palette
+/// @init
+
 if (!is_shader_supported(shdReplaceColour))
     exit;
 
-var _colour = undefined;
+var _colours = [ $FF7800, $F8F8F8, $050505 ];
 
 switch (colourPreset) {
     default: /* Nothing */ break;
     case "Blue": /* Nothing */ break;
-    case "Red": _colour = $5800E4; break;
-    case "Custom": _colour = customColour; break;
+    case "Red": _colours[0] = $5800E4; break;
+    case "Custom": _colours[0] = customColour; break;
 }
 
-if (!is_undefined(_colour))
-    palette = new ColourReplacerPalette([ $FF7800 ], [ _colour ]);
+palette = new ColourReplacerPalette(_colours);

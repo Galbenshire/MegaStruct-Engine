@@ -2,7 +2,7 @@ function Weapon_IceSlasher() : Weapon() constructor {
     #region Static Data (consistent across all weapon instances)
 	
 	static id = WeaponType.ICE_SLASHER;
-	static colours = [ $F85800, $F8F8F8 ]; /// @is {PaletteWeapon}
+	static colours = [ $F85800, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
 	static icon = sprWeaponIcons;

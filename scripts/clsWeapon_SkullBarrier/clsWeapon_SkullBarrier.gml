@@ -2,7 +2,7 @@ function Weapon_SkullBarrier() : Weapon() constructor {
     #region Static Data
 	
 	static id = WeaponType.SKULL_BARRIER;
-	static colours = [ $FCBC3C, $F0FC9C ]; /// @is {PaletteWeapon}
+	static colours = [ $FCBC3C, $F0FC9C, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
 	static icon = sprWeaponIcons;

@@ -319,6 +319,13 @@ enum CheckpointData {
 	sizeof
 }
 
+enum ColourChannels {
+	red, /// @is {int}
+	green, /// @is {int}
+	blue, /// @is {int}
+	sizeof
+}
+
 enum ConsoleLine {
 	text, /// @is {string}
 	colour, /// @is {int}
@@ -344,12 +351,19 @@ enum PalettePlayer {
 	face, /// @is {int}
 	eyes, /// @is {int}
 	
+	primaryShaded, /// @is {int}
+	secondaryShaded, /// @is {int}
+	skinShaded, /// @is {int}
+	
 	sizeof
 }
 
 enum PaletteWeapon {
 	primary, /// @is {int}
 	secondary, /// @is {int}
+	outline, /// @is {int}
+	skintone, /// @is {int}
+	highlight, /// @is {int}
 	sizeof
 }
 
@@ -452,6 +466,9 @@ enum AngleDir {
 	LEFT,
 	DOWN
 }
+
+// -- Colour Replacer Enums
+#macro COLOUR_REPLACER_MAX_COLOURS 32
 
 // -- Defer Event Types
 enum DeferType {

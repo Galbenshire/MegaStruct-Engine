@@ -2,7 +2,7 @@ function Weapon_BassBuster() : Weapon() constructor {
     #region Static Data (consistent across all weapon instances)
 	
 	static id = WeaponType.BUSTER_BASS;
-	static colours = [ $707070, $3898F8 ]; /// @is {PaletteWeapon}
+	static colours = [ $707070, $3898F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	static flags = WeaponFlags.NO_AMMO;
 	
 	// - Icon

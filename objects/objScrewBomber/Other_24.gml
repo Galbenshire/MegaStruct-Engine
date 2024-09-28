@@ -21,8 +21,10 @@ switch (phase) {
     case 2: // Shooting
         image_index = 2 + ((phaseTimer div 4) mod 3);
         
-        if (phaseTimer == 0)
-            mask_index = mskScrewBomberErect;
+        if (phaseTimer == 0) {
+            mainHitbox.offsetY = -16;
+            mainHitbox.scaleY = 16;
+        }
         
         if (phaseTimer >= 30) {
             if (bulletCount < 2) {
@@ -39,8 +41,8 @@ switch (phase) {
                         yspeed.value *= other.image_yscale;
                         contactDamage = 2;
                         
-                        if (!is_undefined(other.palette))
-                            palette = other.palette;
+                        colours = other.bulletPalette;
+                        onDraw = method(id, cbkOnDraw_enemyBulletMM1);
                     }
                 }
                 
@@ -51,7 +53,8 @@ switch (phase) {
                 phase++;
                 bulletCount = 0;
                 cooldownTimer = cooldownDuration;
-                mask_index = -1;
+                mainHitbox.offsetY = -8;
+                mainHitbox.scaleY = 8;
             }
         }
         break;

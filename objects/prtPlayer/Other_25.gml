@@ -8,10 +8,7 @@ if (entity_is_dead())
 player_handle_switch_weapons();
 player_handle_shooting();
 
-if (!player_is_action_locked(PlayerAction.SPRITE_CHANGE)) {
-	skinCellX = 0;
-	skinCellY = shootAnimation;
-	animator.update();
-}
+if (!player_is_action_locked(PlayerAction.SPRITE_CHANGE))
+	event_user(11);
 
 player_handle_sections();

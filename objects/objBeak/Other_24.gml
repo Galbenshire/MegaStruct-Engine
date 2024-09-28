@@ -23,9 +23,8 @@ switch (phase) {
                 set_velocity_vector(3, 45 - (other.bulletCount * 30));
                 xspeed.value *= image_xscale;
 				contactDamage = 2;
-                
-                if (!is_undefined(other.palette))
-                    palette = other.palette;
+				colours = other.bulletPalette;
+                onDraw = method(id, cbkOnDraw_enemyBulletMM1);
             }
             play_sfx(sfxEnemyShootClassic);
             bulletCount++;

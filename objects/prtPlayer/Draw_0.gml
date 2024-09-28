@@ -13,8 +13,5 @@ if (iFrames < 0 || (iFrames & 3) < 2) {
 		onDraw();
 }
 
-var _offset = character.get_gun_offset(self);
-draw_sprite_ext(sprEnemyBullet, 0, x + _offset[Vector2.x] * image_xscale, y + _offset[Vector2.y] * image_yscale, image_xscale, image_yscale, image_angle, image_blend, image_alpha * 0.5);
-
 x = _x;
 y = _y;

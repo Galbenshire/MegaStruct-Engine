@@ -33,19 +33,12 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 	_spriteAtlas.sprite = skinSprite;
 	
 	if (_colReplacer.IS_SUPPORTED) {
-		_colReplacer.activate(palette);
-        _spriteAtlas.draw_cell_ext(skinCellX, skinCellY, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);
+		_colReplacer.activate();
+		_colReplacer.apply_palette(palette);
+        _spriteAtlas.draw_cell_ext(skinCellX, skinCellY, skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
         _colReplacer.deactivate();
-        return;
-	}
-	
-	// Shaders aren't working? Then let's go for our backup: whitemasks
-	var _whitemaskBlends = array_create_ext(4, function(i) /*=>*/ {return (i == 0) ? c_white : palette.outputColours[i - 1]}),
-		i = 0;
-	repeat(4) {
-		var _colour = multiply_colours(image_blend, _whitemaskBlends[i]);
-		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, i, x, y, image_xscale, image_yscale, _colour, image_alpha);
-		i++;
+	} else {
+		_spriteAtlas.draw_cell_ext(0, 0, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);
 	}
 }
 
@@ -58,14 +51,24 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  If true, the entity is currently flashing white
 function cbkOnDraw_colourReplacer(_whiteflash) {
-    if (_whiteflash || is_undefined(palette)) {
+    if (_whiteflash) {
         draw_self();
     } else {
 		var _colReplacer = colour_replacer();
-        _colReplacer.activate(palette);
+        _colReplacer.activate();
+        _colReplacer.apply_palette(palette);
         draw_self();
         _colReplacer.deactivate();
     }
+}
+
+/// @func cbkOnDraw_enemyBulletMM1(whiteflash)
+/// @desc onDraw callback preset for drawing a MM1-style enemy bullet, with two configurable colours
+///
+/// @param {bool}  whiteflash  If true, the entity is currently flashing white
+function cbkOnDraw_enemyBulletMM1(_whiteflash) {
+    draw_sprite_ext(sprite_index, 1, x, y, image_xscale, image_yscale, image_angle, colours[0], image_alpha);
+    draw_sprite_ext(sprite_index, 2, x, y, image_xscale, image_yscale, image_angle, colours[1], image_alpha);
 }
 
 #endregion

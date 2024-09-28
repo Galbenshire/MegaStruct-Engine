@@ -34,6 +34,7 @@ function cbkOnSpawn_prtPlayer() {
         show_debug_message($"Player Spawn ({x}, {y})");
     
     healthpoints = healthpointsStart;
+    player_refresh_palette();
 }
 
 #endregion
