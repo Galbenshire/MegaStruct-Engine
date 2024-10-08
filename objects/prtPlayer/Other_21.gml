@@ -42,6 +42,22 @@
 	
 	#region Handle
 	
+	/// -- handle_animation()
+	/// Handles the player's animations
+	function handle_animation() {
+		if (self.is_action_locked(PlayerAction.SPRITE_CHANGE))
+			return;
+		
+		skinCellX = 0;
+		skinCellY = 0;
+		skinPage = undefined;
+		
+		animator.update();
+		
+		if (is_undefined(skinPage))
+			skinPage = shootAnimation;
+	}
+	
 	/// -- handle_sections()
 	/// Handles the player's interaction with screen sections
 	function handle_sections() {
@@ -86,17 +102,17 @@
 	function handle_shooting() {
 		autoFireTimer--;
 		
-		if (!is_undefined(weapon))
-			weapon.on_tick(self);
-		
 		if (isShooting) {
 			shootTimer = approach(shootTimer, 0, 1);
 			if (shootTimer == 0) {
 				isShooting = false;
-				shootAnimation = 0;
+				shootAnimation = PlayerSpritesheetPage.IDLE;
 				shootStandStillLock.deactivate();
 			}
 		}
+		
+		if (!is_undefined(weapon))
+			weapon.on_tick(self);
 	}
 	
 	/// -- handle_switching_weapons()
@@ -225,7 +241,7 @@
 		// We should be good to go
 		isShooting = true;
 		shootAnimation = _params.shootAnimation;
-		shootTimer = 17;
+		shootTimer = 16;
 		shootStandStillLock.deactivate();
 		if (_params[$ "autoShootDelay"] ?? false)
 			autoFireTimer = _params.autoShootDelay;

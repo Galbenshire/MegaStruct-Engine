@@ -1,4 +1,4 @@
-global.spriteAtlas_Player.sprite = sprPlayerSkinBlues;
+global.spriteAtlas_Player.sprite = sprPlayerSkinForte;
 draw_sprite_ext(global.spriteAtlas_Player.sprite, cellPage, 56, 32, 0.5, 0.5, 0, c_white, 1);
 
 global.spriteAtlas_Player.draw_cell(cellX, cellY, cellPage, playerX, playerY);

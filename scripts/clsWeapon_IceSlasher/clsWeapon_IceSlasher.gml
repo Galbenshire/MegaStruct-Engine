@@ -24,7 +24,7 @@ function Weapon_IceSlasher() : Weapon() constructor {
 			object: objIceSlasher,
 			limit: 2,
 			cost: 1,
-			shootAnimation: 1,
+			shootAnimation: PlayerSpritesheetPage.SHOOT,
 			autoShootDelay: 14
 		});
 		

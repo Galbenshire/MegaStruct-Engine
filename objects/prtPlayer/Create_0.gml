@@ -35,7 +35,7 @@ slideBoostActive = false;
 
 // Shooting
 shootTimer = 0;
-shootAnimation = 0;
+shootAnimation = PlayerSpritesheetPage.IDLE;
 autoFireTimer = 0;
 
 // Weapon Switching

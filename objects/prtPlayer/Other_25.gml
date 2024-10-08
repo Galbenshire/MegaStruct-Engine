@@ -7,8 +7,5 @@ if (entity_is_dead())
 
 self.handle_switching_weapons();
 self.handle_shooting();
-
-if (!self.is_action_locked(PlayerAction.SPRITE_CHANGE))
-	event_user(10);
-
+self.handle_animation();
 self.handle_sections();

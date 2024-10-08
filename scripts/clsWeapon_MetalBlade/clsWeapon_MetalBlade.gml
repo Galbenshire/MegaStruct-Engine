@@ -25,7 +25,7 @@ function Weapon_MetalBlade() : Weapon() constructor {
 				object: objMetalBlade,
 				limit: 3,
 				cost: 0.5,
-				shootAnimation: 2,
+				shootAnimation: PlayerSpritesheetPage.THROW,
 				offsetY: 3,
 				standstill: true,
 				autoShootDelay: 20

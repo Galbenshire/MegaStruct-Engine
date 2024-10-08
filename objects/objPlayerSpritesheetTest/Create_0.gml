@@ -10,9 +10,5 @@ cellPage = 0;
 gunX = 0;
 gunY = 0;
 
-// palette = new ColourReplacerPalette([
-    
-// ]);
-
 debugString = "Cell: {0}, {1} - Page {2}"
     + "\nGun: {3}, {4}";
