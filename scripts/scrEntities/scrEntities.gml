@@ -31,7 +31,7 @@ function entity_check_ground() {
 	
 	y += _distanceToMove * _foundGround;
 	ground = _foundGround;
-	groundInstance = _foundGround ? _groundInstance : noone;
+	groundInstance = _groundInstance;
 	
 	if (_foundGround)
 		push_entities_y(_distanceToMove);

@@ -17,23 +17,20 @@ function Weapon_IceSlasher() : Weapon() constructor {
 	#region Callbacks
 	
 	static on_tick = function(_player) {
-		with (_player) {
-			if (!player_shot_input())
-				return;
-			
-			var _shotData = {
-				object: objIceSlasher,
-				limit: 2,
-				cost: 1,
-				shootAnimation: 1,
-				autoShootDelay: 14
-			};
-			
-			var _shot = player_fire_weapon(_shotData);
-			if (_shot != noone) {
-				_shot.xspeed.value = 5 * image_xscale;
-				play_sfx(sfxIceSlasher);
-			}
+		if (!_player.check_input_shoot())
+			return;
+		
+		var _shot = _player.fire_weapon({
+			object: objIceSlasher,
+			limit: 2,
+			cost: 1,
+			shootAnimation: 1,
+			autoShootDelay: 14
+		});
+		
+		if (_shot != noone) {
+			_shot.xspeed.value = 5 * _player.image_xscale;
+			play_sfx(sfxIceSlasher);
 		}
 	};
 	

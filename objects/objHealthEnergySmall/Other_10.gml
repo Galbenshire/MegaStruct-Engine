@@ -5,5 +5,5 @@ with (__collectPlayer) {
     if (healthpoints >= healthpointsStart)
         exit;
     
-    player_restore_health(other.healthToRestore);
+    self.restore_health(other.healthToRestore);
 }

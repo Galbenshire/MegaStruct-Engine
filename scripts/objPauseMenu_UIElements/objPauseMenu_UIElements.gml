@@ -123,13 +123,17 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
     weapon = _weapon;
     
     static on_confirm = function() {
-        player_equip_weapon(weapon, global.player.body);
-        player_refresh_palette(global.player.body);
+		var _player = global.player.body;
+		
+        _player.equip_weapon(weapon, _player);
+        _player.refresh_palette();
         play_sfx(sfxMenuSelect);
         
-        with (prtProjectile) {
-			if (owner == global.player.body.id)
-				instance_destroy();
+        if (weapon != owner.oldWeapon) {
+			with (prtProjectile) {
+				if (owner == _player.id)
+					instance_destroy();
+			}
         }
         
         with (owner) {

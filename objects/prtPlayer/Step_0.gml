@@ -1,7 +1,7 @@
 if (global.paused)
 	exit;
 
-if (!is_undefined(playerUser) && !player_is_action_locked(PlayerAction.INPUT)) {
+if (self.is_user_controlled() && !self.is_action_locked(PlayerAction.INPUT)) {
     inputs.held = playerUser.inputs.held;
     inputs.pressed |= playerUser.inputs.pressed;
     inputs.released |= playerUser.inputs.released;
@@ -19,12 +19,15 @@ repeat(_gameTicks) {
 		exit;
 
     // =====  Standard Entity Stuff =====
-    if (!player_is_action_locked(PlayerAction.PHYSICS)) {
+    if (!self.is_action_locked(PlayerAction.PHYSICS)) {
 		entity_handle_external_forces();
 		entity_horizontal_movement();
 		entity_vertical_movement();
 		entity_check_ground();
-		player_gravity();
+		
+		if (!self.is_action_locked(PlayerAction.GRAVITY))
+			entity_gravity();
+		
 		entity_water();
     }
     

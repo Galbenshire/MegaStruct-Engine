@@ -13,6 +13,7 @@ phaseTimer = 0;
 
 weapons = [];
 weaponCount = 0;
+oldWeapon = global.player.body.weapon;
 
 event_user(0);
 play_sfx(sfxPause);

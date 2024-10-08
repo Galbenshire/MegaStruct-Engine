@@ -11,7 +11,7 @@ function ColourReplacer() constructor {
 	#region Constants (in spirit)
     
     /// Boolean to check if this shader works on the current system
-	IS_SUPPORTED = shaders_are_supported() && shader_is_compiled(shdReplaceColour);
+	static IS_SUPPORTED = shaders_are_supported() && shader_is_compiled(shdReplaceColour);
     
     #endregion
     

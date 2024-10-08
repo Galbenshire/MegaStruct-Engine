@@ -74,6 +74,7 @@ function __debug_view_options_data() {
     var _controls = dbg_text_separator("Other");
     dbg_slider(ref_create(_options, "gameSpeed"), 0.1, 2, "Game Speed", 0.01);
     dbg_checkbox(ref_create(_options, "chargeBar"), "Charge Bar");
+    dbg_checkbox(ref_create(_options, "instantHealthFill"), "Instant Health Fill");
 }
 
 /// @func __debug_view_room_select()

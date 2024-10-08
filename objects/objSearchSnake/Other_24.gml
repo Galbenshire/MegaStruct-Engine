@@ -1,4 +1,7 @@
 /// @description Entity Tick
+if (reflected)
+	exit;
+
 image_index += imageSpeed;
 
 if (!isSlithering) {
@@ -15,11 +18,13 @@ if (!isSlithering) {
 	}
 } else if (ground) { // Adjust speed based on slopes
 	var _deFactoSpeed = slitherSpeed;
-	if (is_object_type(objSlope, groundInstance)) {
+	if (groundInstance.solidType == SolidType.SLOPE) {
 		var _steepness = abs(groundInstance.steepness);
 		_deFactoSpeed *= (_steepness > 1) ? 1 / abs(groundInstance.steepness) : 1;
 	}
 	
 	if (xspeed.value != 0)
 		xspeed.value = _deFactoSpeed * sign(xspeed.value);
+		
+	wasOnTopSolid = (groundInstance.solidType == SolidType.TOP_SOLID);
 }

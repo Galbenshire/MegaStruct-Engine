@@ -300,6 +300,34 @@ enum PlayerAction {
 	TURN
 }
 
+enum PlayerSpritesheetPage {
+	IDLE,
+	SHOOT,
+	THROW,
+	SHOOT_UP,
+	SHOOT_DIAGONAL_UP,
+	SHOOT_DIAGONAL_DOWN,
+	SUPER_ARM,
+	WIRE_ADAPTOR,
+	SLASH_CLAW,
+	TENGU_BLADE,
+	BREAK_DASH,
+	TORNADO_BATTERY,
+	SAKUGARNE,
+	BIKE,
+	TURNABOUT,
+	TOP_SPIN,
+	HURT,
+	STUN,
+	LIFE,
+	MUGSHOT,
+	COIL,
+	JET,
+	WAVE_BIKE,
+	TELEPORT,
+	COUNT
+}
+
 #macro FULL_HEALTHBAR 28
 
 #endregion
@@ -423,6 +451,7 @@ enum WeightedOutcome {
 #macro EVENT_ENTITY_TICK 14
 #macro EVENT_ENTITY_POSTTICK 15
 
+#macro EVENT_METHOD_INIT 11
 #macro EVENT_ANIMATION_INIT 12
 #macro EVENT_STATEMACHINE_INIT 13
 
@@ -467,9 +496,6 @@ enum AngleDir {
 	DOWN
 }
 
-// -- Colour Replacer Enums
-#macro COLOUR_REPLACER_MAX_COLOURS 32
-
 // -- Defer Event Types
 enum DeferType {
 	STEP,
@@ -488,15 +514,18 @@ enum DeferType {
 	ROOM_END
 }
 
-// -- Pausing
-#macro QUEUED_PAUSE 1
-#macro QUEUED_UNPAUSE -1
-
 // -- Warning Level
 enum WarningLevel {
 	SHOW,
 	ERROR,
 	VERBOSE
 }
+
+// -- Colour Replacer Enums
+#macro COLOUR_REPLACER_MAX_COLOURS 32
+
+// -- Pausing
+#macro QUEUED_PAUSE 1
+#macro QUEUED_UNPAUSE -1
 
 #endregion

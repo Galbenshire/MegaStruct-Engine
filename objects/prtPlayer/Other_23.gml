@@ -91,25 +91,21 @@ stateMachine.add("_StandardGround", {
 	tick: function() {
 		var _jumpInput = inputs.is_pressed(InputActions.JUMP)
 			|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP));
-		if (_jumpInput) {
-			var _downJumpSlide = yDir == gravDir && options_data().downJumpSlide,
-				_canJump = !player_is_action_locked(PlayerAction.JUMP) && !_downJumpSlide;
-			if (_canJump) {
-				stateMachine.change("Jump");
-				return;
-			}
+		if (_jumpInput && !self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
+			stateMachine.change("Jump");
+			return;
 		}
 		
-		if (xDir != 0 && !player_is_action_locked(PlayerAction.TURN_GROUND))
+		if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_GROUND))
 			image_xscale = xDir;
 	},
 	posttick: function() {
-		if (player_try_climbing()) {
+		if (self.try_climbing()) {
 			stateMachine.change("Climb");
 			return;
 		}
 		
-		if (player_try_sliding()) {
+		if (self.try_sliding()) {
 			stateMachine.change("Slide");
 			return;
 		}
@@ -137,7 +133,7 @@ stateMachine.add("_StandardGround", {
 			else
 				xspeed.value = 0;
 			
-			if (xDir != 0 && !player_is_action_locked(PlayerAction.MOVE_GROUND)) {
+			if (xDir != 0 && !self.is_action_locked(PlayerAction.MOVE_GROUND)) {
 				var _canSidestep = (stepFrames > 0);
 				if (stateMachine.is_previous_state("Walk"))
 					_canSidestep &= (stateMachine.timer >= 2);
@@ -158,7 +154,7 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			if (xDir == 0 || player_is_action_locked(PlayerAction.MOVE_GROUND)) {
+			if (xDir == 0 || self.is_action_locked(PlayerAction.MOVE_GROUND)) {
 				stateMachine.change("Idle");
 				return;
 			}
@@ -178,7 +174,7 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			if (player_is_action_locked(PlayerAction.MOVE_GROUND))
+			if (self.is_action_locked(PlayerAction.MOVE_GROUND))
 				stateMachine.change("Idle");
 			else if (xDir == 0)
 				stateMachine.change(brakeFrames > 0 ? "Brake" : "Idle");
@@ -199,7 +195,7 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			if (player_is_action_locked(PlayerAction.MOVE_GROUND))
+			if (self.is_action_locked(PlayerAction.MOVE_GROUND))
 				stateMachine.change("Idle");
 			else if (xDir != 0)
 				stateMachine.change("Walk");
@@ -220,13 +216,13 @@ stateMachine.add("_StandardAir", {
 	},
 	tick: function() {
 		var _airSpeed = slideBoostActive ? slideSpeed : airSpeed;
-		xspeed.value = _airSpeed * xDir * !player_is_action_locked(PlayerAction.MOVE_AIR);
+		xspeed.value = _airSpeed * xDir * !self.is_action_locked(PlayerAction.MOVE_AIR);
 		
-		if (xDir != 0 && !player_is_action_locked(PlayerAction.TURN_AIR))
+		if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_AIR))
 			image_xscale = xDir;
 	},
 	posttick: function() {
-		if (player_try_climbing()) {
+		if (self.try_climbing()) {
 			stateMachine.change("Climb");
 			return;
 		}
@@ -310,7 +306,7 @@ stateMachine.add("Slide", {
 			image_xscale = -other.image_xscale;
 	},
 	posttick: function() {
-		if (player_try_climbing()) {
+		if (self.try_climbing()) {
 			stateMachine.change("Climb");
 			return;
 		}
@@ -327,9 +323,7 @@ stateMachine.add("Slide", {
 		
 		var _freeSpaceAbove = !test_move_y(-slideMaskHeightDelta * gravDir);
 		if (ground && _freeSpaceAbove && inputs.is_pressed(InputActions.JUMP)) {
-			var _downJumpSlide = yDir == gravDir && options_data().downJumpSlide,
-				_canJump = !player_is_action_locked(PlayerAction.JUMP) && !_downJumpSlide;
-			if (_canJump) {
+			if (!self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
 				slideBoostActive = canSlideBoost;
 				stateMachine.change("Jump");
 				return;
@@ -344,7 +338,7 @@ stateMachine.add("Slide", {
 			return;
 		}
 		
-		if (xDir == -image_xscale && !player_is_action_locked(PlayerAction.TURN_GROUND)) {
+		if (xDir == -image_xscale && !self.is_action_locked(PlayerAction.TURN_GROUND)) {
 			if (_freeSpaceAbove) {
 				stateMachine.change("Idle");
 				return;
@@ -354,10 +348,10 @@ stateMachine.add("Slide", {
 			xspeed.value = slideSpeed * image_xscale;
 		}
 		
-		var _shouldEnd = xcoll != 0 || stateMachine.timer >= slideFrames || player_is_action_locked(PlayerAction.SLIDE);
+		var _shouldEnd = xcoll != 0 || stateMachine.timer >= slideFrames || self.is_action_locked(PlayerAction.SLIDE);
 		if (_shouldEnd && (_freeSpaceAbove || _freeSpaceBelow)) {
 			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
-			stateMachine.change(xDir == image_xscale ? "Walk" : "Idle");
+			stateMachine.change(xDir == image_xscale ? "Walk" : (brakeFrames > 0 ? "Brake" : "Idle"));
 		}
 	},
 	leave: function() {
@@ -385,13 +379,13 @@ stateMachine.add("Climb", {
 		midairJumps = 0;
 	},
 	tick: function() {
-		yspeed.value = climbSpeed * yDir * !isShooting * !player_is_action_locked(PlayerAction.CLIMB);
+		yspeed.value = climbSpeed * yDir * !isShooting * !self.is_action_locked(PlayerAction.CLIMB);
 		animator.set_time_scale(abs(yspeed.value) != 0);
 		
 		if (animator.timeScale.value == 0)
 			animator.reset_frame_counter();
 		
-		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !player_is_action_locked(PlayerAction.JUMP))
+		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !self.is_action_locked(PlayerAction.JUMP))
 			stateMachine.change("Fall");
 	},
 	posttick: function() {
@@ -442,7 +436,7 @@ stateMachine.add("Hurt", {
 		if (!isCharging)
 			hitstunLock.add_actions(PlayerAction.CHARGE);
 		
-		if (!player_is_action_locked(PlayerAction.MOVE)) {
+		if (!self.is_action_locked(PlayerAction.MOVE)) {
 			xspeed.value = image_xscale * -0.5;
 			yspeed.value = (-1.5 * gravDir) * (yspeed.value * gravDir <= 0);
 		}
@@ -496,7 +490,7 @@ stateMachine.add("Death", {
 		lifeState = LifeState.DEAD_ONSCREEN;
 		play_sfx(sfxDeath);
 		
-		if (!is_undefined(playerUser)) {
+		if (self.is_user_controlled()) {
 			playerUser.hudElement.healthpoints = healthpoints;
 			pauseLock.activate();
 			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint[CheckpointData.room]); }, GAME_SPEED * 3, true, true);

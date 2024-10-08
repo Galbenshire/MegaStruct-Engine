@@ -18,10 +18,10 @@ function Weapon_MetalBlade() : Weapon() constructor {
 	
 	static on_tick = function(_player) {
 		with (_player) {
-            if (!player_shot_input())
+            if (!self.check_input_shoot())
 				return;
-            
-            var _shotData = {
+			
+			var _shot = self.fire_weapon({
 				object: objMetalBlade,
 				limit: 3,
 				cost: 0.5,
@@ -29,9 +29,8 @@ function Weapon_MetalBlade() : Weapon() constructor {
 				offsetY: 3,
 				standstill: true,
 				autoShootDelay: 20
-			};
+			});
 			
-			var _shot = player_fire_weapon(_shotData);
 			if (_shot != noone) {
 				var _dir = 180 * (image_xscale < 0);
                 

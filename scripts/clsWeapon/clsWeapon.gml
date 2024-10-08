@@ -3,22 +3,32 @@
 function Weapon() constructor {
     #region Static Data (consistent across all weapon instances)
 	
+	// ID corresponding to the WeaponType enum
 	static id = -1;
+	
+	// Colour palette for this weapon's icon. Also used for on the player
 	static colours = array_create(PaletteWeapon.sizeof); /// @is {PaletteWeapon}
-	static flags = 0; // Attributes for this weapon (e.g No Ammo)
 	
-	// - Icon
-	static icon = sprWeaponIcons; // (appears in the Pause Menu, and above the player's head when quick switching)
-	static iconIndex = 0; // Which frame of the sprite to use
+	// Possible attributes for this weapon (e.g No Ammo)
+	static flags = 0;
 	
-	// - Name
+	// Sprite of the weapon's icon (appears in the Pause Menu, and above the player's head when quick switching)
+	static icon = sprWeaponIcons;
+	
+	// Which frame of the icon sprite to use
+	static iconIndex = 0;
+	
+	// Name of the weapon
 	static name = "";
-	static shortName = ""; // Shortened version. Used in the Pause Menu.
+	
+	// Shortened version of the weapon name. Used in the Pause Menu.
+	static shortName = "";
 	
 	#endregion
 	
 	#region Variables
 	
+	// How much ammo an instance of this weapon uses
 	ammo = FULL_HEALTHBAR;
 	
 	#endregion

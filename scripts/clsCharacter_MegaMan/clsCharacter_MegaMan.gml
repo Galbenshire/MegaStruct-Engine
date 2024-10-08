@@ -4,6 +4,7 @@ function Character_MegaMan() : Character() constructor {
 	static id = CharacterType.MEGA;
 	static name = "Mega Man";
 	static object = objMegaMan;
+	static spritesheet = sprPlayerSkinRockMan;
 	
 	static defaultColours = [
 		// Main Colours

@@ -31,40 +31,38 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	chargeToggle = false;
 	barAmount = 0;
 	
-	__player = noone;
-	__hudElement = undefined;
+	playerRef = noone; // Reference to the player using this weapon
+	hudRef = undefined; // Reference to the player's HUD element, if they have one
 	
 	#endregion
 	
 	#region Callbacks
 	
 	static on_tick = function(_player) {
-		handle_charge_state();
+		self.handle_charge_state();
 		chargeTimer++;
 		
-		if (!is_undefined(__hudElement)) {
-			__hudElement.ammoVisible = options_data().chargeBar;
-			__hudElement.ammo = barAmount;
+		if (!is_undefined(hudRef)) {
+			hudRef.ammoVisible = options_data().chargeBar;
+			hudRef.ammo = barAmount;
 		}
 	};
 	
 	static on_equip = function(_player) {
 		barAmount = 0;
 		chargeToggle = false;
+		self.change_charge_state(0);
 		
-		change_charge_state(0);
-		
-		__player = _player;
-		if (is_player_controlled(__player))
-			__hudElement = __player.playerUser.hudElement;
+		playerRef = _player;
+		if (playerRef.is_user_controlled())
+			hudRef = playerRef.playerUser.hudElement;
 	};
 	
 	static on_unequip = function(_player) {
-		stop_sfx(sfxCharging);
-		stop_sfx(sfxCharged);
-		__player.isCharging = false;
-		__player = noone;
-		__hudElement = undefined;
+		stop_sfx(sfxChargingProto);
+		playerRef.isCharging = false;
+		playerRef = noone;
+		hudRef = undefined;
 	};
 	
 	#endregion
@@ -77,25 +75,25 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	};
 	
 	static handle_charge_state = function() {
-		__player.isCharging = (chargeState >= 2);
+		playerRef.isCharging = (chargeState >= 2);
         
         switch (chargeState) {
 			case 0: // No Charge
 				barAmount = 0;
 				
-				if (player_shot_input(, __player))
-					fire_buster_shot(0);
-				else if (!__player.isShooting && player_can_charge())
-					change_charge_state(1);
+				if (playerRef.check_input_shoot())
+					self.fire_buster_shot(0);
+				else if (!playerRef.isShooting && self.player_can_charge())
+					self.change_charge_state(1);
 				break;
             
             case 1: // Pre Charge
 				barAmount = 0;
 				
-				if (!player_can_charge())
-					change_charge_state(0);
+				if (!self.player_can_charge())
+					self.change_charge_state(0);
 				else if (chargeTimer >= chargePreDuration)
-					change_charge_state(2);
+					self.change_charge_state(2);
 				break;
 			
 			case 2: // Charging
@@ -105,32 +103,32 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 				var _index = (chargeTimer <= (chargeDuration * 0.5))
 					? (chargeTimer mod 8 <= 4)
 					: (chargeTimer mod 4 <= 2);
-				update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
+				self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
 				
 				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
 				
-				if (!player_can_charge() || (chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {
-					if (!player_is_action_locked(PlayerAction.SHOOT, __player))
-						fire_buster_shot(1);
+				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
+						self.fire_buster_shot(1);
 				} else if (chargeTimer >= chargeDuration) {
-					change_charge_state(3);
+					self.change_charge_state(3);
 				}
 				break;
 			
 			case 3: // Fully Charged
 				var _chargeCycle = chargeTimer mod 6;
 				if (_chargeCycle == 0) {
-					player_refresh_palette(__player);
+					playerRef.refresh_palette();
 				} else if (_chargeCycle == 2) {
-					update_player_colour(PalettePlayer.outline, chargeColoursOutline[(chargeTimer mod 16) < 8]);
+					self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[(chargeTimer mod 16) < 8]);
 				} else if (_chargeCycle == 4) {
 					for (var i = 0; i < 3; i++)
-						update_player_colour(i, chargeColoursFull[i]);
+						self.update_player_colour(i, chargeColoursFull[i]);
 				}
 				
-				if (!player_can_charge() || (chargeToggle && __player.inputs.is_pressed(InputActions.SHOOT))) {
-					if (!player_is_action_locked(PlayerAction.SHOOT, __player))
-						fire_buster_shot(2);
+				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
+						self.fire_buster_shot(2);
 				}
 				break;
         }
@@ -141,55 +139,54 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	#region Functions - Other
 	
 	static fire_buster_shot = function(_chargeLevel) {
-		with (__player) {
-			var _moveSpeed = 5,
-				_sfx = sfxBuster;
-			var _shotData = {
-				object: objProtoShot,
-				limit: 3,
-				cost: 0,
-				shootAnimation: 1,
-				autoShootDelay: 8
-			};
-			
-			if (_chargeLevel == 1) {
-				_shotData.object = objProtoShotHalfCharge;
-				_shotData.offsetX = -4;
-				_sfx = sfxBusterHalfCharge;
-			} else if (_chargeLevel >= 2) {
-				_shotData.object = objProtoShotCharged;
-				_shotData.offsetX = 4;
-				_moveSpeed = 5.5;
-				_sfx = sfxBusterCharged;
-			}
-			
-			var _shot = player_fire_weapon(_shotData);
-			if (_shot != noone) {
-				_shot.xspeed.value = _moveSpeed * image_xscale;
-				play_sfx(_sfx);
-				other.__chargeToggle = (_chargeLevel <= 0 && options_data().chargeToggle);
-			}
-			
-			stop_sfx(sfxChargingProto);
-			player_refresh_palette();
-			isCharging = false;
-			other.change_charge_state(0);
+		var _moveSpeed = 5,
+			_sfx = sfxBuster;
+		var _shotData = {
+			object: objProtoShot,
+			limit: 3,
+			cost: 0,
+			shootAnimation: 1,
+			autoShootDelay: 8
+		};
+		
+		if (_chargeLevel == 1) {
+			_shotData.object = objProtoShotHalfCharge;
+			_shotData.offsetX = -4;
+			_sfx = sfxBusterHalfCharge;
+		} else if (_chargeLevel >= 2) {
+			_shotData.object = objProtoShotCharged;
+			_shotData.offsetX = 4;
+			_moveSpeed = 5.5;
+			_sfx = sfxBusterCharged;
 		}
+		
+		var _shot = playerRef.fire_weapon(_shotData);
+		if (_shot != noone) {
+			_shot.xspeed.value = _moveSpeed * playerRef.image_xscale;
+			chargeToggle = (_chargeLevel <= 0 && playerRef.is_user_controlled() && options_data().chargeToggle);
+			play_sfx(_sfx);
+		}
+		
+		stop_sfx(sfxChargingProto);
+		self.change_charge_state(0);
+		playerRef.refresh_palette();
+		playerRef.isCharging = false;
 	};
 	
 	static player_can_charge = function() {
-		if (player_is_action_locked(PlayerAction.SHOOT, __player))
+		if (playerRef.is_action_locked(PlayerAction.CHARGE))
 			return false;
 		
-		return options_data().chargeToggle
+		var _chargeToggle = playerRef.is_user_controlled() ? options_data().autoFire : false;
+		return _chargeToggle
 			? chargeToggle
-			: __player.inputs.is_held(InputActions.SHOOT);
+			: playerRef.inputs.is_held(InputActions.SHOOT);
 	};
 	
 	static update_player_colour = function(_index, _colour) {
-		__player.palette.set_colour_at(_index, _colour);
-		if (!is_undefined(__hudElement))
-			__hudElement.ammoPalette[_index] = _colour;
+		playerRef.palette.set_colour_at(_index, _colour);
+		if (!is_undefined(hudRef))
+			hudRef.ammoPalette[_index] = _colour;
 	};
 	
 	#endregion

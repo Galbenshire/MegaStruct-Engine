@@ -34,12 +34,12 @@ animator.add_animation("climb", 2, 8)
 animator.add_animation_non_loop("hurt", 1, 8)
 	.add_property("skinCellX", [0])
 	.add_property("skinCellY", [0])
-	.add_property("skinPage", [14]);
+	.add_property("skinPage", [PlayerSpritesheetPage.HURT]);
 animator.add_animation_non_loop("teleport-idle", 1, 8)
 	.add_property("skinCellX", [0])
 	.add_property("skinCellY", [3])
-	.add_property("skinPage", [14]);
+	.add_property("skinPage", [PlayerSpritesheetPage.TELEPORT]);
 animator.add_animation_non_loop("teleport-in", 4, 3)
 	.add_property("skinCellX", [0, 1, 0, 2])
 	.add_property("skinCellY", [3])
-	.add_property("skinPage", [14]);
+	.add_property("skinPage", [PlayerSpritesheetPage.TELEPORT]);

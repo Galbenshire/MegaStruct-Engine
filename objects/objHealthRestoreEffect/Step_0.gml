@@ -1,46 +1,44 @@
 if (!global.paused)
     exit;
 
-if (timer == 0) 
+if (!__playedSFX) {
     loop_sfx(sfxEnergyRestore);
+    __playedSFX = true;
+}
 
-if (timer mod 3 == 0) {
-    var _player = global.player;
+refillRate.update();
+if (refillRate.integer < 1)
+    exit;
+
+var _player = global.player,
+    _queueSize = array_length(refillQueue);
+
+for (var i = _queueSize - 1; i >= 0; i--) {
+    var _refillDone = false,
+        _refillItem = refillQueue[i][0];
     
-    if (healthpoints > 0) {
+    if (is_undefined(_refillItem)) { // Refilling Health
         var _prevHealth = _player.body.healthpoints;
         _player.change_body_healthpoints(1);
         _player.hudElement.healthpoints = _player.body.healthpoints;
         
-        if (_player.body.healthpoints == _prevHealth)
-            healthpoints = 0;
-        else
-            healthpoints--;
+        refillQueue[i][1]--;
+        _refillDone = (refillQueue[i][1] <= 0 || _player.body.healthpoints == _prevHealth);
+    } else { // Refilling Weapon Ammo
+        var _prevAmmo = _refillItem.ammo;
+        _refillItem.change_ammo(1);
+        if (_player.hudElement.ammoWeapon == _refillItem.id)
+            _player.hudElement.ammo = _refillItem.ammo;
+        
+        refillQueue[i][1]--;
+        _refillDone = (refillQueue[i][1] <= 0 || _refillItem.ammo == _prevAmmo);
     }
     
-    if (ammoCount > 0) {
-        var _count = ammoCount;
-        for (var i = _count - 1; i >= 0; i--) {
-            var _prevAmmo = ammo[0][i].ammo;
-            ammo[0][i].change_ammo(1);
-            if (_player.hudElement.ammoWeapon == ammo[0][i].id)
-                _player.hudElement.ammo = ammo[0][i].ammo;
-            
-            if (ammo[0][i].ammo == _prevAmmo)
-                ammo[1][i] = 0;
-            else
-                ammo[1][i]--;
-            
-            if (ammo[1][i] <= 0) {
-                array_delete(ammo[0], i, 1);
-                array_delete(ammo[1], i, 1);
-                ammoCount--;
-            }
-        }
+    if (_refillDone) {
+        array_delete(refillQueue, i, 1);
+        refillQueueCount--;
     }
 }
 
-timer++;
-
-if (healthpoints <= 0 && ammoCount <= 0)
+if (refillQueueCount <= 0)
     instance_destroy();

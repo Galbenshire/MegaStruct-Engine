@@ -6,6 +6,6 @@
 var _x = (targetX != -1) ? targetX : bbox_x_center(),
     _y = (targetY != -1) ? targetY : bbox_bottom - 16;
 
-name = (string_length(name) > 0) ? name : string("Checkpoint_{0}_{1}", _x, _y);
+name = (string_length(name) > 0) ? name : $"Checkpoint_{_x}_{_y}";
 
 data = [room, _x, _y, sign_nonzero(targetDir), name]; /// @is {CheckpointData}

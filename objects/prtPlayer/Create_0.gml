@@ -1,5 +1,5 @@
 event_inherited();
-assert(!is_undefined(self[$ "characterData"]), "A player instance was made, but was not assigned a Character");
+assert(!is_undefined(self[$ "characterSpecs"]), "A player instance was made, but was not assigned a Character");
 
 mask_index = maskNormal;
 
@@ -37,8 +37,6 @@ slideBoostActive = false;
 shootTimer = 0;
 shootAnimation = 0;
 autoFireTimer = 0;
-gunOffsetX = 0;
-gunOffsetY = 0;
 
 // Weapon Switching
 quickSwitchTimer = 0; /// @is {int}
@@ -88,5 +86,6 @@ onDeath = method(id, cbkOnDeath_prtPlayer); /// @is {function<DamageSource, void
 onDraw = method(id, cbkOnDraw_prtPlayer); /// @is {function<bool, void>}
 
 // Event User Inits
+event_user(EVENT_METHOD_INIT);
 event_user(EVENT_ANIMATION_INIT);
 event_user(EVENT_STATEMACHINE_INIT);

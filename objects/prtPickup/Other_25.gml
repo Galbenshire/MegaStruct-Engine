@@ -6,10 +6,7 @@ if (disappearTimer > 0) {
         flashIndex = (flashIndex + 1) mod 4;
     
     if (disappearTimer == 0) {
-        var _selfDamage = new DamageSourceSelf();
-		_selfDamage.hasKilled = true;
-		onDeath(_selfDamage);
-		delete _selfDamage;
+    	entity_kill_self();
 		exit;
     }
 }
@@ -29,7 +26,7 @@ if (gravEnabled && ycoll * gravDir > 0) {
 if (place_meeting(x, y, prtPlayer)) {
 	__collectPlayer = instance_place(x, y, prtPlayer);
 	
-	if (!__collectPlayer.isIntro && is_player_controlled(__collectPlayer)) {
+	if (!__collectPlayer.isIntro && (!ignoreCPUPlayers || __collectPlayer.is_user_controlled())) {
 		event_user(0);
 		
 		if (__collected) {

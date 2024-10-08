@@ -1,5 +1,5 @@
 /// @description Entity Posttick
-if (!isSlithering)
+if (!isSlithering || reflected)
 	exit;
 
 var _prevMoveDir = moveDir;
@@ -8,7 +8,7 @@ switch (moveDir) {
 	case 0: // Moving on the ground
 		if (xcoll != 0) {
 			moveDir = 1;
-		} else if (!ground) {
+		} else if (!ground && !wasOnTopSolid) {
 			move_and_collide_y(gravDir);
 			move_and_collide_x(ceil(xprevious - x));
 			moveDir = 3;

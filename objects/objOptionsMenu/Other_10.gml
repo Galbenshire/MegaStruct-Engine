@@ -71,6 +71,7 @@ with (new OptionsMenu_Submenu("misc", "OTHER")) {
 	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
 	array_push(_items, new OptionsMenu_Item_GameSpeed());
 	array_push(_items, new OptionsMenu_Item_Toggle("chargeBar", "CHARGE BAR"));
+	array_push(_items, new OptionsMenu_Item_Toggle("instantHealthFill", "HEALTH FILL", false, ["GRADUAL", "INSTANT"]));
 	
 	add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);

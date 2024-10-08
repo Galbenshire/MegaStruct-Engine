@@ -1,5 +1,5 @@
 // Only player entities actually controlled by a player can trigger touch checkpoints
-if (!is_player_controlled(other))
+if (!other.is_user_controlled())
     exit;
 
 event_user(0);

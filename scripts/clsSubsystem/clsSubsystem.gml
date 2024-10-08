@@ -442,9 +442,9 @@ function Subsystem_Level() : Subsystem() constructor {
 			image_xscale = _spawnDir;
 			_player.set_body(self);
 			_player.hudElement.healthpoints = healthpoints;
-			player_generate_loadout();
-			player_equip_weapon(0);
-			player_refresh_palette();
+			self.generate_loadout();
+			self.equip_weapon(0);
+			self.refresh_palette();
 		}
 		
 		system.camera.active = true;
@@ -460,10 +460,9 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		// The default level start sequence
 		// (might offer an option in the future to override this)
-		var _ready = instance_create_depth(0, 0, system.depth + 1, objReady);
-		_ready.text = string("READY\n{0}", __startLevel ? "(stage start)" : "(checkpoint)");
+		instance_create_depth(0, 0, system.depth + 1, objReady);
 		with (prtPlayer) {
-			if (is_player_controlled()) {
+			if (self.is_user_controlled()) {
 				stateMachine.change("StageStart");
 				signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
 			}

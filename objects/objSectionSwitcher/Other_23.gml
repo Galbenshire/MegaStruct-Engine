@@ -44,7 +44,7 @@ stateMachine.add("Init", {
 		objSystem.camera.active = false;
 		
 		// Reset player palette
-		player_refresh_palette(playerInstance);
+		playerInstance.refresh_palette();
 	},
 	tick: function() {
 		// Deactivate objects not visible during screen transitions
@@ -121,7 +121,7 @@ stateMachine.add("ToNewSection", {
 		playerInstance.yspeed.value = playerMoveYSpeed;
 		
 		animatePlayer = array_contains(persistentAnimations, playerInstance.animator.currentAnimationName)
-			&& !player_is_action_locked(PlayerAction.SPRITE_CHANGE, playerInstance);
+			&& !playerInstance.is_action_locked(PlayerAction.SPRITE_CHANGE);
 	},
 	tick: function() {
 		if (stateTimer < scrollDuration) {

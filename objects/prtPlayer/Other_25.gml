@@ -5,10 +5,10 @@ stateMachine.update_timer();
 if (entity_is_dead())
 	exit;
 
-player_handle_switch_weapons();
-player_handle_shooting();
+self.handle_switching_weapons();
+self.handle_shooting();
 
-if (!player_is_action_locked(PlayerAction.SPRITE_CHANGE))
-	event_user(11);
+if (!self.is_action_locked(PlayerAction.SPRITE_CHANGE))
+	event_user(10);
 
-player_handle_sections();
+self.handle_sections();

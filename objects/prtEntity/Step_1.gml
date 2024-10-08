@@ -6,8 +6,6 @@ if (entity_is_dead()) {
 		exit;
 	}
 	
-	y = ystart;
-	x = xstart;
 	xspeed.clear_all();
     yspeed.clear_all();
     healthpoints = healthpointsStart;
@@ -27,8 +25,14 @@ switch (lifeState) {
 		break;
 	
 	case LifeState.DEAD_ONSCREEN:
-		if (!entity_within_respawn_range())
-			lifeState = LifeState.DEAD_OFFSCREEN;
+		if (!entity_within_respawn_range()) {
+			if (x != xstart || y != ystart) {
+				x = xstart;
+				y = ystart;
+			} else {
+				lifeState = LifeState.DEAD_OFFSCREEN;
+			}
+		}
 		break;
 	
 	case LifeState.DEAD_OFFSCREEN:

@@ -4,6 +4,7 @@ function Character_Bass() : Character() constructor {
 	static id = CharacterType.BASS;
 	static name = "Bass";
 	static object = objBass;
+	static spritesheet = sprPlayerSkinForte;
 	
 	static colours = [
         $707070,
