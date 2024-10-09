@@ -62,15 +62,15 @@ function ColourReplacer() constructor {
 		var _count = min(array_length(_colours), COLOUR_REPLACER_MAX_COLOURS),
 			i = 0;
 		repeat(_count) {
-			var _colour = _colours[i],
-				_index = i * ColourChannels.sizeof;
-			colourUniforms[_index + ColourChannels.red] = colour_get_red(_colour) / 255;
-			colourUniforms[_index + ColourChannels.green] = colour_get_green(_colour) / 255;
-			colourUniforms[_index + ColourChannels.blue] = colour_get_blue(_colour) / 255;
+			var _index = i * ColourChannels.sizeof,
+				_normalizedColour = normalize_colour(_colours[i]);
+			colourUniforms[_index + ColourChannels.red] = _normalizedColour[ColourChannels.red];
+			colourUniforms[_index + ColourChannels.green] = _normalizedColour[ColourChannels.green];
+			colourUniforms[_index + ColourChannels.blue] = _normalizedColour[ColourChannels.blue];
 			i++;
 		}
 		if (active)
-			update_uniforms();
+			self.update_uniforms();
     };
     
     /// @method apply_colour_uniforms(uniforms)
@@ -85,7 +85,7 @@ function ColourReplacer() constructor {
 			i++;
 		}
 		if (active)
-			update_uniforms();
+			self.update_uniforms();
     };
     
     /// @method apply_palette(palette)
@@ -93,7 +93,7 @@ function ColourReplacer() constructor {
     ///
 	/// @param {ColourReplacerPalette}  palette  The `ColourReplacerPalette` to apply
     static apply_palette = function(_palette) {
-		apply_colour_uniforms(_palette.colourUniforms);
+		self.apply_colour_uniforms(_palette.colourUniforms);
     };
     
     /// @method update_uniforms()
@@ -139,21 +139,49 @@ function ColourReplacerPalette(_cols) constructor {
         return variable_clone(colourUniforms);
     };
     
+    /// @method get_colour_at(index)
+	/// @desc Gets the colour at the specified index
+	///
+	/// @param {int}  index  The index to get
+	///
+	/// @returns {int}  The colour at the specified index
+    static get_colour_at = function(_index) {
+		_index = clamp(_index, 0, colourCount);
+		return colours[_index];
+    };
+    
+    /// @method set_colours(colours, offset)
+	/// @desc Sets multiple colours across the palette
+	///
+	/// @param {array<int>}  colours  The new colours to apply
+	/// @param {int}  [offset]  At which index to start applying the new colours. Defaults to 0
+    static set_colours = function(_colours, _offset = 0) {
+		var _count = array_length(_colours);
+		for (var i = 0; i < _count; i++) {
+			if (i + _offset >= colourCount)
+				break;
+			self.set_colour_at(i + _offset, _colours[i]);
+		}
+    };
+    
     /// @method set_colour_at(index, colour)
 	/// @desc Sets a specific index in the palette to the given colour
 	///
 	/// @param {int}  index  The index to target
-	/// @param {int}  colour  The colour to set
+	/// @param {int}  colour  The colour to set to
     static set_colour_at = function(_index, _colour) {
 		if (_index >= colourCount) {
 			show_debug_message("ColourReplacerPalette Warning: Trying to set an unused index");
 			return;	
 		}
-		var _uniformIndex = _index * ColourChannels.sizeof;
+		
         colours[_index] = _colour;
-        colourUniforms[_uniformIndex + ColourChannels.red] = colour_get_red(_colour) / 255;
-        colourUniforms[_uniformIndex + ColourChannels.green] = colour_get_green(_colour) / 255;
-		colourUniforms[_uniformIndex + ColourChannels.blue] = colour_get_blue(_colour) / 255;
+        
+        var _uniformIndex = _index * ColourChannels.sizeof,
+			_normalizedColour = normalize_colour(_colour);
+        colourUniforms[_uniformIndex + ColourChannels.red] = _normalizedColour[ColourChannels.red];
+		colourUniforms[_uniformIndex + ColourChannels.green] = _normalizedColour[ColourChannels.green];
+		colourUniforms[_uniformIndex + ColourChannels.blue] = _normalizedColour[ColourChannels.blue];
     };
     
     #endregion
@@ -161,7 +189,7 @@ function ColourReplacerPalette(_cols) constructor {
 	#region Initialization
 	
 	for (var i = 0; i < colourCount; i++)
-        set_colour_at(i, _cols[i]);
+        self.set_colour_at(i, _cols[i]);
     
     #endregion
 }

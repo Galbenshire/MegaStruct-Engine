@@ -4,7 +4,9 @@
   "eventList":[],
   "managed":true,
   "name":"objMegaMan",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"characterID","path":"objects/prtPlayer/prtPlayer.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"CharacterType.MEGA",},
+  ],
   "parent":{
     "name":"Mega Man",
     "path":"folders/Playable Characters/Mega Man.yy",

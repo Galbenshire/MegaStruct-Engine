@@ -48,10 +48,9 @@
 		if (self.is_action_locked(PlayerAction.SPRITE_CHANGE))
 			return;
 		
+		skinPage = undefined;
 		skinCellX = 0;
 		skinCellY = 0;
-		skinPage = undefined;
-		
 		animator.update();
 		
 		if (is_undefined(skinPage))
@@ -194,7 +193,7 @@
 	/// -- fire_weapon(params, player)
 	/// Function to make the player fire a weapon.
 	///
-	/// @param {struct}  params  Defines various parameters of this projectile.
+	/// @param {struct}  params  Defines various parameters towards firing this projectile.
 	///		The list of applicable parameters are as follows:
 	///		-- REQUIRED --
 	///		- object: The object of the projectile to create
@@ -208,6 +207,7 @@
 	///		- depthOffset: Depth of the bullet relative to the player. Defaults to one value in front of the player
 	///		- standstill: A boolean for if the player should be put in a standstill. Defaults to false.
 	///		- autoShootDelay: Controls rate of fire when Auto-Fire is enabled
+	///		- projParams: a struct that defines parameters on the projectile itself
 	///
 	/// @returns {instance}  The projectile. Returns `noone` if something prevented a projectile being created.
 	function fire_weapon(_params = {}) {
@@ -261,13 +261,16 @@
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),
 			_bulletObj = _params.object;
-		var _bullet = spawn_entity(_bulletX, _bulletY, _bulletDepth, _bulletObj, {
-			image_xscale: sign(image_xscale),
-			image_yscale: sign(image_yscale)
-		});
+		
+		var _bulletParams = _params[$ "projParams"] ?? {};
+		_bulletParams.image_xscale = sign(image_xscale);
+		_bulletParams.image_yscale = sign(image_yscale);
+		
+		var _bullet = spawn_entity(_bulletX, _bulletY, _bulletDepth, _bulletObj, _bulletParams);
 		_bullet.owner = id;
 		_bullet.playerID = playerID;
 		
+		// Let others know we just shot this projectile
 		signal_bus().emit_signal("playerShot", {
 			player: other.id,
 			projectile: _bullet

@@ -1,7 +1,10 @@
 event_inherited();
-assert(!is_undefined(self[$ "characterSpecs"]), "A player instance was made, but was not assigned a Character");
 
 mask_index = maskNormal;
+
+// Character Specs (i.e. details about the playable character represented by this object)
+characterSpecs = character_create_from_id(characterID); /// @is {Character}
+assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object_get_name(object_index)} (ID: {characterID})");
 
 // Weapons
 weapon = undefined; /// @is {Weapon}
@@ -9,7 +12,7 @@ loadout = []; /// @is {array<Weapon>}
 loadoutSize = 0;
 
 // Animation System
-animator = new FrameAnimationPlayer(); /// @is {FrameAnimationPlayer}
+animator = new FrameAnimationPlayer();
 
 // State Machine
 stateMachine = new EntityState("Idle");
@@ -48,12 +51,12 @@ canDieToPits = true;
 diedToAPit = false;
 
 // Player Spritesheet
+skinPage = 0;
 skinCellX = 0;
 skinCellY = 0;
-skinPage = 0;
 
 // Palette
-palette = new ColourReplacerPalette(array_create(PalettePlayer.sizeof));
+palette = new ColourReplacerPalette(characterSpecs.get_default_colours());
 
 // Lock Pool
 lockpool = new PlayerLockPool();

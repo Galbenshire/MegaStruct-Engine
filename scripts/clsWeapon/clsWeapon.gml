@@ -168,6 +168,8 @@ function weapon_create_from_id(_id) {
 		case WeaponType.BUSTER: return new Weapon_MegaBuster(); break;
 		case WeaponType.BUSTER_PROTO: return new Weapon_ProtoBuster(); break;
 		case WeaponType.BUSTER_BASS: return new Weapon_BassBuster(); break;
+		case WeaponType.RUSH_COIL: return new Weapon_RushCoil(); break;
+		case WeaponType.RUSH_JET: return new Weapon_RushJet(); break;
 		case WeaponType.ICE_SLASHER: return new Weapon_IceSlasher(); break;
 		case WeaponType.METAL_BLADE: return new Weapon_MetalBlade(); break;
 		case WeaponType.SEARCH_SNAKE: return new Weapon_SearchSnake(); break;

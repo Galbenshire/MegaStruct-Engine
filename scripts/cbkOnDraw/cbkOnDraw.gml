@@ -29,19 +29,19 @@ function cbkOnDraw_prtEntity(_whiteflash) {
 /// @param {bool}  whiteflash  Unused here
 function cbkOnDraw_prtPlayer(_whiteflash) {
 	var _colReplacer = colour_replacer(),
-		_spriteAtlas = global.spriteAtlas_Player,
-		_skinPage = characterSpecs.spritesheet_page_to_image_index(skinPage);
+		_spriteAtlas = player_sprite_atlas(skinSprite),
+		_skinPage = characterSpecs.spritesheet_page_to_image_index(skinPage),
+		_isSupported = _colReplacer.IS_SUPPORTED;
 	
-	_spriteAtlas.sprite = skinSprite;
-	
-	if (_colReplacer.IS_SUPPORTED) {
+	if (_isSupported) {
 		_colReplacer.activate();
 		_colReplacer.apply_palette(palette);
-        _spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
-        _colReplacer.deactivate();
-	} else {
-		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
 	}
+	
+	_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
+	
+	if (_isSupported)
+		_colReplacer.deactivate();
 }
 
 #endregion

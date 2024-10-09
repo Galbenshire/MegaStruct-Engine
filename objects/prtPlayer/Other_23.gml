@@ -379,6 +379,11 @@ stateMachine.add("Climb", {
 		midairJumps = 0;
 	},
 	tick: function() {
+		if (!instance_exists(ladderInstance)) {
+			stateMachine.change("Fall");
+			return;
+		}
+		
 		yspeed.value = climbSpeed * yDir * !isShooting * !self.is_action_locked(PlayerAction.CLIMB);
 		animator.set_time_scale(abs(yspeed.value) != 0);
 		

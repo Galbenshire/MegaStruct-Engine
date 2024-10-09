@@ -147,4 +147,22 @@ function multiply_colours(_col1, _col2) {
 // Wisconsin?
 #macro multiply_colors multiply_colours
 
+/// @func normalize_colour(colour)
+/// @desc Converts a colour into a normalized array, where each colour channel is mapped from [0, 255] to [0, 1]
+///
+/// @param {int}  colour  The colour to normalize
+///
+/// @returns {ColourChannels}  The normalized colour
+function normalize_colour(_colour) {
+	var _red = colour_get_red(_colour),
+		_green = colour_get_green(_colour),
+		_blue = colour_get_blue(_colour);
+	_red = ((_red == 255) ? 1 : ((_red == 0) ? 0 : _red / 255));
+    _green = ((_green == 255) ? 1 : ((_green == 0) ? 0 : _green / 255));
+    _blue = ((_blue == 255) ? 1 : ((_blue == 0) ? 0 : _blue / 255));
+    return [_red, _green, _blue];
+}
+// $?
+#macro normalize_color normalize_colour
+
 #endregion

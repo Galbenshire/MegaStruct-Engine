@@ -241,7 +241,7 @@ function Character() constructor {
 }
 
 /// @func character_create_from_id(id)
-/// @desc Generates an instance of a playable character
+/// @desc Generates an instance of a playable character (i.e. a struct with info about that character)
 ///
 /// @param {int}  id  The ID of the character, corresponding to the CharacterType enum
 ///
@@ -254,4 +254,17 @@ function character_create_from_id(_id) {
 	}
 	
 	return undefined;
+}
+
+/// @func character_object_from_id(id)
+/// @desc Gets the player object that represents the given character
+///
+/// @param {int}  id  The ID of the character, corresponding to the CharacterType enum
+///
+/// @returns {prtPlayer}  Object of the character
+function character_object_from_id(_id) {
+	var _temp = character_create_from_id(_id),
+		_obj = _temp.object;
+	delete _temp;
+	return _obj;
 }

@@ -8,6 +8,22 @@ function is_a_player(_scope = self) {
     return is_object_type(prtPlayer, _scope);
 }
 
+/// @func player_sprite_atlas(sprite)
+/// @desc Gets the sprite atlas intended for drawing player spritesheets,
+///		  with the option to change its currently active sprite.
+///
+/// @param {sprite}  [sprite]  The sprite the atlas should draw with. Defaults to the sprite currently in the atlas.
+///
+/// @returns {SpriteAtlas}  The player spritesheet atlas
+function player_sprite_atlas(_sprite) {
+	var _atlas = global.spriteAtlas_Player;
+	
+	if (!is_undefined(_sprite))
+		_atlas.sprite = _sprite;
+	
+	return _atlas;
+}
+
 /// @func spawn_player_entity(x, y, depth_or_layer, character_id)
 /// @desc Creates an instance of a player character
 ///
@@ -18,9 +34,5 @@ function is_a_player(_scope = self) {
 ///
 /// @returns {prtPlayer}
 function spawn_player_entity(_x, _y, _depthOrLayer, _characterID) {
-	var _character = character_create_from_id(_characterID);
-	var _body = spawn_entity(_x, _y, _depthOrLayer, _character.object, {
-		characterSpecs: _character
-	});
-	return _body;
+	return spawn_entity(_x, _y, _depthOrLayer, character_object_from_id(_characterID));
 }

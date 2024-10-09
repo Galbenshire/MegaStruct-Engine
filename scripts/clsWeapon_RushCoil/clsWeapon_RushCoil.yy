@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"clsWeapon_RushCoil",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsWeapon_RushCoil",
+  "parent":{
+    "name":"RushCoil",
+    "path":"folders/Weapons/_Utilities/RushCoil.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
