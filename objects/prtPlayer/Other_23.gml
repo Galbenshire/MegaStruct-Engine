@@ -128,17 +128,22 @@ stateMachine.add("_StandardGround", {
 			if (stateMachine.has_just_changed())
 				return;
 			
-			if (is_object_type(objIce, groundInstance))
-				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
-			else
-				xspeed.value = 0;
-			
 			if (xDir != 0 && !self.is_action_locked(PlayerAction.MOVE_GROUND)) {
 				var _canSidestep = (stepFrames > 0);
 				if (stateMachine.is_previous_state("Walk"))
 					_canSidestep &= (stateMachine.timer >= 2);
 				stateMachine.change(_canSidestep ? "Sidestep" : "Walk");
 			}
+		},
+		posttick: function() {
+			stateMachine.inherit();
+			if (stateMachine.has_just_changed())
+				return;
+			
+			if (is_object_type(objIce, groundInstance))
+				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
+			else
+				xspeed.value = 0;
 		}
 	});
 // --------------------------------
@@ -178,7 +183,13 @@ stateMachine.add("_StandardGround", {
 				stateMachine.change("Idle");
 			else if (xDir == 0)
 				stateMachine.change(brakeFrames > 0 ? "Brake" : "Idle");
-			else if (is_object_type(objIce, groundInstance))
+		},
+		posttick: function() {
+			stateMachine.inherit();
+			if (stateMachine.has_just_changed())
+				return;
+			
+			if (is_object_type(objIce, groundInstance))
 				xspeed.value = approach(xspeed.value, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
 			else
 				xspeed.value = walkSpeed * xDir;
@@ -199,13 +210,18 @@ stateMachine.add("_StandardGround", {
 				stateMachine.change("Idle");
 			else if (xDir != 0)
 				stateMachine.change("Walk");
-			else if (is_object_type(objIce, groundInstance))
+			else if (stateMachine.timer >= brakeFrames)
+				stateMachine.change("Idle");
+		},
+		posttick: function() {
+			stateMachine.inherit();
+			if (stateMachine.has_just_changed())
+				return;
+			
+			if (is_object_type(objIce, groundInstance))
 				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
 			else
-				xspeed.value = brakeSpeed * image_xscale;
-			
-			if (stateMachine.timer >= brakeFrames && !stateMachine.has_just_changed())
-				stateMachine.change("Idle");
+				xspeed.value = brakeSpeed * xDir;
 		}
 	});
 // ================================

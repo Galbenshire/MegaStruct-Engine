@@ -143,7 +143,9 @@ function Character_ProtoMan() : Character() constructor {
         WeaponType.BUSTER_PROTO,
         WeaponType.ICE_SLASHER,
         WeaponType.METAL_BLADE,
-        WeaponType.SEARCH_SNAKE
+        WeaponType.SEARCH_SNAKE,
+        WeaponType.RUSH_COIL,
+        WeaponType.RUSH_JET
     ];
 	
 	#endregion

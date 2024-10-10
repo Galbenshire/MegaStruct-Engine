@@ -78,6 +78,7 @@ function Subsystem_Camera() : Subsystem() constructor {
 		with (prtPlayer) {
 			if (entity_is_dead() || ignoreCamera)
 				continue;
+			entity_update_subpixels();
             _camX += x + subPixelX * !_pixelPerfect;
             _camY += y + subPixelY * !_pixelPerfect;
             _count++;

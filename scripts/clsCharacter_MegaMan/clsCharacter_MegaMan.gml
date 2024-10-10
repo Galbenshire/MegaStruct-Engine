@@ -29,7 +29,8 @@ function Character_MegaMan() : Character() constructor {
         WeaponType.METAL_BLADE,
         WeaponType.SEARCH_SNAKE,
         WeaponType.SKULL_BARRIER,
-        WeaponType.RUSH_COIL
+        WeaponType.RUSH_COIL,
+        WeaponType.RUSH_JET
     ];
 	
 	#endregion

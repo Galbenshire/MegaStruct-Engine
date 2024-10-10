@@ -40,6 +40,7 @@ repeat(_gameTicks) {
 }
 
 entity_update_subpixels();
+entity_update_hitboxes();
 
 if (_gameTicks >= 1)
     inputs.clear_all();

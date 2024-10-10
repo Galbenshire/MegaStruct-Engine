@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"clsWeapon_RushJet",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsWeapon_RushJet",
+  "parent":{
+    "name":"RushJet",
+    "path":"folders/Weapons/_Utilities/RushJet.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -1,17 +1,17 @@
-/// @description Insert description here
 event_inherited();
 
 characterSpecs = character_create_from_id(characterID); /// @is {Character}
 assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object_get_name(object_index)} (ID: {characterID})");
 
-hasCoiled = false;
+isActive = false;
 weapon = undefined;
+jetLock = new PlayerLockPoolSwitch(undefined, PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND, PlayerAction.CLIMB, PlayerAction.SLIDE);
 
 // Spritesheet
 skinSprite = characterSpecs.spritesheet;
-skinImageIndex = characterSpecs.spritesheet_page_to_image_index(PlayerSpritesheetPage.COIL);
+skinImageIndex = characterSpecs.spritesheet_page_to_image_index(PlayerSpritesheetPage.JET);
 skinCellX = 0;
-skinCellY = 1;
+skinCellY = 2;
 
 // Palette
 palette = new ColourReplacerPalette(array_create(PalettePlayer.sizeof + 16));
@@ -19,12 +19,9 @@ palette.set_colours([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ], 16
 
 // Animations
 animator = new FrameAnimationPlayer();
-animator.add_animation("idle", 2, 1 / tailWagSpeed)
+animator.add_animation("idle", 2, 1 / animSpeed)
 	.add_property("skinCellX", [0, 1])
-	.add_property("skinCellY", [1]);
-animator.add_animation_non_loop("coiled", 1, 8)
-	.add_property("skinCellX", [2])
-	.add_property("skinCellY", [1]);
+	.add_property("skinCellY", [2]);
 animator.play("idle");
 
 // Callbacks
@@ -51,7 +48,7 @@ onDraw = function(_whiteflash) {
 		_colReplacer.apply_palette(palette);
 	}
 	
-	_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, skinImageIndex, x, y - 16, image_xscale, image_yscale, image_blend, image_alpha);
+	_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, skinImageIndex, x, y - 17, image_xscale, image_yscale, image_blend, image_alpha);
 	
 	if (_isSupported)
 		_colReplacer.deactivate();

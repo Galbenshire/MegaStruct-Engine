@@ -171,8 +171,8 @@ function entity_update_subpixels() {
 	subPixelY = yspeed.fractional;
 	
 	if (ground && instance_exists(groundInstance)) {
-		subPixelX += groundInstance.subPixelX;
-		subPixelY += groundInstance.subPixelY;
+		subPixelX = groundInstance.subPixelX;
+		subPixelY = groundInstance.subPixelY;
 	}
 }
 

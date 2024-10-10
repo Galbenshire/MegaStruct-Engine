@@ -1,5 +1,5 @@
 /// @description Insert description here
-if (phase == 0 && ycoll != 0) {
+if (phase == 0 && (ycoll != 0 || (teleportObject == objRushJet && collideWithSolids))) {
     phase = 1;
     yspeed.value = 0;
     animator.play("teleport-in");

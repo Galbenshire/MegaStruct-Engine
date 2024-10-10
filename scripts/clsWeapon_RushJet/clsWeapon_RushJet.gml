@@ -1,16 +1,16 @@
-function Weapon_RushCoil() : Weapon() constructor {
+function Weapon_RushJet() : Weapon() constructor {
     #region Static Data (consistent across all weapon instances)
 	
-	static id = WeaponType.RUSH_COIL;
+	static id = WeaponType.RUSH_JET;
 	static colours = [ $0028D8, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
 	static icon = sprWeaponIcons;
-	static iconIndex = 7;
+	static iconIndex = 8;
 	
 	// - Name
-	static name = "Rush Coil";
-	static shortName = "R.Coil";
+	static name = "Rush Jet";
+	static shortName = "R.Jet";
 	
 	#endregion
 	
@@ -27,8 +27,9 @@ function Weapon_RushCoil() : Weapon() constructor {
 				cost: 0,
 				shootAnimation: PlayerSpritesheetPage.IDLE,
 				offsetX: 20,
+				depthOffset: -0.5,
 				projParams: {
-					teleportObject: objRushCoil
+					teleportObject: objRushJet
 				}
 			});
 			
@@ -61,7 +62,7 @@ function Weapon_RushCoil() : Weapon() constructor {
 	#region Functions
 	
 	static can_summon_dog = function(_player) {
-		with (objRushCoil) {
+		with (objRushJet) {
 			if (owner == _player.id)
 				return false;
 		}
