@@ -13,12 +13,6 @@ if (!isActive) {
 xspeed.value = jetXSpeed * image_xscale;
 yspeed.value = 0;
 
-if (!is_undefined(weapon)) {
-	weapon.change_ammo(-ammoDrain);
-	if (owner.is_user_controlled())
-		owner.playerUser.hudElement.ammo = weapon.ammo;
-}
-
 if (instance_exists(owner)) {
     if (owner.ground && owner.groundInstance == self.id) {
 		jetLock.activate();
@@ -37,4 +31,10 @@ if (instance_exists(owner)) {
     } else {
     	jetLock.deactivate();
     }
+}
+
+if (!is_undefined(weapon)) {
+	weapon.change_ammo(-ammoDrain);
+	if (instance_exists(owner))
+		owner.update_hud_ammo(weapon.ammo, , weapon);
 }

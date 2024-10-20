@@ -24,13 +24,12 @@ function __debug_view_instance_count() {
 			instanceListNames = "---- Objects ----\n";
 			instanceListCounts = "---- Counts ----\n";
 			
-			var _count = array_length(_objects);
-			for (var i = 0; i < _count; i++) {
+			for (var i = 0, n = array_length(_objects); i < n; i++) {
 				var _line_split = string_split(_objects[i], "||");
 				instanceListNames += _line_split[0];
 				instanceListCounts += string("\t\t{0}", _line_split[1]);
 				
-				if (i != _count - 1) {
+				if (i != n - 1) {
 					instanceListNames += "\n";
 					instanceListCounts += "\n";
 				}
@@ -81,18 +80,21 @@ function __debug_view_options_data() {
 function __debug_view_room_select() {
 	DEBUG_VIEW_HTML5_CHECK
 	
+	var _view = dbg_view("Rooms", false, -1, -1, 400, 250);
+	
+	var _shortcuts = dbg_section("Shortcuts");
+	dbg_button("Title Screen", function() /*=>*/ { go_to_room(rmTitleScreen); });
+	dbg_same_line();
+	dbg_button("Spritesheet Test", function() /*=>*/ { go_to_room(rmPlayerSpritesheetTest); });
+	
 	var _roomIDs = asset_get_ids(asset_room),
-		_roomList = array_map(_roomIDs, function(_room, i) /*=>*/ {return string("{0}:{1}", room_get_name(_room), int64(_room))});
+		_roomList = array_map(asset_get_ids(asset_room), function(_room, i) /*=>*/ {return string("{0}:{1}", room_get_name(_room), int64(_room))});
 	array_sort(_roomList, true);
 	
-	var _view = dbg_view("Room Selector", false, -1, -1, 400, 250);
-	
-	var _currentRoom = dbg_section("Current Room");
+	var _currentRoom = dbg_section("Selector");
 	dbg_watch(ref_create(global, "roomName"), "Current Room: ");
-	
-	var _nextRoom = dbg_section("Next Room");
-	dbg_drop_down(ref_create(global, "nextRoom"), string_join_ext(",", _roomList), "Select Room");
-	dbg_button("Go to Room", function () {
+	dbg_drop_down(ref_create(global, "nextRoom"), string_join_ext(",", _roomList), "Next Room:");
+	dbg_button("Go to Next Room", function () {
 		if (is_room_level(global.nextRoom))
 			go_to_level(global.nextRoom);
 		else

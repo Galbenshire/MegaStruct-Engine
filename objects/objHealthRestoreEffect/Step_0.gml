@@ -7,13 +7,12 @@ if (!__playedSFX) {
 }
 
 refillRate.update();
-if (refillRate.integer < 1)
+if (refillRate.integer < 1 && __firstRefill)
     exit;
 
-var _player = global.player,
-    _queueSize = array_length(refillQueue);
+var _player = global.player;
 
-for (var i = _queueSize - 1; i >= 0; i--) {
+for (var i = array_length(refillQueue) - 1; i >= 0; i--) {
     var _refillDone = false,
         _refillItem = refillQueue[i][0];
     
@@ -27,7 +26,7 @@ for (var i = _queueSize - 1; i >= 0; i--) {
     } else { // Refilling Weapon Ammo
         var _prevAmmo = _refillItem.ammo;
         _refillItem.change_ammo(1);
-        if (_player.hudElement.ammoWeapon == _refillItem.id)
+        if (_player.hudElement.weaponID == _refillItem.id)
             _player.hudElement.ammo = _refillItem.ammo;
         
         refillQueue[i][1]--;
@@ -39,6 +38,8 @@ for (var i = _queueSize - 1; i >= 0; i--) {
         refillQueueCount--;
     }
 }
+
+__firstRefill = true;
 
 if (refillQueueCount <= 0)
     instance_destroy();

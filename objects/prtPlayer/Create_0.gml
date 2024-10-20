@@ -56,7 +56,7 @@ skinCellX = 0;
 skinCellY = 0;
 
 // Palette
-palette = new ColourReplacerPalette(characterSpecs.get_default_colours());
+palette = new ColourPalette(characterSpecs.get_default_colours());
 
 // Lock Pool
 lockpool = new PlayerLockPool();
@@ -64,8 +64,8 @@ introLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.
 slideLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT);
 shootStandStillLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND); // This lock is for staying on the ground after using a weapon like Metal Blade
 hitstunLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT);
-pauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 freeMovementLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE, PlayerAction.PHYSICS, PlayerAction.SPRITE_CHANGE, PlayerAction.WEAPON_CHANGE);
+pauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 
 // Bool flags for when specific actions are ocurring
 // Makes it easier to check if the player is performing a specific action

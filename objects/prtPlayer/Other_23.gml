@@ -495,24 +495,15 @@ stateMachine.add("Death", {
 		if (stateMachine.timer < 1)
 			return;
 		
-		if (!diedToAPit) {
-			var _explosion_params = {
-				sprite_index: sprExplosion,
-				animSpeed: 1/3,
-				lifeDuration: 0
-			};
-			for (var i = 0; i < 16; i++) {
-				with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
-					set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
-			}
-		}
+		if (!diedToAPit)
+			player_death_explosion(x, y, depth);
 		
 		healthpoints = 0;
 		lifeState = LifeState.DEAD_ONSCREEN;
 		play_sfx(sfxDeath);
 		
 		if (self.is_user_controlled()) {
-			playerUser.hudElement.healthpoints = healthpoints;
+			self.update_hud_health(0);
 			pauseLock.activate();
 			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint[CheckpointData.room]); }, GAME_SPEED * 3, true, true);
 		}

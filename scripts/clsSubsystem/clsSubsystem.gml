@@ -234,10 +234,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 						if (body.isIntro)
 							break;
 						
-						if (body.isFreeMovement)
-							body.stateMachine.change("Idle");
-						else
-							body.stateMachine.change("Debug_FreeMovement");
+						body.stateMachine.change(body.isFreeMovement ? "Idle" : "Debug_FreeMovement");
 					}
 				}
 			}
@@ -254,24 +251,17 @@ function Subsystem_Debug() : Subsystem() constructor {
 			freeRoamY += _spd * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
         }
         
-        var _consoleCount = consoleLogCount,
-			i = _consoleCount - 1;
-		repeat(_consoleCount) {
+        for (var i = consoleLogCount - 1; i >= 0; i--) {
 			var _line = consoleLog[i];
+			if (_line[ConsoleLine.lifetime]-- > 0)
+				continue;
 			
-			_line[ConsoleLine.lifetime]--;
-			
-			if (_line[ConsoleLine.lifetime] <= 0) {
-				_line[ConsoleLine.alpha] -= 1/60;
-				
-				if (_line[ConsoleLine.alpha] <= 0) {
-					array_delete(consoleLog, i, 1);
-					consoleLogCount--;
-				}
+			_line[ConsoleLine.alpha] -= 1/60;
+			if (_line[ConsoleLine.alpha] <= 0) {
+				array_delete(consoleLog, i, 1);
+				consoleLogCount--;
 			}
-			
-			i--;
-		}
+        }
     };
     
     static roomStart = function() {
@@ -362,8 +352,8 @@ function Subsystem_Flasher() : Subsystem() constructor {
 /// @desc Handles the drawing of a HUD
 function Subsystem_HUD() : Subsystem() constructor {
 	active = false;
-	playerHUD = undefined; /// @is {PlayerHUD}
-	bossHUD = [];
+	playerHUD = undefined; /// @is {HUDElement_Player}
+	bossHUD = []; /// @is {array<HUDElement_Boss>}
 	
 	static roomStart = function() {
 		active = global.roomIsLevel;
@@ -378,12 +368,17 @@ function Subsystem_HUD() : Subsystem() constructor {
             return;
         
         var _hudX = game_view().left_edge(8),
-			_hudY = game_view().top_edge(8),
-			_bossCount = array_length(bossHUD);
+			_hudY = game_view().top_edge(8);
 		
-        playerHUD.draw(_hudX, _hudY);
-        for (var i = 0; i < _bossCount; i++)
-			bossHUD[i].draw(_hudX + 24, _hudY);
+		playerHUD.draw(_hudX, _hudY);
+		_hudX += playerHUD.get_width() + 8;
+		
+		var i = 0;
+		repeat(array_length(bossHUD)) {
+			bossHUD[i].draw(_hudX, _hudY);
+			_hudX += bossHUD[i].get_width();
+			i++;
+		}
     };
 }
 

@@ -9,8 +9,6 @@
     -- etc.
 - Save File System
 - Lives System
-- More player weapons
-    -- How to tackle Rush Coil/Jet
 
 
 ==== Potential System Reworks ====

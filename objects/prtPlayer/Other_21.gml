@@ -155,6 +155,75 @@
 	
 	#endregion
 	
+	#region HUD
+	
+	/// -- update_hud_ammo(amount, palette, weapon)
+	/// Updates the ammobar on the player's HUD
+	///
+	/// @param {number}  [amount]  The amount to set the ammobar to. Optional.
+	/// @param {PaletteThreeTone}  [palette]  The palette to apply. Optional.
+	/// @param {Weapon}  [weapon]  The weapon to check against.
+	///		If defined, the ammobar will only get updated if the weapon's ID matches the ID currently in the HUD.
+	function update_hud_ammo(_amount, _palette, _weapon) {
+		if (!self.is_user_controlled())
+			return;
+		if (!is_undefined(_weapon) && _weapon.id != playerUser.hudElement.weaponID)
+			return;
+		
+		if (!is_undefined(_amount))
+			playerUser.hudElement.ammo = _amount;
+		if (!is_undefined(_palette))
+			playerUser.hudElement.ammoPalette = _palette;
+	}
+	
+	/// -- update_hud_health(amount, palette)
+	/// Updates the healthbar on the player's HUD
+	///
+	/// @param {number}  [amount]  The amount to set the healthbar to. Optional.
+	/// @param {PaletteThreeTone}  [palette]  The palette to apply. Optional.
+	function update_hud_health(_amount, _palette) {
+		if (!self.is_user_controlled())
+			return;
+		
+		if (!is_undefined(_amount))
+			playerUser.hudElement.healthpoints = _amount;
+		if (!is_undefined(_palette))
+			playerUser.hudElement.healthPalette = _palette;
+	}
+	
+	#endregion
+	
+	#region Restoring Health/Ammo
+	
+	/// -- restore_ammo(value, weapon)
+	/// Restores the player's weapon ammo by the given amount
+	///
+	/// @param {number}  value  The amount to ammo to restore
+	/// @param {Weapon}  weapon  The weapon to restore the ammo of
+	function restore_ammo(_value, _weapon) {
+		if (options_data().instantHealthFill || !self.is_user_controlled()) {
+			_weapon.change_ammo(_value);
+			self.update_hud_ammo(_weapon.ammo, , _weapon);
+		} else {
+			health_restore_effect().queue_ammo_refill(_weapon, _value);
+		}
+	}
+
+	/// -- restore_health(value)
+	/// Restores the player's health by the given amount
+	///
+	/// @param {number}  value  The amount to health to restore
+	function restore_health(_value) {
+		if (options_data().instantHealthFill || !self.is_user_controlled()) {
+			healthpoints = clamp(healthpoints + _value, 0, healthpointsStart);
+			self.update_hud_health(healthpoints);
+		} else {
+			health_restore_effect().queue_health_refill(_value);
+		}
+	}
+	
+	#endregion
+	
 	#region Weapons
 	
 	/// -- add_weapon(weapon_id)
@@ -234,7 +303,7 @@
 				return noone;
 				
 			_weapon.change_ammo(-_params.cost);
-			if (self.is_user_controlled() && playerUser.hudElement.ammoWeapon == _weapon.id)
+			if (self.is_user_controlled() && playerUser.hudElement.weaponID == _weapon.id)
 				playerUser.hudElement.ammo = _weapon.ammo;
 		}
 		
@@ -328,42 +397,6 @@
 			palette.set_colour_at(i, _characterPalette[i]);
 		if (self.is_user_controlled())
 			playerUser.hudElement.ammoPalette = array_slice(_characterPalette, 0, 3);
-	}
-	
-	/// -- restore_ammo(value, weapon)
-	/// Restores the player's weapon ammo by the given amount
-	function restore_ammo(_value, _weapon) {
-		var _isCPU = !self.is_user_controlled();
-		
-		if (options_data().instantHealthFill || _isCPU) {
-			_weapon.change_ammo(_value);
-			if (!_isCPU && playerUser.hudElement.ammoWeapon == _weapon.id)
-				playerUser.hudElement.ammo = _weapon.ammo;
-			return;
-		}
-		
-		var _restorer = instance_exists(objHealthRestoreEffect)
-			? instance_nearest(0, 0, objHealthRestoreEffect)
-			: instance_create_layer(0, 0, LAYER_SYSTEM, objHealthRestoreEffect);
-		_restorer.queue_ammo_refill(_weapon, _value);
-	}
-
-	/// -- restore_health(value)
-	/// Restores the player's health by the given amount
-	function restore_health(_value) {
-		var _isCPU = !self.is_user_controlled();
-		
-		if (options_data().instantHealthFill || _isCPU) {
-			healthpoints = clamp(healthpoints + _value, 0, healthpointsStart);
-			if (!_isCPU)
-				playerUser.hudElement.healthpoints = healthpoints;
-			return;
-		}
-		
-		var _restorer = instance_exists(objHealthRestoreEffect)
-			? instance_nearest(0, 0, objHealthRestoreEffect)
-			: instance_create_layer(0, 0, LAYER_SYSTEM, objHealthRestoreEffect);
-		_restorer.queue_health_refill(_value);
 	}
 	
 	/// -- try_climbing()

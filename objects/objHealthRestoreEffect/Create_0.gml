@@ -5,6 +5,7 @@ refillQueue = []; /// @is {array<tuple<Weapon?, number>>} [Weapon, Amount] (If W
 refillQueueCount = 0;
 
 __playedSFX = false;
+__firstRefill = false;
 
 queue_pause();
 
@@ -17,6 +18,8 @@ function queue_ammo_refill(_weapon, _amount) {
             return;
         }
     }
+    
+    // If nothing was found, then push up this refill
     array_push(refillQueue, [_weapon, _amount]);
     refillQueueCount++;
 }

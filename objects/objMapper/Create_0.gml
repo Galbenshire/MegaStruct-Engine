@@ -1,6 +1,6 @@
 mapSurface = NO_SURFACE;
 mapSurfaceRefresh = false;
-mapSurfaceUpdater = time_source_create(time_source_game, 0.35, time_source_units_seconds, function() /*=>*/ { mapSurfaceRefresh = true; }, [], -1);
+mapSurfaceUpdater = time_source_create(time_source_global, 0.35, time_source_units_seconds, function() /*=>*/ { mapSurfaceRefresh = true; }, [], -1);
 mapWidth = 224;
 mapHeight = 160;
 mapMargin = 4;

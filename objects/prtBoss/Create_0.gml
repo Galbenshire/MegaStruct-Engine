@@ -2,12 +2,16 @@ event_inherited();
 
 visible = false;
 
-stateMachine = new EntityState("!!Intro_Start");
-substate = 0;
+stateMachine = new EntityState("!!Inactive");
+animator = new FrameAnimationPlayer();
+hudElement = new HUDElement_Boss(healthpointsStart, [healthColourPrimary, healthColourSecondary]);
+healthbarFiller = new Fractional(healthbarFillRate);
+introCache = {}; // Store some variables, so we can restore them after the intro
 
-animator = new FrameAnimationPlayer(); /// @is {FrameAnimationPlayer}
-
-hudElement = undefined; /// @is {BossHUD?}
+// Teleportin'
+teleportSprite = sprHotDogTeleport;
+teleportImg = 0;
+teleportPalette = new ColourPalette([ healthColourPrimary, healthColourSecondary, $000000 ]);
 
 // Variables to store various lockpool locks
 introLock = new PlayerLockPoolSwitch(global.player.lockpool,
@@ -20,18 +24,19 @@ introPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 // Bool flags for when specific actions are ocurring
 isInactive = true;
 isIntro = false;
-isFinishedSpawn = false;
-isFinishedPose = false;
+isFinishedIntro = false;
+isTeleporting = false;
 isFillingHealthBar = false;
+isReady = false;
 isFighting = false;
 
-introCache = {}; // Store some variables, so we can restore them after the intro
-
 // Callbacks
+onSetDamage = method(id, cbkOnSetDamage_prtBoss);
 onHurt = method(id, cbkOnHurt_prtBoss);
 onDeath = method(id, cbkOnDeath_prtBoss);
-onSetDamage = method(id, cbkOnSetDamage_prtBoss);
+onDraw = method(id, cbkOnDraw_prtBoss);
 
 // Event User Inits
+event_user(EVENT_METHOD_INIT);
 event_user(EVENT_ANIMATION_INIT);
 event_user(EVENT_STATEMACHINE_INIT);

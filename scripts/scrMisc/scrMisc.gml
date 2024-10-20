@@ -37,6 +37,16 @@ function event_user_scope(_numb, _scope = self) {
 		event_user(_numb);
 }
 
+/// @func health_restore_effect()
+/// @desc Gets the object responsible for the health/ammo restore effect
+///
+/// @returns {objHealthRestoreEffect}
+function health_restore_effect() {
+	return instance_exists(objHealthRestoreEffect)
+		? instance_nearest(0, 0, objHealthRestoreEffect)
+		: instance_create_layer(0, 0, LAYER_SYSTEM, objHealthRestoreEffect);
+}
+
 /// @func is_html5()
 /// @desc Checks if this game is running on HTML5
 ///
@@ -111,4 +121,14 @@ function screen_fade(_config = {}) {
 		_config.onFadeInEnd = method(self, _config.onFadeInEnd);
 	
 	instance_create_layer(0, 0, LAYER_FADER, objScreenFade, _config);
+}
+
+/// @func string_empty(str)
+/// @desc This function returns if the given string is empty
+///
+/// @param {string}  str  The string to check
+///
+/// @returns {bool}  Whether the string is empty (true) or not (false)
+function string_empty(_str) {
+	return string_length(_str) <= 0;
 }

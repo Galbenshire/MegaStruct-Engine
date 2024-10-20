@@ -1,16 +1,11 @@
 /// @description State Machine Init
 // Base Boss States
 // (All bosses will have these by default, but more can be added as needed for a given boss)
-// - !!Intro_Start
-// - !!Intro_Spawn_
-//		- !!Intro_Spawn_DropIn
-//		- !!Intro_Spawn_PopIn
-// - !!Intro_Pose
-// - !!Intro_FillHealth
-// - !!Intro_End
+// - !!Inactive
+// - !!StartFight
 
 // ================================
-stateMachine.add("!!Intro_Start", {
+stateMachine.add("!!Inactive", {
 	enter: function() {
         introCache = {
             canTakeDamage: canTakeDamage,
@@ -29,11 +24,11 @@ stateMachine.add("!!Intro_Start", {
 	},
 	tick: function() {
 		if (instance_all(prtPlayer, function(el, i) /*=>*/ {return !el.isIntro})) {
-			if (introSpawnType == "Custom") {
-				assert(string_length(customIntroSpawnState) > 0, $"{object_get_name(object_index)} was set to have a custom intro spawn, but the spawn state was not specified");
-				stateMachine.change(customIntroSpawnState);
+			if (introType == "Custom") {
+				assert(!string_empty(customIntroState), $"{object_get_name(object_index)} was set to have a custom intro spawn, but the state was not specified");
+				stateMachine.change(customIntroState);
 			} else {
-				stateMachine.change(string($"!!Intro_Spawn_{introSpawnType}"));
+				stateMachine.change($"!!Intro_Spawn_{introType}");
 			}
 		}
 	},
@@ -48,99 +43,105 @@ stateMachine.add("!!Intro_Start", {
 stateMachine.add("!!Intro_Spawn_", {
 	enter: function() {
         isIntro = true;
-        isFinishedSpawn = false;
+        isFinishedIntro = false;
         visible = true;
         
-        introLock.activate();
-        introPauseLock.activate();
-	},
-	posttick: function() {
-        if (isFinishedSpawn) {
-			var _nextState = (string_length(customIntroPoseState) > 0)
-				? customIntroPoseState
-				: "!!Intro_Pose_Default";
-            stateMachine.change(_nextState);
+        if (lockControlsDuringIntro) {
+			introLock.activate();
+			introPauseLock.activate();
+        } else if (showHealthbar) {
+			array_push(objSystem.hud.bossHUD, hudElement);
         }
 	},
+	posttick: function() {
+		if (isFinishedIntro)
+			stateMachine.change("!!StartFight");
+	},
 	leave: function() {
-        y = ystart;
+        isIntro = false;
 	}
 });
 // --------------------------------
 	stateMachine.add_child("!!Intro_Spawn_", "!!Intro_Spawn_DropIn", {
 		enter: function() {
+			self.require_animation("!!dropin");
 			stateMachine.inherit();
 			
 			y = game_view().top_edge(-sprite_height / 2);
-			animator.play("!!intro_spawn_dropin");
 			collideWithSolids = false;
 			gravEnabled = true;
 			grav = DEFAULT_GRAVITY;
+			animator.play("!!dropin");
 		},
 		posttick: function() {
-			isFinishedSpawn = (y >= ystart);
+			//isFinishedIntro = (y >= ystart);
+			
+			if (y >= ystart)
+				isFinishedIntro = true;
 			stateMachine.inherit();
 		},
+		leave: function() {
+			stateMachine.inherit();
+			
+			y = ystart;
+			yspeed.clear_all();
+			gravEnabled = false;
+		}
 	});
 // --------------------------------
 	stateMachine.add_child("!!Intro_Spawn_", "!!Intro_Spawn_PopIn", {
-		posttick: function() {
-			isFinishedSpawn = true;
-			stateMachine.inherit();
-		},
-	});
-// ================================
-stateMachine.add("!!Intro_Pose_", {
-    enter: function() {
-		isIntro = true;
-		isFinishedPose = false;
-	},
-	posttick: function() {
-        if (isFinishedPose)
-			stateMachine.change("!!Intro_FillHealth");
-	},
-});
-// --------------------------------
-	stateMachine.add_child("!!Intro_Pose_", "!!Intro_Pose_Default", {
 		enter: function() {
 			stateMachine.inherit();
-			animator.play("!!intro_pose");
-			gravEnabled = introCache.gravEnabled;
-			grav = introCache.grav;
-			collideWithSolids = introCache.collideWithSolids;
+			isFinishedIntro = true;
+		}
+	});
+// --------------------------------
+	stateMachine.add_child("!!Intro_Spawn_", "!!Intro_Spawn_TeleportIn", {
+		enter: function() {
+			stateMachine.inherit();
+			
+			y = game_view().top_edge(-sprite_height / 2);
+			yspeed.value = 8;
+			animator.play("!!teleport-idle");
+			collideWithSolids = false;
+			isTeleporting = true;
 		},
 		posttick: function() {
-			isFinishedPose = animator.is_animation_finished() || (animator.loops > 0);
+			if (stateMachine.substate == 0) {
+				if (y >= ystart) {
+					y = ystart;
+					yspeed.clear_all();
+					stateMachine.change_substate(1);
+					animator.play("!!teleport-in");
+				}
+			} else if (animator.is_animation_finished()) {
+				isFinishedIntro = true;
+			}
+			
 			stateMachine.inherit();
 		},
+		leave: function() {
+			stateMachine.inherit();
+			
+			y = ystart;
+			yspeed.clear_all();
+			isTeleporting = false;
+		}
 	});
 // ================================
-stateMachine.add("!!Intro_FillHealth", {
-    enter: function() {
-        isIntro = true;
-        isFillingHealthBar = true;
-        
-		hudElement = new BossHUD();
-		hudElement.healthPalette[0][0] = $5800E4;
-		hudElement.healthPalette[0][1] = $F8F8F8;
-		array_push(objSystem.hud.bossHUD, hudElement);
-	},
-	tick: function() {
-		if (hudElement.healthpoints >= healthpointsStart)
-			stateMachine.change("!!Intro_End");
-	},
-	leave: function() {
-        isFillingHealthBar = false;
-	}
-});
-// ================================
-stateMachine.add("!!Intro_End", {
+stateMachine.add("!!StartFight", {
 	enter: function() {
-		isIntro = false;
+		print("fight can start", WarningLevel.SHOW);
+		isFillingHealthBar = (showHealthbar && lockControlsDuringIntro);
+		isReady = !isFillingHealthBar;
 	},
 	posttick: function() {
-		assert(string_length(initialFightState) > 0, "initialFightState was not set for {0}", object_get_name(object_index));
-        stateMachine.change(initialFightState);
+		isReady = !isFillingHealthBar;
+		
+		if (isReady) {
+			assert(!string_empty(initialFightState), $"{nameof(initialFightState)} was not set for {object_get_name(object_index)}");
+			stateMachine.change(initialFightState);
+		}
 	},
 	leave: function() {
 		isFighting = true;
@@ -149,6 +150,7 @@ stateMachine.add("!!Intro_End", {
         gravEnabled = introCache.gravEnabled;
         grav = introCache.grav;
         collideWithSolids = introCache.collideWithSolids;
+        
         introLock.deactivate();
         introPauseLock.deactivate();
 	}

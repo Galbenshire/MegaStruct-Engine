@@ -386,19 +386,25 @@ enum PalettePlayer {
 	sizeof
 }
 
+enum PaletteThreeTone {
+	primary, /// @is {int}
+	secondary, /// @is {int}
+	background, /// @is {int}
+	sizeof
+}
+
+enum PaletteTwoTone {
+	primary, /// @is {int}
+	secondary, /// @is {int}
+	sizeof
+}
+
 enum PaletteWeapon {
 	primary, /// @is {int}
 	secondary, /// @is {int}
 	outline, /// @is {int}
 	skintone, /// @is {int}
 	highlight, /// @is {int}
-	sizeof
-}
-
-enum PaletteHealthBar {
-	primary, /// @is {int}
-	secondary, /// @is {int}
-	background, /// @is {int}
 	sizeof
 }
 

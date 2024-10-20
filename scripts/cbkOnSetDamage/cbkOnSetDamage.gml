@@ -21,6 +21,18 @@ function cbkOnSetDamage_prtEntity(_damageSource) {
     }
 }
 
+/// @func cbkOnSetDamage_prtBoss(damage_source)
+/// @desc Default onSetDamage callback for bosses
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnSetDamage_prtBoss(_damageSource) {
+    // If set, all attacks will deal 1 damage by default
+    if (defaultDamageIsOne)
+        _damageSource.set_damage(1);
+    
+    cbkOnSetDamage_prtEntity(_damageSource); // Weaknesses then get applied
+}
+
 /// @func cbkOnSetDamage_prtPlayer(damage_source)
 /// @desc Default onSetDamage callback for players
 ///
@@ -30,15 +42,6 @@ function cbkOnSetDamage_prtPlayer(_damageSource) {
     // With 1 damage being the minimum cap
     var _dmg = max(1, floor(_damageSource.damage));
     _damageSource.set_damage(_dmg);
-}
-
-/// @func cbkOnSetDamage_prtBoss(damage_source)
-/// @desc Default onSetDamage callback for bosses
-///
-/// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnSetDamage_prtBoss(_damageSource) {
-    _damageSource.set_damage(1); // All attacks deal 1 damage by default
-    cbkOnSetDamage_prtEntity(_damageSource); // Weaknesses then get applied
 }
 
 #endregion

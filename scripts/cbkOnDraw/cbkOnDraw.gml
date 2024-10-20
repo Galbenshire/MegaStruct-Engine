@@ -21,6 +21,27 @@ function cbkOnDraw_prtEntity(_whiteflash) {
     draw_self();
 }
 
+/// @func cbkOnDraw_prtBoss(whiteflash)
+/// @desc Default onDraw callback for bosses
+///
+/// @param {bool}  whiteflash  If true, the entity is currently flashing white
+function cbkOnDraw_prtBoss(_whiteflash) {
+	if (isTeleporting) {
+		var _colReplacer = colour_replacer();
+		
+		if (_colReplacer.IS_SUPPORTED) {
+			_colReplacer.activate();
+			_colReplacer.apply_palette(teleportPalette);
+			draw_sprite(teleportSprite, teleportImg, x, y);
+			_colReplacer.deactivate();
+		} else {
+			draw_sprite(teleportSprite, teleportImg, x, y);
+		}
+	} else {
+		draw_self();
+	}
+}
+
 /// @func cbkOnDraw_prtPlayer(whiteflash)
 /// @desc Default onDraw callback for players.
 ///       prtPlayer calls onDraw a bit differently from regular entities;
@@ -30,18 +51,16 @@ function cbkOnDraw_prtEntity(_whiteflash) {
 function cbkOnDraw_prtPlayer(_whiteflash) {
 	var _colReplacer = colour_replacer(),
 		_spriteAtlas = player_sprite_atlas(skinSprite),
-		_skinPage = characterSpecs.spritesheet_page_to_image_index(skinPage),
-		_isSupported = _colReplacer.IS_SUPPORTED;
+		_skinPage = characterSpecs.spritesheet_page_to_image_index(skinPage);
 	
-	if (_isSupported) {
+	if (_colReplacer.IS_SUPPORTED) {
 		_colReplacer.activate();
 		_colReplacer.apply_palette(palette);
-	}
-	
-	_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
-	
-	if (_isSupported)
+		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
 		_colReplacer.deactivate();
+	} else {
+		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
+	}
 }
 
 #endregion
@@ -53,10 +72,11 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  If true, the entity is currently flashing white
 function cbkOnDraw_colourReplacer(_whiteflash) {
-    if (_whiteflash) {
+	var _colReplacer = colour_replacer();
+	
+    if (_whiteflash || !_colReplacer.IS_SUPPORTED) {
         draw_self();
     } else {
-		var _colReplacer = colour_replacer();
         _colReplacer.activate();
         _colReplacer.apply_palette(palette);
         draw_self();

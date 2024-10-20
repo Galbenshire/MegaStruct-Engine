@@ -1,9 +1,6 @@
 /// @description Init Palette
 /// @init
 
-if (!is_shader_supported(shdReplaceColour))
-    exit;
-
 var _colours = [ $5800E4, $F8F8F8, $000000 ];
 
 switch (colourPreset) {
@@ -26,4 +23,4 @@ switch (colourPreset) {
         break;
 }
 
-palette = new ColourReplacerPalette(_colours);
+palette = new ColourPalette(_colours);

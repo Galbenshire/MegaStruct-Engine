@@ -4,14 +4,16 @@ stateMachine.update_timer();
 
 animator.update();
 
-if (isFillingHealthBar && !is_undefined(hudElement)) {
+if (isFillingHealthBar) {
 	if (!audio_is_playing(sfxEnergyRestore))
 		loop_sfx(sfxEnergyRestore);
 	
-	if (stateMachine.timer mod 3 == 0)
-        hudElement.healthpoints = approach(hudElement.healthpoints, healthpoints, 1);
-	
+	if (hudElement.healthpoints > FULL_HEALTHBAR)
+		healthbarFiller.value += healthbarFillAccel;
+	healthbarFiller.update();
+	hudElement.healthpoints = approach(hudElement.healthpoints, healthpoints, healthbarFiller.integer);
 	isFillingHealthBar = (healthpoints != hudElement.healthpoints);
+	
 	if (!isFillingHealthBar)
 		stop_sfx(sfxEnergyRestore);
 }

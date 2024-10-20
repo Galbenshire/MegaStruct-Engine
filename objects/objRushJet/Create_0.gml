@@ -14,7 +14,7 @@ skinCellX = 0;
 skinCellY = 2;
 
 // Palette
-palette = new ColourReplacerPalette(array_create(PalettePlayer.sizeof + 16));
+palette = new ColourPalette(array_create(PalettePlayer.sizeof + 16));
 palette.set_colours([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ], 16);
 
 // Animations

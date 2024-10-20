@@ -6,12 +6,15 @@ var _x = x,
 x += subPixelX;
 y += subPixelY;
 
-if ((iFrames mod 4) < 2 || !iFrames)
+if ((iFrames mod 4) < 2 || !iFrames) {
 	onDraw(false);
-else if (hitsparkEffect)
+} else if (hitsparkEffect) {
 	draw_sprite_ext(sprHitspark, 0, sprite_x_center(), sprite_y_center(), 1, 1, 0, c_white, 1);
-else
+} else {
+	gpu_set_fog(true, c_white, 0, 0);
 	onDraw(true);
+	gpu_set_fog(false, 0, 0, 0);
+}
 
 x = _x;
 y = _y;

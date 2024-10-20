@@ -5,7 +5,7 @@ options = [
     ["CUT MAN STAGE", function() /*=>*/ { go_to_level(lvlCutMan); }],
     ["METAL MAN STAGE", function() /*=>*/ { go_to_level(lvlMetalMan); }],
 	["GEMINI MAN STAGE", function() /*=>*/ { go_to_level(lvlGeminiMan); }],
-    ["TEST ROOM", function() /*=>*/ { go_to_level(lvlIce); }],
+    ["TEST ROOM", function() /*=>*/ { go_to_level(lvlSections); }],
     [string("CHARACTER: {0}", characters[characterIndex].name), function () {
 		characterIndex = modf(characterIndex + 1, CharacterType.COUNT);
         global.player.characterID = characterIndex;

@@ -24,6 +24,26 @@ function cbkOnDeath_prtEntity(_damageSource) {
     entity_clear_hitboxes();
 }
 
+/// @func cbkOnDeath_prtBoss(damage_source)
+/// @desc Default onDeath callback for bosses
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnDeath_prtBoss(_damageSource) {
+    if (DEBUG_ENABLED)
+        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
+    
+    lifeState = LifeState.DEAD_ONSCREEN;
+    play_sfx(sfxDeath);
+    player_death_explosion(x, y, depth);
+	entity_clear_hitboxes();
+	
+	with (objSystem.hud) {
+		var _index = array_get_index(bossHUD, other.hudElement);
+		if (_index != NOT_FOUND)
+			array_delete(bossHUD, _index, 1);
+	}
+}
+
 /// @func cbkOnDeath_prtPlayer(damage_source)
 /// @desc Default onDeath callback for players
 ///
@@ -46,30 +66,6 @@ function cbkOnDeath_prtPlayer(_damageSource) {
     }
     
     stateMachine.change("Death");
-}
-
-/// @func cbkOnDeath_prtBoss(damage_source)
-/// @desc Default onDeath callback for bosses
-///
-/// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnDeath_prtBoss(_damageSource) {
-    if (DEBUG_ENABLED)
-        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
-    
-    lifeState = LifeState.DEAD_ONSCREEN;
-    play_sfx(sfxDeath);
-    
-	var _explosion_params = {
-		sprite_index: sprExplosion,
-		animSpeed: 1/3,
-		lifeDuration: 0
-	};
-	for (var i = 0; i < 16; i++) {
-		with (instance_create_depth(x, y, depth, objGenericEffect, _explosion_params))
-			set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
-	}
-	
-	entity_clear_hitboxes();
 }
 
 /// @func cbkOnDeath_prtProjectile(damage_source)

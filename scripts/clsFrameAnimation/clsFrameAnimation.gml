@@ -94,7 +94,7 @@ function FrameAnimationPlayer() constructor {
 	///
 	/// @returns {number}  The duration of the animation, in frames. Returns 0 if the animation could not be found
     static get_animation_duration = function(_animName = currentAnimationName, _ignoreScale = false) {
-		if (!struct_exists(animationMap, _animName))
+		if (!has_animation(_animName))
 			return 0;
 		
 		var _duration = animationMap[$ _animName].get_total_duration();
@@ -190,11 +190,21 @@ function FrameAnimationPlayer() constructor {
 	
 	#region Functions - Other
 	
+	/// @method has_animation(animation_name)
+	/// @desc Checks if the player has the specified animation.
+	///
+	/// @param {string}  animation_name  The animation to check for
+	///
+	/// @returns {bool}  Whether the animation was found (true) or not (false)
+	static has_animation = function(_animName) {
+		return struct_exists(animationMap, _animName);
+	};
+	
 	/// @method is_animation_finished()
 	/// @desc Checks if the current animation has finished.
 	///		  Note: If the animation doesn't loop, it cannot "finish"
 	///
-	/// @returns {number}  Whether the animation has finished (true) or not (false)
+	/// @returns {bool}  Whether the animation has finished (true) or not (false)
 	static is_animation_finished = function() {
 		return __animFinished;
 	};

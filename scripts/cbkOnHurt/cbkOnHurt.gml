@@ -44,9 +44,7 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     }
     
     iFrames = 60;
-    
-    if (!is_undefined(playerUser))
-        playerUser.hudElement.healthpoints = healthpoints;
+    self.update_hud_health(healthpoints);
 }
 
 /// @func cbkOnHurt_prtBoss(damage_source)
@@ -59,9 +57,7 @@ function cbkOnHurt_prtBoss(_damageSource) {
     
     iFrames = max(1, iFrameDuration);
     play_sfx(_damageSource.hitSFX);
-    
-    if (!is_undefined(hudElement))
-        hudElement.healthpoints = healthpoints;
+    self.update_hud(healthpoints);
 }
 
 #endregion

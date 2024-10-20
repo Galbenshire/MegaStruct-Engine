@@ -1,12 +1,24 @@
-==== Entity Can Respawn ====
--- Destroy Check (checking if this entity must be destroyed)
-- RespawnType.ENABLED: yes
-- RespawnType.DISABLE_ON_DEATH: yes
-- RespawnType.DESTROY_ON_DEATH: if not killed
-- RespawnType.DISABLED: no
+===== MINIBOSS / BOSS INTROS =====
 
--- Regular Check
-- RespawnType.ENABLED: yes
-- RespawnType.DISABLE_ON_DEATH: if not killed
-- RespawnType.DESTROY_ON_DEATH: if not killed
-- RespawnType.DISABLED: no
+---- HOT DOG (miniboss) ----
+1. Waits until the player is in its section, and is not in the middle of an intro
+2. Teleport down
+3. Fight begins
+
+---- MM1 STYLE BOSS ----
+1. Wait until the player is in its section, and is not in the middle of an intro
+2. Lock the player's controls
+3. Close the door behind the player (propably won't implement this one)
+4. Appear out of thin air
+5. Srike a pose
+6. Wait for the healthbar to fill up
+7. Fight begins
+
+---- MM2 STYLE BOSS ----
+1. Wait until the player is in its section, and is not in the middle of an intro
+2. Lock the player's controls
+3. Drop down from the top of the screen
+4. Wait until at the spawn position
+5. Strike a pose
+6. Wait for the healthbar to fill up
+7. Fight begins

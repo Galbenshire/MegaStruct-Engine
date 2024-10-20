@@ -6,7 +6,7 @@ weapon = undefined;
 characterID = CharacterType.MEGA;
 
 // Palette
-palette = new ColourReplacerPalette([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ]);
+palette = new ColourPalette([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ]);
 
 // Animations
 animator = new FrameAnimationPlayer();

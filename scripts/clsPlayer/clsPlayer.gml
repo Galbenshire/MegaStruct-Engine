@@ -12,7 +12,7 @@ function Player(_id/*:number*/) constructor {
 	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
 	inputs = new InputMap();
 	lockpool = new PlayerLockPool();
-	hudElement = new PlayerHUD();
+	hudElement = new HUDElement_Player();
 	
 	#endregion
 

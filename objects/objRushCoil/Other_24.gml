@@ -1,5 +1,7 @@
 /// @description Tick
 if (!hasCoiled) {
+	var _spring = false;
+	
     with (prtPlayer) {
 		if (entity_is_dead() || !gravEnabled || !collideWithSolids)
 			continue;
@@ -10,16 +12,20 @@ if (!hasCoiled) {
 			yspeed.value = -other.launchSpeed * gravDir;
 			canMinJump = false;
 			ladderInstance = noone;
-			
-			other.hasCoiled = true;
-			other.lifeDuration = 60;
-			other.animator.play("coiled");
-			
-			if (!is_undefined(other.weapon)) {
-				other.weapon.change_ammo(-other.ammoCost);
-				if (other.owner.is_user_controlled())
-					other.owner.playerUser.hudElement.ammo = other.weapon.ammo;
-			}
+			_spring = true;
+			break;
+		}
+    }
+    
+    if (_spring) {
+		hasCoiled = true;
+		lifeDuration = 60;
+		animator.play("coiled");
+		
+		if (!is_undefined(weapon)) {
+			weapon.change_ammo(-ammoCost);
+			if (instance_exists(owner))
+				owner.update_hud_ammo(weapon.ammo, , weapon);
 		}
     }
 }
