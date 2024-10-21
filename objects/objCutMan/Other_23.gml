@@ -75,10 +75,7 @@ with (stateMachine.add("ThrowCutter")) {
 		
 		if (stateMachine.substate == 0) {
 			if (shootFlag) {
-				cutterInstance = spawn_entity(x, y, depth, objCutManCutter);
-				cutterInstance.xspeed.value = 3 * image_xscale;
-				cutterInstance.owner = self;
-				set_velocity_vector(3, point_direction(x, y, reticle.x, reticle.y), cutterInstance);
+				cutterInstance = self.create_projectile("cutter", 12, 4);
 				cutterExists = true;
 				
 				stateMachine.substate++;

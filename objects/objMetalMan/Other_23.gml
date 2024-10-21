@@ -48,16 +48,7 @@ with (stateMachine.add("JumpUp_Attack")) {
 			animator.play("blade_throw", true);
 		
 		if (shootFlag) {
-			with (spawn_entity(x + 8 * image_xscale, y, depth, objGenericEnemyBullet)) {
-				sprite_index = sprMetalBlade;
-				owner = other.id;
-				animSpeed = 0.35;
-				contactDamage = 3;
-				xspeed.value = 4 * other.image_xscale;
-				set_velocity_vector(4, point_direction(x, y, reticle.x, reticle.y));
-			}
-			
-			play_sfx(sfxMetalBlade);
+			self.create_projectile("metal_blade", 8, 0);
 			yspeed.value = min(0.4, yspeed.value);
 			shootFlag = false;
 		}
@@ -88,16 +79,7 @@ with (stateMachine.add("JumpOver")) {
 		}
 		
 		if (shootFlag) {
-			with (spawn_entity(x + 8 * image_xscale, y, depth, objGenericEnemyBullet)) {
-				sprite_index = sprMetalBlade;
-				owner = other.id;
-				animSpeed = 0.35;
-				contactDamage = 3;
-				xspeed.value = 4 * other.image_xscale;
-				set_velocity_vector(4, point_direction(x, y, reticle.x, reticle.y));
-			}
-			
-			play_sfx(sfxMetalBlade);
+			self.create_projectile("metal_blade", 8, 0);
 			shootFlag = false;
 		}
 	});

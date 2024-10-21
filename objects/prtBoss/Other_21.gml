@@ -31,6 +31,20 @@
 		}
 	}
 	
+	/// -- create_projectile(id, x, y, params)
+	/// Creates an attack, based on the ID & further parameters provided
+	///
+	/// @param {string}  id  ID of the attack
+	/// @param {number}  x  horizontal position of the attack (can be relative to the boss or not. depends on context)
+	/// @param {number}  y  vertical position of the attack (can be relative to the boss or not. depends on context)
+	/// @param {struct}  [params]  struct that defines various properties of the attack. Optional.
+	///
+	/// @returns {instance}  The created attack
+	function create_projectile(_id, _x, _y, _params = {}) {
+		show_debug_message($"create_projectile not implemented for {object_get_name(object_index)}");
+		return noone;
+	}
+	
 	/// -- disconnect_hud()
 	/// Removes the boss' healthbar from the HUD
 	function disconnect_hud() {
