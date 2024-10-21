@@ -7,10 +7,9 @@ for (var i = 0; i < sectionDataCount; i++) {
     with (sectionData[i]) {
         var _x = floor(x / 16) - other.x,
             _y = floor(y / 16) - other.y,
-            _xscale = floor(sprite_width / 16),
-            _yscale = floor(sprite_height / 16);
-        draw_sprite_ext(sprDot, 0, _x, _y, _xscale, _yscale, 0, image_blend, 1);
-        draw_rectangle_colour(_x, _y, _x + _xscale - 1, _y + _yscale - 1, c_black, c_black, c_black, c_black, true);
+            _width = floor(sprite_width / 16),
+            _height = floor(sprite_height / 16);
+        draw_sprite_stretched_ext(sprMapperSection, 0, _x, _y, _width, _height, image_blend, 1);
     }
 }
 

@@ -92,3 +92,6 @@ onDraw = method(id, cbkOnDraw_prtPlayer); /// @is {function<bool, void>}
 event_user(EVENT_METHOD_INIT);
 event_user(EVENT_ANIMATION_INIT);
 event_user(EVENT_STATEMACHINE_INIT);
+
+// Set the player to an idle state
+stateMachine.change_state("Idle");

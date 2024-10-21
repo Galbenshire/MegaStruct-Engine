@@ -234,7 +234,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 						if (body.isIntro)
 							break;
 						
-						body.stateMachine.change(body.isFreeMovement ? "Idle" : "Debug_FreeMovement");
+						body.stateMachine.change_state(body.isFreeMovement ? "Idle" : "Debug_FreeMovement");
 					}
 				}
 			}
@@ -459,8 +459,8 @@ function Subsystem_Level() : Subsystem() constructor {
 		instance_create_depth(0, 0, system.depth + 1, objReady);
 		with (prtPlayer) {
 			if (self.is_user_controlled()) {
-				stateMachine.change("StageStart");
-				signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change("Intro"); }, true);
+				stateMachine.change_state("Inactive");
+				signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change_state("Intro"); }, true);
 			}
 		}
 		

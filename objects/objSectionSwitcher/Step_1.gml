@@ -1,4 +1,4 @@
 repeat(global.gameTimeScale.integer) {
     stateMachine.tick();
-    stateTimer++;
+    stateMachine.update_timer();
 }

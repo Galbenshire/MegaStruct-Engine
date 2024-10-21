@@ -78,7 +78,7 @@ function FrameAnimationPlayer() constructor {
 	/// @param {array<number>}  frame_durations  An array where its length will be how many frames the animation has, and each element is the duration of each frame.
 	///
 	/// @returns {FrameAnimation}  The new animation.
-	static add_animation_non_loop_ext = function(_id, _framesDurations, _callback) {
+	static add_animation_non_loop_ext = function(_id, _framesDurations) {
 		return add_animation_ext(_id, _framesDurations, -1);
     };
     

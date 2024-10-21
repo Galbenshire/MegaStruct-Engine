@@ -2,6 +2,45 @@
 /// @init
 // These tabs spaces are just so it looks better organized in the outline view in GMEdit
 	
+	/// -- common_state_intro_spawn(event)
+	/// Executes code common for an intro state
+	///
+	/// @param {string}  event  The event to execute
+	function common_state_intro_spawn(_event) {
+		switch (_event) {
+			case "enter":
+				isIntro = true;
+				visible = true;
+				
+				if (lockControlsDuringIntro) {
+					introLock.activate();
+					introPauseLock.activate();
+				}
+				break;
+			
+			case "posttick":
+				if (strikeIntroPose)
+					stateMachine.change_state("!!Intro_Pose");
+				else
+					stateMachine.change_state("!!FinishIntro");
+				break;
+			
+			case "leave":
+				isIntro = false;
+				break;
+		}
+	}
+	
+	/// -- disconnect_hud()
+	/// Removes the boss' healthbar from the HUD
+	function disconnect_hud() {
+		with (objSystem.hud) {
+			var _index = array_get_index(bossHUD, other.hudElement);
+			if (_index != NOT_FOUND)
+				array_delete(bossHUD, _index, 1);
+		}
+	}
+	
 	/// -- require_animation(animation_name)
 	/// Helper function for ensure the boss as a required animation defined
 	///

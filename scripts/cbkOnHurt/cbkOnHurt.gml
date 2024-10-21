@@ -24,29 +24,6 @@ function cbkOnHurt_prtEntity(_damageSource) {
     play_sfx(_damageSource.hitSFX);
 }
 
-/// @func cbkOnHurt_prtPlayer(damage_source)
-/// @desc Default onHurt callback for players
-///
-/// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnHurt_prtPlayer(_damageSource) {
-    if (DEBUG_ENABLED)
-        show_debug_message("Player Hurt by {0}", object_get_name(_damageSource.attacker.object_index));
-    
-    var _inASlideHole = isSliding && test_move_y(-slideMaskHeightDelta * gravDir);
-    
-    stateMachine.change("Hurt");
-    
-    if (_inASlideHole) {
-        isSliding = true;
-        mask_index = maskSlideExtended;
-        xspeed.value = 0;
-        yspeed.value = 0;
-    }
-    
-    iFrames = 60;
-    self.update_hud_health(healthpoints);
-}
-
 /// @func cbkOnHurt_prtBoss(damage_source)
 /// @desc Default onHurt callback for bosses
 ///
@@ -58,6 +35,29 @@ function cbkOnHurt_prtBoss(_damageSource) {
     iFrames = max(1, iFrameDuration);
     play_sfx(_damageSource.hitSFX);
     self.update_hud(healthpoints);
+}
+
+/// @func cbkOnHurt_prtPlayer(damage_source)
+/// @desc Default onHurt callback for players
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnHurt_prtPlayer(_damageSource) {
+    if (DEBUG_ENABLED)
+        show_debug_message("Player Hurt by {0}", object_get_name(_damageSource.attacker.object_index));
+    
+    var _inASlideHole = isSliding && test_move_y(-slideMaskHeightDelta * gravDir);
+    
+    stateMachine.change_state("Hurt");
+    
+    if (_inASlideHole) {
+        isSliding = true;
+        mask_index = maskSlideExtended;
+        xspeed.value = 0;
+        yspeed.value = 0;
+    }
+    
+    iFrames = 60;
+    self.update_hud_health(healthpoints);
 }
 
 #endregion

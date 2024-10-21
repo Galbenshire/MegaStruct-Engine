@@ -21,8 +21,15 @@ function cbkOnDespawn_prtEntity() {
     entity_clear_hitboxes();
 }
 
+/// @func cbkOnDespawn_prtBoss()
+/// @desc Default onDespawn callback for bosses
+function cbkOnDespawn_prtBoss() {
+    cbkOnDespawn_prtEntity();
+	self.disconnect_hud();
+}
+
 /// @func cbkOnDespawn_prtPlayer()
-/// @desc Default onDespawn callback for all entities
+/// @desc Default onDespawn callback for players
 function cbkOnDespawn_prtPlayer() {
     if (DEBUG_ENABLED)
         show_debug_message($"Player Despawn ({x}, {y})");

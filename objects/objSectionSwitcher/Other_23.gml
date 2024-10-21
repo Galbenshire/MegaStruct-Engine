@@ -1,17 +1,16 @@
-// ================================
-stateMachine.add("_DeferPause", {
-	enter: function() {
+/// @description State Machine Init
+with (stateMachine.add("_DeferPause")) {
+	set_event("enter", function() {
 		global.switchingSections = true;
 		queue_pause();
-	},
-	tick: function() {
-        if (global.paused)
-			stateMachine.change("Init");
-	}
-});
-// ================================
-stateMachine.add("Init", {
-	enter: function() {
+	});
+	set_event("tick", function() {
+		if (global.paused)
+			stateMachine.change_state("Init");
+	});
+}
+with (stateMachine.add("Init")) {
+	set_event("enter", function() {
 		assert(instance_exists(playerInstance), "Did you forget to link the player to the section switcher?");
         assert(instance_exists(transitionInstance), "Did you forget to link the transition to the section switcher?");
         targetSection = transitionInstance.section;
@@ -45,8 +44,8 @@ stateMachine.add("Init", {
 		
 		// Reset player palette
 		playerInstance.refresh_palette();
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		// Deactivate objects not visible during screen transitions
         deactivate_game_objects(true, targetSection);
         
@@ -55,31 +54,30 @@ stateMachine.add("Init", {
 		alignmentFixYDir = ((y < targetSection.top) - (y + GAME_HEIGHT > targetSection.bottom)) * !isVerticalTransition;
 		
 		if (instance_exists(bossDoor))
-			stateMachine.change("OpenDoor");
+			stateMachine.change_state("OpenDoor");
 		else if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
-			stateMachine.change("FixAlignmentToSection");
+			stateMachine.change_state("FixAlignmentToSection");
 		else
-			stateMachine.change("ToNewSection");
-	},
-	leave: function() {
+			stateMachine.change_state("ToNewSection");
+	});
+	set_event("leave", function() {
 		playerXSpeedCache = playerInstance.xspeed.value;
 		playerYSpeedCache = playerInstance.yspeed.value;
-	}
-});
-// ================================
-stateMachine.add("OpenDoor", {
-	tick: function() {
+	});
+}
+with (stateMachine.add("OpenDoor")) {
+	set_event("tick", function() {
 		with (bossDoor)
 			event_user(0);
 		
 		if (bossDoor.isOpen) {
 			if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
-				stateMachine.change("FixAlignmentToSection");
+				stateMachine.change_state("FixAlignmentToSection");
 			else
-				stateMachine.change("ToNewSection");
+				stateMachine.change_state("ToNewSection");
 		}
-	},
-	leave: function() {
+	});
+	set_event("leave", function() {
 		bossDoor.doorOpener.clear_fractional();
 		
 		// Recalculate player movement parameters
@@ -87,15 +85,14 @@ stateMachine.add("OpenDoor", {
 			_targetY = !isVerticalTransition ? playerInstance.y : bbox_vertical(transitionYDir, bossDoor) + borderDistance * transitionYDir;
 		playerMoveXSpeed = (_targetX - playerInstance.x) / scrollDuration;
 		playerMoveYSpeed = (_targetY - playerInstance.y) / scrollDuration;
-	}
-});
-// ================================
-stateMachine.add("FixAlignmentToSection", {
-	enter: function() {
+	});
+}
+with (stateMachine.add("FixAlignmentToSection")) {
+	set_event("enter", function() {
 		xspeed.value = alignmentFixSpeed * alignmentFixXDir;
 		yspeed.value = alignmentFixSpeed * alignmentFixYDir;
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		event_user(0);
 		
 		var _finished = isVerticalTransition
@@ -103,18 +100,17 @@ stateMachine.add("FixAlignmentToSection", {
 			: (alignmentFixYDir > 0 && y >= targetSection.top) || (alignmentFixYDir < 0 && y + GAME_HEIGHT <= targetSection.bottom);
 		
 		if (_finished)
-			stateMachine.change("ToNewSection");
-	},
-	leave: function() {
+			stateMachine.change_state("ToNewSection");
+	});
+	set_event("leave", function() {
 		if (isVerticalTransition)
 			x = clamp(x, targetSection.left, targetSection.right - GAME_WIDTH);
 		else
 			y = clamp(y, targetSection.top, targetSection.bottom - GAME_HEIGHT);
-	}
-});
-// ================================
-stateMachine.add("ToNewSection", {
-	enter: function() {
+	});
+}
+with (stateMachine.add("ToNewSection")) {
+	set_event("enter", function() {
 		xspeed.value = screenScrollXSpeed;
 		yspeed.value = screenScrollYSpeed;
 		playerInstance.xspeed.value = playerMoveXSpeed;
@@ -122,9 +118,9 @@ stateMachine.add("ToNewSection", {
 		
 		animatePlayer = array_contains(persistentAnimations, playerInstance.animator.currentAnimationName)
 			&& !playerInstance.is_action_locked(PlayerAction.SPRITE_CHANGE);
-	},
-	tick: function() {
-		if (stateTimer < scrollDuration) {
+	});
+	set_event("tick", function() {
+		if (stateMachine.timer < scrollDuration) {
 			event_user(0);
 			event_user(1);
 			return;
@@ -143,42 +139,38 @@ stateMachine.add("ToNewSection", {
 		gameViewRef.set_position(x, y);
 		
 		if (instance_exists(bossDoor))
-			stateMachine.change("CloseDoor");
+			stateMachine.change_state("CloseDoor");
 		else if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
-			stateMachine.change("FixAlignmentToCamera");
+			stateMachine.change_state("FixAlignmentToCamera");
 		else
-			stateMachine.change("_End");
-	},
-	leave: function() {
+			stateMachine.change_state("_End");
+	});
+	set_event("leave", function() {
 		xspeed.value = 0;
 		yspeed.value = 0;
 		animatePlayer = false;
-	}
-});
-// ================================
-stateMachine.add("CloseDoor", {
-	tick: function() {
+	});
+}
+with (stateMachine.add("CloseDoor")) {
+	set_event("tick", function() {
 		with (bossDoor)
 			event_user(1);
 		
 		if (!bossDoor.isOpen) {
 			if (alignmentFixXDir != 0 || alignmentFixYDir != 0)
-				stateMachine.change("FixAlignmentToSection");
+				stateMachine.change_state("FixAlignmentToCamera");
 			else
-				stateMachine.change("_End");
+				stateMachine.change_state("_End");
 		}
-	},
-	leave: function() {
-		bossDoor.doorOpener.clear_fractional();
-	}
-});
-// ================================
-stateMachine.add("FixAlignmentToCamera", {
-	enter: function() {
+	});
+	set_event("leave", function() /*=>*/ { bossDoor.doorOpener.clear_fractional(); });
+}
+with (stateMachine.add("FixAlignmentToCamera")) {
+	set_event("enter", function() {
 		xspeed.value = alignmentFixSpeed * alignmentFixXDir;
 		yspeed.value = alignmentFixSpeed * alignmentFixYDir;
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		event_user(0);
 		
 		var _finished = isVerticalTransition
@@ -186,17 +178,16 @@ stateMachine.add("FixAlignmentToCamera", {
 			: (alignmentFixYDir > 0 && y >= ystart) || (alignmentFixYDir < 0 && y <= ystart);
 		
 		if (_finished)
-			stateMachine.change("_End");
-	}
-});
-// ================================
-stateMachine.add("_End", {
-	enter: function() {
+			stateMachine.change_state("_End");
+	});
+}
+with (stateMachine.add("_End")) {
+	set_event("enter", function() {
 		global.section = targetSection;
 		global.switchingSections = false;
 		deactivate_game_objects();
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		playerInstance.xspeed.value = playerXSpeedCache;
 		playerInstance.yspeed.value = playerYSpeedCache;
 		objSystem.camera.active = true;
@@ -204,9 +195,7 @@ stateMachine.add("_End", {
 		activate_game_objects();
 		queue_unpause();
 		instance_destroy();
-	}
-});
-// On State Change
-stateMachine.on("state changed", function(_dest_state, _source_state) {
-	stateTimer = -1;
-});
+	});
+}
+
+stateMachine.change_state("_DeferPause");

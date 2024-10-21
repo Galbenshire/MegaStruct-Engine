@@ -18,5 +18,5 @@ onSpawn = function() {
 };
 onDraw = function(__) {
     global.spriteAtlas_Player.sprite = sprPlayerSkinBlues;
-    global.spriteAtlas_Player.draw_cell_ext(8, 12, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);    
+    global.spriteAtlas_Player.draw_cell_ext(0, 0, 0, x, y, image_xscale, image_yscale, image_blend, image_alpha);    
 };

@@ -92,7 +92,7 @@
 		var _fellIntoPit = _fallingDown ? y > _section.bottom + 16 : y < _section.top - 16;
 		if (_fellIntoPit) {
 			diedToAPit = true;
-			stateMachine.change("Death");
+			stateMachine.change_state("Death");
 		}
 	}
 	
@@ -204,6 +204,7 @@
 		if (options_data().instantHealthFill || !self.is_user_controlled()) {
 			_weapon.change_ammo(_value);
 			self.update_hud_ammo(_weapon.ammo, , _weapon);
+			play_sfx(sfxEnergyRestore);
 		} else {
 			health_restore_effect().queue_ammo_refill(_weapon, _value);
 		}
@@ -217,6 +218,7 @@
 		if (options_data().instantHealthFill || !self.is_user_controlled()) {
 			healthpoints = clamp(healthpoints + _value, 0, healthpointsStart);
 			self.update_hud_health(healthpoints);
+			play_sfx(sfxEnergyRestore);
 		} else {
 			health_restore_effect().queue_health_refill(_value);
 		}
@@ -360,6 +362,90 @@
 	#endregion
 	
 	#region Other
+	
+	/// -- common_state_air(event)
+	/// Executes code common across multiple "air" states
+	///
+	/// @param {string}  event  The event to execute
+	///
+	/// @returns {bool}  `true` if a state change has occurred, `false` otherwise
+	function common_state_air(_event) {
+		switch (_event) {
+			case "enter":
+				ground = false;
+				groundInstance = noone;
+				break;
+			
+			case "tick":
+				var _airSpeed = slideBoostActive ? slideSpeed : airSpeed;
+				xspeed.value = _airSpeed * xDir * !self.is_action_locked(PlayerAction.MOVE_AIR);
+				
+				if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_AIR))
+					image_xscale = xDir;
+				break;
+			
+			case "posttick":
+				if (self.try_climbing()) {
+					stateMachine.change_state("Climb");
+					return true;
+				}
+				
+				if (ground) {
+					stateMachine.change_state(xDir == 0 ? "Idle" : "Walk");
+					play_sfx(sfxLand);
+					return true;
+				}
+				break;
+		}
+		return false;
+	}
+	
+	/// -- common_state_ground(event)
+	/// Executes code common across multiple "ground" states
+	///
+	/// @param {string}  event  The event to execute
+	///
+	/// @returns {bool}  `true` if a state change has occurred, `false` otherwise
+	function common_state_ground(_event) {
+		switch (_event) {
+			case "enter":
+				slideBoostActive = false;
+				midairJumps = 0;
+				break;
+			
+			case "tick":
+				var _jumpInput = inputs.is_pressed(InputActions.JUMP)
+					|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP));
+				if (_jumpInput && !self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
+					stateMachine.change_state("Jump");
+					return true;
+				}
+				
+				if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_GROUND))
+					image_xscale = xDir;
+				break;
+			
+			case "posttick":
+				if (self.try_climbing()) {
+					stateMachine.change_state("Climb");
+					return true;
+				}
+				
+				if (!ground) {
+					move_and_collide_y(gravDir);
+					stateMachine.change_state("Fall");
+					coyoteTimer = COYOTE_FALL_BUFFER;
+					return true;
+				}
+				
+				if (self.try_sliding()) {
+					stateMachine.change_state("Slide");
+					return true;
+				}
+				break;
+		}
+		return false;
+	}
 
 	/// -- is_action_locked(player_action)
 	/// Checks if the given player action is locked on this player

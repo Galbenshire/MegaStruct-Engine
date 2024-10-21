@@ -225,18 +225,11 @@ enum SolidType {
 	SLOPE_SOLID
 }
 
-// -- General
 #macro DEFAULT_GRAVITY 0.25
 #macro DEFAULT_GRAVITY_DIRECTION 1
 #macro DEFAULT_GRAVITY_WATER_MODIFIER 0.57
 #macro DEFAULT_FALL_SPEED 7
 #macro DEFAULT_MAX_SLOPE_STEEPNESS 1
-
-// -- Player Specific
-#macro COYOTE_FALL_BUFFER 5
-#macro JUMP_BUFFER 4
-#macro DEFAULT_ICE_DECEL_IDLE 0.025
-#macro DEFAULT_ICE_DECEL_WALK 0.03
 
 #endregion
 
@@ -328,7 +321,12 @@ enum PlayerSpritesheetPage {
 	COUNT
 }
 
+#macro COYOTE_FALL_BUFFER 5
 #macro FULL_HEALTHBAR 28
+#macro JUMP_BUFFER 4
+#macro DEFAULT_ICE_DECEL_IDLE 0.025
+#macro DEFAULT_ICE_DECEL_WALK 0.03
+#macro QUICK_TURN_BUFFER 2
 
 #endregion
 

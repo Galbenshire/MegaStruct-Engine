@@ -1,24 +1,21 @@
 /// @description State Machine Init
 // === The States ===
-// - StartStart
+// - Inactive
 // - Intro
-// - _StandardGround
-//		- Idle
-//		- Sidestep
-//		- Walk
-//		- Brake
-// - _StandardAir
-//		- Jump
-//		- Fall
+// - Idle
+// - Sidestep
+// - Walk
+// - Brake
+// - Jump
+// - Fall
 // - Slide
 // - Climb
 // - Hurt
 // - Death
 // - Debug_FreeMovement
 
-// ================================
-stateMachine.add("StageStart", {
-	enter: function() {
+with (stateMachine.add("Inactive")) {
+	set_event("enter", function() {
 		isIntro = true;
 		canTakeDamage = false;
 		gravEnabled = false;
@@ -27,8 +24,8 @@ stateMachine.add("StageStart", {
 		introLock.add_actions(PlayerAction.PHYSICS);
 		introLock.activate();
 		pauseLock.activate();
-	},
-	leave: function() {
+	});
+	set_event("leave", function() {
 		isIntro = false;
 		canTakeDamage = true;
 		gravEnabled = true;
@@ -37,11 +34,10 @@ stateMachine.add("StageStart", {
 		introLock.deactivate();
 		introLock.remove_actions(PlayerAction.PHYSICS);
 		pauseLock.deactivate();
-	}
-});
-// ================================
-stateMachine.add("Intro", {
-	enter: function() {
+	});
+}
+with (stateMachine.add("Intro")) {
+	set_event("enter", function() {
 		isIntro = true;
 		canTakeDamage = false;
 		collideWithSolids = false;
@@ -55,21 +51,22 @@ stateMachine.add("Intro", {
 		pauseLock.activate();
 		
 		y = game_view().top_edge(0);
-	},
-	tick: function() {
-		if (animator.currentAnimationName == "teleport-idle") {
+	});
+	set_event("tick", function() {
+		if (stateMachine.substate == 0) {
 			y += 8;
 			
 			if (y >= ystart) {
 				y = ystart;
 				animator.play("teleport-in");
+				stateMachine.change_substate(1);
 				play_sfx(sfxTeleportIn);
 			}
 		} else if (animator.is_animation_finished()) {
-			stateMachine.change("Idle");
+			stateMachine.change_state("Idle");
 		}
-	},
-	leave: function() {
+	});
+	set_event("leave", function() {
 		isIntro = false;
 		collideWithSolids = true;
 		gravEnabled = true;
@@ -80,233 +77,157 @@ stateMachine.add("Intro", {
 		
 		introLock.deactivate();
 		pauseLock.deactivate();
-	}
-});
-// ================================
-stateMachine.add("_StandardGround", {
-	enter: function() {
-		slideBoostActive = false;
-		midairJumps = 0;
-	},
-	tick: function() {
-		var _jumpInput = inputs.is_pressed(InputActions.JUMP)
-			|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP));
-		if (_jumpInput && !self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
-			stateMachine.change("Jump");
+	});
+}
+with (stateMachine.add("Idle")) {
+	set_event("enter", function() {
+		self.common_state_ground("enter");
+		animator.play("idle");
+	});
+	set_event("tick", function() {
+		if (self.common_state_ground("tick"))
 			return;
-		}
 		
-		if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_GROUND))
-			image_xscale = xDir;
-	},
-	posttick: function() {
-		if (self.try_climbing()) {
-			stateMachine.change("Climb");
+		if (xDir != 0 && !self.is_action_locked(PlayerAction.MOVE_GROUND)) {
+			var _canSidestep = (stepFrames > 0);
+			if (stateMachine.get_previous_state() == "Walk")
+				_canSidestep &= (stateMachine.timer >= QUICK_TURN_BUFFER);
+			stateMachine.change_state(_canSidestep ? "Sidestep" : "Walk");
+		}
+	});
+	set_event("posttick", function() {
+		if (self.common_state_ground("posttick"))
 			return;
-		}
 		
-		if (self.try_sliding()) {
-			stateMachine.change("Slide");
+		if (is_object_type(objIce, groundInstance))
+			xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
+		else
+			xspeed.value = 0;
+	});
+}
+with (stateMachine.add("Sidestep")) {
+	set_event("enter", function() {
+		self.common_state_ground("enter");
+		move_and_collide_x(xDir);
+		move_and_collide_y(gravDir);
+		animator.play("sidestep");
+	});
+	set_event("tick", function() {
+		if (self.common_state_ground("tick"))
 			return;
-		}
 		
-		if (!ground) {
-			move_and_collide_y(gravDir);
-			stateMachine.change("Fall");
-			coyoteTimer = COYOTE_FALL_BUFFER;
-		}
-	}
-});
-// --------------------------------
-	stateMachine.add_child("_StandardGround", "Idle", {
-		enter: function() {
-			stateMachine.inherit();
-			animator.play("idle");
-		},
-		tick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (xDir != 0 && !self.is_action_locked(PlayerAction.MOVE_GROUND)) {
-				var _canSidestep = (stepFrames > 0);
-				if (stateMachine.is_previous_state("Walk"))
-					_canSidestep &= (stateMachine.timer >= 2);
-				stateMachine.change(_canSidestep ? "Sidestep" : "Walk");
-			}
-		},
-		posttick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (is_object_type(objIce, groundInstance))
-				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
-			else
-				xspeed.value = 0;
-		}
+		if (xDir == 0 || self.is_action_locked(PlayerAction.MOVE_GROUND))
+			stateMachine.change_state("Idle");
+		else if (stateMachine.timer >= stepFrames)
+			stateMachine.change_state("Walk");
 	});
-// --------------------------------
-	stateMachine.add_child("_StandardGround", "Sidestep", {
-		enter: function() {
-			stateMachine.inherit();
-			move_and_collide_x(xDir);
-			move_and_collide_y(gravDir);
-			animator.play("sidestep");
-		},
-		tick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (xDir == 0 || self.is_action_locked(PlayerAction.MOVE_GROUND)) {
-				stateMachine.change("Idle");
-				return;
-			}
-			
-			if (stateMachine.timer >= stepFrames)
-				stateMachine.change("Walk");
-		}
+	set_event("posttick", function() /*=>*/ { self.common_state_ground("posttick"); });
+}
+with (stateMachine.add("Walk")) {
+	set_event("enter", function() {
+		self.common_state_ground("enter");
+		animator.play("walk");
 	});
-// --------------------------------
-	stateMachine.add_child("_StandardGround", "Walk", {
-		enter: function() {
-			stateMachine.inherit();
-			animator.play("walk");
-		},
-		tick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (self.is_action_locked(PlayerAction.MOVE_GROUND))
-				stateMachine.change("Idle");
-			else if (xDir == 0)
-				stateMachine.change(brakeFrames > 0 ? "Brake" : "Idle");
-		},
-		posttick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (is_object_type(objIce, groundInstance))
-				xspeed.value = approach(xspeed.value, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
-			else
-				xspeed.value = walkSpeed * xDir;
-		}
-	});
-// --------------------------------
-	stateMachine.add_child("_StandardGround", "Brake", {
-		enter: function() {
-			stateMachine.inherit();
-			animator.play("brake");
-		},
-		tick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (self.is_action_locked(PlayerAction.MOVE_GROUND))
-				stateMachine.change("Idle");
-			else if (xDir != 0)
-				stateMachine.change("Walk");
-			else if (stateMachine.timer >= brakeFrames)
-				stateMachine.change("Idle");
-		},
-		posttick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (is_object_type(objIce, groundInstance))
-				xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
-			else
-				xspeed.value = brakeSpeed * xDir;
-		}
-	});
-// ================================
-stateMachine.add("_StandardAir", {
-	enter: function() {
-		ground = false;
-		groundInstance = noone;
-	},
-	tick: function() {
-		var _airSpeed = slideBoostActive ? slideSpeed : airSpeed;
-		xspeed.value = _airSpeed * xDir * !self.is_action_locked(PlayerAction.MOVE_AIR);
-		
-		if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_AIR))
-			image_xscale = xDir;
-	},
-	posttick: function() {
-		if (self.try_climbing()) {
-			stateMachine.change("Climb");
+	set_event("tick", function() {
+		if (self.common_state_ground("tick"))
 			return;
+		
+		if (self.is_action_locked(PlayerAction.MOVE_GROUND))
+			stateMachine.change_state("Idle");
+		else if (xDir == 0)
+			stateMachine.change_state(brakeFrames > 0 ? "Brake" : "Idle");
+	});
+	set_event("posttick", function() {
+		if (self.common_state_ground("posttick"))
+			return;
+		
+		if (is_object_type(objIce, groundInstance))
+			xspeed.value = approach(xspeed.value, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
+		else
+			xspeed.value = walkSpeed * xDir;
+	});
+}
+with (stateMachine.add("Brake")) {
+	set_event("enter", function() {
+		self.common_state_ground("enter");
+		animator.play("brake");
+	});
+	set_event("tick", function() {
+		if (self.common_state_ground("tick"))
+			return;
+		
+		if (self.is_action_locked(PlayerAction.MOVE_GROUND))
+			stateMachine.change_state("Idle");
+		else if (xDir == 0)
+			stateMachine.change_state(brakeFrames > 0 ? "Brake" : "Idle");
+	});
+	set_event("posttick", function() {
+		if (self.common_state_ground("posttick"))
+			return;
+		
+		if (is_object_type(objIce, groundInstance))
+			xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
+		else
+			xspeed.value = brakeSpeed * xDir;
+	});
+}
+with (stateMachine.add("Jump")) {
+	set_event("enter", function() {
+		self.common_state_air("enter");
+		yspeed.value = jumpSpeed * -gravDir;
+		animator.play("jump");
+		canMinJump = true;
+		coyoteTimer = 0;
+		jumpBufferTimer = 0;
+	});
+	set_event("tick", function() {
+		if (self.common_state_air("tick"))
+			return;
+		
+		if (canMinJump && yspeed.value * gravDir < -minJumpThreshold && !inputs.is_held(InputActions.JUMP)) {
+			yspeed.value = -minJumpCutoff;
+			canMinJump = false;
 		}
 		
-		if (ground) {
-			stateMachine.change(xDir == 0 ? "Idle" : "Walk");
-			play_sfx(sfxLand);
-		}
-	}
-});
-// --------------------------------
-	stateMachine.add_child("_StandardAir", "Jump", {
-		enter: function() {
-			stateMachine.inherit();
-			yspeed.value = jumpSpeed * -gravDir;
-			animator.play("jump");
-			canMinJump = true;
-			coyoteTimer = 0;
-			jumpBufferTimer = 0;
-		},
-		tick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
-			
-			if (canMinJump && yspeed.value * gravDir < -minJumpThreshold && !inputs.is_held(InputActions.JUMP)) {
-				yspeed.value = -minJumpCutoff;
-				canMinJump = false;
-			}
-			
-			if (yspeed.value * gravDir >= 0)
-				stateMachine.change("Fall");
-		}
+		if (yspeed.value * gravDir >= 0)
+			stateMachine.change_state("Fall");
 	});
-// --------------------------------
-	stateMachine.add_child("_StandardAir", "Fall", {
-		enter: function() {
-			stateMachine.inherit();
-			animator.play("fall");
-		},
-		tick: function() {
-			stateMachine.inherit();
-			if (stateMachine.has_just_changed())
-				return;
+	set_event("posttick", function() /*=>*/ { self.common_state_air("posttick"); });
+}
+with (stateMachine.add("Fall")) {
+	set_event("enter", function() {
+		self.common_state_air("enter");
+		animator.play("fall");
+	});
+	set_event("tick", function() {
+		if (self.common_state_air("tick"))
+			return;
+		
+		var _canJump = inputs.is_pressed(InputActions.JUMP) && (coyoteTimer > 0 || midairJumps < maxMidairJumps);
+		if (!_canJump)
+			return;
+		
+		if (coyoteTimer <= 0) {
+			midairJumps++;
+			slideBoostActive = false;
+			play_sfx(sfxBalladeShoot);
 			
-			if (inputs.is_pressed(InputActions.JUMP) && (coyoteTimer > 0 || midairJumps < maxMidairJumps)) {
-				if (coyoteTimer <= 0) {
-					midairJumps++;
-					slideBoostActive = false;
-					play_sfx(sfxBalladeShoot);
-					
-					for (var i = -1; i <= 1; i += 2) {
-						with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objGenericEffect)) {
-							sprite_index = sprSlideDust;
-							image_xscale = i;
-							animSpeed = 0.2;
-							destroyOnAnimEnd = true;
-							xspeed.value = i;
-						}
-					}
+			for (var i = -1; i <= 1; i += 2) {
+				with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objGenericEffect)) {
+					sprite_index = sprSlideDust;
+					image_xscale = i;
+					animSpeed = 0.2;
+					destroyOnAnimEnd = true;
+					xspeed.value = i;
 				}
-				stateMachine.change("Jump");
 			}
 		}
+		stateMachine.change_state("Jump");
 	});
-// ================================
-stateMachine.add("Slide", {
-	enter: function() {
+	set_event("posttick", function() /*=>*/ { self.common_state_air("posttick"); });
+}
+with (stateMachine.add("Slide")) {
+	set_event("enter", function() {
 		isSliding = true;
 		slideLock.activate();
 		if (!isCharging)
@@ -320,10 +241,10 @@ stateMachine.add("Slide", {
 		
 		with (instance_create_depth(bbox_horizontal(-image_xscale), bbox_vertical(image_yscale) - 4 * image_yscale, depth, objSlideDust))
 			image_xscale = -other.image_xscale;
-	},
-	posttick: function() {
+	});
+	set_event("posttick", function() {
 		if (self.try_climbing()) {
-			stateMachine.change("Climb");
+			stateMachine.change_state("Climb");
 			return;
 		}
 		
@@ -341,7 +262,7 @@ stateMachine.add("Slide", {
 		if (ground && _freeSpaceAbove && inputs.is_pressed(InputActions.JUMP)) {
 			if (!self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
 				slideBoostActive = canSlideBoost;
-				stateMachine.change("Jump");
+				stateMachine.change_state("Jump");
 				return;
 			}
 		}
@@ -349,14 +270,14 @@ stateMachine.add("Slide", {
 		var _freeSpaceBelow = !ground && !test_move_y(slideMaskHeightDelta * gravDir);
 		if (!ground) {
 			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
-			stateMachine.change("Fall");
+			stateMachine.change_state("Fall");
 			coyoteTimer = COYOTE_FALL_BUFFER;
 			return;
 		}
 		
 		if (xDir == -image_xscale && !self.is_action_locked(PlayerAction.TURN_GROUND)) {
 			if (_freeSpaceAbove) {
-				stateMachine.change("Idle");
+				stateMachine.change_state("Idle");
 				return;
 			}
 			
@@ -367,19 +288,18 @@ stateMachine.add("Slide", {
 		var _shouldEnd = xcoll != 0 || stateMachine.timer >= slideFrames || self.is_action_locked(PlayerAction.SLIDE);
 		if (_shouldEnd && (_freeSpaceAbove || _freeSpaceBelow)) {
 			move_and_collide_y(slideMaskHeightDelta * gravDir * (!_freeSpaceAbove && _freeSpaceBelow));
-			stateMachine.change(xDir == image_xscale ? "Walk" : (brakeFrames > 0 ? "Brake" : "Idle"));
+			stateMachine.change_state(xDir == image_xscale ? "Walk" : (brakeFrames > 0 ? "Brake" : "Idle"));
 		}
-	},
-	leave: function() {
+	});
+	set_event("leave", function() {
 		isSliding = false;
 		slideLock.deactivate();
 		slideLock.remove_actions(PlayerAction.CHARGE);
 		mask_index = maskNormal;
-	}
-});
-// ================================
-stateMachine.add("Climb", {
-	enter: function() {
+	});
+}
+with (stateMachine.add("Climb")) {
+	set_event("enter", function() {
 		x = bbox_x_center(ladderInstance);
 		y = clamp(y, ladderInstance.bbox_top - 8 * (gravDir > 0), ladderInstance.bbox_bottom + 8 * (gravDir < 0));
 		
@@ -393,26 +313,27 @@ stateMachine.add("Climb", {
 		isClimbing = true;
 		slideBoostActive = false;
 		midairJumps = 0;
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		if (!instance_exists(ladderInstance)) {
-			stateMachine.change("Fall");
+			stateMachine.change_state("Fall");
 			return;
 		}
 		
 		yspeed.value = climbSpeed * yDir * !isShooting * !self.is_action_locked(PlayerAction.CLIMB);
-		animator.set_time_scale(abs(yspeed.value) != 0);
 		
+		animator.set_time_scale(abs(yspeed.value) != 0);
 		if (animator.timeScale.value == 0)
 			animator.reset_frame_counter();
 		
+		// Hop off the ladder if we press jump
 		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !self.is_action_locked(PlayerAction.JUMP))
-			stateMachine.change("Fall");
-	},
-	posttick: function() {
+			stateMachine.change_state("Fall");
+	});
+	set_event("posttick", function() {
 		// Hitting ground while climbing down
 		if (sign(ycoll) == gravDir) {
-			stateMachine.change("Idle", function() {
+			stateMachine.change_state("Idle", function() {
 				stateMachine.run_current_event_function();
 				ground = true;
 				groundInstance = ycollInstance;
@@ -423,7 +344,7 @@ stateMachine.add("Climb", {
 		// Reached the bottom of the ladder?
 		var _reachedBottom = (gravDir >= 0) ? y > ladderInstance.bbox_bottom : y < ladderInstance.bbox_top;
 		if (_reachedBottom) {
-			stateMachine.change("Fall");
+			stateMachine.change_state("Fall");
 			return;
 		}
 		
@@ -433,20 +354,19 @@ stateMachine.add("Climb", {
 			var _shift = bbox_vertical(-gravDir, ladderInstance) - bbox_vertical(gravDir);
 			move_and_collide_y(_shift);
 			
-			stateMachine.change("Idle");
+			stateMachine.change_state("Idle");
 			ground = true;
 		}
-	},
-	leave: function() {
+	});
+	set_event("leave", function() {
 		isClimbing = false;
 		ladderInstance = noone;
 		gravEnabled = true;
 		yspeed.clear_all();
-	}
-});
-// ================================
-stateMachine.add("Hurt", {
-	enter: function() {
+	});
+}
+with (stateMachine.add("Hurt")) {
+	set_event("enter", function() {
 		isHurt = true;
 		hitTimer = 0;
 		iFrames = INFINITE_I_FRAMES;
@@ -463,26 +383,25 @@ stateMachine.add("Hurt", {
 		}
         
         play_sfx(sfxPlayerHit);
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		if (stateMachine.timer >= 32)
-			stateMachine.change(isSliding ? "Slide" : "Idle");
-	},
-	leave: function() {
+			stateMachine.change_state(isSliding ? "Slide" : "Idle");
+	});
+	set_event("leave", function() {
 		isHurt = false;
 		iFrames = 60;
 		hitTimer = 0;
 		hitstunLock.deactivate();
 		hitstunLock.remove_actions(PlayerAction.CHARGE);
-	}
-});
-// ================================
-stateMachine.add("Death", {
-	enter: function() {
+	});
+}
+with (stateMachine.add("Death")) {
+	set_event("enter", function() {
 		canTakeDamage = false;
 		canDieToPits = false;
 		
-		if (!is_undefined(playerUser)) {
+		if (self.is_user_controlled()) {
 			audio_stop_all();
 			
 			if (!diedToAPit) {
@@ -490,8 +409,8 @@ stateMachine.add("Death", {
 				defer(DeferType.STEP, function(__) /*=>*/ { queue_unpause(); }, 30, true, true);
 			}
 		}
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		if (stateMachine.timer < 1)
 			return;
 		
@@ -509,11 +428,17 @@ stateMachine.add("Death", {
 		}
 		
 		instance_destroy();
-	}
-});
-// ================================
-stateMachine.add("Debug_FreeMovement", {
-	enter: function() {
+	});
+	set_event("leave", function() {
+		isHurt = false;
+		iFrames = 60;
+		hitTimer = 0;
+		hitstunLock.deactivate();
+		hitstunLock.remove_actions(PlayerAction.CHARGE);
+	});
+}
+with (stateMachine.add("Debug_FreeMovement")) {
+	set_event("enter", function() {
 		isFreeMovement = true;
 		gravEnabled = false;
 		collideWithSolids = false;
@@ -523,8 +448,8 @@ stateMachine.add("Debug_FreeMovement", {
 		yspeed.clear_all();
 		freeMovementLock.activate();
 		play_sfx(sfxYasichi);
-	},
-	tick: function() {
+	});
+	set_event("tick", function() {
 		var _spd = 2 + (2 * inputs.is_held(InputActions.SHOOT)) + (6 * inputs.is_held(InputActions.SLIDE));
 		
 		x += _spd * xDir;
@@ -533,7 +458,9 @@ stateMachine.add("Debug_FreeMovement", {
 		
 		var _cellDir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
 		if (_cellDir != 0) {
-			if (inputs.is_held(InputActions.SLIDE))
+			if (inputs.is_held(InputActions.SHOOT))
+				skinPage = modf(skinPage + _cellDir, PlayerSpritesheetPage.COUNT);
+			else if (inputs.is_held(InputActions.SLIDE))
 				skinCellY = modf(skinCellY + _cellDir, global.spriteAtlas_Player.rows);
 			else
 				skinCellX = modf(skinCellX + _cellDir, global.spriteAtlas_Player.columns);
@@ -548,8 +475,8 @@ stateMachine.add("Debug_FreeMovement", {
 				destroyOnAnimEnd = true;
 			}
 		}
-	},
-	leave: function() {
+	});
+	set_event("leave", function() {
 		image_alpha = 1;
 		isFreeMovement = false;
 		gravEnabled = true;
@@ -558,5 +485,5 @@ stateMachine.add("Debug_FreeMovement", {
 		interactWithWater = true;
 		freeMovementLock.deactivate();
 		play_sfx(sfxYasichi);
-	}
-});
+	});
+}

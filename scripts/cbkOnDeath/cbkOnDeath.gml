@@ -33,14 +33,13 @@ function cbkOnDeath_prtBoss(_damageSource) {
         show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
     
     lifeState = LifeState.DEAD_ONSCREEN;
-    play_sfx(sfxDeath);
-    player_death_explosion(x, y, depth);
 	entity_clear_hitboxes();
+	entity_item_drop();
+	self.disconnect_hud();
 	
-	with (objSystem.hud) {
-		var _index = array_get_index(bossHUD, other.hudElement);
-		if (_index != NOT_FOUND)
-			array_delete(bossHUD, _index, 1);
+	if (doPlayerDeathExplosion) {
+		player_death_explosion(x, y, depth);
+		play_sfx(sfxDeath);
 	}
 }
 
@@ -65,7 +64,7 @@ function cbkOnDeath_prtPlayer(_damageSource) {
 		y += yspeed.integer;
     }
     
-    stateMachine.change("Death");
+    stateMachine.change_state("Death");
 }
 
 /// @func cbkOnDeath_prtProjectile(damage_source)

@@ -15,7 +15,7 @@ shootFlag = false;
 // == Callbacks ==
 onHurt = function(_damageSource) {
     cbkOnHurt_prtBoss(_damageSource);
-    stateMachine.change("Hurt");
+    stateMachine.change_state("Hurt");
 };
 onDeath = function(_damageSource) {
     cbkOnDeath_prtBoss(_damageSource);

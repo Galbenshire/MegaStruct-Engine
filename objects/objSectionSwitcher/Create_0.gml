@@ -1,6 +1,5 @@
 // State Machine
-stateMachine = new SnowState("_DeferPause");
-stateTimer = 0;
+stateMachine = new EntityState();
 // Movement
 xspeed = new Fractional();
 yspeed = new Fractional();

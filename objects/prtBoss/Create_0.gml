@@ -2,7 +2,7 @@ event_inherited();
 
 visible = false;
 
-stateMachine = new EntityState("!!Inactive");
+stateMachine = new EntityState();
 animator = new FrameAnimationPlayer();
 hudElement = new HUDElement_Boss(healthpointsStart, [healthColourPrimary, healthColourSecondary]);
 healthbarFiller = new Fractional(healthbarFillRate);
@@ -24,7 +24,6 @@ introPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 // Bool flags for when specific actions are ocurring
 isInactive = true;
 isIntro = false;
-isFinishedIntro = false;
 isTeleporting = false;
 isFillingHealthBar = false;
 isReady = false;

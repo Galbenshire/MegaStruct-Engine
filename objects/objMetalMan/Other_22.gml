@@ -1,7 +1,11 @@
 /// @description Animation Init
-animator.add_animation_non_loop("!!intro_spawn_dropin", 1, 8)
-    .add_property("image_index", [8]);
-animator.add_animation_non_loop_ext("!!intro_pose", [27, 9, 32])
+event_inherited();
+
+animator.add_animation_non_loop("!!dropin", 1, 8)
+	.add_property("image_index", [8]);
+animator.add_animation_non_loop("!!dropin-end", 1, 8)
+	.add_property("image_index", [0]);
+animator.add_animation_non_loop_ext("!!pose", [27, 9, 9])
     .add_property("image_index", [0, 2, 3]);
 
 animator.add_animation_ext("idle", [120, 8])
