@@ -1,0 +1,1 @@
+event_perform_object(objGeminiMan, ev_draw, 0);

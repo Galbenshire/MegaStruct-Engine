@@ -45,3 +45,4 @@ damageTable.add_source(objBassShot, 1);
 damageTable.add_source(objIceSlasher, 0);
 damageTable.add_source(objMetalBlade, 99);
 damageTable.add_source(objSearchSnake, 0);
+damageTable.add_source(objSkullBarrier, 0);

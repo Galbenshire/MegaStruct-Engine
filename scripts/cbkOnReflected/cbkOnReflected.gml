@@ -29,6 +29,8 @@ function cbkOnReflected_prtProjectile(_damage_source) {
     
     canTakeDamage = false;
     canDealDamage = false;
+    collideWithSolids = false;
+    gravEnabled = false;
     set_velocity_vector(6, 45 + 90 * (xspeed.value > 0));
     play_sfx(sfxReflect);
 }

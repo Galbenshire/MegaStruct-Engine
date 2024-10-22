@@ -1,7 +1,7 @@
 #region Leaps & Bounds
 
 /// @func calculate_arc_speed(start_x, start_y, end_x, end_y, yspeed, grav, limit)
-/// @desc Given a jump speed, this function calculates the speed needed to get from one position to another
+/// @desc Given a jump speed, this function calculates the x-speed needed to get from one position to another
 ///
 /// @param {number}  start_x  x-coordinate of the starting position
 /// @param {number}  start_y  y-coordinate of the starting position
@@ -11,7 +11,7 @@
 /// @param {number}  grav  The gravity in effect during the arc
 /// @param {number}  [limit]  Maximum possible speed. Defaults to 8.
 ///
-/// @returns {number}  The speed required to achieve the jump height
+/// @returns {number}  The x-speed required to make it to the destination
 function calculate_arc_speed(_startX, _startY, _endX, _endY, _yspeed, _grav, _limit = 8) {
 	if (_yspeed == 0 || _grav == 0)
 		return 0;

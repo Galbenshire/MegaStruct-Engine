@@ -1,6 +1,9 @@
 /// @description Post Tick
 event_inherited();
 
+if (stateMachine.get_current_state() == "Dying")
+	exit;
+
 tailTimer++;
 if (tailTimer > 75 && tailTimer mod 4 == 0) {
 	tailImgIndex = !tailImgIndex;

@@ -17,10 +17,12 @@ switch (moveDir) {
 	
 	case 1: // Moving UP a wall
 		if (ycoll != 0) {
-			if (__enableCeilings)
+			if (__enableCeilings) {
 				moveDir = 2;
-			else
+			} else {
+				deathExplode = true;
 				entity_kill_self();
+			}
 		} else if (!test_move_x(image_xscale)) {
 			move_and_collide_x(image_xscale);
 			move_and_collide_y(ceil(yprevious - y));

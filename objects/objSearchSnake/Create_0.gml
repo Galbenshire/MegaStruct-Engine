@@ -5,25 +5,29 @@ snakeAngle = 0;
 isSlithering = false;
 wasOnTopSolid = false;
 reflected = false;
+deathExplode = false;
 
 __enableCeilings = false;
 
 // Callbacks
 onReflected = function(_damageSource) {
-	cbkOnDeath_prtProjectile(_damageSource);
+	play_sfx(sfxReflect);
 	
-	gravEnabled = false;
-	collideWithSolids = false;
     reflected = true;
+    canTakeDamage = false;
+    canDealDamage = false;
+    collideWithSolids = false;
+    gravEnabled = false;
     
     hspeed = xspeed.value;
     vspeed = yspeed.value;
     set_velocity_vector(6, direction - 135);
 }
 onDeath = function(_damageSource) {
-    lifeState = LifeState.DEAD_ONSCREEN;
-    visible = false;
-    instance_create_depth(x, y, depth, objExplosion);
+	cbkOnDeath_prtProjectile(_damageSource);
+    
+    if (deathExplode)
+		instance_create_depth(x, y, depth, objExplosion);
 };
 onDraw = function(_whiteflash) {
     var _angle = image_angle;

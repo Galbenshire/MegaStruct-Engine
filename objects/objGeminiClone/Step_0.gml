@@ -1,0 +1,1 @@
+event_perform_object(objGeminiMan, ev_step, ev_step_normal);
