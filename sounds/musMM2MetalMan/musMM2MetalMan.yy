@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musMM2MetalMan",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":3,
+  "conversionMode":0,
+  "duration":38.350067,
+  "name":"musMM2MetalMan",
+  "parent":{
+    "name":"MM2",
+    "path":"folders/Music/MM2.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"musMM2MetalMan.ogg",
+  "type":0,
+  "volume":0.8,
+}

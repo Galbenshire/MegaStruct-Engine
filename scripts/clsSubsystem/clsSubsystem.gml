@@ -37,7 +37,6 @@ function Subsystem_Core() : Subsystem() constructor {
         game_view().reset_all();
         
         // Misc. Stuff
-        
         game_set_speed(GAME_SPEED, gamespeed_fps);
         queue_unpause();
         signal_bus().prune_all_signals();
@@ -472,6 +471,17 @@ function Subsystem_Level() : Subsystem() constructor {
     };
 }
 
+/// @func Subsystem_Music()
+/// @desc Manages playing music
+function Subsystem_Music() : Subsystem() constructor {
+	track = undefined; /// @is {sound_instance}
+	
+	static roomEnd = function() {
+		if (!is_undefined(track))
+			audio_stop_sound(track);
+    };
+}
+
 /// @func Subsystem_Input()
 /// @desc Manages player input
 function Subsystem_Input() : Subsystem() constructor {
@@ -505,7 +515,7 @@ function Subsystem_Input() : Subsystem() constructor {
 }
 
 /// @func Subsystem_Pause()
-/// @desc Manages the pausing of the game
+/// @desc Manages the pausing of entites in the game
 function Subsystem_Pause() : Subsystem() constructor {
 	pauseQueue = 0;
 	__pauseCache = false;

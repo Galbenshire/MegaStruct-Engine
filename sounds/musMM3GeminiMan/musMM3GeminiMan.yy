@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musMM3GeminiMan",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":3,
+  "conversionMode":0,
+  "duration":55.39027,
+  "name":"musMM3GeminiMan",
+  "parent":{
+    "name":"MM3",
+    "path":"folders/Music/MM3.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"musMM3GeminiMan.ogg",
+  "type":0,
+  "volume":0.9,
+}

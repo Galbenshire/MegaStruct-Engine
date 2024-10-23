@@ -1,0 +1,1 @@
+play_music(MusicAsset.MM3_GEMINIMAN);

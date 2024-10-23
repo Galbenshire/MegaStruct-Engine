@@ -1,1 +1,2 @@
 level.roomEnd();
+music.roomEnd();

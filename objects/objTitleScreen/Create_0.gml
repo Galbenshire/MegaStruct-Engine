@@ -10,6 +10,7 @@ options = [
 		characterIndex = modf(characterIndex + 1, CharacterType.COUNT);
         global.player.characterID = characterIndex;
         options[1][0] = string("CHARACTER: {0}", characters[characterIndex].name);
+        play_sfx(sfxMenuMove);
     }],
     ["OPTIONS", function() /*=>*/ { go_to_room(rmOptions); }]
 ];
@@ -18,5 +19,5 @@ currentOption = optionCount - 1;
 
 buildDate = date_date_string(GM_build_date);
 
-play_sfx(sfxImportantItem);
+play_music(MusicAsset.MM5_TITLE_SCREEN);
 array_reverse_ext(options);

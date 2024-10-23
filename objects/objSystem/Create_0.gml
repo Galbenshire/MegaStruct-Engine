@@ -10,5 +10,6 @@ flasher = new Subsystem_Flasher();
 hud = new Subsystem_HUD();
 input = new Subsystem_Input();
 level = new Subsystem_Level();
+music = new Subsystem_Music();
 pause = new Subsystem_Pause();
 shaker = new Subsystem_Shaker();

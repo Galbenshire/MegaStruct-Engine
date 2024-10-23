@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"JUKEBOX",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"JUKEBOX",
+  "parent":{
+    "name":"_System",
+    "path":"folders/_System.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

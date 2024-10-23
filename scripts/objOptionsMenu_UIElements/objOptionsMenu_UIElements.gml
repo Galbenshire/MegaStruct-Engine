@@ -123,21 +123,29 @@ function OptionsMenu_Item_ScreenSize() : OptionsMenu_Item("screensize", "SCREEN 
 
 function OptionsMenu_Item_Slider(_id, _label) : OptionsMenu_Item(_id, _label) constructor {
 	static on_x_dir = function(_dir) {
-		with (options_data()) {
-            var _prevVolume = self[$ other.id],
-                _newVolume = clamp(_prevVolume + 0.1 * _dir, 0, 1);
-            self[$ other.id] = round_to(_newVolume, 0.1);
-            
-            if (_newVolume != _prevVolume) {
-                other.refresh_value();
-                play_sfx(sfxMenuMove);
-            }
+		var _prevVolume = options_data()[$ id],
+            _newVolume = clamp(_prevVolume + 0.1 * _dir, 0, 1);
+        options_data()[$ id] = round_to(_newVolume, 0.1);
+        
+        if (_newVolume != _prevVolume) {
+			self.refresh_value();
+			play_sfx(sfxMenuMove);
+			
+			if (id != "volumeSound")
+				self.update_music_volume();
         }
 	};
 	
 	/// @method refresh_value()
     static refresh_value = function() {
 		value = floor(options_data()[$ id] * 100);
+    };
+    
+    static update_music_volume = function() {
+		with (objSystem.music) {
+			if (!is_undefined(track))
+				audio_sound_gain(track, options_data().get_music_volume(), 0);
+		}
     };
 }
 

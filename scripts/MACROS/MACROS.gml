@@ -199,6 +199,29 @@ enum InputActions {
 #endregion
 
 
+#region Music
+
+// IDs of each piece of music in the engine
+enum MusicAsset {
+	// Mega Man 1
+	MM1_CUTMAN,
+	
+	// Mega Man 2
+	MM2_METALMAN,
+	
+	// Mega Man 3
+	MM3_GEMINIMAN,
+	
+	// Mega Man 5
+	MM5_TITLE_SCREEN,
+	MM5_PASSWORD,
+	
+	COUNT
+}
+
+#endregion
+
+
 #region Physics
 
 // The types of solids in this engine
@@ -365,6 +388,14 @@ enum Line {
 	y1, /// @is {number}
 	x2, /// @is {number}
 	y2, /// @is {number}
+	sizeof
+}
+
+enum MusicTrack {
+	asset, /// @is {sound}
+	loops, /// @is {bool}
+	loopStart, /// @is {number}
+	loopEnd, /// @is {number}
 	sizeof
 }
 

@@ -35,6 +35,7 @@ if (!variable_global_exists("__gameInit")) {
 		xoffset: 25,
 		yoffset: 21
 	}); /// @is {SpriteAtlas}
+	global.musicTracks = __init_jukebox();
 	
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");

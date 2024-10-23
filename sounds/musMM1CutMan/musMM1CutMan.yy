@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musMM1CutMan",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":3,
+  "conversionMode":0,
+  "duration":41.540543,
+  "name":"musMM1CutMan",
+  "parent":{
+    "name":"MM1",
+    "path":"folders/Music/MM1.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"musMM1CutMan.ogg",
+  "type":0,
+  "volume":0.9,
+}
