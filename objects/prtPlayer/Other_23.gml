@@ -158,8 +158,10 @@ with (stateMachine.add("Brake")) {
 		
 		if (self.is_action_locked(PlayerAction.MOVE_GROUND))
 			stateMachine.change_state("Idle");
-		else if (xDir == 0)
-			stateMachine.change_state(brakeFrames > 0 ? "Brake" : "Idle");
+		else if (xDir != 0)
+			stateMachine.change_state("Walk");
+		else if (stateMachine.timer >= brakeFrames)
+			stateMachine.change_state("Idle");
 	});
 	set_event("posttick", function() {
 		if (self.common_state_ground("posttick"))
@@ -168,7 +170,7 @@ with (stateMachine.add("Brake")) {
 		if (is_object_type(objIce, groundInstance))
 			xspeed.value = approach(xspeed.value, 0, DEFAULT_ICE_DECEL_IDLE);
 		else
-			xspeed.value = brakeSpeed * xDir;
+			xspeed.value = brakeSpeed * image_xscale;
 	});
 }
 with (stateMachine.add("Jump")) {

@@ -16,7 +16,7 @@ event_inherited();
 		_y = y + _y * image_yscale;
 		
 		if (_id == "bullet") {
-			with (spawn_entity(_x, _y, depth - 0.5, objGenericEnemyBullet, { targetingPreset: "No Target" })) {
+			with (spawn_entity(_x, _y, depth - 0.5, objGenericEnemyBullet)) {
 				sprite_index = sprBusterShot;
 				image_xscale = other.image_xscale;
 				owner = other.id;

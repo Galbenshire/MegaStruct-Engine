@@ -11,7 +11,6 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"attackDelay","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"factionLayer","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Faction.PLAYER_PROJECTILE",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"factionMask","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Faction.ENEMY, Faction.ENEMY_PROJECTILE",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"targetingPreset","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"No Target\"",},
   ],
   "parent":{
     "name":"Mega Buster",

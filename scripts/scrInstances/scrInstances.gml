@@ -29,9 +29,9 @@ function calibrate_direction_point(_x, _scope = self) {
 /// @param {function<instance,int,bool>}  predicate  The Predicate Method to run on each instance
 ///
 /// @returns {bool}  Whether the predicate was fulfilled on all instances (true), or not (false)
+///					 Note: If there are no instances of the object, `true` is returned
 function instance_all(_obj, _predicate) {
-    var _count = instance_number(_obj);
-    for (var i = 0; i < _count; i++) {
+    for (var i = 0, n = instance_number(_obj); i < n; i++) {
         if (!_predicate(instance_find(_obj, i), i))
             return false;
     }
@@ -45,9 +45,9 @@ function instance_all(_obj, _predicate) {
 /// @param {function<instance,int,bool>}  predicate  The Predicate Method to run on each instance
 ///
 /// @returns {bool}  Whether the predicate was fulfilled on any instance (true), or not (false)
+///					 Note: If there are no instances of the object, `false` is returned
 function instance_any(_obj, _predicate) {
-    var _count = instance_number(_obj);
-    for (var i = 0; i < _count; i++) {
+    for (var i = 0, n = instance_number(_obj); i < n; i++) {
         if (_predicate(instance_find(_obj, i), i))
             return true;
     }

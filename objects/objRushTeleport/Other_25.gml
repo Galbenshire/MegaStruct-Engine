@@ -1,4 +1,4 @@
-/// @description Insert description here
+/// @description Post Tick
 if (phase == 0 && (ycoll != 0 || (teleportObject == objRushJet && collideWithSolids))) {
     phase = 1;
     yspeed.value = 0;

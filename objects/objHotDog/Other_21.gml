@@ -16,7 +16,7 @@ event_inherited();
 			_x = x + _x * image_xscale;
 			_y = y + _y * image_yscale;
 			
-			with (spawn_entity(_x, _y, depth - 0.5, objGenericEnemyBullet, { targetingPreset: "No Target" })) {
+			with (spawn_entity(_x, _y, depth - 0.5, objGenericEnemyBullet)) {
 				sprite_index = sprHotDogFire;
 				image_index = other.stateMachine.timer;
 				owner = other.id;

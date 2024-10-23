@@ -65,7 +65,7 @@
     {"$GMObjectProperty":"v1","%Name":"healthbarFillAccel","filters":[],"listItems":[],"multiselect":false,"name":"healthbarFillAccel","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1/180","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"lockControlsDuringIntro","filters":[],"listItems":[],"multiselect":false,"name":"lockControlsDuringIntro","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v1","%Name":"lockScreenTransitions","filters":[],"listItems":[],"multiselect":false,"name":"lockScreenTransitions","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"doPlayerDeathExplosion","filters":[],"listItems":[],"multiselect":false,"name":"doPlayerDeathExplosion","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
+    {"$GMObjectProperty":"v1","%Name":"doPlayerDeathExplosion","filters":[],"listItems":[],"multiselect":false,"name":"doPlayerDeathExplosion","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

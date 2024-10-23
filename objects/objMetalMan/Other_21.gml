@@ -25,7 +25,7 @@ event_inherited();
 			animSpeed = 0.35;
 			contactDamage = 3;
 			xspeed.value = 4 * other.image_xscale;
-			set_velocity_vector(4, point_direction(x, y, reticle.x, reticle.y));
+			set_velocity_vector(4, point_direction(x, y, other.reticle.x, other.reticle.y));
 			return self;
 		}
 		

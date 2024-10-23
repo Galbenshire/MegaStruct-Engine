@@ -26,13 +26,14 @@ with (stateMachine.add("!!Inactive")) {
 		visible = false;	
 	});
 	set_event("tick", function() {
-		if (instance_all(prtPlayer, function(el, i) /*=>*/ {return !el.isIntro})) {
-			if (introType == "Custom") {
-				assert(!string_empty(customIntroState), $"{object_get_name(object_index)} was set to have a custom intro spawn, but the state was not specified");
-				stateMachine.change_state(customIntroState);
-			} else {
-				stateMachine.change_state($"!!Intro_Spawn_{introType}");
-			}
+		if (!instance_all(prtPlayer, function(el, i) /*=>*/ {return !el.isIntro}))
+			return;
+		
+		if (introType == "Custom") {
+			assert(!string_empty(customIntroState), $"{object_get_name(object_index)} was set to have a custom intro spawn, but the state was not specified");
+			stateMachine.change_state(customIntroState);
+		} else {
+			stateMachine.change_state($"!!Intro_Spawn_{introType}");
 		}
 	});
 	set_event("leave", function() /*=>*/ { isInactive = false; });

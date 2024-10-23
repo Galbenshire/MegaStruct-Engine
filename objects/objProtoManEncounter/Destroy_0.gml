@@ -1,0 +1,2 @@
+encounterLock.deactivate();
+encounterPauseLock.deactivate();

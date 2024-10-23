@@ -1,4 +1,3 @@
-/// @description Insert description here
 event_inherited();
 
 characterSpecs = character_create_from_id(characterID); /// @is {Character}
