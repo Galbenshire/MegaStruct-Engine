@@ -6,7 +6,8 @@ Designed to make use out of the many features 2.3 offers over 1
 - Mega Man
   Standard Mega Man beaviour
 - Proto Man
-  No shield yet, but he does offer slightly more agility over his brother
+  Slightly more agile then his brother
+  Has a shield that deflects most shots when jumping (Proto Shield-style reflecting not yet implemented)
   His feet are a bit slippery tho, and he takes more damage from stuff
 - Bass
   Instead of a charging Buster, he has a aimable, rapid-fire one
@@ -15,6 +16,7 @@ Designed to make use out of the many features 2.3 offers over 1
 === STAGES ===
 - Cut Man (MM1)
 - Metal Man (MM2)
+- Gemini Man (MM3)
 - Test Stage
 
 === CONTROLS ===
