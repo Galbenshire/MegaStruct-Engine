@@ -18,7 +18,7 @@ clone = noone;
 laserCounter = 120;
 stallCache = {};
 
-// == Callbacks ==
+// == Callbacks (common to both Gemini & his clone) ==
 onSpawn = function() {
     cbkOnSpawn_prtEntity();
     
@@ -33,20 +33,6 @@ onSpawn = function() {
 onDespawn = function() {
     cbkOnDespawn_prtEntity();
     event_perform(ev_cleanup, 0);
-};
-onHurt = function(_damageSource) {
-	cbkOnHurt_prtBoss(_damageSource);
-	
-	with (clone)
-		iFrames = other.iFrames;
-	
-	if (!isAlone && (healthpoints < (healthpointsStart / 2))) {
-		with (clone)
-			entity_kill_self();
-		
-		isStalled = false;
-		isAlone = true;
-	}
 };
 
 // == Damage Table ==
