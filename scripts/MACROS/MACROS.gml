@@ -202,15 +202,18 @@ enum InputActions {
 #region Music
 
 // IDs of each piece of music in the engine
-enum MusicAsset {
+enum Music {
 	// Mega Man 1
 	MM1_CUTMAN,
+	MM1_BOSSRM,
 	
 	// Mega Man 2
 	MM2_METALMAN,
+	MM2_BOSS,
 	
 	// Mega Man 3
 	MM3_GEMINIMAN,
+	MM3_BOSSRM,
 	
 	// Mega Man 5
 	MM5_TITLE_SCREEN,
@@ -388,6 +391,13 @@ enum Line {
 	y1, /// @is {number}
 	x2, /// @is {number}
 	y2, /// @is {number}
+	sizeof
+}
+
+enum MusicSnapshot {
+	musicID, /// @is {int}
+	startAt, /// @is {number}
+	volume, /// @is {number}
 	sizeof
 }
 

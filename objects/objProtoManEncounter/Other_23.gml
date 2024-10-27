@@ -16,6 +16,7 @@ with (stateMachine.add("Inactive")) {
 }
 with (stateMachine.add("Whistle")) {
 	set_event("enter", function() {
+		pause_music();
 		play_sfx(whistleSFX);
 		encounterLock.activate();
 		encounterPauseLock.activate();
@@ -59,6 +60,7 @@ with (stateMachine.add("ProtoMan")) {
 }
 with (stateMachine.add("TeleportAway")) {
 	set_event("enter", function() {
+		resume_music();
         play_sfx(sfxTeleportOut);
 		animator.play("teleport-out");
 	});

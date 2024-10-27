@@ -6,6 +6,7 @@ stateMachine = new EntityState();
 animator = new FrameAnimationPlayer();
 hudElement = new HUDElement_Boss(healthpointsStart, [healthColourPrimary, healthColourSecondary]);
 healthbarFiller = new Fractional(healthbarFillRate);
+preFightMusicCache = array_create(MusicSnapshot.sizeof);
 introCache = {}; // Store some variables, so we can restore them after the intro
 
 // Teleportin'

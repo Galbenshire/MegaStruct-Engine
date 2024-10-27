@@ -19,5 +19,5 @@ currentOption = optionCount - 1;
 
 buildDate = date_date_string(GM_build_date);
 
-play_music(MusicAsset.MM5_TITLE_SCREEN);
+play_music(Music.MM5_TITLE_SCREEN);
 array_reverse_ext(options);

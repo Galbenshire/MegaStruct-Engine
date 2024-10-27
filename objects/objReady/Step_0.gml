@@ -6,5 +6,7 @@ if (--flashTimer <= 0) {
     flashTimer = 7;
 }
 
-if (--countdown <= 0)
+if (--countdown <= 0 && !audio_is_playing(whistleSFX)) {
+    resume_music();
     instance_destroy();
+}

@@ -1,1 +1,1 @@
-play_music(MusicAsset.MM3_GEMINIMAN);
+play_music(Music.MM3_GEMINIMAN);

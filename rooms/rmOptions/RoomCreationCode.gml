@@ -1,1 +1,1 @@
-play_music(MusicAsset.MM5_PASSWORD);
+play_music(Music.MM5_PASSWORD);

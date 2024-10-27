@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musMM3BossRM",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":32.2571,
+  "name":"musMM3BossRM",
+  "parent":{
+    "name":"MM3",
+    "path":"folders/Music/MM3.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"musMM3BossRM.ogg",
+  "type":0,
+  "volume":0.9,
+}

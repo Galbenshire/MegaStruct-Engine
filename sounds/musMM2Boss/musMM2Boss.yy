@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"musMM2Boss",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":19.172358,
+  "name":"musMM2Boss",
+  "parent":{
+    "name":"MM2",
+    "path":"folders/Music/MM2.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"musMM2Boss.ogg",
+  "type":0,
+  "volume":0.8,
+}

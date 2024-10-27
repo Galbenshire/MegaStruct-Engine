@@ -1,1 +1,1 @@
-play_music(MusicAsset.MM1_CUTMAN);
+play_music(Music.MM1_CUTMAN);

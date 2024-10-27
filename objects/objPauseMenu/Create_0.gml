@@ -16,4 +16,5 @@ weaponCount = 0;
 oldWeapon = global.player.body.weapon;
 
 event_user(0);
+pause_all_sfx();
 play_sfx(sfxPause);

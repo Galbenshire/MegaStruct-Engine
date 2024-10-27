@@ -37,6 +37,13 @@ function cbkOnDeath_prtBoss(_damageSource) {
 	entity_item_drop();
 	self.disconnect_hud();
 	
+	if (stopMusicOnDeath) {
+		audio_stop_all();
+	} else if (playBossMusic) {
+		play_music(preFightMusicCache[MusicSnapshot.musicID], preFightMusicCache[MusicSnapshot.volume]);
+		audio_sound_set_track_position(objSystem.music.track, preFightMusicCache[MusicSnapshot.startAt]);
+	}
+	
 	if (doPlayerDeathExplosion) {
 		player_death_explosion(x, y, depth);
 		play_sfx(sfxDeath);

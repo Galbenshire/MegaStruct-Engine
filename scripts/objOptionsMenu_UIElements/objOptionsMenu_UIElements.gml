@@ -130,22 +130,13 @@ function OptionsMenu_Item_Slider(_id, _label) : OptionsMenu_Item(_id, _label) co
         if (_newVolume != _prevVolume) {
 			self.refresh_value();
 			play_sfx(sfxMenuMove);
-			
-			if (id != "volumeSound")
-				self.update_music_volume();
+			update_music_volume();
         }
 	};
 	
 	/// @method refresh_value()
     static refresh_value = function() {
 		value = floor(options_data()[$ id] * 100);
-    };
-    
-    static update_music_volume = function() {
-		with (objSystem.music) {
-			if (!is_undefined(track))
-				audio_sound_gain(track, options_data().get_music_volume(), 0);
-		}
     };
 }
 

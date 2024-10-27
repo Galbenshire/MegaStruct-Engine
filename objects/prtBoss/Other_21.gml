@@ -16,6 +16,13 @@
 					introLock.activate();
 					introPauseLock.activate();
 				}
+				
+				if (playBossMusic) {
+					preFightMusicCache[MusicSnapshot.musicID] = objSystem.music.trackID;
+					preFightMusicCache[MusicSnapshot.startAt] = audio_sound_get_track_position(objSystem.music.track);
+					preFightMusicCache[MusicSnapshot.volume] = objSystem.music.trackVolume;
+					play_music(bossMusicID);
+				}
 				break;
 			
 			case "posttick":

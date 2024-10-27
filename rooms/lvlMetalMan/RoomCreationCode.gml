@@ -1,1 +1,1 @@
-play_music(MusicAsset.MM2_METALMAN);
+play_music(Music.MM2_METALMAN);

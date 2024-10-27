@@ -414,8 +414,6 @@ function Subsystem_Level() : Subsystem() constructor {
 		if (__startLevel) {
 			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
 			checkpoint = variable_clone(objDefaultSpawn.checkpointData);
-			data = {};
-			pickups = [];
 		}
 		
 		var _spawnX = checkpoint[CheckpointData.x],
@@ -455,7 +453,10 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		// The default level start sequence
 		// (might offer an option in the future to override this)
-		instance_create_depth(0, 0, system.depth + 1, objReady);
+		with (instance_create_depth(0, 0, system.depth + 1, objReady)) {
+			if (other.__startLevel && global.player.characterID == CharacterType.PROTO)
+				whistleSFX = play_sfx(sfxProtoWhistle);
+		}
 		with (prtPlayer) {
 			if (self.is_user_controlled()) {
 				stateMachine.change_state("Inactive");
@@ -468,17 +469,23 @@ function Subsystem_Level() : Subsystem() constructor {
     
     static roomEnd = function() {
 		pauseStack.remove_all_switches();
+		
+		if (__startLevel) {
+			data = {};
+			pickups = [];
+		}
     };
 }
 
 /// @func Subsystem_Music()
 /// @desc Manages playing music
 function Subsystem_Music() : Subsystem() constructor {
-	track = undefined; /// @is {sound_instance}
+	track = create_sound_instance();
+	trackID = 0;
+	trackVolume = 0;
 	
 	static roomEnd = function() {
-		if (!is_undefined(track))
-			audio_stop_sound(track);
+		audio_stop_sound(track);
     };
 }
 

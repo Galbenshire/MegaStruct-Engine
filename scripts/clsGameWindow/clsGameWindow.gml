@@ -14,7 +14,7 @@ function GameWindow() constructor {
 	/// @param {bool}  [defer]  If true, centering is delayed by a single frame. Defaults to true.
 	static center_window = function(_defer/*: bool*/ = true) {
 		if (_defer)
-			time_source_start(__deferWindowCenter);
+			call_later(2, time_source_units_frames, function() /*=>*/ { window_center(); });
 		else
 			window_center();
 	};
@@ -40,14 +40,6 @@ function GameWindow() constructor {
 			display_reset(0, vsync);
 		}
 	};
-	
-	#endregion
-	
-	#region Misc.
-	
-	static __deferWindowCenter = time_source_create(time_source_global, 2, time_source_units_frames, function() {
-		window_center();
-	}); /// Time source to delay window centering by a single frame
 	
 	#endregion
 }
