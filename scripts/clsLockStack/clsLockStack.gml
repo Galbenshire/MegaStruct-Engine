@@ -17,8 +17,9 @@ function LockStack() constructor {
     /// -- remove_all_switches()
 	/// Releases all locks currently in the stack
     static remove_all_switches = function() {
+        while (!array_empty(switches))
+			self.remove_switch(switches[0]);
         counter = 0;
-        switches = [];
     };
     
     /// -- remove_switch(lock_switch)
@@ -30,7 +31,7 @@ function LockStack() constructor {
         if (_index == NOT_FOUND)
 			return;
         
-        counter -= (_lockSwitch.active);
+        _lockSwitch.remove_from_stack();
         array_delete(switches, _index, 1);
     };
     
@@ -45,7 +46,14 @@ function LockStack() constructor {
     /// -- update_counter()
 	/// Updates the lock stack's counter
     static update_counter = function() {
-		counter = array_reduce(switches, function(_prev, _curr, __) /*=>*/ {return _prev + _curr.active}, 0);
+		counter = 0;
+		
+		var i = 0;
+		repeat(array_length(switches)) {
+			if (switches[i].active)
+				counter++;
+			i++;
+		}
     };
 }
 
@@ -72,19 +80,18 @@ function LockStackSwitch(_lockStack) constructor {
 	///
 	/// @param {LockStack}  lock_stack  The lock stack to assign this switch to
     static assign_to_stack = function(_lockStack) {
-		if (is_assigned())
-			return;
-		stack = _lockStack;
-		stack.add_switch(self);
+		if (!self.is_assigned()) {
+			stack = _lockStack;
+			stack.add_switch(self);
+		}
     };
     
     /// -- deactivate()
 	/// Deactivates this switch, potentially unlocking its assigned stack
     static deactivate = function() {
-		if (!active || !is_assigned())
-			return;
+		if (active && self.is_assigned())
+			stack.counter--;
 		active = false;
-		stack.counter--;
     };
     
     /// -- is_assigned()
@@ -98,11 +105,10 @@ function LockStackSwitch(_lockStack) constructor {
     /// -- remove_from_stack()
 	/// Removes this switch from its assigned lock stack
     static remove_from_stack = function() {
-		if (!is_assigned())
+		if (!self.is_assigned())
 			return;
-		stack.remove_switch(self);
+		self.deactivate();
 		stack = undefined;
-		active = false;
     };
     
     // - Initialize

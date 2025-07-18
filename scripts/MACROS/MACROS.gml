@@ -314,9 +314,9 @@ enum PlayerAction {
 	
 	//-- Special Shortcuts
 	// Covers both MOVE_GROUND and MOVE_AIR
-	MOVE,
+	MOVE_FULL,
 	// Covers both TURN_GROUND and TURN_AIR
-	TURN
+	TURN_FULL
 }
 
 enum PlayerSpritesheetPage {

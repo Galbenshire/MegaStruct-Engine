@@ -6,7 +6,7 @@ stateMachine = new EntityState();
 
 // Variables to store various lockpool locks
 encounterLock = new PlayerLockPoolSwitch(global.player.lockpool,
-	PlayerAction.MOVE, PlayerAction.TURN,
+	PlayerAction.MOVE_FULL, PlayerAction.TURN_FULL,
 	PlayerAction.JUMP, PlayerAction.SLIDE,
 	PlayerAction.SHOOT, PlayerAction.CHARGE,
 	PlayerAction.CLIMB);

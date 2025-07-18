@@ -53,6 +53,7 @@ if (!variable_global_exists("__gameInit")) {
 	global.switchingSections = false; /// @is {bool}
 	global.roomTimer = 0; /// @is {int}
 	global.systemTimer = 0; /// @is {int}
+	global.hitStunTimer = 0; /// @is {int}
 	
 	// Unlikely to change that much, if at all
 	global.nextRoom = room; /// @is {room}

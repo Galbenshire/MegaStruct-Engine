@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"clsInputReader",
   "parent":{
-    "name":"Classes",
-    "path":"folders/_System/Classes.yy",
+    "name":"Input",
+    "path":"folders/_System/Classes/Input.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

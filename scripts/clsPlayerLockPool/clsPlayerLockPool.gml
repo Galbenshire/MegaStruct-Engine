@@ -2,7 +2,9 @@
 /// @desc A variant of LockStack designed to lock the many actions a player can take
 function PlayerLockPool() constructor {
     counters = array_create(PlayerAction.COUNT, 0); /// @is {array<int>}
+    
     switches = []; /// @is {array<PlayerLockPoolSwitch>}
+    switchCount = 0;
     
     /// -- add_switch(lock_switch)
 	/// Adds a lock switch into this lockpool
@@ -11,10 +13,10 @@ function PlayerLockPool() constructor {
     static add_switch = function(_lockSwitch) {
         array_push(switches, _lockSwitch);
         
-        if (!_lockSwitch.active)
-			return;
-        for (var i = 0; i < PlayerAction.COUNT; i++)
-			counters[i] += (_lockSwitch.actions & (1 << i) > 0);
+        if (_lockSwitch.active) {
+			for (var i = 0; i < PlayerAction.COUNT; i++)
+				counters[i] += bitmask_has_bit(_lockSwitch.actions, (1 << i));
+        }
     };
     
     /// @method is_any_locked(...actions)
@@ -39,10 +41,10 @@ function PlayerLockPool() constructor {
 	/// @returns {bool}  Whether the action is locked (true) or not (false)
     static is_locked = function(_action) {
         switch (_action) {
-            case PlayerAction.MOVE:
-                return is_locked(PlayerAction.MOVE_GROUND) || is_locked(PlayerAction.MOVE_AIR);
-            case PlayerAction.TURN:
-                return is_locked(PlayerAction.TURN_GROUND) || is_locked(PlayerAction.TURN_AIR);
+            case PlayerAction.MOVE_FULL:
+                return is_locked(PlayerAction.MOVE_GROUND) && is_locked(PlayerAction.MOVE_AIR);
+            case PlayerAction.TURN_FULL:
+                return is_locked(PlayerAction.TURN_GROUND) && is_locked(PlayerAction.TURN_AIR);
             default:
                 return (counters[_action] > 0);
         }
@@ -52,8 +54,14 @@ function PlayerLockPool() constructor {
     /// -- remove_all_switches()
 	/// Releases all locks currently in the lockpool
     static remove_all_switches = function() {
-        counters = array_create(PlayerAction.COUNT, 0);
-        switches = [];
+        while (!array_empty(switches))
+			self.remove_switch(switches[0]);
+		
+		var i = 0;
+		repeat(PlayerAction.COUNT) {
+			counters[i] = 0;
+			i++;
+		}
     };
     
     /// -- remove_switch(lock_switch)
@@ -64,27 +72,27 @@ function PlayerLockPool() constructor {
         var _index = array_get_index(switches, _lockSwitch);
         if (_index == NOT_FOUND)
 			return;
-        
+		
+		_lockSwitch.remove_from_pool();
         array_delete(switches, _index, 1);
-        
-        if (!_lockSwitch.active)
-			return;
-        for (var i = 0; i < PlayerAction.COUNT; i++)
-			counters[i] -= (_lockSwitch.actions & (1 << i) > 0);
     };
     
     /// -- update_counters()
 	/// Updates the lockpool's counters
     static update_counters = function() {
-		counters = array_create(PlayerAction.COUNT, 0);
+		var i = 0;
+		repeat(PlayerAction.COUNT) {
+			counters[i] = 0;
+			i++;
+		}
 		
-		var _switchCount = array_length(switches);
-		for (var i = 0; i < _switchCount; i++) {
-			if (!switches[i].active)
-				continue;
-			
-			for (var j = 0; j < PlayerAction.COUNT; j++)
-				counters[j] += (switches[i].actions & (1 << j) > 0);
+		i = 0;
+		repeat(array_length(switches)) {
+			if (switches[i].active) {
+				for (var j = 0; j < PlayerAction.COUNT; j++)
+					counters[j] += bitmask_has_bit(switches[i].actions, 1 << j);
+			}
+			i++;
 		}
     };
 }
@@ -104,12 +112,14 @@ function PlayerLockPoolSwitch(_lockPool) constructor {
     /// -- activate()
 	/// Activates this switch, locking its assigned lockpool
     static activate = function() {
-		if (active || !is_assigned())
+		if (active || !self.is_assigned())
 			return;
+		
 		active = true;
 		
+		// Apply the locks in the pool
 		for (var i = 0; i < PlayerAction.COUNT; i++) {
-			if (actions & (1 << i) > 0)
+			if (bitmask_has_bit(actions, 1 << i))
 				pool.counters[i]++;
 		}
     };
@@ -121,11 +131,11 @@ function PlayerLockPoolSwitch(_lockPool) constructor {
     static add_actions = function() {
 		for (var i = 0; i < argument_count; i++) {
 			switch (argument[i]) {
-                case PlayerAction.MOVE:
+                case PlayerAction.MOVE_FULL:
                     __add_action(PlayerAction.MOVE_GROUND);
                     __add_action(PlayerAction.MOVE_AIR);
                     break;
-                case PlayerAction.TURN:
+                case PlayerAction.TURN_FULL:
                     __add_action(PlayerAction.TURN_GROUND);
                     __add_action(PlayerAction.TURN_AIR);
                     break;
@@ -141,23 +151,24 @@ function PlayerLockPoolSwitch(_lockPool) constructor {
 	///
 	/// @param {PlayerLockPool}  lock_pool  The lock pool to assign this switch to
     static assign_to_pool = function(_lockPool) {
-		if (is_assigned())
-			return;
-		pool = _lockPool;
-		pool.add_switch(self);
+		if (!self.is_assigned()) {
+			pool = _lockPool;
+			pool.add_switch(self);
+		}
     };
     
     /// -- deactivate()
 	/// Deactivates this switch, potentially unlocking its assigned lockpool
     static deactivate = function() {
-		if (!active || !is_assigned())
-			return;
-		active = false;
-		
-		for (var i = 0; i < PlayerAction.COUNT; i++) {
-			if (actions & (1 << i) > 0)
-				pool.counters[i]--;
+		// Deactivate the locks in the pool
+		if (active && self.is_assigned()) {
+			for (var i = 0; i < PlayerAction.COUNT; i++) {
+				if (bitmask_has_bit(actions, 1 << i))
+					pool.counters[i]--;
+			}
 		}
+		
+		active = false;
     };
     
     /// -- is_assigned()
@@ -175,13 +186,14 @@ function PlayerLockPoolSwitch(_lockPool) constructor {
     static remove_actions = function() {
 		for (var i = 0; i < argument_count; i++) {
 			switch (argument[i]) {
-                case PlayerAction.MOVE:
+                case PlayerAction.MOVE_FULL:
                     __remove_action(PlayerAction.MOVE_GROUND);
                     __remove_action(PlayerAction.MOVE_AIR);
                     break;
-                case PlayerAction.TURN:
+                case PlayerAction.TURN_FULL:
                     __remove_action(PlayerAction.TURN_GROUND);
                     __remove_action(PlayerAction.TURN_AIR);
+                    break;
                     break;
                 default:
                     __remove_action(argument[i]);
@@ -193,22 +205,21 @@ function PlayerLockPoolSwitch(_lockPool) constructor {
     /// -- remove_from_pool()
 	/// Removes this switch from its assigned lockpool
     static remove_from_pool = function() {
-		if (!is_assigned())
+		if (!self.is_assigned())
 			return;
-		pool.remove_switch(self);
+		self.deactivate();
 		pool = undefined;
-		active = false;
     };
     
     /// -- __add_action(action)
 	/// Adds a singular player action for this switch to be locking
     static __add_action = function(_action) {
 		var _bit = (1 << _action);
-		if (actions & _bit > 0) // Bit already set?
+		if (bitmask_has_bit(actions, _bit)) // Bit already set?
 			return;
 		
-		actions |= _bit;
-		if (active && is_assigned())
+		actions = bitmask_set_bit(actions, _bit);
+		if (active && self.is_assigned())
 			pool.counters[_action]++;
     };
     
@@ -216,11 +227,11 @@ function PlayerLockPoolSwitch(_lockPool) constructor {
 	/// Removes a singular player action from this switch
     static __remove_action = function(_action) {
 		var _bit = (1 << _action);
-		if (actions & _bit == 0) // Bit not even set?
+		if (!bitmask_has_bit(actions, _bit)) // Bit not even set?
 			return;
 		
-		actions &= ~_bit;
-		if (active && is_assigned())
+		actions = bitmask_unset_bit(actions, _bit);
+		if (active && self.is_assigned())
 			pool.counters[_action]--;
     };
     

@@ -1,8 +1,5 @@
 /// @description Check if the player is bumping into this door
-if (global.paused || global.gameTimeScale.integer <= 0 || !__isInsideView)
-    exit;
-
-if (!__canOpen)
+if (!game_can_step() || !inside_view() || !__canOpen)
     exit;
 
 var _player = collision_rectangle(boundsLeft, boundsTop, boundRight, boundBottom, prtPlayer, false, false);

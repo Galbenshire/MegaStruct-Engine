@@ -194,7 +194,7 @@ function round_alt(_x) {
 ///
 /// @returns {number}  The rounded number
 function round_away_from_zero(_x) {
-	return (_x >= 0) ? ceil(_x) : floor(_x);
+	return ceil(abs(_x)) * sign(_x);
 }
 
 /// @func round_to(x, step)
@@ -215,7 +215,7 @@ function round_to(_x, _step) {
 ///
 /// @returns {number}  The rounded number
 function round_towards_zero(_x) {
-	return (_x >= 0) ? floor(_x) : ceil(_x);
+	return floor(abs(_x)) * sign(_x);
 }
 
 /// @func sign_nonzero(x, prefer_positive)
@@ -227,6 +227,37 @@ function round_towards_zero(_x) {
 /// @returns {number}  The sign of the number
 function sign_nonzero(_x, _preferPositive = true) {
 	return (_x == 0) ? ((2 * _preferPositive) - 1) : sign(_x);
+}
+
+#endregion
+
+#region Wrapping
+
+/// @func wrap(value, min, max)
+/// @desc With this function you can wrap an input value within a specified range.
+///
+/// @param {number}  value  The value to wrap.
+/// @param {number}  min  The minimum value to wrap within.
+/// @param {number}  max  The maximum value to wrap within.
+///
+/// @returns {number}  The wrapped value
+function wrap(_val, _min, _max) {
+	var _range = _max - _min;
+	if (_range == 0)
+		return _min;
+	
+	var _result = _val - floor_to(_val - _min, _range);
+	return (_result == _max) ? _min : _result;
+}
+
+/// @func wrap_angle(x)
+/// @desc Takes an angle & keeps it within a [0, 360) range. If it undershoots or overshoots, the angle will wraparound.
+///
+/// @param {number}  angle  The angle to wrap
+///
+/// @returns {number}  The angle wrapped to within the range
+function wrap_angle(_angle) {
+	return ((_angle + 36000) mod 360);
 }
 
 #endregion
@@ -322,37 +353,6 @@ function weighted_random() {
 	}
 	
 	return undefined;
-}
-
-/// @func wrap(value, min, max)
-/// @desc With this function you can wrap an input value within a specified range.
-///
-/// @param {number}  value  The value to wrap.
-/// @param {number}  min  The minimum value to wrap within.
-/// @param {number}  max  The maximum value to wrap within.
-///
-/// @returns {number}  The wrapped value
-function wrap(_val, _min, _max) {
-	var _range = _max - _min;
-	if (_range == 0)
-		return _min;
-	
-	var _result = _val - floor_to(_val - _min, _range);
-	return (_result == _max) ? _min : _result;
-}
-
-/// @func wrap_angle(x)
-/// @desc Takes an angle & keeps it within a [0, 360) range. If it undershoots or overshoots, the angle will wraparound.
-///
-/// @param {number}  angle  The angle to wrap
-///
-/// @returns {number}  The angle wrapped to within the range
-function wrap_angle(_angle) {
-	while (_angle >= 360)
-        _angle -= 360;
-	while (_angle < 0)
-        _angle += 360;
-	return _angle;
 }
 
 #endregion

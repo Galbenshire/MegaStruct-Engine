@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"clsSignalBus",
   "parent":{
-    "name":"Classes",
-    "path":"folders/_System/Classes.yy",
+    "name":"Singletons",
+    "path":"folders/_System/Classes/Singletons.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

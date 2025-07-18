@@ -16,8 +16,11 @@ function Subsystem_Core() : Subsystem() constructor {
 			value = options_data().gameSpeed;
 			update();
 		}
+		
 		global.roomTimer++;
 		global.systemTimer++;
+		if (!global.paused)
+			global.hitStunTimer = approach(global.hitStunTimer, 0, 1);
     };
     
     static roomStart = function() {
@@ -26,6 +29,7 @@ function Subsystem_Core() : Subsystem() constructor {
 		global.roomIsLevel = is_room_level(room);
 		global.section = noone;
         global.roomTimer = 0;
+        global.hitStunTimer = 0;
 		
         // Setup the view
         view_enabled = true;

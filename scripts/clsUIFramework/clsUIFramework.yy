@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"clsUIFramework",
   "parent":{
-    "name":"Classes",
-    "path":"folders/_System/Classes.yy",
+    "name":"UI",
+    "path":"folders/_System/Classes/UI.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

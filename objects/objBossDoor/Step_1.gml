@@ -1,12 +1,8 @@
 /// @description Update faction solid status
 event_inherited();
 
-if (global.paused || global.gameTimeScale.integer <= 0)
-    exit;
-
-__isInsideView = inside_view();
-if (!__isInsideView)
-    exit;
+if (!game_can_step() || !inside_view())
+	exit;
 
 __canOpen = false;
 var i = 0;

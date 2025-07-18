@@ -10,9 +10,11 @@ if (entity_is_dead()) {
     yspeed.clear_all();
     healthpoints = healthpointsStart;
     iFrames = 0;
+    frozenTimer = 0;
 }
 
-if ((global.paused && !global.switchingSections) || global.gameTimeScale.integer <= 0)
+// =====  Halt if the game is "paused" (unless in the middle of a section switch) =====
+if (!game_can_step(false, false, global.switchingSections))
 	exit;
 
 // =====  Respawning/Despawning =====

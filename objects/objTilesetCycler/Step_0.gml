@@ -1,4 +1,4 @@
-if (global.paused)
+if (!game_can_step())
     exit;
 
 repeat (global.gameTimeScale.integer) {

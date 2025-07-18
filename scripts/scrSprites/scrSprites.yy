@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrSprites",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Sprites",
+    "path":"folders/Scripts/Sprites.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

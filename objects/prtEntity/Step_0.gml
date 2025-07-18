@@ -1,10 +1,15 @@
 /// @description General Behaviour
-if (!entity_can_step(true)) {
-	if (entity_is_dead() && !entity_can_respawn())
-		instance_destroy();
+// =====  Destroy if dead & unable to respawn =====
+if (entity_is_dead() && !entity_can_respawn()) {
+	instance_destroy();
 	exit;
 }
 
+// =====  Halt if the entity should not be able to "step" =====
+if (!entity_can_step(true))
+	exit;
+
+// =====  The standard "Step" (do it for each active "frame" in the game time scale) =====
 repeat(global.gameTimeScale.integer) {
 	hitTimer++;
 	frozenTimer--;
@@ -35,7 +40,7 @@ repeat(global.gameTimeScale.integer) {
     event_user(EVENT_ENTITY_POSTTICK);
     if (entity_is_dead())
 		exit;
+	
+	entity_update_subpixels();
+	entity_update_hitboxes();
 }
-
-entity_update_subpixels();
-entity_update_hitboxes();

@@ -1,8 +1,7 @@
-if (global.paused)
+if (!game_can_step())
 	exit;
 
 var _gameTicks = global.gameTimeScale.integer;
-
 repeat(_gameTicks) {
     xspeed.update();
     yspeed.update();

@@ -1,6 +1,6 @@
 #region Drawing Stuff
 
-/// @func draw_mm_healthbar(x, y, value, colours, alphas)
+/// @func draw_mm_healthbar(x, y, value, colours, alphas, max_value)
 /// @desc Draws a Mega Man style health/ammo bar
 ///
 /// @param {number}  x  x-position to draw the healthbar
@@ -8,19 +8,21 @@
 /// @param {number}  value  How full to draw the bar. In a [0 - 28] range.
 /// @param {PaletteThreeTone}  colours  The palette of the bar
 /// @param {PaletteThreeTone}  [alphas]  The opacity of each layer of the bar. Optional
-function draw_mm_healthbar(_x, _y, _value, _colours, _alphas) {
-	_value = clamp(ceil(_value), 0, FULL_HEALTHBAR);
+/// @param {number}  [max_value]  Maximum value of the bar. Defaults to 28, the standard for MM health/ammo.
+function draw_mm_healthbar(_x, _y, _value, _colours, _alphas, _maxValue = FULL_HEALTHBAR) {
+	_value = clamp(ceil(_value), 0, _maxValue);
 	_alphas ??= array_create(PaletteThreeTone.sizeof, 1);
 	
-	var _offset = 2 * (FULL_HEALTHBAR - _value);
-	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, FULL_HEALTHBAR, 0, _colours[PaletteThreeTone.background], _alphas[PaletteThreeTone.background]);
+	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, _maxValue, 0, _colours[PaletteThreeTone.background], _alphas[PaletteThreeTone.background]);
+	
 	if (_value > 0) {
-		draw_sprite_ext(sprHealthbar, 2, _x, _y + _offset, 1, _value, 0, _colours[PaletteThreeTone.secondary], _alphas[PaletteThreeTone.secondary]);
-		draw_sprite_ext(sprHealthbar, 1, _x, _y + _offset, 1, _value, 0, _colours[PaletteThreeTone.primary], _alphas[PaletteThreeTone.primary]);
+		_y += 2 * (_maxValue - _value);
+		draw_sprite_ext(sprHealthbar, 2, _x, _y, 1, _value, 0, _colours[PaletteThreeTone.secondary], _alphas[PaletteThreeTone.secondary]);
+		draw_sprite_ext(sprHealthbar, 1, _x, _y, 1, _value, 0, _colours[PaletteThreeTone.primary], _alphas[PaletteThreeTone.primary]);
 	}
 }
 
-/// @func draw_mm_healthbar_horizontal(x, y, value, colours, alphas)
+/// @func draw_mm_healthbar_horizontal(x, y, value, colours, alphas, max_value)
 /// @desc Draws a Mega Man style health/ammo bar
 ///
 /// @param {number}  x  x-position to draw the healthbar
@@ -28,17 +30,32 @@ function draw_mm_healthbar(_x, _y, _value, _colours, _alphas) {
 /// @param {number}  value  How full to draw the bar. In a [0 - 28] range.
 /// @param {PaletteThreeTone}  colours  The palette of the bar
 /// @param {PaletteThreeTone}  [alphas]  The opacity of each layer of the bar. Optional
-function draw_mm_healthbar_horizontal(_x, _y, _value, _colours, _alphas) {
-	_value = clamp(ceil(_value), 0, FULL_HEALTHBAR);
-	_x += FULL_HEALTHBAR * 2
+/// @param {number}  [max_value]  Maximum value of the bar. Defaults to 28, the standard for MM health/ammo.
+function draw_mm_healthbar_horizontal(_x, _y, _value, _colours, _alphas, _maxValue = FULL_HEALTHBAR) {
+	_value = clamp(ceil(_value), 0, _maxValue);
+	_x += _maxValue * 2;
 	_alphas ??= array_create(PaletteThreeTone.sizeof, 1);
 	
-	var _offset = 2 * (FULL_HEALTHBAR - _value);
-	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, FULL_HEALTHBAR, -90, _colours[PaletteThreeTone.background], _alphas[PaletteThreeTone.background]);
+	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, _maxValue, -90, _colours[PaletteThreeTone.background], _alphas[PaletteThreeTone.background]);
+	
 	if (_value > 0) {
-		draw_sprite_ext(sprHealthbar, 2, _x - _offset, _y, 1, _value, -90, _colours[PaletteThreeTone.secondary], _alphas[PaletteThreeTone.secondary]);
-		draw_sprite_ext(sprHealthbar, 1, _x - _offset, _y, 1, _value, -90, _colours[PaletteThreeTone.primary], _alphas[PaletteThreeTone.primary]);
+		_x -= 2 * (_maxValue - _value);
+		draw_sprite_ext(sprHealthbar, 2, _x, _y, 1, _value, -90, _colours[PaletteThreeTone.secondary], _alphas[PaletteThreeTone.secondary]);
+		draw_sprite_ext(sprHealthbar, 1, _x, _y, 1, _value, -90, _colours[PaletteThreeTone.primary], _alphas[PaletteThreeTone.primary]);
 	}
+}
+
+/// @func draw_rectangle_solid(x, y, width, height, colour, alpha)
+/// @desc Draws a solid rectangle using a dot sprite
+///
+/// @param {number}  x  x-position of the rectangle's top-left corner
+/// @param {number}  y  y-position of the rectangle's top-left corner
+/// @param {number}  width  width of the rectangle's bottom-right corner
+/// @param {number}  height  height of the rectangle's bottom-right corner
+/// @param {int}  colour  colour of the rectangle
+/// @param {number}  alpha  Alpha value of the rectangle
+function draw_rectangle_solid(_x/*:number*/, _y/*:number*/, _width/*:number*/, _height/*:number*/, _colour/*:int*/, _alpha/*:number*/) {
+	draw_sprite_ext(sprDot, 0, _x, _y, _width, _height, 0, _colour, _alpha);
 }
 
 /// @func draw_rectangle_width(x1, y1, x2, y2, width)
@@ -178,13 +195,11 @@ function multiply_colours(_col1, _col2) {
 ///
 /// @returns {ColourChannels}  The normalized colour
 function normalize_colour(_colour) {
-	var _red = colour_get_red(_colour),
-		_green = colour_get_green(_colour),
-		_blue = colour_get_blue(_colour);
-	_red = ((_red == 255) ? 1 : ((_red == 0) ? 0 : _red / 255));
-    _green = ((_green == 255) ? 1 : ((_green == 0) ? 0 : _green / 255));
-    _blue = ((_blue == 255) ? 1 : ((_blue == 0) ? 0 : _blue / 255));
-    return [_red, _green, _blue];
+	return [
+		colour_get_red(_colour) / 255,
+		colour_get_green(_colour) / 255,
+		colour_get_blue(_colour) / 255,
+	];
 }
 
 #endregion

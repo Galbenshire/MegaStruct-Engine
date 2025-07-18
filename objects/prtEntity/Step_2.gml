@@ -6,11 +6,8 @@ if (entity_is_dead()) {
 	exit;
 }
 
-if (global.paused || global.gameTimeScale.integer <= 0)
-	exit;
-
 // =====  Entity-to-Entity Collisions =====
-if (!entity_can_deal_damage(true) || !place_meeting(x, y, [prtEntity, prtHitbox]))
+if (!game_can_step() || !entity_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
 	exit;
 
 var _entityArr = instance_place_array(x, y, [prtEntity, prtHitbox], true),

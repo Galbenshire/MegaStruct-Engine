@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"clsLockStack",
+  "%Name":"scrSystem",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"clsLockStack",
+  "name":"scrSystem",
   "parent":{
-    "name":"Locks",
-    "path":"folders/_System/Classes/Locks.yy",
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

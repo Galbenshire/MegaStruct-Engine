@@ -1,4 +1,4 @@
-if (global.paused)
+if (!game_can_step(true))
 	exit;
 
 if (self.is_user_controlled() && !self.is_action_locked(PlayerAction.INPUT)) {
@@ -8,7 +8,6 @@ if (self.is_user_controlled() && !self.is_action_locked(PlayerAction.INPUT)) {
 }
 
 var _gameTicks = global.gameTimeScale.integer;
-
 repeat(_gameTicks) {
 	hitTimer++;
 	if (iFrames > 0)
@@ -37,10 +36,9 @@ repeat(_gameTicks) {
     
     inputs.pressed = 0;
     inputs.released = 0;
+    entity_update_subpixels();
+	entity_update_hitboxes();
 }
-
-entity_update_subpixels();
-entity_update_hitboxes();
 
 if (_gameTicks >= 1)
     inputs.clear_all();

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"clsPlayerLockPool",
   "parent":{
-    "name":"Classes",
-    "path":"folders/_System/Classes.yy",
+    "name":"Locks",
+    "path":"folders/_System/Classes/Locks.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

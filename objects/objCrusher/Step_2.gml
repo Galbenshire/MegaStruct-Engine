@@ -13,11 +13,8 @@ if (entity_is_dead()) {
 	exit;
 }
 
-if (global.paused || global.gameTimeScale.integer <= 0)
-	exit;
-
 // =====  Entity-to-Entity Collisions =====
-if (!canDealDamage || contactDamage == 0)
+if (!game_can_step() || !entity_can_deal_damage())
 	exit;
 
 var _entityArr = array_concat(

@@ -379,7 +379,7 @@ with (stateMachine.add("Hurt")) {
 		if (!isCharging)
 			hitstunLock.add_actions(PlayerAction.CHARGE);
 		
-		if (!self.is_action_locked(PlayerAction.MOVE)) {
+		if (!self.is_action_locked(PlayerAction.MOVE_FULL)) {
 			xspeed.value = image_xscale * -0.5;
 			yspeed.value = (-1.5 * gravDir) * (yspeed.value * gravDir <= 0);
 		}
@@ -405,11 +405,9 @@ with (stateMachine.add("Death")) {
 		
 		if (self.is_user_controlled()) {
 			audio_stop_all();
-			
-			if (!diedToAPit) {
-				queue_pause();
-				defer(DeferType.STEP, function(__) /*=>*/ { queue_unpause(); }, 30, true, true);
-			}
+			pauseLock.activate();
+			if (!diedToAPit)
+				global.hitStunTimer = 30;
 		}
 	});
 	set_event("tick", function() {
@@ -421,22 +419,15 @@ with (stateMachine.add("Death")) {
 		
 		healthpoints = 0;
 		lifeState = LifeState.DEAD_ONSCREEN;
+		entity_clear_hitboxes();
 		play_sfx(sfxDeath);
 		
 		if (self.is_user_controlled()) {
 			self.update_hud_health(0);
-			pauseLock.activate();
 			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint[CheckpointData.room]); }, GAME_SPEED * 3, true, true);
 		}
 		
 		instance_destroy();
-	});
-	set_event("leave", function() {
-		isHurt = false;
-		iFrames = 60;
-		hitTimer = 0;
-		hitstunLock.deactivate();
-		hitstunLock.remove_actions(PlayerAction.CHARGE);
 	});
 }
 with (stateMachine.add("Debug_FreeMovement")) {

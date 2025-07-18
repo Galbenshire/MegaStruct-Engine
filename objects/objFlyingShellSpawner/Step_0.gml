@@ -1,4 +1,4 @@
-if (global.paused || global.gameTimeScale.integer <= 0)
+if (!game_can_step())
     exit;
 
 if (instance_exists(lastSpawnedShell))

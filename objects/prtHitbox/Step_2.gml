@@ -4,10 +4,7 @@ if (!instance_exists(owner)) {
     exit;
 }
 
-if (global.paused || global.gameTimeScale.integer <= 0)
-	exit;
-
-if (!hitbox_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
+if (!game_can_step() || !hitbox_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
 	exit;
 
 var _entityArr = instance_place_array(x, y, [prtEntity, prtHitbox], true),

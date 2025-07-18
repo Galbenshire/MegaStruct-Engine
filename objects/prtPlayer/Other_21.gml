@@ -13,12 +13,11 @@
 	///
 	/// @returns {bool}  Whether the player can down+jump to slide (true), or not (false)
 	function check_input_down_jump_slide(_ignoreLock = false) {
+		if (!self.is_user_controlled())
+			return false;
 		if (!_ignoreLock && self.is_action_locked(PlayerAction.SLIDE))
 			return false;
-		
-		return self.is_user_controlled()
-			? yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide
-			: false;
+		return yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide;
 	}
 	
 	/// -- check_input_jump(ignore_lock)
@@ -32,9 +31,9 @@
 	function check_input_jump(_ignoreLock = false) {
 		if (!_ignoreLock && self.is_action_locked(PlayerAction.JUMP))
 			return false;
-		
-		return inputs.is_pressed(InputActions.JUMP)
-			|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP))
+		if (inputs.is_pressed(InputActions.JUMP))
+			return true;
+		return jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP);
 	}
 	
 	/// -- check_input_shoot(auto_fire, ignore_lock)
@@ -52,11 +51,11 @@
 	function check_input_shoot(_autoFire, _ignoreLock = false) {
 		if (!_ignoreLock && self.is_action_locked(PlayerAction.SHOOT))
 			return false;
+		if (inputs.is_pressed(InputActions.SHOOT))
+			return true;
 		
 		_autoFire ??= self.is_user_controlled() ? options_data().autoFire : false;
-		return _autoFire
-			? inputs.is_held(InputActions.SHOOT) && autoFireTimer <= 0
-			: inputs.is_pressed(InputActions.SHOOT);
+		return _autoFire && inputs.is_held(InputActions.SHOOT) && autoFireTimer <= 0;
 	}
 	
 	#endregion

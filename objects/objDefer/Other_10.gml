@@ -1,9 +1,10 @@
 /// @description Main Process
-if (!ignorePause && global.paused)
+if (!ignorePause && !game_can_step(ignoreTimeScale))
+    exit;
+if (!active)
     exit;
 
 var _gameTicks = ignoreTimeScale ? 1 : global.gameTimeScale.integer;
-
 repeat(_gameTicks) {
     if (--delay > 0)
         continue;
@@ -13,4 +14,6 @@ repeat(_gameTicks) {
         instance_destroy();
         break;
     }
+    
+    timer++;
 }

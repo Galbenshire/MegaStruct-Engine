@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrEntities",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Entities",
+    "path":"folders/Scripts/Entities.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

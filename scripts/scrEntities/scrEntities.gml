@@ -387,15 +387,16 @@ function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 		return false;
 	}
 	
-	/// @func entity_can_step(ignore_frozen, scope)
+	/// @func entity_can_step(ignore_frozen, ignore_time_scale, scope)
 	/// @desc Checks if an entity is able to perform their Step Event
 	///
 	/// @param {bool}  [ignore_frozen]  Whether or not to ignore the entity's frozen state. Defaults to false.
+	/// @param {bool}  [ignore_time_scale]  If true, the effect of the game time scale is ignored. Defaults to false.
 	/// @param {prtEntity}  [scope]  The instance to check. Defaults to the calling instance.
 	///
 	/// @returns {bool}  If the entity can step (true) or not (false)
-	function entity_can_step(_ignoreFrozen = false, _scope = self) {
-		return !global.paused && (_ignoreFrozen || frozenTimer <= 0) && !entity_is_dead(_scope);
+	function entity_can_step(_ignoreFrozen = false, _ignoreTimeScale = false, _scope = self) {
+		return game_can_step(_ignoreTimeScale) && (_ignoreFrozen || frozenTimer <= 0) && !entity_is_dead(_scope);
 	}
 	
 	/// @func entity_is_dead(scope)
