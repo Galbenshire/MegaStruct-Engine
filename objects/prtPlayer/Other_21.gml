@@ -4,7 +4,40 @@
 
 	#region Checking Inputs
 	
-	/// -- check_input_shoot(auto_fire)
+	/// -- check_input_down_jump_slide(ignore_lock)
+	/// Helper function for if the player is trying to perform a slide by jumping while holding down.
+	/// It will check if the player is in a state where they are able to do so.
+	///
+	/// @param {bool}  [ignore_lock]  If true, the function ignores whether or not the act of sliding is locked.
+	///		Defaults to false.
+	///
+	/// @returns {bool}  Whether the player can down+jump to slide (true), or not (false)
+	function check_input_down_jump_slide(_ignoreLock = false) {
+		if (!_ignoreLock && self.is_action_locked(PlayerAction.SLIDE))
+			return false;
+		
+		return self.is_user_controlled()
+			? yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide
+			: false;
+	}
+	
+	/// -- check_input_jump(ignore_lock)
+	/// Helper function for if the player is trying to perform a jump action.
+	/// It will check if the player is in a state where they are able to do so.
+	///
+	/// @param {bool}  [ignore_lock]  If true, the function ignores whether or not the act of jumping is locked.
+	///		Defaults to false.
+	///
+	/// @returns {bool}  Whether the player can jump (true), or not (false)
+	function check_input_jump(_ignoreLock = false) {
+		if (!_ignoreLock && self.is_action_locked(PlayerAction.JUMP))
+			return false;
+		
+		return inputs.is_pressed(InputActions.JUMP)
+			|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP))
+	}
+	
+	/// -- check_input_shoot(auto_fire, ignore_lock)
 	/// Helper function for if the player is trying to input a shoot action.
 	/// It will check if the player is in a state where they are able to do so.
 	/// Mainly used by weapons to know if the player is trying to shoot a projectile.
@@ -12,30 +45,18 @@
 	/// @param {bool}  [auto_fire]  Whether the function should use auto-fire beaviour (true) or not (false).
 	///		If controller by a user, this defaults to whatever is set in options_data.
 	///		If not, it defaults to false.
+	/// @param {bool}  [ignore_lock]  If true, the function ignores whether or not the act of shooting is locked.
+	///		Defaults to false.
 	///
 	/// @returns {bool}  Whether the player can fire a shot (true), or not (false)
-	function check_input_shoot(_autoFire) {
-		if (self.is_action_locked(PlayerAction.SHOOT))
+	function check_input_shoot(_autoFire, _ignoreLock = false) {
+		if (!_ignoreLock && self.is_action_locked(PlayerAction.SHOOT))
 			return false;
 		
 		_autoFire ??= self.is_user_controlled() ? options_data().autoFire : false;
 		return _autoFire
 			? inputs.is_held(InputActions.SHOOT) && autoFireTimer <= 0
 			: inputs.is_pressed(InputActions.SHOOT);
-	}
-	
-	/// -- check_input_down_jump_slide()
-	/// Helper function for if the player is trying to perform a slide by jumping while holding down.
-	/// It will check if the player is in a state where they are able to do so.
-	///
-	/// @returns {bool}  Whether the player can down+jump to slide (true), or not (false)
-	function check_input_down_jump_slide() {
-		if (self.is_action_locked(PlayerAction.SLIDE))
-			return false;
-		
-		return self.is_user_controlled()
-			? yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide
-			: false;
 	}
 	
 	#endregion
@@ -414,9 +435,7 @@
 				break;
 			
 			case "tick":
-				var _jumpInput = inputs.is_pressed(InputActions.JUMP)
-					|| (jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP));
-				if (_jumpInput && !self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
+				if (self.check_input_jump() && !self.check_input_down_jump_slide()) {
 					stateMachine.change_state("Jump");
 					return true;
 				}
@@ -511,7 +530,7 @@
 		if (!ground || self.is_action_locked(PlayerAction.SLIDE))
 			return false;
 		
-		var _input = inputs.is_pressed(InputActions.SLIDE) || self.check_input_down_jump_slide();
+		var _input = inputs.is_pressed(InputActions.SLIDE) || self.check_input_down_jump_slide(true);
 		if (!_input)
 			return false;
 		

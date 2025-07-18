@@ -51,10 +51,6 @@ function GUITemplate(_prefabRoom) constructor {
     sprites = array_reverse(_prefabRoomInfo.layers[LAYER_MARKERS].elements);
     spriteCount = array_length(sprites);
     
-    // This is to fix a visual bug when in YYC
-    for (var i = 0; i < spriteCount; i++)
-        sprites[i].sprite_index &= 0xFFFFFFFF;
-    
     // Grab all the marker positions
     var _markerList = _prefabRoomInfo.layers[LAYER_SPRITES].elements,
         _markerCount = array_length(_markerList);

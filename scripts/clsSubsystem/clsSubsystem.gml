@@ -510,7 +510,8 @@ function Subsystem_Input() : Subsystem() constructor {
     static asyncSystem = function() {
         switch (async_load[? "event_type"]) {
             case "gamepad discovered":
-                reader.controller = async_load[? "pad_index"];
+				if (reader.controller == NO_CONTROLLER)
+                	reader.controller = async_load[? "pad_index"];
                 break;
             
             case "gamepad lost":

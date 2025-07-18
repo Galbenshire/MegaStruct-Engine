@@ -7,12 +7,12 @@ weaponCount = array_length(weapons);
 
 weaponSubmenu = new PauseMenu_Submenu_Weapons();
 with (weaponSubmenu) {
-    var _items = array_create_ext(other.weaponCount, function(i) {
-        var _item = new PauseMenu_Item_Weapon($"weapon_{i}", other.weapons[i]);
-        if (_item.weapon == global.player.body.weapon)
-            defaultItem = _item;
-        return _item;
-    });
+    var _items = array_create(other.weaponCount);
+    for (var i = 0, n = array_length(_items); i < n; i++) {
+		_items[i] = new PauseMenu_Item_Weapon($"weapon_{i}", other.weapons[i]);
+		if (_items[i].weapon == global.player.body.weapon)
+            defaultItem = _items[i];
+	}
     
     add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);

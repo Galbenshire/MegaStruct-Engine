@@ -29,5 +29,3 @@ This includes the use of structs, method variables, sequences, constructor funct
 
 Mega Man and all related content is copyrighted by Capcom Co., Ltd.  
 This project and its owner is not affiliated with Capcom in any way.
-
-(More will be added here later)
