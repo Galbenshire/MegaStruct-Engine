@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"MegaStructEngine",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -118,13 +118,14 @@
     {"$GMFolder":"","%Name":"Search Snake","folderPath":"folders/Weapons/Search Snake.yy","name":"Search Snake","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Skull Barrier","folderPath":"folders/Weapons/Skull Barrier.yy","name":"Skull Barrier","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"ReadMe.txt","CopyToMask":-1,"filePath":"datafiles","name":"ReadMe.txt","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.8.1.171",
+    "IDEVersion":"2024.13.1.193",
   },
   "name":"MegaStructEngine",
   "resources":[
