@@ -12,7 +12,7 @@
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"gravEnabled","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"collideWithSolids","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"targetingPreset","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"No Target\"",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"targetingPreset","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"ReticlePresetType.NO_TARGET",},
   ],
   "parent":{
     "name":"_TestObjects",

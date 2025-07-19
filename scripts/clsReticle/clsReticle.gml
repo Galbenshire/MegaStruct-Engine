@@ -1,6 +1,8 @@
 /// @func Reticle()
 /// @desc A struct that allows for an entity to target other entities
-function Reticle() constructor {
+///
+/// @param {int}  preset  The preset to apply, corresponding to the `ReticlePresetType` enum
+function Reticle(_preset) constructor {
     #region Variables
     
     owner = other.id; /// @is {prtEntity} The instance this belongs to
@@ -52,6 +54,28 @@ function Reticle() constructor {
     	return point_direction(owner.x, owner.y, x, y);
     };
     
+    /// -- direction_to_target_x()
+	/// Calculates the horizontal direction towards the target
+	/// 1 = target is to the right of the owner
+	/// 0 = target has the same x-position as the owner
+	/// -1 = target is to the left of the owner
+	///
+	/// @returns {number}  The direction towards the target
+    static direction_to_target_x = function() {
+		return sign(x - owner.x);
+    };
+    
+    /// -- direction_to_target_y()
+	/// Calculates the vertical direction towards the target
+	/// 1 = target is below the owner
+	/// 0 = target has the same x-position as the owner
+	/// -1 = target is above the owner
+	///
+	/// @returns {number}  The direction towards the target
+    static direction_to_target_y = function() {
+		return sign(y - owner.y);
+    };
+    
     #endregion
     
     #region Functions - Distance
@@ -84,6 +108,26 @@ function Reticle() constructor {
     
     #region Functions - Other
     
+    static apply_preset = function(_preset) {
+		switch (_preset) {
+			case ReticlePresetType.GENERIC:
+				self.set_on_update(fnsReticle_onUpdate_Generic);
+				self.set_on_retarget(fnsReticle_onRetarget_PickNearestEstimate);
+				break;
+			case ReticlePresetType.NEAREST:
+				self.set_on_update(fnsReticle_onUpdate_AlwaysRetarget);
+				self.set_on_retarget(fnsReticle_onRetarget_PickNearest);
+				break;
+			case ReticlePresetType.SWITCH_REGULARLY:
+				self.set_on_update(fnsReticle_onUpdate_SwitchRegularly);
+				self.set_on_retarget(fnsReticle_onRetarget_PickAtRandom);
+				break;
+			case ReticlePresetType.PICK_ONCE:
+				self.set_on_retarget(fnsReticle_onRetarget_PickAtRandom);
+				break;
+		}
+    };
+    
     /// -- clear_target()
 	/// Clears the reference to the current target
     static clear_target = function() {
@@ -100,7 +144,7 @@ function Reticle() constructor {
     static is_target_valid = function(_target = target) {
         if (!instance_exists(_target))
             return false;
-        return !entity_is_dead(_target) && _target.canTakeDamage && (entity_faction_targets(owner) & _target.factionLayer > 0);
+        return !entity_is_dead(_target) && _target.canTakeDamage && bitmask_has_bit(entity_faction_targets(owner), _target.factionLayer);
     };
     
     /// -- switch_target(new_target)
@@ -140,6 +184,12 @@ function Reticle() constructor {
     /// -- __blankCallback()
     /// Only here to supply the default callbacks. Not intended for use otherwise.
     static __blankCallback = function() {};
+    
+    #endregion
+    
+    #region Initialization
+    
+    self.apply_preset(_preset);
     
     #endregion
 }

@@ -3,7 +3,6 @@
 event_inherited();
 
 image_speed = 0;
-depth += depthOffset;
 
 healthpoints = healthpointsStart;
 lifeState = LifeState.DEAD_OFFSCREEN; /// @is {int}
@@ -22,7 +21,7 @@ hitIgnoreList = []; /// @is {array<prtEntity>}
 hitboxes = []; /// @is {array<prtHitbox>}
 hitboxCount = 0;
 
-reticle = (targetingPreset != "No Target") ? (new Reticle()) : undefined; /// @is {Reticle}
+reticle = (targetingPreset != ReticlePresetType.NO_TARGET) ? (new Reticle(targetingPreset)) : undefined; /// @is {Reticle}
 
 xspeed = new Fractional();
 yspeed = new Fractional();

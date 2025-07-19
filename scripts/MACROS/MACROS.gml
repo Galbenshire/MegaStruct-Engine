@@ -112,6 +112,16 @@ enum RespawnType {
 	DISABLED
 }
 
+// Represents the presets available when setting up an entity's Reticle
+enum ReticlePresetType {
+	NO_TARGET,
+	GENERIC,
+	NEAREST,
+	SWITCH_REGULARLY,
+	PICK_ONCE,
+	CUSTOM
+}
+
 // Represents how entities react during a section switch
 enum SectionSwitchBehaviour {
 	// The entity will be deactivated right as the section switch occurs

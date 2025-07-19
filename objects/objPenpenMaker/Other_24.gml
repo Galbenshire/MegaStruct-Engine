@@ -17,7 +17,7 @@ if (isDying) {
     if (++spawnTimer > spawnRate) {
         spawn_entity(x + 6 * image_xscale, bbox_bottom - 8, depth - 1, objPenpen, {
             image_xscale: sign(image_xscale),
-            targetingPreset: "No Target",
+            targetingPreset: ReticlePresetType.NO_TARGET,
             respawnType: RespawnType.DISABLED
         });
         

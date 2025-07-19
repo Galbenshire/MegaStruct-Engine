@@ -27,7 +27,7 @@ function Weapon_RushJet() : Weapon() constructor {
 				cost: 0,
 				shootAnimation: PlayerSpritesheetPage.IDLE,
 				offsetX: 20,
-				depthOffset: -0.5,
+				depthOffset: -1,
 				projParams: {
 					teleportObject: objRushJet
 				}
