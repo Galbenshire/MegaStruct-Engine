@@ -468,6 +468,13 @@ enum ParallaxLayer {
 	sizeof
 }
 
+enum RefillQueueItem {
+	player, /// @is {prtPlayer}
+	target, /// @is {Weapon?}
+	amount, /// @is {number}
+	sizeof
+}
+
 enum SpriteAtlasCell {
     sheetX, /// @is {int}
     sheetY, /// @is {int}
@@ -493,14 +500,22 @@ enum WeightedOutcome {
 
 #region User Event Reserves
 
+// prtEntity
 #macro EVENT_ENTITY_TICK 14
 #macro EVENT_ENTITY_POSTTICK 15
-
-#macro EVENT_METHOD_INIT 11
-#macro EVENT_ANIMATION_INIT 12
-#macro EVENT_STATEMACHINE_INIT 13
-
-#macro EVENT_INTERVAL_ACTION 14
+// prtBoss
+#macro EVENT_BOSS_METHOD_INIT 11
+#macro EVENT_BOSS_ANIMATION_INIT 12
+#macro EVENT_BOSS_STATEMACHINE_INIT 13
+// prtPlayer
+#macro EVENT_PLAYER_METHOD_INIT 11
+#macro EVENT_PLAYER_ANIMATION_INIT 12
+#macro EVENT_PLAYER_STATEMACHINE_INIT 13
+// prtInterval
+#macro EVENT_INTERVAL_ACTION 15
+// prtEffect
+#macro EVENT_EFFECT_DRAW_FRAME 14
+#macro EVENT_EFFECT_TICK 15
 
 #endregion
 

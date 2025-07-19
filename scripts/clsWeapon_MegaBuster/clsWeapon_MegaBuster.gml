@@ -45,11 +45,8 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	static on_tick = function(_player) {
 		self.handle_charge_state();
 		chargeTimer++;
-		
-		if (!is_undefined(hudRef)) {
-			hudRef.ammoVisible = options_data().chargeBar;
-			hudRef.ammo = barAmount;
-		}
+		hudRef.weaponVisible = options_data().chargeBar;
+		hudRef.weaponAmmo = barAmount;
 	};
 	
 	static on_equip = function(_player) {
@@ -58,14 +55,17 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		self.change_charge_state(0);
 		
 		playerRef = _player;
-		if (playerRef.is_user_controlled())
-			hudRef = playerRef.playerUser.hudElement;
+		hudRef = playerRef.hudElement;
+		hudRef.weaponVisible = options_data().chargeBar;
+		hudRef.weaponAmmo = 0;
 	};
 	
 	static on_unequip = function(_player) {
 		stop_sfx(sfxCharging);
 		stop_sfx(sfxCharged);
-		playerRef.isCharging = false;
+		
+		with (playerRef)
+			isCharging = false;
 		playerRef = noone;
 		hudRef = undefined;
 	};
@@ -190,8 +190,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	
 	static update_player_colour = function(_index, _colour) {
 		playerRef.palette.set_colour_at(_index, _colour);
-		if (!is_undefined(hudRef))
-			hudRef.ammoPalette[_index] = _colour;
+		hudRef.weaponPalette[_index] = _colour;
 	};
 	
 	#endregion

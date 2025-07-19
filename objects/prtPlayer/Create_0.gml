@@ -7,9 +7,9 @@ characterSpecs = character_create_from_id(characterID); /// @is {Character}
 assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object_get_name(object_index)} (ID: {characterID})");
 
 // Weapons
-weapon = undefined; /// @is {Weapon}
-loadout = []; /// @is {array<Weapon>}
-loadoutSize = 0;
+weapon = new Weapon_MegaBuster(); /// @is {Weapon}
+weaponList = [weapon]; /// @is {array<Weapon>}
+weaponSize = 1;
 
 // Animation System
 animator = new FrameAnimationPlayer();
@@ -58,6 +58,9 @@ skinCellY = 0;
 // Palette
 palette = new ColourPalette(characterSpecs.get_default_colours());
 
+// HUD
+hudElement = new HUDElement_Player();
+
 // Lock Pool
 lockpool = new PlayerLockPool();
 introLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE);
@@ -89,9 +92,9 @@ onDeath = method(id, cbkOnDeath_prtPlayer); /// @is {function<DamageSource, void
 onDraw = method(id, cbkOnDraw_prtPlayer); /// @is {function<bool, void>}
 
 // Event User Inits
-event_user(EVENT_METHOD_INIT);
-event_user(EVENT_ANIMATION_INIT);
-event_user(EVENT_STATEMACHINE_INIT);
+event_user(EVENT_PLAYER_METHOD_INIT);
+event_user(EVENT_PLAYER_ANIMATION_INIT);
+event_user(EVENT_PLAYER_STATEMACHINE_INIT);
 
 // Set the player to an idle state
 stateMachine.change_state("Idle");

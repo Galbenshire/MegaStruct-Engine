@@ -215,11 +215,8 @@ with (stateMachine.add("Fall")) {
 			play_sfx(sfxBalladeShoot);
 			
 			for (var i = -1; i <= 1; i += 2) {
-				with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objGenericEffect)) {
-					sprite_index = sprSlideDust;
+				with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objSlideDust)) {
 					image_xscale = i;
-					animSpeed = 0.2;
-					destroyOnAnimEnd = true;
 					xspeed.value = i;
 				}
 			}

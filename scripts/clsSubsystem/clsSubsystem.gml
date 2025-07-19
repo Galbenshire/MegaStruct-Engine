@@ -355,15 +355,12 @@ function Subsystem_Flasher() : Subsystem() constructor {
 /// @desc Handles the drawing of a HUD
 function Subsystem_HUD() : Subsystem() constructor {
 	active = false;
-	playerHUD = undefined; /// @is {HUDElement_Player}
 	bossHUD = []; /// @is {array<HUDElement_Boss>}
 	
 	static roomStart = function() {
 		active = global.roomIsLevel;
-		if (active) {
-			playerHUD = global.player.hudElement;
+		if (active)
 			bossHUD = [];
-		}
 	};
 	
 	static draw = function() {
@@ -371,15 +368,16 @@ function Subsystem_HUD() : Subsystem() constructor {
             return;
         
         var _hudX = game_view().left_edge(8),
-			_hudY = game_view().top_edge(8);
+			_hudY = game_view().top_edge(8),
+			_playerHUD = global.player.hudElement;
 		
-		playerHUD.draw(_hudX, _hudY);
-		_hudX += playerHUD.get_width() + 8;
+		_playerHUD.draw(_hudX, _hudY);
+		_hudX = game_view().right_edge(-16);
 		
 		var i = 0;
 		repeat(array_length(bossHUD)) {
+			_hudX -= bossHUD[i].get_width();
 			bossHUD[i].draw(_hudX, _hudY);
-			_hudX += bossHUD[i].get_width();
 			i++;
 		}
     };
@@ -434,12 +432,13 @@ function Subsystem_Level() : Subsystem() constructor {
 			}
 		}
 		
-		var _player = global.player;
-		with (spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, _player.characterID)) {
+		global.player.set_body(spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, global.player.characterID));
+		with (global.player.body) {
+			depth += depthOffset;
 			image_xscale = _spawnDir;
-			_player.set_body(self);
-			_player.hudElement.healthpoints = healthpoints;
-			self.generate_loadout();
+			hudElement.healthpoints = healthpoints;
+			
+			self.generate_weapons();
 			self.equip_weapon(0);
 			self.refresh_palette();
 		}

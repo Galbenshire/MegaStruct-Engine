@@ -23,7 +23,7 @@ function Character_MegaMan() : Character() constructor {
         $3898F8
     ];
     
-	static loadout = [
+	static weapons = [
         WeaponType.BUSTER,
         WeaponType.ICE_SLASHER,
         WeaponType.METAL_BLADE,

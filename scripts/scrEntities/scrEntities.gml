@@ -469,8 +469,8 @@ function entity_faction_solids(_scope = self) {
 ///
 /// @param {prtEntity}  [scope]  The instance to get the value from. Defaults to the calling instance.
 function entity_item_drop(_scope = self) {
-	var _expl = instance_create(bbox_x_center(), bbox_y_center(), depth, objExplosion);
-	_expl.onItemDrop = onItemDrop;
+	var _expl = instance_create(bbox_x_center(_scope), bbox_y_center(_scope), _scope.depth, objExplosion);
+	_expl.onItemDrop = _scope.onItemDrop;
 	
 	switch (_scope.itemDropType) {
 		case ItemDropType.NONE: break; // Nothing

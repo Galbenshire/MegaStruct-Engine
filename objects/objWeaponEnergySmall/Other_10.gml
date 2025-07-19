@@ -7,5 +7,5 @@ with (__collectPlayer) {
     if (weapon.has_flag(WeaponFlags.NO_AMMO) || weapon.ammo >= FULL_HEALTHBAR)
         exit;
     
-    self.restore_ammo(other.ammoToRestore, weapon);
+    self.restore_weapon_ammo(other.ammoToRestore, weapon);
 }

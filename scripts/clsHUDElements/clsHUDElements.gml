@@ -30,10 +30,17 @@ function HUDElement() constructor {
 /// @func HUDElement_Boss(max_health, palette)
 /// @desc Represents the healthbar of a boss.
 function HUDElement_Boss(_maxHealth, _palette) : HUDElement() constructor {
+	#region Variables
+	
 	healthpoints = _maxHealth;
+	maxHealthpoints = _maxHealth;
 	
 	paletteBars = __init_healthbar_palettes(_maxHealth, _palette); /// @is {array<PaletteTwoTone>}
 	paletteBG = $000000;
+	
+	#endregion
+	
+	#region Virtual Function Implementations
 	
     static draw = function(_x, _y) {
 		if (healthpoints <= 0)
@@ -46,12 +53,16 @@ function HUDElement_Boss(_maxHealth, _palette) : HUDElement() constructor {
     static get_height = function() /*=>*/ {return 56};
     static get_width = function() /*=>*/ {return 8};
     
-    // Private Functions
+    #endregion
+    
+    #region Private Functions
     
     /// -- __draw_healthbar_empty(x, y)
 	/// Draws an empty healthbar. For when the boss has no health left.
     static __draw_healthbar_empty = function(_x, _y) {
-		draw_mm_healthbar(_x, _y, 0, [ 0, 0, paletteBG ], [ 0, 0, 1 ]);
+		var _max = min(maxHealthpoints, FULL_HEALTHBAR);
+		_y += (FULL_HEALTHBAR - _max) * 2;
+		draw_mm_healthbar(_x, _y, 0, [ 0, 0, paletteBG ], [ 0, 0, 1 ], _max);
     };
     
     /// -- __draw_healthbar_layered(x, y, index)
@@ -71,8 +82,10 @@ function HUDElement_Boss(_maxHealth, _palette) : HUDElement() constructor {
     /// -- __draw_healthbar_one_bar_left(x, y)
 	/// Draws a single healthbar. For when the boss only has one bar worth of health.
     static __draw_healthbar_one_bar_left = function(_x, _y) {
-		var _fullPalette = [ paletteBars[0][PaletteTwoTone.primary], paletteBars[0][PaletteTwoTone.secondary], paletteBG ];
-		draw_mm_healthbar(_x, _y, healthpoints, _fullPalette);
+		var _fullPalette = [ paletteBars[0][PaletteTwoTone.primary], paletteBars[0][PaletteTwoTone.secondary], paletteBG ],
+			_max = min(maxHealthpoints, FULL_HEALTHBAR);
+		_y += (FULL_HEALTHBAR - _max) * 2;
+		draw_mm_healthbar(_x, _y, healthpoints, _fullPalette, , _max);
     };
     
     /// -- __init_healthbar_palettes()
@@ -89,29 +102,41 @@ function HUDElement_Boss(_maxHealth, _palette) : HUDElement() constructor {
 		
 		return _barPalettes;
     };
+    
+    #endregion
 }
 
 /// @func HUDElement_Player()
 /// @desc Represents the player's stats.
 function HUDElement_Player() : HUDElement() constructor {
+	#region Variables
+	
 	// Player Health
 	healthpoints = FULL_HEALTHBAR;
     healthPalette = [ $A8D8FC, $FFFFFF, $000000 ]; /// @is {PaletteThreeTone}
     
     // Player Weapon Ammo
     weaponID = WeaponType.BUSTER;
-    ammo = FULL_HEALTHBAR;
-    ammoVisible = false;
-    ammoPalette = [ $EC7000, $F8B838, $000000 ]; /// @is {PaletteThreeTone}
+    weaponAmmo = FULL_HEALTHBAR;
+    weaponVisible = false;
+    weaponPalette = [ $EC7000, $F8B838, $000000 ]; /// @is {PaletteThreeTone}
+    
+    #endregion
+    
+    #region Virtual Function Implementations
     
     // Implementing the virtual functions
     static draw = function(_x, _y) {
         draw_mm_healthbar(_x + 8, _y, healthpoints, healthPalette);
-        if (ammoVisible)
-            draw_mm_healthbar(_x, _y, ammo, ammoPalette);
+        if (weaponVisible)
+            draw_mm_healthbar(_x, _y, weaponAmmo, weaponPalette);
     };
     static get_height = function() /*=>*/ {return 56};
     static get_width = function() /*=>*/ {return 16};
+    
+    #endregion
+    
+    #region Other Functions
     
     // Other Functions
     
@@ -120,12 +145,30 @@ function HUDElement_Player() : HUDElement() constructor {
 	/// Various ammo-related variables will be updated accordingly
     static assign_weapon = function(_weapon) {
 		if (is_undefined(_weapon)) {
-			ammoVisible = false;
+			weaponVisible = false;
 			return;
 		}
 		
 		weaponID = _weapon.id;
-		ammoVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
-		ammo = _weapon.ammo;
+		weaponVisible = !_weapon.has_flag(WeaponFlags.NO_AMMO);
+		weaponAmmo = _weapon.ammo;
     };
+    
+    /// -- set_health_palette(primary, secondary, background)
+	/// Sets the palette of the health bar
+    static set_health_palette = function(_primary, _secondary, _background = c_black) {
+		healthPalette[PaletteThreeTone.primary] = _primary;
+		healthPalette[PaletteThreeTone.secondary] = _secondary;
+		healthPalette[PaletteThreeTone.background] = _background;
+    };
+    
+    /// -- set_weapon_palette(primary, secondary, background)
+	/// Sets the palette of the weapon ammo bar
+    static set_weapon_palette = function(_primary, _secondary, _background = c_black) {
+		weaponPalette[PaletteThreeTone.primary] = _primary;
+		weaponPalette[PaletteThreeTone.secondary] = _secondary;
+		weaponPalette[PaletteThreeTone.background] = _background;
+    };
+    
+    #endregion
 }

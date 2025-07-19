@@ -179,7 +179,7 @@ function Character() constructor {
 	static defaultColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
 	
 	// A list of weapons this character will have available to them
-	static loadout = []; /// @is {array<int>}
+	static weapons = []; /// @is {array<int>}
 	
 	#endregion
 	
@@ -193,12 +193,12 @@ function Character() constructor {
 		return variable_clone(defaultColours);
 	};
 	
-	/// -- get_loadout()
-	/// Gets this character associated loadout. Playing as this character gives you these weapons.
+	/// -- get_weapons()
+	/// Gets this character's associated loadout of weapons. Playing as this character gives you these weapons.
 	///
 	/// @returns {array<int>}  A copy of this characters's loadout.
-	static get_loadout = function() {
-		return variable_clone(loadout);
+	static get_weapons = function() {
+		return variable_clone(weapons);
 	};
 	
 	/// -- get_name(uppercase)
@@ -207,9 +207,18 @@ function Character() constructor {
 	///
 	/// @param {bool}  [uppercase]  Whether to return the name in uppercase or not. Defaults to false.
 	///
-	/// @returns {array<int>}  A copy of this characters's loadout.
+	/// @returns {string}  This characters's name.
 	static get_name = function(_upper = false) {
 		return _upper ? string_upper(name) : name;
+	};
+	
+	/// -- personalize_weapon(weapon)
+	/// Takes the give weapon, and applies minor adjustments to it
+	/// Use to alter a weapon based on the playable character (e.g. Rush Coil becoming Proto Coil for Proto Man)
+	///
+	/// @param {Weapon}  weapon  The weapon to personalize
+	static personalize_weapon = function(_weapon) {
+		//...
 	};
 	
 	/// -- spritesheet_gun_offset(page, cell_x, cell_y)

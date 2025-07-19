@@ -30,6 +30,7 @@ function Player(_id/*:number*/) constructor {
 		body = _body;
 		body.playerUser = self;
 		body.playerID = id;
+		hudElement = body.hudElement;
 		
 		return self;
 	};

@@ -18,6 +18,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"healthColourSecondary","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"$FFF8F8F8",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"initialFightState","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"SpawnClone",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"contactDamage","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"6",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"bossMusicID","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"Music.MM3_BOSSRM",},
   ],
   "parent":{
     "name":"Gemini Man",

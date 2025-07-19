@@ -37,6 +37,6 @@ onDeath = method(id, cbkOnDeath_prtBoss);
 onDraw = method(id, cbkOnDraw_prtBoss);
 
 // Event User Inits
-event_user(EVENT_METHOD_INIT);
-event_user(EVENT_ANIMATION_INIT);
-event_user(EVENT_STATEMACHINE_INIT);
+event_user(EVENT_BOSS_METHOD_INIT);
+event_user(EVENT_BOSS_ANIMATION_INIT);
+event_user(EVENT_BOSS_STATEMACHINE_INIT);

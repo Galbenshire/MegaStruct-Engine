@@ -125,7 +125,7 @@ with (stateMachine.add("!!FinishIntro")) {
 			case 0: // Delay before showing healthbar
 				if (stateMachine.timer >= healthbarFillDelay) {
 					if (showHealthbar) {
-						array_push(objSystem.hud.bossHUD, hudElement);
+						self.connect_hud();
 						hudElement.healthpoints *= !lockControlsDuringIntro;
 						isFillingHealthBar = true;
 					}

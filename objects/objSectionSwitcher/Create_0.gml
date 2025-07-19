@@ -30,4 +30,4 @@ alignmentFixYDir = 0;
 // Reference to the game view
 gameViewRef = game_view();
 
-event_user(EVENT_STATEMACHINE_INIT);
+event_user(0); // State Machine Init

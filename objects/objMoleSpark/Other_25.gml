@@ -1,8 +1,4 @@
-event_inherited();
-
-if (global.paused || global.gameTimeScale.integer <= 0)
-	exit;
-
+/// @description Tick
 if (!instance_exists(myMole)) {
     instance_destroy();
     exit;

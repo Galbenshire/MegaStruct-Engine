@@ -57,7 +57,7 @@ function cbkOnHurt_prtPlayer(_damageSource) {
     }
     
     iFrames = 60;
-    self.update_hud_health(healthpoints);
+    hudElement.healthpoints = healthpoints;
 }
 
 #endregion

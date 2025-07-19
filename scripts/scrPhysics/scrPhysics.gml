@@ -1,3 +1,5 @@
+#region Checking for Collisions
+
 /// @func check_for_solids(x, y, scope)
 /// @desc Checks if a given entity would overlap with solid collisions at the location specified
 ///
@@ -282,6 +284,10 @@ function get_ycoll_candidates(_range, _scope = self) {
     return _results;
 }
 
+#endregion
+
+#region Moving Entities
+
 /// @func move_and_collide_x(xspeed, test_only, scope)
 /// @desc Moves the given entity left/right, taking collisions into account
 ///
@@ -503,23 +509,6 @@ function push_entities_y(_yspeed, _scope = self) {
     }
 }
 
-/// @func set_velocity_vector(speed, direction, scope)
-/// @desc Sets the velocity of the given entity, using a direction & magnitude
-///
-/// @param {number}  speed  The magnitude of the velocity
-/// @param {number}  direction  The direction of the velocity
-/// @param {prtEntity}  [scope]  The instance to set the velocity of. Defaults to the calling instance.
-function set_velocity_vector(_speed, _direction, _scope = self) {
-	with (_scope) {
-		direction = _direction;
-		speed = _speed;
-		xspeed.value = hspeed;
-		yspeed.value = vspeed;
-		direction = 0;
-		speed = 0;
-	}
-}
-
 /// @func test_move_x(xspeed, scope)
 /// @desc Checks for collisions along a horizontal path, without moving the instance
 ///
@@ -542,6 +531,31 @@ function test_move_y(_yspeed, _scope = self) {
 	return move_and_collide_y(_yspeed, true, _scope) != noone;
 }
 
+#endregion
+
+#region Velocities
+
+/// @func set_velocity_vector(speed, direction, scope)
+/// @desc Sets the velocity of the given entity, using a direction & magnitude
+///
+/// @param {number}  speed  The magnitude of the velocity
+/// @param {number}  direction  The direction of the velocity
+/// @param {prtEntity}  [scope]  The instance to set the velocity of. Defaults to the calling instance.
+function set_velocity_vector(_speed, _direction, _scope = self) {
+	with (_scope) {
+		direction = _direction;
+		speed = _speed;
+		xspeed.value = hspeed;
+		yspeed.value = vspeed;
+		direction = 0;
+		speed = 0;
+	}
+}
+
+#endregion
+
+#region Other
+
 /// @func try_splashing(x1, y1, x2, y2)
 /// @desc Given a line, this function tries to make a splash against any water instances in the line's path
 ///
@@ -558,7 +572,7 @@ function try_splashing(_x1, _y1, _x2, _y2) {
 	var _water = _inWaterStart ? instance_position(_x1, _y1, objWater) : instance_position(_x2, _y2, objWater);
 	
 	for (var i = 0; i < 4; i++) {
-		if (!(_water.splashDirection & (1 << i)))
+		if (!bitmask_has_bit(_water.splashDirection, 1 << i))
 			continue;
 		
 		var _line/*:Line*/ = _water.lines[i],
@@ -572,3 +586,5 @@ function try_splashing(_x1, _y1, _x2, _y2) {
 		});
 	}
 }
+
+#endregion

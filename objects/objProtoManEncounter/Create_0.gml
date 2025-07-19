@@ -16,5 +16,5 @@ encounterPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 onEncounterEnd = undefined; /// @is {function<void>?}
 __encounterIsOver = false;
 
-event_user(EVENT_ANIMATION_INIT);
-event_user(EVENT_STATEMACHINE_INIT);
+event_user(0); // Animation Init
+event_user(1); // State Machine Init

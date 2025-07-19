@@ -63,7 +63,7 @@ function Character_Bass() : Character() constructor {
         $3898F8
     ];
     
-	static loadout = [
+	static weapons = [
         WeaponType.BUSTER_BASS,
         WeaponType.ICE_SLASHER,
         WeaponType.SEARCH_SNAKE,

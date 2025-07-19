@@ -1,13 +1,12 @@
 {
   "$GMObject":"",
   "%Name":"objSlideDust",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "eventList":[],
   "managed":true,
   "name":"objSlideDust",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEffect","path":"objects/prtEffect/prtEffect.yy",},"propertyId":{"name":"animSpeed","path":"objects/prtEffect/prtEffect.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0.2",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEffect","path":"objects/prtEffect/prtEffect.yy",},"propertyId":{"name":"destroyOnAnimEnd","path":"objects/prtEffect/prtEffect.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
   ],
   "parent":{
     "name":"Slide Dust",

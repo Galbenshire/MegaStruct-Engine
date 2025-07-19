@@ -139,7 +139,7 @@ function Character_ProtoMan() : Character() constructor {
         $3898F8
     ];
     
-	static loadout = [
+	static weapons = [
         WeaponType.BUSTER_PROTO,
         WeaponType.ICE_SLASHER,
         WeaponType.METAL_BLADE,

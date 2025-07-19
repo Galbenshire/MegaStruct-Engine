@@ -14,14 +14,12 @@ function player_death_explosion(_x, _y, _depthOrLayer) {
 	var _depth = (typeof(_depthOrLayer) == "number")
 		? _depthOrLayer
 		: layer_get_depth(_depthOrLayer);
-	var _explosion_params = {
-		sprite_index: sprExplosion,
-		animSpeed: 1/3,
-		lifeDuration: 0
-	};
 	for (var i = 0; i < 16; i++) {
-		with (instance_create_depth(_x, _y, _depth, objGenericEffect, _explosion_params))
+		with (instance_create_depth(_x, _y, _depth, objGenericEffect)) {
+			sprite_index = sprExplosion;
+			animSpeed = 1/3;
 			set_velocity_vector(0.75 * (1 + floor(i / 8)), i * 45);
+		}
 	}
 }
 

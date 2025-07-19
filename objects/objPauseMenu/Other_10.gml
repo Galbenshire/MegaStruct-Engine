@@ -1,6 +1,6 @@
 /// @description Init
 // === Weapons Init ===
-weapons = global.player.body.loadout;
+weapons = global.player.body.weaponList;
 weaponCount = array_length(weapons);
 
 // === Menu Init ===

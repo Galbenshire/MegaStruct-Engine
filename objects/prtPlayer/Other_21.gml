@@ -136,28 +136,28 @@
 	
 	/// -- handle_switching_weapons()
 	function handle_switching_weapons() {
-		if (loadoutSize <= 0 || self.is_action_locked(PlayerAction.WEAPON_CHANGE)) {
+		if (self.is_action_locked(PlayerAction.WEAPON_CHANGE)) {
 			quickSwitchTimer = 0;
 			weaponIconTimer = 0;
 			return;
 		}
 		
-		var _index = array_get_index(loadout, weapon),
+		var _weaponIndex = array_get_index(weaponList, weapon),
 			_wpnSwitchLeft = inputs.is_held(InputActions.WEAPON_SWITCH_LEFT),
 			_wpnSwitchRight = inputs.is_held(InputActions.WEAPON_SWITCH_RIGHT),
 			_dir = _wpnSwitchRight - _wpnSwitchLeft;
 		
 		if (_dir != 0) {
 			if (--quickSwitchTimer <= 0)
-				_index = modf(_index + _dir, loadoutSize);
+				_weaponIndex = modf(_weaponIndex + _dir, weaponSize);
 		} else if (_wpnSwitchLeft && _wpnSwitchRight) {
-			_index = 0;
+			_weaponIndex = 0;
 		} else {
 			quickSwitchTimer = 0;
 		}
 		
-		if (_index != NOT_FOUND && loadout[_index] != weapon) {
-			self.equip_weapon(_index);
+		if (_weaponIndex != NOT_FOUND && weaponList[_weaponIndex] != weapon) {
+			self.equip_weapon(_weaponIndex);
 			
 			with (prtProjectile) {
 				if (owner == other.id)
@@ -175,61 +175,35 @@
 	
 	#endregion
 	
-	#region HUD
+	#region Palette
 	
-	/// -- update_hud_ammo(amount, palette, weapon)
-	/// Updates the ammobar on the player's HUD
+	/// -- get_palette(weapon)
+	/// Gets a palette from the player, based on the given weapon
 	///
-	/// @param {number}  [amount]  The amount to set the ammobar to. Optional.
-	/// @param {PaletteThreeTone}  [palette]  The palette to apply. Optional.
-	/// @param {Weapon}  [weapon]  The weapon to check against.
-	///		If defined, the ammobar will only get updated if the weapon's ID matches the ID currently in the HUD.
-	function update_hud_ammo(_amount, _palette, _weapon) {
-		if (!self.is_user_controlled())
-			return;
-		if (!is_undefined(_weapon) && _weapon.id != playerUser.hudElement.weaponID)
-			return;
+	/// @param {Weapon}  weapon  The weapon to use. Defaults to the player's current.
+	function get_palette(_weapon = weapon) {
+		var _characterPalette = characterSpecs.get_default_colours();
+		_characterPalette[PalettePlayer.primary] = _weapon.colours[PaletteWeapon.primary];
+		_characterPalette[PalettePlayer.secondary] = _weapon.colours[PaletteWeapon.secondary];
 		
-		if (!is_undefined(_amount))
-			playerUser.hudElement.ammo = _amount;
-		if (!is_undefined(_palette))
-			playerUser.hudElement.ammoPalette = _palette;
+		return _characterPalette;
 	}
 	
-	/// -- update_hud_health(amount, palette)
-	/// Updates the healthbar on the player's HUD
-	///
-	/// @param {number}  [amount]  The amount to set the healthbar to. Optional.
-	/// @param {PaletteThreeTone}  [palette]  The palette to apply. Optional.
-	function update_hud_health(_amount, _palette) {
-		if (!self.is_user_controlled())
-			return;
+	/// -- refresh_palette()
+	/// Updates the player's palette
+	function refresh_palette() {
+		var _palette = self.get_palette();
 		
-		if (!is_undefined(_amount))
-			playerUser.hudElement.healthpoints = _amount;
-		if (!is_undefined(_palette))
-			playerUser.hudElement.healthPalette = _palette;
+		for (var i = 0; i < palette.colourCount; i++)
+			palette.set_colour_at(i, _palette[i]);
+		if (self.is_user_controlled())
+			hudElement.set_weapon_palette(_palette[PalettePlayer.primary], _palette[PalettePlayer.secondary], _palette[PalettePlayer.outline]);
 	}
 	
 	#endregion
 	
 	#region Restoring Health/Ammo
 	
-	/// -- restore_ammo(value, weapon)
-	/// Restores the player's weapon ammo by the given amount
-	///
-	/// @param {number}  value  The amount to ammo to restore
-	/// @param {Weapon}  weapon  The weapon to restore the ammo of
-	function restore_ammo(_value, _weapon) {
-		if (options_data().instantHealthFill || !self.is_user_controlled()) {
-			_weapon.change_ammo(_value);
-			self.update_hud_ammo(_weapon.ammo, , _weapon);
-			play_sfx(sfxEnergyRestore);
-		} else {
-			health_restore_effect().queue_ammo_refill(_weapon, _value);
-		}
-	}
-
 	/// -- restore_health(value)
 	/// Restores the player's health by the given amount
 	///
@@ -237,11 +211,70 @@
 	function restore_health(_value) {
 		if (options_data().instantHealthFill || !self.is_user_controlled()) {
 			healthpoints = clamp(healthpoints + _value, 0, healthpointsStart);
-			self.update_hud_health(healthpoints);
+			hudElement.healthpoints = healthpoints;
 			play_sfx(sfxEnergyRestore);
 		} else {
-			health_restore_effect().queue_health_refill(_value);
+			health_restore_effect().queue_health_refill(self, _value);
 		}
+	}
+	
+	/// -- restore_weapon_ammo(value, weapon)
+	/// Restores the player's weapon ammo by the given amount
+	///
+	/// @param {number}  value  The amount to ammo to restore
+	/// @param {Weapon}  weapon  The weapon to restore the ammo of
+	function restore_weapon_ammo(_value, _weapon) {
+		if (options_data().instantHealthFill || !self.is_user_controlled()) {
+			_weapon.change_ammo(_value);
+			play_sfx(sfxEnergyRestore);
+			
+			if (hudElement.weaponID == _weapon.id)
+				hudElement.weaponAmmo = _weapon.ammo
+		} else {
+			health_restore_effect().queue_ammo_refill(self, _weapon, _value);
+		}
+	}
+	
+	#endregion
+	
+	#region Try Actions
+	
+	/// -- try_climbing()
+	/// Function that checks if the player is able to climb a ladder
+	///
+	/// @returns {bool}  Whether the player can climb a ladder (true), or not (false)
+	function try_climbing() {
+		ladderInstance = noone;
+		
+		if (yDir == 0 || self.is_action_locked(PlayerAction.CLIMB))
+			return false;
+		
+		if (yDir != gravDir)
+			ladderInstance = collision_line(bbox_x_center(), bbox_top + 2, bbox_x_center(), bbox_bottom - 1, objLadder, false, false);
+		else if (ground)
+			ladderInstance = instance_position(sprite_x_center(), bbox_vertical(gravDir) + gravDir, objLadder);
+		
+		return ladderInstance != noone && !test_move_x(bbox_x_center(ladderInstance) - x);
+	}
+	
+	/// -- try_sliding()
+	/// Function that checks if the player is able to slide
+	///
+	/// @returns {bool}  Whether the player can slide (true), or not (false)
+	function try_sliding() {
+		if (!ground || self.is_action_locked(PlayerAction.SLIDE))
+			return false;
+		
+		var _input = inputs.is_pressed(InputActions.SLIDE) || self.check_input_down_jump_slide(true);
+		if (!_input)
+			return false;
+		
+		// Check if there's space ahead
+		mask_index = maskSlide;
+		var _hasSpace = !test_move_x(image_xscale);
+		mask_index = maskNormal;
+		
+		return _hasSpace;
 	}
 	
 	#endregion
@@ -254,31 +287,31 @@
 	/// @param {int}  weapon_id  The ID of the weapon to add
 	function add_weapon(_weaponID) {
 		var _weapon = weapon_create_from_id(_weaponID);
-		array_push(loadout, _weapon);
-		loadoutSize = array_length(loadout);
+		characterSpecs.personalize_weapon(_weapon);
+		array_push(weaponList, _weapon);
+		weaponSize = array_length(weaponList);
 	}
 	
-	/// -- equip_weapon(weapon_or_loadout_index)
+	/// -- equip_weapon(weapon_or_index)
 	/// Makes this player entity equip a weapon
 	///	This can either be an actual Weapon instance,
-	///	or an index from the player's loadout
+	///	or an index from the player's weapon loadout
 	///
-	/// @param {Weapon|int}  weapon_or_loadout_index  The weapon instance to equip (or the weapon at a given location in the player's loadout)
-	function equip_weapon(_weaponOrLoadout) {
+	/// @param {Weapon|int}  weapon_or_index  The weapon instance to equip (or the weapon at a given location in the player's loadout)
+	function equip_weapon(_weaponOrIndex) {
 		var _weapon = undefined;
-		if (is_instanceof(_weaponOrLoadout, Weapon))
-			_weapon = _weaponOrLoadout;
-		else if (is_numeric(_weaponOrLoadout))
-			_weapon = array_at(loadout, _weaponOrLoadout);
+		if (is_instanceof(_weaponOrIndex, Weapon))
+			_weapon = _weaponOrIndex;
+		else if (is_numeric(_weaponOrIndex))
+			_weapon = array_at(weaponList, _weaponOrIndex);
 		
-		if (self.is_user_controlled())
-			playerUser.hudElement.assign_weapon(_weapon);
+		if (is_undefined(_weapon))
+			return;
 		
-		if (!is_undefined(weapon))
-			weapon.on_unequip(self);
+		weapon.on_unequip(self);
 		weapon = _weapon;
-		if (!is_undefined(weapon))
-			weapon.on_equip(self);
+		hudElement.assign_weapon(_weapon);
+		weapon.on_equip(self);
 	}
 	
 	/// -- fire_weapon(params, player)
@@ -325,8 +358,8 @@
 				return noone;
 				
 			_weapon.change_ammo(-_params.cost);
-			if (self.is_user_controlled() && playerUser.hudElement.weaponID == _weapon.id)
-				playerUser.hudElement.ammo = _weapon.ammo;
+			if (hudElement.weaponID == _weapon.id)
+				hudElement.weaponAmmo = _weapon.ammo;
 		}
 		
 		// We should be good to go
@@ -363,20 +396,20 @@
 		
 		// Let others know we just shot this projectile
 		signal_bus().emit_signal("playerShot", {
-			player: other.id,
+			player: self.id,
 			projectile: _bullet
 		});
 		
 		return _bullet;
 	}
 	
-	/// -- generate_loadout()
+	/// -- generate_weapons()
 	/// Generates a weapon loadout for this player, based on their character specs
-	function generate_loadout() {
-		var _loadout = characterSpecs.loadout,
-			_loadoutSize = array_length(_loadout);
-		for (var i = 0; i < _loadoutSize; i++)
-			self.add_weapon(_loadout[i]);
+	function generate_weapons() {
+		weaponList = [];
+		var _weapons = characterSpecs.weapons;
+		for (var i = 0, n = array_length(_weapons); i < n; i++)
+			self.add_weapon(_weapons[i]);
 	}
 	
 	#endregion
@@ -485,60 +518,6 @@
 	/// @returns {bool}  Whether this player is being controlled (true), or not (false)
 	function is_user_controlled() {
 		return !is_undefined(playerUser);
-	}
-	
-	/// -- refresh_palette()
-	/// Updates the player's palette
-	function refresh_palette() {
-		var _characterPalette = characterSpecs.get_default_colours();
-		
-		if (!is_undefined(weapon)) {
-			_characterPalette[PalettePlayer.primary] = weapon.colours[PaletteWeapon.primary];
-			_characterPalette[PalettePlayer.secondary] = weapon.colours[PaletteWeapon.secondary];
-		}
-		
-		for (var i = 0; i < palette.colourCount; i++)
-			palette.set_colour_at(i, _characterPalette[i]);
-		if (self.is_user_controlled())
-			playerUser.hudElement.ammoPalette = array_slice(_characterPalette, 0, 3);
-	}
-	
-	/// -- try_climbing()
-	/// Function that checks if the player is able to climb a ladder
-	///
-	/// @returns {bool}  Whether the player can climb a ladder (true), or not (false)
-	function try_climbing() {
-		ladderInstance = noone;
-		
-		if (yDir == 0 || self.is_action_locked(PlayerAction.CLIMB))
-			return false;
-		
-		if (yDir != gravDir)
-			ladderInstance = collision_line(bbox_x_center(), bbox_top + 2, bbox_x_center(), bbox_bottom - 1, objLadder, false, false);
-		else if (ground)
-			ladderInstance = instance_position(sprite_x_center(), bbox_vertical(gravDir) + gravDir, objLadder);
-		
-		return ladderInstance != noone && !test_move_x(bbox_x_center(ladderInstance) - x);
-	}
-	
-	/// -- try_sliding()
-	/// Function that checks if the player is able to slide
-	///
-	/// @returns {bool}  Whether the player can slide (true), or not (false)
-	function try_sliding() {
-		if (!ground || self.is_action_locked(PlayerAction.SLIDE))
-			return false;
-		
-		var _input = inputs.is_pressed(InputActions.SLIDE) || self.check_input_down_jump_slide(true);
-		if (!_input)
-			return false;
-		
-		// Check if there's space ahead
-		mask_index = maskSlide;
-		var _hasSpace = !test_move_x(image_xscale);
-		mask_index = maskNormal;
-		
-		return _hasSpace;
 	}
 	
 	#endregion

@@ -2,6 +2,36 @@
 /// @init
 // These tabs spaces are just so it looks better organized in the outline view in GMEdit
 	
+	#region HUD
+	
+	/// -- connect_hud()
+	/// Adds the boss' healthbar to the HUD
+	function connect_hud() {
+		array_push(objSystem.hud.bossHUD, hudElement);
+	}
+	
+	/// -- disconnect_hud()
+	/// Removes the boss' healthbar from the HUD
+	function disconnect_hud() {
+		with (objSystem.hud) {
+			var _index = array_get_index(bossHUD, other.hudElement);
+			if (_index != NOT_FOUND)
+				array_delete(bossHUD, _index, 1);
+		}
+	}
+	
+	/// -- update_hud_health(amount)
+	/// Updates the healthbar on the boss's HUD
+	///
+	/// @param {number}  [amount]  The amount to set the healthbar to. Optional.
+	function update_hud(_amount) {
+		hudElement.healthpoints = _amount;
+	}
+	
+	#endregion
+	
+	#region Other
+	
 	/// -- common_state_intro_spawn(event)
 	/// Executes code common for an intro state
 	///
@@ -52,13 +82,15 @@
 		return noone;
 	}
 	
-	/// -- disconnect_hud()
-	/// Removes the boss' healthbar from the HUD
-	function disconnect_hud() {
-		with (objSystem.hud) {
-			var _index = array_get_index(bossHUD, other.hudElement);
-			if (_index != NOT_FOUND)
-				array_delete(bossHUD, _index, 1);
+	/// -- restore_music()
+	/// Halts the boss music, restoring the music that was playing before the fight began
+	/// (or cutting the music altogether if configured to do so)
+	function restore_music() {
+		if (stopMusicOnDeath) {
+			audio_stop_all();
+		} else if (playBossMusic) {
+			play_music(preFightMusicCache[MusicSnapshot.musicID], preFightMusicCache[MusicSnapshot.volume]);
+			audio_sound_set_track_position(objSystem.music.track, preFightMusicCache[MusicSnapshot.startAt]);
 		}
 	}
 	
@@ -70,10 +102,4 @@
 		assert(animator.has_animation(_animName), $"Missing animation for {object_get_name(object_index)} (\"{_animName}\")");
 	}
 	
-	/// -- update_hud_health(amount)
-	/// Updates the healthbar on the boss's HUD
-	///
-	/// @param {number}  [amount]  The amount to set the healthbar to. Optional.
-	function update_hud(_amount) {
-		hudElement.healthpoints = _amount;
-	}
+	#endregion
