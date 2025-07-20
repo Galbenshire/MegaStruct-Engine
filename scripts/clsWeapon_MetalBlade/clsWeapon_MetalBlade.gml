@@ -1,16 +1,21 @@
 function Weapon_MetalBlade() : Weapon() constructor {
-    #region Static Data (consistent across all weapon instances)
+    #region Static Data
 	
 	static id = WeaponType.METAL_BLADE;
-	static colours = [ $007088, $A8E0FF, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	#endregion
+	
+	#region Variables
+	
+	colours = [ $007088, $A8E0FF, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 3;
+	icon = sprWeaponIcons;
+	iconIndex = 3;
 	
 	// - Name
-	static name = "Metal Blade";
-	static shortName = "M.Blade";
+	name = "Metal Blade";
+	shortName = "M.Blade";
 	
 	#endregion
 	

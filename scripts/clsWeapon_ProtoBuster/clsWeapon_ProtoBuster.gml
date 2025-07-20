@@ -4,27 +4,32 @@ function Weapon_ProtoBuster() : Weapon() constructor {
     // == Base Weapon Statics ==
 	
 	static id = WeaponType.BUSTER_PROTO;
-	static colours =  [ $0028DC, $BCBCBC, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	static flags = WeaponFlags.NO_AMMO | WeaponFlags.CHARGE;
-	
-	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 1;
-	
-	// - Name
-	static name = "Proto Buster";
-	static shortName = "P.Buster";
 	
 	// == Buster-Specific Statics ==
 	
 	static chargePreDuration = 20;
 	static chargeDuration = 57;
 	static chargeColoursOutline = [ $000000, $CC00D8 ];
-	static chargeColoursFull = [ $00B8F8, $A8E0FC, $5878F8 ];
+	static chargeColoursFull = [ $00B5F7, $73F7D6, $007BAD ];
 	
 	#endregion
 	
 	#region Variables
+	
+	// == Base Weapon Variables ==
+	
+	colours =  [ $0028DC, $BCBCBC, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	// - Icon
+	icon = sprWeaponIcons;
+	iconIndex = 1;
+	
+	// - Name
+	name = "Proto Buster";
+	shortName = "P.Buster";
+	
+	// == Buster-Specific Variables ==
 	
 	chargeState = 0; // 0 - not charging; 1 - pre charging; 2 - charging; 3 - fully charged;
 	chargeTimer = 0;
@@ -32,6 +37,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	barAmount = 0;
 	
 	playerRef = noone; // Reference to the player using this weapon
+	playerInputs = undefined; // Reference to the player's (main) InputMap
 	hudRef = undefined; // Reference to the player's HUD element, if they have one
 	
 	#endregion
@@ -51,6 +57,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		self.change_charge_state(0);
 		
 		playerRef = _player;
+		playerInputs = _player.inputs;
 		hudRef = playerRef.hudElement;
 		hudRef.weaponVisible = options_data().chargeBar;
 		hudRef.weaponAmmo = 0;
@@ -62,6 +69,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		with (playerRef)
 			isCharging = false;
 		playerRef = noone;
+		playerInputs = undefined;
 		hudRef = undefined;
 	};
 	
@@ -100,14 +108,14 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 				if (chargeTimer == 0)
 					play_sfx(sfxChargingProto);
 				
-				var _index = (chargeTimer <= (chargeDuration * 0.5))
+				var _index = (chargeTimer <= (chargeDuration >> 1))
 					? (chargeTimer mod 8 <= 4)
 					: (chargeTimer mod 4 <= 2);
 				self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
 				
 				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
 					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
 						self.fire_buster_shot(1);
 				} else if (chargeTimer >= chargeDuration) {
@@ -116,17 +124,21 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 				break;
 			
 			case 3: // Fully Charged
-				var _chargeCycle = chargeTimer mod 6;
-				if (_chargeCycle == 0) {
-					playerRef.refresh_palette();
-				} else if (_chargeCycle == 2) {
-					self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[(chargeTimer mod 16) < 8]);
-				} else if (_chargeCycle == 4) {
-					for (var i = 0; i < 3; i++)
-						self.update_player_colour(i, chargeColoursFull[i]);
+				switch (chargeTimer mod 8) {
+					case 0:
+					case 4:
+						playerRef.refresh_palette();
+						break;
+					case 2:
+						self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[1]);
+						break;
+					case 6:
+						for (var i = 0; i < 3; i++)
+							self.update_player_colour(i, chargeColoursFull[i]);
+						break;
 				}
 				
-				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
 					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
 						self.fire_buster_shot(2);
 				}
@@ -180,7 +192,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		var _chargeToggle = playerRef.is_user_controlled() ? options_data().autoFire : false;
 		return _chargeToggle
 			? chargeToggle
-			: playerRef.inputs.is_held(InputActions.SHOOT);
+			: playerInputs.is_held(InputActions.SHOOT);
 	};
 	
 	static update_player_colour = function(_index, _colour) {

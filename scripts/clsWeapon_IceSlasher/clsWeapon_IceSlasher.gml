@@ -1,16 +1,21 @@
 function Weapon_IceSlasher() : Weapon() constructor {
-    #region Static Data (consistent across all weapon instances)
+    #region Static Data
 	
 	static id = WeaponType.ICE_SLASHER;
-	static colours = [ $F85800, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	#endregion
+	
+	#region Variables
+	
+	colours = [ $F85800, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 4;
+	icon = sprWeaponIcons;
+	iconIndex = 4;
 	
 	// - Name
-	static name = "Ice Slasher";
-	static shortName = "I.Slasher";
+	name = "Ice Slasher";
+	shortName = "I.Slasher";
 	
 	#endregion
 	

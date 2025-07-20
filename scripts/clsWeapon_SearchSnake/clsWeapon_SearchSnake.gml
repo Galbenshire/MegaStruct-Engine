@@ -1,16 +1,21 @@
 function Weapon_SearchSnake() : Weapon() constructor {
-    #region Static Data (consistent across all weapon instances)
+    #region Static Data
 	
 	static id = WeaponType.SEARCH_SNAKE;
-	static colours = [ $00B800, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	#endregion
+	
+	#region Variables
+	
+	colours = [ $00B800, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 5;
+	icon = sprWeaponIcons;
+	iconIndex = 5;
 	
 	// - Name
-	static name = "Search Snake";
-	static shortName = "S.Snake";
+	name = "Search Snake";
+	shortName = "S.Snake";
 	
 	#endregion
 	

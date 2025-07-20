@@ -1,4 +1,62 @@
 function Character_ProtoMan() : Character() constructor {
+	#region Static Data
+	
+	static id = CharacterType.PROTO;
+	
+	#endregion
+	
+	#region Variables
+	
+	name = "Proto Man";
+	entityObject = objProtoMan;
+	spritesheet = sprPlayerSkinBlues;
+	spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
+	
+	defaultColours = [
+		// Main Colours
+        $0028DC,
+        $BCBCBC,
+        $000000,
+        
+        // Less Important Colours
+        $A5E7FF,
+        $000000,
+        $FFFFFF,
+        
+        // Pretty Much Mugshot Exclusive
+        $1000A8,
+        $F8F8F8,
+        $3898F8
+    ];
+    
+	weapons = [
+        WeaponType.BUSTER_PROTO,
+        WeaponType.ICE_SLASHER,
+        WeaponType.METAL_BLADE,
+        WeaponType.SEARCH_SNAKE,
+        WeaponType.RUSH_COIL,
+        WeaponType.RUSH_JET
+    ];
+	
+	#endregion
+	
+	#region Functions
+	
+	static personalize_weapon = function(_weapon) {
+		switch (_weapon.id) {
+			case WeaponType.RUSH_COIL:
+				_weapon.set_name("Proto Coil");
+				_weapon.set_icon(sprWeaponIcons, 9);
+				break;
+			case WeaponType.RUSH_JET:
+				_weapon.set_name("Proto Jet");
+				_weapon.set_icon(sprWeaponIcons, 10);
+				break;
+		}
+	};
+	
+	#endregion
+	
 	#region Initializing Subfunctions
 	
 	static __init_spritesheet_lookup_gun_offset = function() {
@@ -110,43 +168,6 @@ function Character_ProtoMan() : Character() constructor {
 		
 		return _lookup;
 	};
-	
-	#endregion
-	
-    #region Static Data
-	
-	static id = CharacterType.PROTO;
-	static name = "Proto Man";
-	static object = objProtoMan;
-	
-	static spritesheet = sprPlayerSkinBlues;
-	static spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
-	
-	static defaultColours = [
-		// Main Colours
-        $0028DC,
-        $BCBCBC,
-        $000000,
-        
-        // Less Important Colours
-        $A5E7FF,
-        $000000,
-        $FFFFFF,
-        
-        // Pretty Much Mugshot Exclusive
-        $1000A8,
-        $F8F8F8,
-        $3898F8
-    ];
-    
-	static weapons = [
-        WeaponType.BUSTER_PROTO,
-        WeaponType.ICE_SLASHER,
-        WeaponType.METAL_BLADE,
-        WeaponType.SEARCH_SNAKE,
-        WeaponType.RUSH_COIL,
-        WeaponType.RUSH_JET
-    ];
 	
 	#endregion
 }

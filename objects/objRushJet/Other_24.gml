@@ -36,5 +36,5 @@ if (instance_exists(owner)) {
 if (!is_undefined(weapon)) {
 	weapon.change_ammo(-ammoDrain);
 	if (instance_exists(owner))
-		owner.update_hud_ammo(weapon.ammo, , weapon);
+		owner.hudElement.weaponAmmo = weapon.ammo;
 }

@@ -2,15 +2,20 @@ function Weapon_RushJet() : Weapon() constructor {
     #region Static Data (consistent across all weapon instances)
 	
 	static id = WeaponType.RUSH_JET;
-	static colours = [ $0028D8, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	#endregion
+	
+	#region Variables
+	
+	colours = [ $0028D8, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 8;
+	icon = sprWeaponIcons;
+	iconIndex = 8;
 	
 	// - Name
-	static name = "Rush Jet";
-	static shortName = "R.Jet";
+	name = "Rush Jet";
+	shortName = "R.Jet";
 	
 	#endregion
 	

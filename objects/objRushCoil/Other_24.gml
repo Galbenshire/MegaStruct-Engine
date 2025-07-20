@@ -25,7 +25,7 @@ if (!hasCoiled) {
 		if (!is_undefined(weapon)) {
 			weapon.change_ammo(-ammoCost);
 			if (instance_exists(owner))
-				owner.update_hud_ammo(weapon.ammo, , weapon);
+				owner.hudElement.weaponAmmo = weapon.ammo;
 		}
     }
 }

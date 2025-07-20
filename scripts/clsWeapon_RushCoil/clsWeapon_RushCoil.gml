@@ -2,15 +2,20 @@ function Weapon_RushCoil() : Weapon() constructor {
     #region Static Data (consistent across all weapon instances)
 	
 	static id = WeaponType.RUSH_COIL;
-	static colours = [ $0028D8, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	#endregion
+	
+	#region Variables
+	
+	colours = [ $0028D8, $F8F8F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 7;
+	icon = sprWeaponIcons;
+	iconIndex = 7;
 	
 	// - Name
-	static name = "Rush Coil";
-	static shortName = "R.Coil";
+	name = "Rush Coil";
+	shortName = "R.Coil";
 	
 	#endregion
 	

@@ -1,6 +1,38 @@
 /// @func Character()
 /// @desc Represents a character that the player can play as in this engine
 function Character() constructor {
+	#region Static Data (consistent across all character instances)
+	
+	// ID corresponding to the CharacterType enum
+	static id = -1;
+	
+	#endregion
+	
+	#region Variables (might differ on a per-instance basis)
+	
+	// Name of this character
+	name = "";
+	
+	// The entity object representing this character. When the player spawns into a level, this object will be created for them to control.
+	entityObject = prtPlayer;
+	
+	// A list of weapons this character will have available to them
+	weapons = [ WeaponType.BUSTER ]; /// @is {array<int>}
+	
+	// Default colour palette for this character
+	defaultColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
+	
+	// Spritesheet that's used as the "skin" for the character entity
+	spritesheet = sprPlayerSkinRockMan;
+	
+	// An array for storing which image_index of the spritesheet corresponds to which "page"
+	spritesheetLookupPage = __init_spritesheet_lookup_page();
+	
+	// An array for storing the relativve position of the player's "gun" on each spritesheet cell & page
+	spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
+	
+	#endregion
+	
 	#region Initializing Subfunctions
 	
 	/// -- __init_spritesheet_lookup_gun_offset()
@@ -155,34 +187,6 @@ function Character() constructor {
 	
 	#endregion
 	
-	#region Static Data (consistent across all character instances)
-	
-	// ID corresponding to the CharacterType enum
-	static id = -1;
-	
-	// Name of this character
-	static name = "";
-	
-	// The object representing this character. When the player spawns into a level, this object will be created for them to control.
-	static object = prtPlayer;
-	
-	// Spritesheet that's used as the "skin" for the character entity
-	static spritesheet = sprPlayerSkinRockMan;
-	
-	// An array for storing which image_index of the spritesheet corresponds to which "page"
-	static spritesheetLookupPage = __init_spritesheet_lookup_page();
-	
-	// An array for storing the relativve position of the player's "gun" on each spritesheet cell & page
-	static spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
-	
-	// Default colour palette for this character
-	static defaultColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
-	
-	// A list of weapons this character will have available to them
-	static weapons = []; /// @is {array<int>}
-	
-	#endregion
-	
 	#region Functions
 	
 	/// -- get_default_colours()
@@ -273,7 +277,7 @@ function character_create_from_id(_id) {
 /// @returns {prtPlayer}  Object of the character
 function character_object_from_id(_id) {
 	var _temp = character_create_from_id(_id),
-		_obj = _temp.object;
+		_obj = _temp.entityObject;
 	delete _temp;
 	return _obj;
 }

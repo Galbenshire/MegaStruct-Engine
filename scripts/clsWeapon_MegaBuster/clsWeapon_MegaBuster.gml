@@ -6,29 +6,29 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	static id = WeaponType.BUSTER;
 	static flags = WeaponFlags.NO_AMMO | WeaponFlags.CHARGE;
 	
-	// - Icon
-	static icon = sprWeaponIcons;
-	static iconIndex = 1;
-	
-	// - Name
-	static name = "Mega Buster";
-	static shortName = "M.Buster";
-	
-	// -- Top: NES
-    // -- Bottom: MM9 & 10
-	// static colours = [ $EC7000, $D8E800, $000000, $A8D8FC, $F8F8F8 ];
-	static colours = [ $EC7000, $F8B838, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
-	
 	// == Buster-Specific Statics ==
 	
 	static chargePreDuration = 20;
 	static chargeDuration = 56;
 	static chargeColoursOutline = [ $000000, $2000A8, $5800E4, $9858F8 ];
-	static chargeColoursFull = [ colours[PaletteWeapon.primary], colours[PaletteWeapon.secondary], $000000 ];
 	
 	#endregion
 	
 	#region Variables
+	
+	// == Base Weapon Variables ==
+	
+	colours = [ $EC7000, $F8B838, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	
+	// - Icon
+	icon = sprWeaponIcons;
+	iconIndex = 1;
+	
+	// - Name
+	name = "Mega Buster";
+	shortName = "M.Buster";
+	
+	// == Buster-Specific Variables ==
 	
 	chargeState = 0; // 0 - not charging; 1 - pre charging; 2 - charging; 3 - fully charged;
 	chargeTimer = 0;
@@ -36,7 +36,8 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	barAmount = 0;
 	
 	playerRef = noone; // Reference to the player using this weapon
-	hudRef = undefined; // Reference to the player's HUD element, if they have one
+	playerInputs = undefined; // Reference to the player's (main) InputMap
+	hudRef = undefined; // Reference to the player's HUD element
 	
 	#endregion
 	
@@ -55,6 +56,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		self.change_charge_state(0);
 		
 		playerRef = _player;
+		playerInputs = _player.inputs;
 		hudRef = playerRef.hudElement;
 		hudRef.weaponVisible = options_data().chargeBar;
 		hudRef.weaponAmmo = 0;
@@ -67,6 +69,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		with (playerRef)
 			isCharging = false;
 		playerRef = noone;
+		playerInputs = undefined;
 		hudRef = undefined;
 	};
 	
@@ -106,13 +109,13 @@ function Weapon_MegaBuster() : Weapon() constructor {
 					play_sfx(sfxCharging);
 				
 				var _index = round(remap(0, chargeDuration, 1, 3, chargeTimer));
-				_index *= (chargeTimer mod 6 <= 3);
+				_index *= (chargeTimer mod 6 < 3);
 				_index = min(_index, 3);
 				self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
 				
 				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
 					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
 						self.fire_buster_shot(1);
 				} else if (chargeTimer >= chargeDuration) {
@@ -128,9 +131,9 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				
 				var _chargeCycle = (chargeTimer div 3) mod 3;
 				for (var i = 0; i < 3; i++)
-					self.update_player_colour(i, chargeColoursFull[modf(_chargeCycle + i, 3)]);
+					self.update_player_colour(i, colours[modf(_chargeCycle + i, 3)]);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
 					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
 						self.fire_buster_shot(2);
 				}
@@ -185,7 +188,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		var _chargeToggle = playerRef.is_user_controlled() ? options_data().autoFire : false;
 		return _chargeToggle
 			? chargeToggle
-			: playerRef.inputs.is_held(InputActions.SHOOT);
+			: playerInputs.is_held(InputActions.SHOOT);
 	};
 	
 	static update_player_colour = function(_index, _colour) {

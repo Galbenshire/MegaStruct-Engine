@@ -1,4 +1,43 @@
 function Character_Bass() : Character() constructor {
+	#region Static Data
+	
+	static id = CharacterType.BASS;
+	
+	#endregion
+	
+	#region Variables
+	
+	name = "Bass";
+	entityObject = objBass;
+	spritesheet = sprPlayerSkinForte;
+	spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
+	
+	defaultColours = [
+		// Main Colours
+        $707070,
+        $3898F8,
+        $000000,
+        
+        // Less Important Colours
+        $A8E0F8,
+        $000000,
+        $FFFFFF,
+        
+        // Pretty Much Mugshot Exclusive
+        $F80080,
+        $5800E0,
+        $3898F8
+    ];
+    
+	weapons = [
+        WeaponType.BUSTER_BASS,
+        WeaponType.ICE_SLASHER,
+        WeaponType.SEARCH_SNAKE,
+        WeaponType.SKULL_BARRIER
+    ];
+	
+	#endregion
+	
 	#region Initializing Subfunctions
 	
 	// I didn't think I'd need to do this explicitly for Bass,
@@ -34,41 +73,6 @@ function Character_Bass() : Character() constructor {
 		
 		return _lookup;
 	};
-	
-	#endregion
-	
-    #region Static Data
-	
-	static id = CharacterType.BASS;
-	static name = "Bass";
-	static object = objBass;
-	
-	static spritesheet = sprPlayerSkinForte;
-	static spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
-	
-	static defaultColours = [
-		// Main Colours
-        $707070,
-        $3898F8,
-        $000000,
-        
-        // Less Important Colours
-        $A8E0F8,
-        $000000,
-        $FFFFFF,
-        
-        // Pretty Much Mugshot Exclusive
-        $F80080,
-        $5800E0,
-        $3898F8
-    ];
-    
-	static weapons = [
-        WeaponType.BUSTER_BASS,
-        WeaponType.ICE_SLASHER,
-        WeaponType.SEARCH_SNAKE,
-        WeaponType.SKULL_BARRIER
-    ];
 	
 	#endregion
 }
