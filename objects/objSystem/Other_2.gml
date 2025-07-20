@@ -85,3 +85,6 @@ global.paused = false;
 
 // =====  Other Operations =====
 draw_set_font(global.font); // This gets reset when the game is restarted
+options_data().change_master_volume(0);
+options_data().change_music_volume(0);
+options_data().change_sound_volume(0);

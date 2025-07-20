@@ -6,7 +6,10 @@ if (--flashTimer <= 0) {
     flashTimer = 7;
 }
 
-if (--countdown <= 0 && !audio_is_playing(whistleSFX)) {
-    resume_music();
+if (--countdown <= 0 && (!playProtoWhistle || !audio_is_playing(whistleSFXInst))) {
+    if (canMuteMusic)
+        resume_music();
+    
+    signal_bus().emit_signal("readyComplete");
     instance_destroy();
 }

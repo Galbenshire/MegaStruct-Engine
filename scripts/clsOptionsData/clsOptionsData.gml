@@ -123,6 +123,7 @@ function OptionsData() constructor {
     static set_master_volume = function(_percentage/*: number*/) {
         _percentage = clamp(_percentage, 0, 100);
         volumeMaster = _percentage * 0.01;
+        audio_master_gain(volumeMaster);
     };
     
     /// @method set_music_volume(percentage)
@@ -132,6 +133,7 @@ function OptionsData() constructor {
     static set_music_volume = function(_percentage/*: number*/) {
         _percentage = clamp(_percentage, 0, 100);
         volumeMusic = _percentage * 0.01;
+        audio_emitter_gain(objSystem.audio.emitterMusic, volumeMusic);
     };
     
     /// @method set_sound_volume(percentage)
@@ -141,6 +143,38 @@ function OptionsData() constructor {
     static set_sound_volume = function(_percentage/*: number*/) {
         _percentage = clamp(_percentage, 0, 100);
         volumeSound = _percentage * 0.01;
+        audio_emitter_gain(objSystem.audio.emitterSFX, volumeSound);
+    };
+    
+    #endregion
+    
+    #region Functions - Changing Volume
+    
+    /// @method change_master_volume(percentage)
+	/// @desc Changes the master volume by the specified percentage, affecting the loudness of ALL sounds in this game.
+	///
+	/// @param {number}  percentage  The percentage to change the volume by
+    static change_master_volume = function(_percentage/*: number*/) {
+		var _prevPercent = volumeMaster * 100;
+		self.set_master_volume(_prevPercent + _percentage);
+    };
+    
+    /// @method change_music_volume(percentage)
+	/// @desc Changes the music volume by the specified percentage, affecting the loudness of music in this game.
+	///
+	/// @param {number}  percentage  The percentage to change the volume by
+    static change_music_volume = function(_percentage/*: number*/) {
+		var _prevPercent = volumeMusic * 100;
+		self.set_music_volume(_prevPercent + _percentage);
+    };
+    
+    /// @method change_sound_volume(percentage)
+	/// @desc Changes the soud volume by the specified percentage, affecting the loudness of sound effects in this game.
+	///
+	/// @param {number}  percentage  The percentage to change the volume by
+    static change_sound_volume = function(_percentage/*: number*/) {
+		var _prevPercent = volumeSound * 100;
+		self.set_sound_volume(_prevPercent + _percentage);
     };
     
     #endregion

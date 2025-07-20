@@ -1,1 +1,2 @@
-signal_bus().emit_signal("readyComplete");
+if (pauseLock.active)
+    pauseLock.deactivate();

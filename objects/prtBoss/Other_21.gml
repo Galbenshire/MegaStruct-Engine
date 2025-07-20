@@ -48,9 +48,9 @@
 				}
 				
 				if (playBossMusic) {
-					preFightMusicCache[MusicSnapshot.musicID] = objSystem.music.trackID;
-					preFightMusicCache[MusicSnapshot.startAt] = audio_sound_get_track_position(objSystem.music.track);
-					preFightMusicCache[MusicSnapshot.volume] = objSystem.music.trackVolume;
+					preFightMusicCache[MusicSnapshot.musicID] = objSystem.audio.trackID;
+					preFightMusicCache[MusicSnapshot.startAt] = audio_sound_get_track_position(objSystem.audio.track);
+					preFightMusicCache[MusicSnapshot.volume] = objSystem.audio.trackVolume;
 					play_music(bossMusicID);
 				}
 				break;
@@ -90,7 +90,7 @@
 			audio_stop_all();
 		} else if (playBossMusic) {
 			play_music(preFightMusicCache[MusicSnapshot.musicID], preFightMusicCache[MusicSnapshot.volume]);
-			audio_sound_set_track_position(objSystem.music.track, preFightMusicCache[MusicSnapshot.startAt]);
+			audio_sound_set_track_position(objSystem.audio.track, preFightMusicCache[MusicSnapshot.startAt]);
 		}
 	}
 	

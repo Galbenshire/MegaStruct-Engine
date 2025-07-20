@@ -60,6 +60,31 @@ function Subsystem_Core() : Subsystem() constructor {
     };
 }
 
+/// @func Subsystem_Audio()
+/// @desc Manages the audio in this game, including the playing of music
+function Subsystem_Audio() : Subsystem() constructor {
+	// -- Variables
+	track = sfxExplosionMM3;
+	trackID = 0;
+	trackVolume = 0;
+	trackIsPlaying = false;
+	
+	emitterSFX = audio_emitter_create();
+	emitterMusic = audio_emitter_create();
+	
+	// -- Events
+	static roomEnd = function() {
+		audio_resume_all();
+		audio_stop_all();
+		trackIsPlaying = false;
+    };
+    
+    static asyncAudioPlaybackEnd = function() {
+		if (async_load[? "sound_id"] == track)
+			trackIsPlaying = false;
+    };
+}
+
 /// @func Subsystem_Camera()
 /// @desc Manages the in-game camera
 function Subsystem_Camera() : Subsystem() constructor {
@@ -456,10 +481,9 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		// The default level start sequence
 		// (might offer an option in the future to override this)
-		with (instance_create_depth(0, 0, system.depth + 1, objReady)) {
-			if (other.__startLevel && global.player.characterID == CharacterType.PROTO)
-				whistleSFX = play_sfx(sfxProtoWhistle);
-		}
+		var _playWhistle = __startLevel && global.player.characterID == CharacterType.PROTO;
+		instance_create_depth(0, 0, system.depth + 1, objReady, { playProtoWhistle: _playWhistle });
+		
 		with (prtPlayer) {
 			if (self.is_user_controlled()) {
 				stateMachine.change_state("Inactive");
@@ -477,18 +501,6 @@ function Subsystem_Level() : Subsystem() constructor {
 			data = {};
 			pickups = [];
 		}
-    };
-}
-
-/// @func Subsystem_Music()
-/// @desc Manages playing music
-function Subsystem_Music() : Subsystem() constructor {
-	track = create_sound_instance();
-	trackID = 0;
-	trackVolume = 0;
-	
-	static roomEnd = function() {
-		audio_stop_sound(track);
     };
 }
 

@@ -123,14 +123,17 @@ function OptionsMenu_Item_ScreenSize() : OptionsMenu_Item("screensize", "SCREEN 
 
 function OptionsMenu_Item_Slider(_id, _label) : OptionsMenu_Item(_id, _label) constructor {
 	static on_x_dir = function(_dir) {
-		var _prevVolume = options_data()[$ id],
-            _newVolume = clamp(_prevVolume + 0.1 * _dir, 0, 1);
-        options_data()[$ id] = round_to(_newVolume, 0.1);
+		var _prevVolume = options_data()[$ id];
+		
+		switch (id) {
+			case "volumeMaster": options_data().change_master_volume(10 * _dir); break;
+			case "volumeMusic": options_data().change_music_volume(10 * _dir); break;
+			case "volumeSound": options_data().change_sound_volume(10 * _dir); break;
+		}
         
-        if (_newVolume != _prevVolume) {
+        if (options_data()[$ id] != _prevVolume) {
 			self.refresh_value();
 			play_sfx(sfxMenuMove);
-			update_music_volume();
         }
 	};
 	
