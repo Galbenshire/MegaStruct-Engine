@@ -152,8 +152,10 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
 		var _isFocused = is_focused(),
 			_colReplacer = colour_replacer();
 		
-		_colReplacer.activate();
-		_colReplacer.apply_colours(_isFocused ? iconPaletteSelected : iconPaletteUnselected);
+		_colReplacer.activate(ColourReplacerMode.GREYSCALE)
+			.set_colour_count(PalettePlayer.sizeof)
+			.apply_output_colours(_isFocused ? iconPaletteSelected : iconPaletteUnselected)
+			.update_uniforms();
 		weapon.draw_icon(_x, _y);
 		_colReplacer.deactivate();
 		

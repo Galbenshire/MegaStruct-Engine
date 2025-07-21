@@ -101,6 +101,36 @@ function GameView() constructor {
 	static center_y = function(_includeOffset/*:bool*/ = true) {
 		return get_y(_includeOffset) + GAME_HEIGHT * 0.5;
 	};
+	
+	/// @method direction_to_center_x(x, include_offset)
+	/// @desc Returns the direction away from the x-center of the screen
+	///		  (i.e. which side of the screen the given position is)
+	/// 	  1 = target is on the right side of the screen
+	/// 	  0 = target is directly in the x-center of the screen
+	/// 	  -1 = target is on the left side of the screen
+	///
+	/// @param {number}  x  The x-position to check with.
+	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
+	///
+	/// @returns {number}  The direction relative to the x-center
+	static direction_to_center_x = function(_x/*:number*/, _includeOffset/*:bool*/ = true) {
+		return sign(_x - self.center_x(_includeOffset));
+	};
+	
+	/// @method direction_to_center_y(y, include_offset)
+	/// @desc Returns the direction away from the y-center of the screen
+	///		  (i.e. which side of the screen the given position is)
+	/// 	  1 = target is on the bottom of the screen
+	/// 	  0 = target is directly in the y-center of the screen
+	/// 	  -1 = target is on the top of the screen
+	///
+	/// @param {number}  y  The y-position to check with.
+	/// @param {bool}  [include_offset]  If true, the offset will be factored in. Defaults to true.
+	///
+	/// @returns {number}  The direction relative to the y-center
+	static direction_to_center_y = function(_y/*:number*/, _includeOffset/*:bool*/ = true) {
+		return sign(_y - self.center_y(_includeOffset));
+	};
     
     #endregion
     

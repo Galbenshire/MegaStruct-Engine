@@ -6,12 +6,14 @@ var _x = x,
 x += subPixelX;
 y += subPixelY;
 
-if (weaponIconTimer > 0 && !is_undefined(weapon)) {
-	var _colReplacer = colour_replacer();
-	_colReplacer.activate();
-	_colReplacer.apply_colours(weapon.colours);
+if (weaponIconTimer > 0) {
+	colour_replacer()
+		.activate(ColourReplacerMode.GREYSCALE)
+		.set_colour_count(PaletteWeapon.sizeof)
+		.apply_output_colours(weapon.colours)
+		.update_uniforms();
 	weapon.draw_icon(x - 8, y - 30 * image_yscale);
-	_colReplacer.deactivate();
+	colour_replacer().deactivate();
 }
 
 x = _x;

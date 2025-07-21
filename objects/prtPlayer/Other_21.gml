@@ -195,7 +195,7 @@
 		var _palette = self.get_palette();
 		
 		for (var i = 0; i < palette.colourCount; i++)
-			palette.set_colour_at(i, _palette[i]);
+			palette.set_output_colour_at(i, _palette[i]);
 		if (self.is_user_controlled())
 			hudElement.set_weapon_palette(_palette[PalettePlayer.primary], _palette[PalettePlayer.secondary], _palette[PalettePlayer.outline]);
 	}

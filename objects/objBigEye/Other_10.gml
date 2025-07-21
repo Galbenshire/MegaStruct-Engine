@@ -1,26 +1,17 @@
 /// @description Init Palette
 /// @init
 
-var _colours = [ $5800E4, $F8F8F8, $000000 ];
+var _colours = undefined;
 
 switch (colourPreset) {
     default: /* Nothing */ break;
     case "Red/White": /* Nothing */ break;
-    
-    case "Blue/White":
-        _colours[0] = $FF7800;
-        _colours[1] = $F8F8F8;
-        break;
-    
-    case "Red/Orange":
-        _colours[0] = $5800E4;
-        _colours[1] = $40A4FF;
-        break;
-    
-    case "Custom":
-        _colours[0] = customColourPrimary;
-        _colours[1] = customColourSecondary;
-        break;
+    case "Blue/White": _colours = [ $FF7800, $F8F8F8 ]; break;
+    case "Red/Orange": _colours = [ $5800E4, $40A4FF ]; break;
+    case "Custom": _colours = [ customColourPrimary, customColourSecondary ]; break;
 }
 
-palette = new ColourPalette(_colours);
+if (!is_undefined(_colours)) {
+	palette = new ColourPalette(_colours, [ $5800E4, $F8F8F8 ]);
+    onDraw = method(id, cbkOnDraw_colourReplacer);
+}

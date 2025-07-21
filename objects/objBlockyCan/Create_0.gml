@@ -8,4 +8,3 @@ palette = undefined; /// @is {ColourPalette?}
 
 // Callbacks
 onGuard = method(id, cbkOnGuard_alwaysReflectOrIgnore);
-onDraw = method(id, cbkOnDraw_colourReplacer);

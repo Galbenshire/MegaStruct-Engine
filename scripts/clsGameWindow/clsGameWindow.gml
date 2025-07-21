@@ -36,7 +36,6 @@ function GameWindow() constructor {
 			surface_resize(application_surface, GAME_WIDTH * _scale, GAME_HEIGHT * _scale);
 			display_set_gui_maximize();
 			signal_bus().emit_signal("appSurfaceResize");
-			
 			display_reset(0, vsync);
 		}
 	};

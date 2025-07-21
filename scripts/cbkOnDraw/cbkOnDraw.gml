@@ -26,19 +26,22 @@ function cbkOnDraw_prtEntity(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  If true, the entity is currently flashing white
 function cbkOnDraw_prtBoss(_whiteflash) {
-	if (isTeleporting) {
-		var _colReplacer = colour_replacer();
-		
-		if (_colReplacer.IS_SUPPORTED) {
-			_colReplacer.activate();
-			_colReplacer.apply_palette(teleportPalette);
-			draw_sprite(teleportSprite, teleportImg, x, y);
-			_colReplacer.deactivate();
-		} else {
-			draw_sprite(teleportSprite, teleportImg, x, y);
-		}
-	} else {
+	if (!isTeleporting) {
 		draw_self();
+		return;
+	}
+	
+	var _colReplacer = colour_replacer(),
+		_teleportPaletteMode = teleportPalette.colourMode;
+	
+	if (!_whiteflash && _colReplacer.is_mode_supported(_teleportPaletteMode)) {
+		_colReplacer.activate(_teleportPaletteMode)
+			.apply_palette(teleportPalette)
+			.update_uniforms();
+		draw_sprite(teleportSprite, teleportImg, x, y);
+		_colReplacer.deactivate();
+	} else {
+		draw_sprite(teleportSprite, teleportImg, x, y);
 	}
 }
 
@@ -50,12 +53,14 @@ function cbkOnDraw_prtBoss(_whiteflash) {
 /// @param {bool}  whiteflash  Unused here
 function cbkOnDraw_prtPlayer(_whiteflash) {
 	var _colReplacer = colour_replacer(),
+		_paletteMode = palette.colourMode,
 		_spriteAtlas = player_sprite_atlas(skinSprite),
 		_skinPage = characterSpecs.spritesheet_page_to_image_index(skinPage);
 	
-	if (_colReplacer.IS_SUPPORTED) {
-		_colReplacer.activate();
-		_colReplacer.apply_palette(palette);
+	if (!_whiteflash && _colReplacer.is_mode_supported(_paletteMode)) {
+		_colReplacer.activate(_paletteMode)
+			.apply_palette(palette)
+			.update_uniforms();
 		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
 		_colReplacer.deactivate();
 	} else {
@@ -72,16 +77,18 @@ function cbkOnDraw_prtPlayer(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  If true, the entity is currently flashing white
 function cbkOnDraw_colourReplacer(_whiteflash) {
-	var _colReplacer = colour_replacer();
+	var _colReplacer = colour_replacer(),
+		_paletteMode = palette.colourMode;
 	
-    if (_whiteflash || !_colReplacer.IS_SUPPORTED) {
-        draw_self();
-    } else {
-        _colReplacer.activate();
-        _colReplacer.apply_palette(palette);
-        draw_self();
-        _colReplacer.deactivate();
-    }
+	if (!_whiteflash && _colReplacer.is_mode_supported(_paletteMode)) {
+		_colReplacer.activate(_paletteMode)
+			.apply_palette(palette)
+			.update_uniforms();
+		draw_self();
+		_colReplacer.deactivate();
+	} else {
+		draw_self();
+	}
 }
 
 /// @func cbkOnDraw_enemyBulletMM1(whiteflash)
@@ -89,8 +96,8 @@ function cbkOnDraw_colourReplacer(_whiteflash) {
 ///
 /// @param {bool}  whiteflash  If true, the entity is currently flashing white
 function cbkOnDraw_enemyBulletMM1(_whiteflash) {
-    draw_sprite_ext(sprite_index, 1, x, y, image_xscale, image_yscale, image_angle, colours[0], image_alpha);
-    draw_sprite_ext(sprite_index, 2, x, y, image_xscale, image_yscale, image_angle, colours[1], image_alpha);
+    draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, colours[0], image_alpha);
+    draw_sprite_ext(sprite_index, image_index + 1, x, y, image_xscale, image_yscale, image_angle, colours[1], image_alpha);
 }
 
 #endregion

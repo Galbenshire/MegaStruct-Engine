@@ -251,6 +251,16 @@ function OptionsData() constructor {
         
         file_text_close(_file);
         
+        // Validate the key/button inputs
+        if (array_length(keys) != InputActions.COUNT) {
+			show_debug_message("Invalid key bindings provided. Resetting to defaults...");
+			keys = default_key_bindings();
+        }
+		if (array_length(buttons) != InputActions.COUNT) {
+			show_debug_message("Invalid button bindings provided. Resetting to defaults...");
+			buttons = default_button_bindings();
+		}
+        
         show_debug_message("...Options Loaded successfully");
     };
     

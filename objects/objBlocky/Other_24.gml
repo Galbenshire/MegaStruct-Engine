@@ -31,7 +31,12 @@ switch (phase) {
             reformCans = array_create_ext(3, function(i) {
                 var _can = spawn_entity(x, game_view().bottom_edge(16 * i), depth, objBlockyReformCan);
                 _can.targetY = y;
-                _can.palette = palette;
+                
+                if (!is_undefined(palette)) {
+					_can.palette = palette;
+					_can.onDraw = method(_can.id, cbkOnDraw_colourReplacer);
+				}
+                
                 return _can;
             });
         }

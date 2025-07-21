@@ -12,6 +12,5 @@ onSpawn = function() {
     phaseTimer = startTimerAt;
 };
 onGuard = method(id, cbkOnGuard_imageIndex);
-onDraw = method(id, cbkOnDraw_colourReplacer);
 
 event_user(0); // Init Palette

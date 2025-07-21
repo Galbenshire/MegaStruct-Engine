@@ -1,13 +1,16 @@
 /// @description Init Palette
 /// @init
 
-var _colours = [ $FF7800, $FFFFFF, $000000 ];
+var _colour = undefined;
 
 switch (colourPreset) {
     default: /* Nothing */ break;
     case "Blue": /* Nothing */ break;
-    case "Grey": _colours[0] = $787878; break;
-    case "Custom": _colours[0] = customColour; break;
+    case "Grey": _colour = $787878; break;
+    case "Custom": _colour = customColour; break;
 }
 
-palette = new ColourPalette(_colours);
+if (!is_undefined(_colour)) {
+    palette = new ColourPalette([ _colour ], [ $FF7800 ]);
+    onDraw = method(id, cbkOnDraw_colourReplacer);
+}

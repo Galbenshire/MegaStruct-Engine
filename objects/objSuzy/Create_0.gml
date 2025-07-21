@@ -12,6 +12,5 @@ onSpawn = function() {
     phaseTimer = 10 * startMoving;
     moveDir = (startDirection == "Right/Down") ? 1 : -1;
 };
-onDraw = method(id, cbkOnDraw_colourReplacer);
 
 event_user(0); // Init Palette

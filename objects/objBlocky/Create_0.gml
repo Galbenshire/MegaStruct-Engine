@@ -9,6 +9,8 @@ animCycle = 0;
 
 reformCans = [];
 
+palette = undefined;
+
 // Callbacks
 onSpawn = function() {
     cbkOnSpawn_prtEntity();
@@ -34,7 +36,11 @@ onHurt = function(_damageSource) {
         with (spawn_entity(x, _canY, depth, objBlockyCan)) {
             xspeed.value = (2 - (0.5 * i)) * other.image_xscale;
             yspeed.value = -4.5 + 0.75 * i;
-            palette = other.palette;
+            
+            if (!is_undefined(other.palette)) {
+				palette = other.palette;
+				onDraw = method(id, cbkOnDraw_colourReplacer);
+            }
         }
     }
     
@@ -44,7 +50,7 @@ onHurt = function(_damageSource) {
     phase = 1;
     phaseTimer = 0;
     xspeed.value = 0;
+    ground = false;
 };
-onDraw = method(id, cbkOnDraw_colourReplacer);
 
 event_user(0); // Palette Init

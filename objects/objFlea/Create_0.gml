@@ -16,6 +16,5 @@ onSpawn = function() {
     timer = 0;
     mask_index = sprite_index;
 };
-onDraw = method(id, cbkOnDraw_colourReplacer);
 
 event_user(0); // Init Palette

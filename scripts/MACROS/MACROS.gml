@@ -35,6 +35,21 @@ $"{_GMFUNCTION_} can only be used by an object that inherits from {object_get_na
 #endregion
 
 
+#region Colour Replacer
+
+enum ColourReplacerMode {
+	GREYSCALE,
+	RGB,
+	RGB_SINGLE,
+	
+	COUNT
+}
+
+#macro COLOUR_REPLACER_MAX_COLOURS 32
+
+#endregion
+
+
 #region Characters
 
 // All playable characters available in this engine
@@ -592,9 +607,6 @@ enum WarningLevel {
 	ERROR,
 	VERBOSE
 }
-
-// -- Colour Replacer Enums
-#macro COLOUR_REPLACER_MAX_COLOURS 32
 
 // -- Pausing
 #macro QUEUED_PAUSE 1

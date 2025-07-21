@@ -15,7 +15,7 @@ skinCellY = 2;
 
 // Palette
 palette = new ColourPalette(array_create(PalettePlayer.sizeof + 16));
-palette.set_colours([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ], 16);
+palette.set_output_colours([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ], 16);
 
 // Animations
 animator = new FrameAnimationPlayer();
@@ -40,12 +40,14 @@ onDeath = function(_damageSource) {
 };
 onDraw = function(_whiteflash) {
 	var _colReplacer = colour_replacer(),
+		_paletteMode = palette.colourMode,
 		_spriteAtlas = player_sprite_atlas(skinSprite),
-		_isSupported = _colReplacer.IS_SUPPORTED;
+		_isSupported = _colReplacer.is_mode_supported(_paletteMode);
 	
 	if (_isSupported) {
-		_colReplacer.activate();
-		_colReplacer.apply_palette(palette);
+		_colReplacer.activate(_paletteMode)
+			.apply_palette(palette)
+			.update_uniforms();
 	}
 	
 	_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, skinImageIndex, x, y - 17, image_xscale, image_yscale, image_blend, image_alpha);

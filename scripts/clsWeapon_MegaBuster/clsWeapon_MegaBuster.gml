@@ -192,7 +192,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	};
 	
 	static update_player_colour = function(_index, _colour) {
-		playerRef.palette.set_colour_at(_index, _colour);
+		playerRef.palette.set_output_colour_at(_index, _colour);
 		hudRef.weaponPalette[_index] = _colour;
 	};
 	

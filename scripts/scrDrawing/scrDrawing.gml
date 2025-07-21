@@ -147,6 +147,20 @@ function draw_set_text_align(_halign, _valign) {
 
 #region Colours
 
+/// @func colour_normalize(colour)
+/// @desc Converts a colour into a normalized array, where each colour channel is mapped from [0, 255] to [0, 1]
+///
+/// @param {int}  colour  The colour to normalize
+///
+/// @returns {ColourChannels}  The normalized colour
+function colour_normalize(_colour) {
+	return [
+		colour_get_red(_colour) / 255,
+		colour_get_green(_colour) / 255,
+		colour_get_blue(_colour) / 255,
+	];
+}
+
 /// @func colour_shift_hue(colour, shift)
 /// @desc Shifts the hue of the given colour
 function colour_shift_hue(_colour, _shift) {
@@ -188,28 +202,15 @@ function multiply_colours(_col1, _col2) {
 	);
 }
 
-/// @func normalize_colour(colour)
-/// @desc Converts a colour into a normalized array, where each colour channel is mapped from [0, 255] to [0, 1]
-///
-/// @param {int}  colour  The colour to normalize
-///
-/// @returns {ColourChannels}  The normalized colour
-function normalize_colour(_colour) {
-	return [
-		colour_get_red(_colour) / 255,
-		colour_get_green(_colour) / 255,
-		colour_get_blue(_colour) / 255,
-	];
-}
-
 #endregion
 
 #region American Versions (no u)
 
+#macro color_normalize colour_normalize
+#macro color_shift_hue colour_shift_hue
 #macro draw_rectangle_width_color draw_rectangle_width_colour
 #macro draw_reset_color draw_reset_colour
 #macro make_color_channels make_colour_channels
 #macro multiply_colors multiply_colours
-#macro normalize_color normalize_colour
 
 #endregion
