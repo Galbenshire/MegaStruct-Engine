@@ -152,7 +152,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 			object: objBusterShot,
 			limit: 3,
 			cost: 0,
-			shootAnimation: PlayerSpritesheetPage.SHOOT,
+			shootAnimation: PlayerStandardAnimationSubType.SHOOT,
 			autoShootDelay: 8
 		};
 		

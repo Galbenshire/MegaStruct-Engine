@@ -65,9 +65,6 @@
     {"$GMObjectProperty":"v1","%Name":"maxMidairJumps","filters":[],"listItems":[],"multiselect":false,"name":"maxMidairJumps","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
     {"$GMObjectProperty":"v1","%Name":"minJumpThreshold","filters":[],"listItems":[],"multiselect":false,"name":"minJumpThreshold","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"minJumpCutoff","filters":[],"listItems":[],"multiselect":false,"name":"minJumpCutoff","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"skinSprite","filters":[
-        "GMSprite",
-      ],"listItems":[],"multiselect":false,"name":"skinSprite","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sprPlayerSkinRockMan","path":"sprites/sprPlayerSkinRockMan/sprPlayerSkinRockMan.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sprPlayerSkinRockMan","varType":5,},
     {"$GMObjectProperty":"v1","%Name":"maskNormal","filters":[
         "GMSprite",
       ],"listItems":[],"multiselect":false,"name":"maskNormal","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"mskPlayer","path":"sprites/mskPlayer/mskPlayer.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"mskPlayer","varType":5,},

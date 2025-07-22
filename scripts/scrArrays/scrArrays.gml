@@ -39,6 +39,20 @@ function array_find(_array, _predicate, _offset = 0, _length = infinity) {
 	return (_index != NOT_FOUND) ? _array[_index] : undefined;
 }
 
+/// @func array_set_multiple(variable, index, count, value)
+/// @desc Calls array_set across multiple indexes of a given array
+///
+/// @param {array}  variable  The variable that holds the array
+/// @param {int}  index  The starting index of the array to set the value within
+/// @param {int}  count  How many indexes in the array to set the value for
+/// @param {any}  value  The value to set
+function array_set_multiple(_arr, _index, _count, _value) {
+	repeat(_count) {
+		array_set(_arr, _index, _value);
+		_index++;
+	}
+}
+
 /// @func array_slice(array, offset, length)
 /// @desc Returns a portion of the given array
 ///

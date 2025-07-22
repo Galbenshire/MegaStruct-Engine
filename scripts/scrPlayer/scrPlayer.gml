@@ -23,22 +23,6 @@ function player_death_explosion(_x, _y, _depthOrLayer) {
 	}
 }
 
-/// @func player_sprite_atlas(sprite)
-/// @desc Gets the sprite atlas intended for drawing player spritesheets,
-///		  with the option to change its currently active sprite.
-///
-/// @param {sprite}  [sprite]  The sprite the atlas should draw with. Defaults to the sprite currently in the atlas.
-///
-/// @returns {SpriteAtlas}  The player spritesheet atlas
-function player_sprite_atlas(_sprite) {
-	var _atlas = global.spriteAtlas_Player;
-	
-	if (!is_undefined(_sprite))
-		_atlas.sprite = _sprite;
-	
-	return _atlas;
-}
-
 /// @func spawn_player_entity(x, y, depth_or_layer, character_id)
 /// @desc Creates an instance of a player character
 ///

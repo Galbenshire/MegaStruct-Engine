@@ -54,17 +54,16 @@ function cbkOnDraw_prtBoss(_whiteflash) {
 function cbkOnDraw_prtPlayer(_whiteflash) {
 	var _colReplacer = colour_replacer(),
 		_paletteMode = palette.colourMode,
-		_spriteAtlas = player_sprite_atlas(skinSprite),
-		_skinPage = characterSpecs.spritesheet_page_to_image_index(skinPage);
+		_skinSprite = characterSpecs.playerSprites[skinSprite];
 	
 	if (!_whiteflash && _colReplacer.is_mode_supported(_paletteMode)) {
 		_colReplacer.activate(_paletteMode)
 			.apply_palette(palette)
 			.update_uniforms();
-		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
+		draw_sprite_ext(_skinSprite, skinIndex, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 		_colReplacer.deactivate();
 	} else {
-		_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, _skinPage, x, y, image_xscale, image_yscale, image_blend, image_alpha);
+		draw_sprite_ext(_skinSprite, skinIndex, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 	}
 }
 

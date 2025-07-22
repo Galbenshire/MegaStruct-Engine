@@ -1,5 +1,8 @@
 /// @description Tick
 if (!hasCoiled) {
+	animTimer += tailWagSpeed;
+	image_index = (animTimer & 1);
+	
 	var _spring = false;
 	
     with (prtPlayer) {
@@ -18,9 +21,9 @@ if (!hasCoiled) {
     }
     
     if (_spring) {
+		image_index = 2;
 		hasCoiled = true;
 		lifeDuration = 60;
-		animator.play("coiled");
 		
 		if (!is_undefined(weapon)) {
 			weapon.change_ammo(-ammoCost);
@@ -29,8 +32,6 @@ if (!hasCoiled) {
 		}
     }
 }
-
-animator.update();
 
 if (lifeDuration-- <= 0)
     entity_kill_self();

@@ -1,32 +1,22 @@
 event_inherited();
 
-characterSpecs = character_create_from_id(characterID); /// @is {Character}
+characterSpecs ??= character_create_from_id(characterID); /// @is {Character}
 assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object_get_name(object_index)} (ID: {characterID})");
+
+sprite_index = characterSpecs.coilSprite;
 
 hasCoiled = false;
 weapon = undefined;
-
-// Spritesheet
-skinSprite = characterSpecs.spritesheet;
-skinImageIndex = characterSpecs.spritesheet_page_to_image_index(PlayerSpritesheetPage.COIL);
-skinCellX = 0;
-skinCellY = 1;
+animTimer = 0;
 
 // Palette
-palette = new ColourPalette(array_create(PalettePlayer.sizeof + 16));
-palette.set_output_colours([ $0028D8, $F8F8F8, $000000, $A8D8FC, $000000, $FFFFFF ], 16);
-
-// Animations
-animator = new FrameAnimationPlayer();
-animator.add_animation("idle", 2, 1 / tailWagSpeed)
-	.add_property("skinCellX", [0, 1])
-	.add_property("skinCellY", [1]);
-animator.add_animation_non_loop("coiled", 1, 8)
-	.add_property("skinCellX", [2])
-	.add_property("skinCellY", [1]);
-animator.play("idle");
+palette = new ColourPalette(characterSpecs.coilColours);
 
 // Callbacks
+onSpawn = function() {
+	ground = true;
+	entity_check_ground();
+};
 onDeath = function(_damageSource) {
 	cbkOnDeath_prtProjectile(_damageSource);
 	
@@ -35,25 +25,10 @@ onDeath = function(_damageSource) {
 	} else {
 		with (spawn_entity(x, bbox_bottom, depth, objRushTeleport, { isTeleportingOut: true })) {
 			weapon = other.weapon;
-			characterID = other.characterID;
+			characterSpecs = other.characterSpecs;
 			owner = other.owner;
+			palette.set_output_colours(other.characterSpecs.coilColours);
 		}
 	}
 };
-onDraw = function(_whiteflash) {
-	var _colReplacer = colour_replacer(),
-		_paletteMode = palette.colourMode,
-		_spriteAtlas = player_sprite_atlas(skinSprite),
-		_isSupported = _colReplacer.is_mode_supported(_paletteMode);
-	
-	if (_isSupported) {
-		_colReplacer.activate(_paletteMode)
-			.apply_palette(palette)
-			.update_uniforms();
-	}
-	
-	_spriteAtlas.draw_cell_ext(skinCellX, skinCellY, skinImageIndex, x, y - 16, image_xscale, image_yscale, image_blend, image_alpha);
-	
-	if (_isSupported)
-		_colReplacer.deactivate();
-};
+onDraw = method(id, cbkOnDraw_colourReplacer);

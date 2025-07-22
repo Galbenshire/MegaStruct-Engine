@@ -30,7 +30,7 @@ function Weapon_RushCoil() : Weapon() constructor {
 				object: objRushTeleport,
 				limit: 1,
 				cost: 0,
-				shootAnimation: PlayerSpritesheetPage.IDLE,
+				shootAnimation: PlayerStandardAnimationSubType.IDLE,
 				offsetX: 20,
 				projParams: {
 					teleportObject: objRushCoil
@@ -38,8 +38,9 @@ function Weapon_RushCoil() : Weapon() constructor {
 			});
 			
 			if (_shot != noone) {
-				_shot.characterID = _player.characterSpecs.id;
+				_shot.characterSpecs = _player.characterSpecs;
 				_shot.weapon = self;
+				_shot.palette.set_output_colours(_shot.characterSpecs.coilColours);
 				_shot.y = game_view().center_y(false) - (GAME_HEIGHT / 2) * _player.image_yscale;
 			}
 		} else {
@@ -50,7 +51,7 @@ function Weapon_RushCoil() : Weapon() constructor {
 				object: objBusterShot,
 				limit: 4,
 				cost: 0,
-				shootAnimation: PlayerSpritesheetPage.SHOOT,
+				shootAnimation: PlayerStandardAnimationSubType.SHOOT,
 				autoShootDelay: 8
 			});
 			

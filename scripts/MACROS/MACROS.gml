@@ -285,7 +285,7 @@ enum SolidType {
 #endregion
 
 
-#region Player Macros
+#region Player-related Macros
 
 // Represents various actions a player can perform
 // Used by the lockstack system
@@ -344,7 +344,29 @@ enum PlayerAction {
 	TURN_FULL
 }
 
-enum PlayerSpritesheetPage {
+// Animation Enums
+
+enum PlayerAnimationType {
+	// The Main Ones
+	STANDARD,
+	HURTSTUN,
+	TELEPORT,
+	
+	// Weapons
+	BREAK_DASH,
+	SLASH_CLAW,
+	TENGU_BLADE,
+	TOP_SPIN,
+	
+	// Misc. Actions
+	TORNADO_BATTERY,
+	TURNAROUND,
+	WAVE_BIKE,
+	
+	COUNT
+}
+
+enum PlayerStandardAnimationSubType {
 	IDLE,
 	SHOOT,
 	THROW,
@@ -353,26 +375,22 @@ enum PlayerSpritesheetPage {
 	SHOOT_DIAGONAL_DOWN,
 	SUPER_ARM,
 	WIRE_ADAPTOR,
-	SLASH_CLAW,
-	TENGU_BLADE,
-	BREAK_DASH,
-	TORNADO_BATTERY,
-	SAKUGARNE,
-	BIKE,
-	TURNABOUT,
-	TOP_SPIN,
-	HURT,
-	STUN,
-	LIFE,
-	MUGSHOT,
-	COIL,
-	JET,
-	WAVE_BIKE,
-	TELEPORT,
+	
 	COUNT
 }
 
-#macro COYOTE_FALL_BUFFER 5
+// Standard Animation Key Frames
+#macro PLAYER_ANIM_FRAME_IDLE 0
+#macro PLAYER_ANIM_FRAME_SIDESTEP 2
+#macro PLAYER_ANIM_FRAME_WALK 3
+#macro PLAYER_ANIM_FRAME_JUMP 7
+#macro PLAYER_ANIM_FRAME_FALL 9
+#macro PLAYER_ANIM_FRAME_SLIDE 11
+#macro PLAYER_ANIM_FRAME_CLIMB 13
+#macro PLAYER_STANDARD_FRAME_COUNT 16
+
+// Player Physics
+#macro COYOTE_FALL_BUFFER 4
 #macro FULL_HEALTHBAR 28
 #macro JUMP_BUFFER 4
 #macro DEFAULT_ICE_DECEL_IDLE 0.025

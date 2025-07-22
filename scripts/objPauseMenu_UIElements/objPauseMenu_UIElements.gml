@@ -33,34 +33,30 @@ function PauseMenu_Submenu_Options() : UIFramework_Submenu("options") constructo
 function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor {
 	healthPalette = [ $A8D8FC, $FFFFFF, $000000 ];
 	
+	playerData = {
+		characterSpecs: global.player.body.characterSpecs,
+		palette: global.player.body.palette,
+		x: -32,
+		y: 4,
+		sprite_index: sprPlayerSkinRockMan_Standard
+	};
+	playerData.sprite_index = playerData.characterSpecs.playerSprites[PlayerAnimationType.STANDARD];
+	
     /// @method on_render(x, y)
     static on_render = function(_x, _y) {
-		with (global.player.body) {
-			var _playerX = x,
-				_playerY = y,
-				_xscale = image_xscale,
-				_cellX = skinCellX,
-				_cellY = skinCellY;
-			
-			x = _x - 32;
-			y = _y + 4;
-			image_xscale = 1;
-			skinCellX = 0;
-			skinCellY = 0;
-			onDraw();
-			
-			x = _playerX;
-			y = _playerY;
-			image_xscale = _xscale;
-			skinCellX = _cellX;
-			skinCellY = _cellY;
-			
-			draw_mm_healthbar_horizontal(_x - 20, _y + 8, healthpoints, other.healthPalette);
-			
-			draw_set_text_align(fa_left, fa_top);
-			draw_sprite(sprBoltBig, 0, _x - 40, _y + 24);
-			draw_text(_x - 20, _y + 32, global.bolts);
+		with (playerData) {
+			colour_replacer().activate(ColourReplacerMode.GREYSCALE)
+				.apply_output_colours(palette.outputColours)
+				.update_uniforms();
+			draw_sprite_ext(sprite_index, 0, _x + x, _y + y, 1, 1, 0, c_white, 1);
+			colour_replacer().deactivate();
 		}
+		
+		draw_mm_healthbar_horizontal(_x - 20, _y + 8, global.player.body.healthpoints, healthPalette);
+		
+		draw_set_text_align(fa_left, fa_top);
+		draw_sprite(sprBoltBig, 0, _x - 40, _y + 24);
+		draw_text(_x - 20, _y + 32, global.bolts);
     };
 }
 

@@ -50,6 +50,9 @@
     "name":"sprRushCoil",
     "path":"sprites/sprRushCoil/sprRushCoil.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"sprRushCoil",
+    "path":"sprites/sprRushCoil/sprRushCoil.yy",
+  },
   "visible":true,
 }

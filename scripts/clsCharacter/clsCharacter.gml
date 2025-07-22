@@ -19,182 +19,52 @@ function Character() constructor {
 	// A list of weapons this character will have available to them
 	weapons = [ WeaponType.BUSTER ]; /// @is {array<int>}
 	
-	// Default colour palette for this character
-	defaultColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer}
+	// Palettes pertaining to this character
+	playerColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer} Default player palette
+	coilColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer} Palette for the sprite used for the (Rush) Coil
+	jetColours = array_create(PalettePlayer.sizeof); /// @is {PalettePlayer} Palette for the sprite used for the (Rush) Jet
 	
-	// Spritesheet that's used as the "skin" for the character entity
-	spritesheet = sprPlayerSkinRockMan;
+	// Sprites relating to this character
+	mugshotSprite = sprMugshotMegaMan;
+	lifeSprite = sprLifeMegaMan; /// @is 1-UP Sprite
+	coilSprite = sprRushCoilMegaMan; /// @is sprite for (Rush) Coil
+	jetSprite = sprRushJetMegaMan; /// @is sprite for (Rush) Jet
+	playerSprites = array_create(PlayerAnimationType.COUNT, sprPlayerSkinRockMan_Standard); /// @is {array<sprite>}
 	
-	// An array for storing which image_index of the spritesheet corresponds to which "page"
-	spritesheetLookupPage = __init_spritesheet_lookup_page();
-	
-	// An array for storing the relativve position of the player's "gun" on each spritesheet cell & page
-	spritesheetLookupGunOffset = __init_spritesheet_lookup_gun_offset();
-	
-	#endregion
-	
-	#region Initializing Subfunctions
-	
-	/// -- __init_spritesheet_lookup_gun_offset()
-	/// Sets up the lookup table for the spritesheet gun offsets
-	/// This contains the relative position of the character's "gun" on each cell of each page
-	/// The lookup table is a 4-dimensional array in the following format:
-	///	[PAGE][CELL_ROW][CELL_COLUMN][VECTOR_AXIS]
-	///
-	/// @returns {array<array<array<Vector2>>>}
-	static __init_spritesheet_lookup_gun_offset = function() {
-		var _lookup = array_create(PlayerSpritesheetPage.COUNT);
-		
-		for (var i = 0; i < PlayerSpritesheetPage.COUNT; i++) {
-			switch (i) {
-				default:
-					// Standing
-					_lookup[i][0][0] = [17, 4];
-					_lookup[i][0][1] = _lookup[i][0][0];
-					// Sliding
-					_lookup[i][0][2] = [9, 2];
-					_lookup[i][0][3] = _lookup[i][0][2];
-					// Sidestep
-					_lookup[i][1][0] = [17, 4];
-					// Climbing
-					_lookup[i][1][1] = [13, 2];
-					_lookup[i][1][2] = _lookup[i][1][1];
-					_lookup[i][1][3] = _lookup[i][1][1];
-					// Walking
-					_lookup[i][2][0] = [17, 4];
-					_lookup[i][2][1] = _lookup[i][2][0];
-					_lookup[i][2][2] = _lookup[i][2][0];
-					_lookup[i][2][3] = _lookup[i][2][0];
-					// Jumping
-					_lookup[i][3][0] = [13, 3];
-					_lookup[i][3][1] = _lookup[i][3][0];
-					_lookup[i][3][2] = _lookup[i][3][0];
-					_lookup[i][3][3] = _lookup[i][3][0];
-					break;
-				
-				case PlayerSpritesheetPage.SHOOT_UP:
-					// Standing
-					_lookup[i][0][0] = [5, -5];
-					_lookup[i][0][1] = _lookup[i][0][0];
-					// Sliding
-					_lookup[i][0][2] = [7, 0];
-					_lookup[i][0][3] = _lookup[i][0][2];
-					// Sidestep
-					_lookup[i][1][0] = [5, -5];
-					// Climbing
-					_lookup[i][1][1] = [5, -7];
-					_lookup[i][1][2] = _lookup[i][1][1];
-					_lookup[i][1][3] = _lookup[i][1][1];
-					// Walking
-					_lookup[i][2][0] = [10, -3];
-					_lookup[i][2][1] = _lookup[i][2][0];
-					_lookup[i][2][2] = _lookup[i][2][0];
-					_lookup[i][2][3] = _lookup[i][2][0];
-					// Jumping
-					_lookup[i][3][0] = [6, -5];
-					_lookup[i][3][1] = _lookup[i][3][0];
-					_lookup[i][3][2] = _lookup[i][3][0];
-					_lookup[i][3][3] = _lookup[i][3][0];
-					break;
-				
-				case PlayerSpritesheetPage.SHOOT_DIAGONAL_UP:
-					// Standing
-					_lookup[i][0][0] = [15, -2];
-					_lookup[i][0][1] = _lookup[i][0][0];
-					// Sliding
-					_lookup[i][0][2] = [11, 1];
-					_lookup[i][0][3] = _lookup[i][0][2];
-					// Sidestep
-					_lookup[i][1][0] = [15, -2];
-					// Climbing
-					_lookup[i][1][1] = [12, -4];
-					_lookup[i][1][2] = _lookup[i][1][1];
-					_lookup[i][1][3] = _lookup[i][1][1];
-					// Walking
-					_lookup[i][2][0] = [13, -1];
-					_lookup[i][2][1] = _lookup[i][2][0];
-					_lookup[i][2][2] = _lookup[i][2][0];
-					_lookup[i][2][3] = _lookup[i][2][0];
-					// Jumping
-					_lookup[i][3][0] = [12, -2];
-					_lookup[i][3][1] = _lookup[i][3][0];
-					_lookup[i][3][2] = _lookup[i][3][0];
-					_lookup[i][3][3] = _lookup[i][3][0];
-					break;
-				
-				case PlayerSpritesheetPage.SHOOT_DIAGONAL_DOWN:
-					// Standing
-					_lookup[i][0][0] = [14, 10];
-					_lookup[i][0][1] = _lookup[i][0][0];
-					// Sliding
-					_lookup[i][0][2] = [11, 10];
-					_lookup[i][0][3] = _lookup[i][0][2];
-					// Sidestep
-					_lookup[i][1][0] = [14, 10];
-					// Climbing
-					_lookup[i][1][1] = [11, 9];
-					_lookup[i][1][2] = _lookup[i][1][1];
-					_lookup[i][1][3] = _lookup[i][1][1];
-					// Walking
-					_lookup[i][2][0] = [11, 13];
-					_lookup[i][2][1] = _lookup[i][2][0];
-					_lookup[i][2][2] = _lookup[i][2][0];
-					_lookup[i][2][3] = _lookup[i][2][0];
-					// Jumping
-					_lookup[i][3][0] = [12, 10];
-					_lookup[i][3][1] = _lookup[i][3][0];
-					_lookup[i][3][2] = _lookup[i][3][0];
-					_lookup[i][3][3] = _lookup[i][3][0];
-					break;
-			}
-		}
-		
-		return _lookup;
-	};
-	
-	/// -- __init_spritesheet_lookup_page()
-	/// Sets up the lookup table for the spritesheet pages
-	///
-	/// @returns {array<int>}
-	static __init_spritesheet_lookup_page = function() {
-		var _lookup = array_create(PlayerSpritesheetPage.COUNT);
-		_lookup[PlayerSpritesheetPage.IDLE] = 0;
-		_lookup[PlayerSpritesheetPage.SHOOT] = 1;
-		_lookup[PlayerSpritesheetPage.THROW] = 2;
-		_lookup[PlayerSpritesheetPage.SHOOT_UP] = 3;
-		_lookup[PlayerSpritesheetPage.SHOOT_DIAGONAL_UP] = 4;
-		_lookup[PlayerSpritesheetPage.SHOOT_DIAGONAL_DOWN] = 5;
-		_lookup[PlayerSpritesheetPage.SUPER_ARM] = 6;
-		_lookup[PlayerSpritesheetPage.WIRE_ADAPTOR] = 7;
-		_lookup[PlayerSpritesheetPage.SLASH_CLAW] = 8;
-		_lookup[PlayerSpritesheetPage.TENGU_BLADE] = 9;
-		_lookup[PlayerSpritesheetPage.BREAK_DASH] = 10;
-		_lookup[PlayerSpritesheetPage.TORNADO_BATTERY] = 10;
-		_lookup[PlayerSpritesheetPage.SAKUGARNE] = 11;
-		_lookup[PlayerSpritesheetPage.BIKE] = 11;
-		_lookup[PlayerSpritesheetPage.TURNABOUT] = 12;
-		_lookup[PlayerSpritesheetPage.TOP_SPIN] = 12;
-		_lookup[PlayerSpritesheetPage.HURT] = 13;
-		_lookup[PlayerSpritesheetPage.STUN] = 13;
-		_lookup[PlayerSpritesheetPage.LIFE] = 13;
-		_lookup[PlayerSpritesheetPage.MUGSHOT] = 13;
-		_lookup[PlayerSpritesheetPage.COIL] = 13;
-		_lookup[PlayerSpritesheetPage.JET] = 13;
-		_lookup[PlayerSpritesheetPage.WAVE_BIKE] = 13;
-		_lookup[PlayerSpritesheetPage.TELEPORT] = 13;
-		return _lookup;
-	};
+	// Relative position of the "gun" at each standard frame
+	gunOffsetLookup = array_create(PlayerStandardAnimationSubType.COUNT * PLAYER_STANDARD_FRAME_COUNT, [0, 0]); /// @is {array<Vector2>}
 	
 	#endregion
 	
-	#region Functions
+	#region Functions - Getters
 	
-	/// -- get_default_colours()
-	/// Gets the default colours of this character. This is without any changes by weapons.
+	/// -- get_gun_offset_at(index)
+	/// Gets the gun offset at the given frame of the player's standard sprite
+	///
+	/// @param {int}  index  The index to get the gun offset of
+	///
+	/// @returns {Vector2}  The gun offset
+	static get_gun_offset_at = function(_index) {
+		return array_at(gunOffsetLookup, _index) ?? gunOffsetLookup[0];
+	};
+	
+	/// -- get_name(uppercase)
+	/// Gets the name of this character.
+	/// Can choose to have the name converted into uppercase.
+	///
+	/// @param {bool}  [uppercase]  Whether to return the name in uppercase or not. Defaults to false.
+	///
+	/// @returns {array<int>}  A copy of this characters's loadout.
+	static get_name = function(_upper = false) {
+		return _upper ? string_upper(name) : name;
+	};
+	
+	/// -- get_player_colours()
+	/// Gets the default colours of the entity representing this character. That is, without any changes by weapons.
 	///
 	/// @returns {PalettePlayer}  A copy of this characters's colours.
-	static get_default_colours = function() {
-		return variable_clone(defaultColours);
+	static get_player_colours = function() {
+		return variable_clone(playerColours);
 	};
 	
 	/// -- get_weapons()
@@ -205,16 +75,25 @@ function Character() constructor {
 		return variable_clone(weapons);
 	};
 	
-	/// -- get_name(uppercase)
-	/// Gets the name of this character.
-	/// Can choose to have the name converted into uppercase.
+	#endregion
+	
+	#region Functions - Setters
+	
+	/// -- set_entity_object(object)
+	/// Sets the entity object to represent this character
 	///
-	/// @param {bool}  [uppercase]  Whether to return the name in uppercase or not. Defaults to false.
+	/// @param {prtPlayer}  object  The entity object
 	///
-	/// @returns {string}  This characters's name.
-	static get_name = function(_upper = false) {
-		return _upper ? string_upper(name) : name;
+	/// @returns {Character}  A reference to this struct. Useful for method chaining.
+	static set_entity_object = function(_obj) {
+		assert(_obj == prtPlayer || object_is_ancestor(_obj, prtPlayer), "must be a player object");
+		entityObject = _obj;
+		return self;
 	};
+	
+	#endregion
+	
+	#region Functions - Other
 	
 	/// -- personalize_weapon(weapon)
 	/// Takes the give weapon, and applies minor adjustments to it
@@ -225,31 +104,78 @@ function Character() constructor {
 		//...
 	};
 	
-	/// -- spritesheet_gun_offset(page, cell_x, cell_y)
-	/// Gets the gun offset at the given page & cell of the spritesheet
-	///
-	/// @param {int}  page  The spritesheet page
-	/// @param {int}  cell_x  horizontal position of the cell on the given page
-	/// @param {int}  cell_y  vertical position of the cell on the given page
-	///
-	/// @returns {Vector2}  The gun offset
-	static spritesheet_gun_offset = function(_page, _cellX, _cellY) {
-		_page = in_range(_page, 0, PlayerSpritesheetPage.COUNT) ? _page : 0;
-		_cellX = clamp(_cellX, 0, 3);
-		_cellY = clamp(_cellY, 0, 3);
-		return spritesheetLookupGunOffset[_page][_cellY][_cellX];
-	};
+	#endregion
 	
-	/// -- spritesheet_page_to_image_index(page)
-	/// Converts the given spritesheet page to its corresponding image_index
-	///
-	/// @param {int}  page  The spritesheet page to convert
-	///
-	/// @returns {int}  The image_index tied to this page
-	static spritesheet_page_to_image_index = function(_page) {
-		return array_at(spritesheetLookupPage, max(_page, 0)) ?? 0;
+	#region Initialization
+	
+	// == Setup Player Sprites
+	// Main
+	playerSprites[PlayerAnimationType.STANDARD] = sprPlayerSkinRockMan_Standard;
+	playerSprites[PlayerAnimationType.HURTSTUN] = sprPlayerSkinRockMan_HurtStun;
+	playerSprites[PlayerAnimationType.TELEPORT] = sprPlayerSkinRockMan_Teleport;
+	// Weapons
+	playerSprites[PlayerAnimationType.BREAK_DASH] = sprPlayerSkinRockMan_BreakDash;
+	playerSprites[PlayerAnimationType.SLASH_CLAW] = sprPlayerSkinRockMan_SlashClaw;
+	playerSprites[PlayerAnimationType.TENGU_BLADE] = sprPlayerSkinRockMan_TenguBlade;
+	playerSprites[PlayerAnimationType.TOP_SPIN] = sprPlayerSkinRockMan_TopSpin;
+	// Misc.
+	playerSprites[PlayerAnimationType.TORNADO_BATTERY] = sprPlayerSkinRockMan_TornadoBattery;
+	playerSprites[PlayerAnimationType.TURNAROUND] = sprPlayerSkinRockMan_Turnaround;
+	playerSprites[PlayerAnimationType.WAVE_BIKE] = sprPlayerSkinRockMan_WaveBike;
+	
+	// == Setup Gun Offsets
+	for (var i = 0; i < PlayerStandardAnimationSubType.COUNT; i++) {
+		var _baseIndex = i * PLAYER_STANDARD_FRAME_COUNT,
+			_idleFrame = _baseIndex + PLAYER_ANIM_FRAME_IDLE,
+			_sidestepFrame = _baseIndex + PLAYER_ANIM_FRAME_SIDESTEP,
+			_walkFrame = _baseIndex + PLAYER_ANIM_FRAME_WALK,
+			_jumpFrame = _baseIndex + PLAYER_ANIM_FRAME_JUMP,
+			_fallFrame = _baseIndex + PLAYER_ANIM_FRAME_FALL,
+			_slideFrame = _baseIndex + PLAYER_ANIM_FRAME_SLIDE,
+			_climbFrame = _baseIndex + PLAYER_ANIM_FRAME_CLIMB;
+		
+		switch (i) {
+			default:
+				array_set_multiple(gunOffsetLookup, _idleFrame, 2, [17, 4]);
+				array_set_multiple(gunOffsetLookup, _sidestepFrame, 1, [17, 4]);
+				array_set_multiple(gunOffsetLookup, _walkFrame, 4, [16, 4]);
+				array_set_multiple(gunOffsetLookup, _jumpFrame, 2, [13, 3]);
+				array_set_multiple(gunOffsetLookup, _fallFrame, 2, [13, 3]);
+				array_set_multiple(gunOffsetLookup, _slideFrame, 2, [9, 2]);
+				array_set_multiple(gunOffsetLookup, _climbFrame, 3, [13, 2]);
+				break;
+			
+			case PlayerStandardAnimationSubType.SHOOT_UP:
+				array_set_multiple(gunOffsetLookup, _idleFrame, 2, [5, -5]);
+				array_set_multiple(gunOffsetLookup, _sidestepFrame, 1, [5, -5]);
+				array_set_multiple(gunOffsetLookup, _walkFrame, 4, [10, -3]);
+				array_set_multiple(gunOffsetLookup, _jumpFrame, 2, [6, -5]);
+				array_set_multiple(gunOffsetLookup, _fallFrame, 2, [6, -5]);
+				array_set_multiple(gunOffsetLookup, _slideFrame, 2, [7, 0]);
+				array_set_multiple(gunOffsetLookup, _climbFrame, 3, [5, -7]);
+				break;
+			
+			case PlayerStandardAnimationSubType.SHOOT_DIAGONAL_UP:
+				array_set_multiple(gunOffsetLookup, _idleFrame, 2, [15, -2]);
+				array_set_multiple(gunOffsetLookup, _sidestepFrame, 1, [15, -2]);
+				array_set_multiple(gunOffsetLookup, _walkFrame, 4, [13, -1]);
+				array_set_multiple(gunOffsetLookup, _jumpFrame, 2, [12, -2]);
+				array_set_multiple(gunOffsetLookup, _fallFrame, 2, [12, -2]);
+				array_set_multiple(gunOffsetLookup, _slideFrame, 2, [11, 1]);
+				array_set_multiple(gunOffsetLookup, _climbFrame, 3, [12, -4]);
+				break;
+			
+			case PlayerStandardAnimationSubType.SHOOT_DIAGONAL_DOWN:
+				array_set_multiple(gunOffsetLookup, _idleFrame, 2, [14, 10]);
+				array_set_multiple(gunOffsetLookup, _sidestepFrame, 1, [14, 10]);
+				array_set_multiple(gunOffsetLookup, _walkFrame, 4, [11, 13]);
+				array_set_multiple(gunOffsetLookup, _jumpFrame, 2, [12, 10]);
+				array_set_multiple(gunOffsetLookup, _fallFrame, 2, [12, 10]);
+				array_set_multiple(gunOffsetLookup, _slideFrame, 2, [11, 10]);
+				array_set_multiple(gunOffsetLookup, _climbFrame, 3, [11, 9]);
+				break;
+		}
 	}
-	
 	#endregion
 }
 

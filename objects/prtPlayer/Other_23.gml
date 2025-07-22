@@ -321,15 +321,23 @@ with (stateMachine.add("Climb")) {
 		
 		yspeed.value = climbSpeed * yDir * !isShooting * !self.is_action_locked(PlayerAction.CLIMB);
 		
-		animator.set_time_scale(abs(yspeed.value) != 0);
-		if (animator.timeScale.value == 0)
-			animator.reset_frame_counter();
-		
-		// Hop off the ladder if we press jump
-		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !self.is_action_locked(PlayerAction.JUMP))
-			stateMachine.change_state("Fall");
+		var _ladderTopDistance = (bbox_vertical(-gravDir, ladderInstance) - y) * gravDir;
+		if (_ladderTopDistance > 4) {
+			animator.play("climb-top");
+		} else {
+			animator.play("climb");
+			animator.set_time_scale(abs(yspeed.value) != 0);
+			if (animator.timeScale.value == 0)
+				animator.reset_frame_counter();
+		}
 	});
 	set_event("posttick", function() {
+		// Hop off the ladder if we press jump
+		if (yDir != -gravDir && inputs.is_pressed(InputActions.JUMP) && !self.is_action_locked(PlayerAction.JUMP)) {
+			stateMachine.change_state("Fall");
+			return;
+		}
+		
 		// Hitting ground while climbing down
 		if (sign(ycoll) == gravDir) {
 			stateMachine.change_state("Idle", function() {

@@ -1,11 +1,7 @@
 if (!game_can_step(true))
 	exit;
 
-if (self.is_user_controlled() && !self.is_action_locked(PlayerAction.INPUT)) {
-    inputs.held = playerUser.inputs.held;
-    inputs.pressed |= playerUser.inputs.pressed;
-    inputs.released |= playerUser.inputs.released;
-}
+self.handle_input();
 
 var _gameTicks = global.gameTimeScale.integer;
 repeat(_gameTicks) {

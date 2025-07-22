@@ -38,7 +38,7 @@ slideBoostActive = false;
 
 // Shooting
 shootTimer = 0;
-shootAnimation = PlayerSpritesheetPage.IDLE;
+shootAnimation = PlayerStandardAnimationSubType.IDLE;
 autoFireTimer = 0;
 
 // Weapon Switching
@@ -50,13 +50,13 @@ weaponIconTimer = 0; /// @is {int}
 canDieToPits = true;
 diedToAPit = false;
 
-// Player Spritesheet
-skinPage = 0;
-skinCellX = 0;
-skinCellY = 0;
+// Player Sprite
+skinSprite = PlayerAnimationType.STANDARD;
+skinIndex = 0;
+skinLastStandardFrame = 0;
 
 // Palette
-palette = new ColourPalette(characterSpecs.get_default_colours());
+palette = new ColourPalette(characterSpecs.get_player_colours());
 
 // HUD
 hudElement = new HUDElement_Player();

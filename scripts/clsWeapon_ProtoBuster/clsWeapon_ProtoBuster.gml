@@ -157,7 +157,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 			object: objProtoShot,
 			limit: 3,
 			cost: 0,
-			shootAnimation: PlayerSpritesheetPage.SHOOT,
+			shootAnimation: PlayerStandardAnimationSubType.SHOOT,
 			autoShootDelay: 8
 		};
 		

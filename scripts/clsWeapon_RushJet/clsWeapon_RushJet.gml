@@ -30,7 +30,7 @@ function Weapon_RushJet() : Weapon() constructor {
 				object: objRushTeleport,
 				limit: 1,
 				cost: 0,
-				shootAnimation: PlayerSpritesheetPage.IDLE,
+				shootAnimation: PlayerStandardAnimationSubType.IDLE,
 				offsetX: 20,
 				depthOffset: -1,
 				projParams: {
@@ -39,9 +39,11 @@ function Weapon_RushJet() : Weapon() constructor {
 			});
 			
 			if (_shot != noone) {
-				_shot.characterID = _player.characterSpecs.id;
+				_shot.characterSpecs = _player.characterSpecs;
 				_shot.weapon = self;
+				_shot.palette.set_output_colours(_shot.characterSpecs.jetColours);
 				_shot.y = game_view().center_y(false) - (GAME_HEIGHT / 2) * _player.image_yscale;
+				_shot.depth = _player.depth - 1;
 			}
 		} else {
 			if (!_player.check_input_shoot())
@@ -51,7 +53,7 @@ function Weapon_RushJet() : Weapon() constructor {
 				object: objBusterShot,
 				limit: 4,
 				cost: 0,
-				shootAnimation: PlayerSpritesheetPage.SHOOT,
+				shootAnimation: PlayerStandardAnimationSubType.SHOOT,
 				autoShootDelay: 8
 			});
 			

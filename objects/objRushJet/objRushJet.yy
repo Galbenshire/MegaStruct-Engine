@@ -47,6 +47,7 @@
     {"$GMObjectProperty":"v1","%Name":"jetYSpeed","filters":[],"listItems":[],"multiselect":false,"name":"jetYSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.6","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"pullbackFactor","filters":[],"listItems":[],"multiselect":false,"name":"pullbackFactor","rangeEnabled":true,"rangeMax":1.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.6","varType":0,},
     {"$GMObjectProperty":"v1","%Name":"idleDuration","filters":[],"listItems":[],"multiselect":false,"name":"idleDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"240","varType":0,},
+    {"$GMObjectProperty":"v1","%Name":"characterID","filters":[],"listItems":[],"multiselect":false,"name":"characterID","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"CharacterType.MEGA","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
@@ -55,6 +56,9 @@
     "name":"sprRushJet",
     "path":"sprites/sprRushJet/sprRushJet.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"sprRushJet",
+    "path":"sprites/sprRushJet/sprRushJet.yy",
+  },
   "visible":true,
 }

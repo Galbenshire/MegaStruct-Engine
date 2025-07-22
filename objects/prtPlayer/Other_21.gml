@@ -68,13 +68,25 @@
 		if (self.is_action_locked(PlayerAction.SPRITE_CHANGE))
 			return;
 		
-		skinPage = undefined;
-		skinCellX = 0;
-		skinCellY = 0;
+		skinSprite = PlayerAnimationType.STANDARD;
+		skinIndex = 0;
 		animator.update();
 		
-		if (is_undefined(skinPage))
-			skinPage = shootAnimation;
+		if (skinSprite == PlayerAnimationType.STANDARD) {
+			skinLastStandardFrame = skinIndex;
+			skinIndex += shootAnimation * PLAYER_STANDARD_FRAME_COUNT;
+		}
+	}
+	
+	/// -- handle_input()
+	/// Handles input for the player
+	function handle_input() {
+		if (!self.is_user_controlled())
+			return;
+		
+		inputs.held = playerUser.inputs.held;
+		inputs.pressed |= playerUser.inputs.pressed;
+		inputs.released |= playerUser.inputs.released;
 	}
 	
 	/// -- handle_sections()
@@ -125,13 +137,12 @@
 			shootTimer = approach(shootTimer, 0, 1);
 			if (shootTimer == 0) {
 				isShooting = false;
-				shootAnimation = PlayerSpritesheetPage.IDLE;
+				shootAnimation = PlayerStandardAnimationSubType.IDLE;
 				shootStandStillLock.deactivate();
 			}
 		}
 		
-		if (!is_undefined(weapon))
-			weapon.on_tick(self);
+		weapon.on_tick(self);
 	}
 	
 	/// -- handle_switching_weapons()
@@ -182,7 +193,7 @@
 	///
 	/// @param {Weapon}  weapon  The weapon to use. Defaults to the player's current.
 	function get_palette(_weapon = weapon) {
-		var _characterPalette = characterSpecs.get_default_colours();
+		var _characterPalette = characterSpecs.get_player_colours();
 		_characterPalette[PalettePlayer.primary] = _weapon.colours[PaletteWeapon.primary];
 		_characterPalette[PalettePlayer.secondary] = _weapon.colours[PaletteWeapon.secondary];
 		
@@ -380,7 +391,7 @@
 			shootStandStillLock.activate();
 		
 		// Make the bullet
-		var _gunOffset = characterSpecs.spritesheet_gun_offset(shootAnimation, skinCellX, skinCellY),
+		var _gunOffset = characterSpecs.get_gun_offset_at(skinLastStandardFrame + (shootAnimation * PLAYER_STANDARD_FRAME_COUNT)),
 			_bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),

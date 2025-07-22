@@ -9,24 +9,21 @@ function Character_MegaMan() : Character() constructor {
 	
 	name = "Mega Man";
 	entityObject = objMegaMan;
-	spritesheet = sprPlayerSkinRockMan;
 	
-	defaultColours = [
-		// Main Colours
-        $EC7000,
-        $F8B838,
-        $000000,
-        
-        // Less Important Colours
-        $A8D8FC,
-        $000000,
-        $FFFFFF,
-        
-        // Pretty Much Mugshot Exclusive
-        $8B0000,
-        $FFEEB3,
-        $3898F8
-    ];
+	playerColours[PalettePlayer.primary] = $EC7000;
+	playerColours[PalettePlayer.secondary] = $F8B838;
+	playerColours[PalettePlayer.outline] = $000000;
+	playerColours[PalettePlayer.skin] = $A8D8FC;
+	playerColours[PalettePlayer.face] = $000000;
+	playerColours[PalettePlayer.eyes] = $FFFFFF;
+	
+	coilColours[PalettePlayer.primary] = $0028D8;
+	coilColours[PalettePlayer.secondary] = $F8F8F8;
+	coilColours[PalettePlayer.outline] = $000000;
+	coilColours[PalettePlayer.skin] = $A8D8FC;
+	coilColours[PalettePlayer.face] = $000000;
+	coilColours[PalettePlayer.eyes] = $FFFFFF;
+	jetColours = coilColours;
     
 	weapons = [
         WeaponType.BUSTER,

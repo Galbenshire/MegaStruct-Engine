@@ -34,17 +34,17 @@ function Weapon_BassBuster() : Weapon() constructor {
 				object: objBassShot,
 				limit: 4,
 				cost: 0,
-				shootAnimation: PlayerSpritesheetPage.SHOOT,
+				shootAnimation: PlayerStandardAnimationSubType.SHOOT,
 				standstill: true,
 				autoShootDelay: 6
 			};
 			
 			if (yDir == -1 && xDir == 0)
-				_shotData.shootAnimation = PlayerSpritesheetPage.SHOOT_UP;
+				_shotData.shootAnimation = PlayerStandardAnimationSubType.SHOOT_UP;
 			else if (yDir == -1 && xDir != 0)
-				_shotData.shootAnimation = PlayerSpritesheetPage.SHOOT_DIAGONAL_UP;
+				_shotData.shootAnimation = PlayerStandardAnimationSubType.SHOOT_DIAGONAL_UP;
 			else if (yDir)
-				_shotData.shootAnimation = PlayerSpritesheetPage.SHOOT_DIAGONAL_DOWN;
+				_shotData.shootAnimation = PlayerStandardAnimationSubType.SHOOT_DIAGONAL_DOWN;
 			
 			var _shot = self.fire_weapon(_shotData);
 			if (_shot != noone) {
