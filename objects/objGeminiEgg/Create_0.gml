@@ -24,6 +24,6 @@ onItemDrop = function(_item) {
 };
 
 // Immunities
-damageTable.add_source(objIceSlasher, 0);
-damageTable.add_source(objSearchSnake, 0);
-damageTable.add_source(objSkullBarrier, 0);
+damageTable.add_entry(objIceSlasher, 0);
+damageTable.add_entry(objSearchSnake, 0);
+damageTable.add_entry(objSkullBarrier, 0);

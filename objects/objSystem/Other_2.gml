@@ -43,14 +43,17 @@ if (!variable_global_exists("__gameInit")) {
 	global.roomIsLevel = false; /// @is {bool}
 	global.section = noone; /// @is {objSection}
 	global.switchingSections = false; /// @is {bool}
-	global.roomTimer = 0; /// @is {int}
-	global.systemTimer = 0; /// @is {int}
+	global.roomTimer = 0; /// @is {int} Timer that resets on room change
+	global.sessionTimer = 0; /// @is {int} Timer that resets on game restart
+	global.systemTimer = 0; /// @is {int} Timer that is always running until the game is turned off
 	global.hitStunTimer = 0; /// @is {int}
 	
 	// Unlikely to change that much, if at all
 	global.nextRoom = room; /// @is {room}
 	global.osInfo = os_get_info(); /// @is {ds_map}
 	global.player = new Player(0); /// @is {Player}
+	global.stopwatchActive = false; /// @is {bool}
+	global.stopwatchTimer = 0; /// @is {int}
 	
 	// ===== Load Settings =====
 	options_data().load_from_file();
@@ -58,10 +61,13 @@ if (!variable_global_exists("__gameInit")) {
 	game_window().center_window();
 	
 	// ===== Setup Some Debug Views =====
-	__debug_view_instance_count();
-	__debug_view_options_data();
-	__debug_view_room_select();
-	show_debug_overlay(false);
+	if (DEBUG_ENABLED) {
+		__debug_view_instance_count();
+		__debug_view_options_data();
+		__debug_view_room_select();
+		__debug_view_timers();
+		show_debug_overlay(false);
+	}
 	
 	// ===== Other Stuff =====
 	show_debug_message("Other Operations...");
@@ -73,7 +79,9 @@ if (!variable_global_exists("__gameInit")) {
 }
 
 // ===== Reset various global variables =====
+global.sessionTimer = 0;
 global.paused = false;
+global.bolts = 0;
 
 // =====  Other Operations =====
 draw_set_font(global.font); // This gets reset when the game is restarted

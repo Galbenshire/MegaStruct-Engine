@@ -24,14 +24,14 @@ onDeath = function(_damageSource) {
 };
 
 // == Damage Table ==
-damageTable.add_source(objBusterShot, 2);
-damageTable.add_source(objBusterShotHalfCharge, 2);
-damageTable.add_source(objBusterShotCharged, 4);
-damageTable.add_source(objProtoShot, 2);
-damageTable.add_source(objProtoShotHalfCharge, 2);
-damageTable.add_source(objProtoShotCharged, 4);
-damageTable.add_source(objBassShot, 2);
-damageTable.add_source(objIceSlasher, 0);
-damageTable.add_source(objMetalBlade, 1);
-damageTable.add_source(objSearchSnake, 1);
-damageTable.add_source(objSkullBarrier, 1);
+damageTable.add_entry(objBusterShot, 2);
+damageTable.add_entry(objBusterShotHalfCharge, 2);
+damageTable.add_entry(objBusterShotCharged, 4);
+damageTable.add_entry(objProtoShot, 2);
+damageTable.add_entry(objProtoShotHalfCharge, 2);
+damageTable.add_entry(objProtoShotCharged, 4);
+damageTable.add_entry(objBassShot, 2);
+damageTable.add_entry(objIceSlasher, 0);
+damageTable.add_entry(objMetalBlade, 1);
+damageTable.add_entry(objSearchSnake, 1);
+damageTable.add_entry(objSkullBarrier, 1);

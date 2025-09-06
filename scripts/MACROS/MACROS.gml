@@ -518,6 +518,26 @@ enum RefillQueueItem {
 	sizeof
 }
 
+enum ScreenFlashNote {
+	alpha, /// @is {number}
+	colour, /// @is {int}
+	timer, /// @is {int}
+	gain, /// @is {number}
+	decay, /// @is {number}
+	step, /// @is {number}
+	isDone, /// @is {bool}
+	sizeof
+}
+
+enum ScreenShakeNote {
+	strengthX, /// @is {number}
+	strengthY, /// @is {number}
+	timer, /// @is {int}
+	decay, /// @is {number}
+	isDone, /// @is {bool}
+	sizeof
+}
+
 enum SpriteAtlasCell {
     sheetX, /// @is {int}
     sheetY, /// @is {int}

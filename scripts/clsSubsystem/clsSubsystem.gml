@@ -18,6 +18,7 @@ function Subsystem_Core() : Subsystem() constructor {
 		}
 		
 		global.roomTimer++;
+		global.sessionTimer++;
 		global.systemTimer++;
 		if (!global.paused)
 			global.hitStunTimer = approach(global.hitStunTimer, 0, 1);
@@ -201,8 +202,7 @@ function Subsystem_Debug() : Subsystem() constructor {
         
         // Screenshot
         if (keyboard_check_pressed(vk_f10)) {
-			var _depth = layer_get_depth(LAYER_SYSTEM) - 10,
-				_screenshotFile = "",
+			var _screenshotFile = "",
 				_screenshotID = -1;
 			
 			do {
@@ -216,7 +216,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 				show_debug_message($"Saved screenshot at {screenshotFile}");
 				play_sfx(sfxBolt);
 			}, 0, true, true);
-			_defer.depth = layer_get_depth(LAYER_SYSTEM) - 10;
+			_defer.depth = layer_get_depth(LAYER_SYSTEM) - 100;
 			_defer.screenshotFile = _screenshotFile;
         }
         
@@ -270,14 +270,17 @@ function Subsystem_Debug() : Subsystem() constructor {
     };
     
     static stepEnd = function() {
-		if (DEBUG_ENABLED)
+		if (DEBUG_ENABLED) {
 			instanceCountActive = instance_count;
-		
-        if (freeRoamEnabled) {
-			var _spd = 2 + 6 * keyboard_check(vk_numpad5);
-			freeRoamX += _spd * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
-			freeRoamY += _spd * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
-        }
+			
+			if (freeRoamEnabled) {
+				var _spd = 2 + 6 * keyboard_check(vk_numpad5);
+				freeRoamX += _spd * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
+				freeRoamY += _spd * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
+			}
+			
+			global.stopwatchTimer += global.stopwatchActive;
+		}
         
         for (var i = consoleLogCount - 1; i >= 0; i--) {
 			var _line = consoleLog[i];
@@ -310,7 +313,7 @@ function Subsystem_Debug() : Subsystem() constructor {
     };
     
     static drawEnd = function() {
-        if (freeRoamEnabled) {
+        if (DEBUG_ENABLED && freeRoamEnabled) {
 			draw_set_halign(fa_center);
 			draw_set_valign(fa_middle);
 			draw_set_colour(c_green);
@@ -328,7 +331,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 		draw_set_text_align(fa_left, fa_bottom);
 		
 		var _consoleX = 4,
-			_consoleY = window_get_height() - 4,
+			_consoleY = (os_type != os_gxgames) ? window_get_height() - 4 : (GAME_HEIGHT - 4) * options_data().screenSize,
 			_consoleCount = consoleLogCount,
 			i = _consoleCount - 1;
 		

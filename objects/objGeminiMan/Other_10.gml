@@ -36,14 +36,14 @@ onDespawn = function() {
 };
 
 // == Damage Table ==
-damageTable.add_source(objBusterShot, 1);
-damageTable.add_source(objBusterShotHalfCharge, 1);
-damageTable.add_source(objBusterShotCharged, 3);
-damageTable.add_source(objProtoShot, 1);
-damageTable.add_source(objProtoShotHalfCharge, 1);
-damageTable.add_source(objProtoShotCharged, 3);
-damageTable.add_source(objBassShot, 1);
-damageTable.add_source(objIceSlasher, 1);
-damageTable.add_source(objMetalBlade, 1);
-damageTable.add_source(objSearchSnake, 5);
-damageTable.add_source(objSkullBarrier, 1);
+damageTable.add_entry(objBusterShot, 1);
+damageTable.add_entry(objBusterShotHalfCharge, 1);
+damageTable.add_entry(objBusterShotCharged, 3);
+damageTable.add_entry(objProtoShot, 1);
+damageTable.add_entry(objProtoShotHalfCharge, 1);
+damageTable.add_entry(objProtoShotCharged, 3);
+damageTable.add_entry(objBassShot, 1);
+damageTable.add_entry(objIceSlasher, 1);
+damageTable.add_entry(objMetalBlade, 1);
+damageTable.add_entry(objSearchSnake, 5);
+damageTable.add_entry(objSkullBarrier, 1);

@@ -1,13 +1,4 @@
-/// @func find_section_at(x, y)
-/// @desc Finds an objSection at the given location
-///
-/// @param {number}  x  x-coordinate to find a section at
-/// @param {number}  y  y-coordinate to find a section at
-///
-/// @returns {objSection}  The objSection at this position. Returns noone if nothing is found.
-function find_section_at(_x, _y) {
-	return instance_position(_x, _y, objSection);
-}
+#region Inside View/Section
 
 /// @func inside_section(scope, x, y)
 /// @desc Checks if the specified instance is within the current section.
@@ -88,43 +79,115 @@ function inside_view_point(_x = x, _y = y, _margin = 0) {
 		&& _y >= _gameView.top_edge(-_margin, false);
 }
 
-/// @func screen_flash(duration, colour)
+#endregion
+
+#region Screen Flash
+
+/// @func screen_flash(duration, colour, decay, gain, step)
 /// @desc Performs a screen flash
 ///		  NOTE: Be careful about how you use this. Some people might have photosensitive epilepsy.
 ///
 /// @param {number}  duration  How long the shake should last.
 /// @param {int}  [colour]  Colour of the flash. Defaults to white.
-function screen_flash(_duration, _colour = c_white) {
+/// @param {number}  [decay]  How much to reduce the flash by after the duration. Defaults to 0 (end instantly).
+/// @param {number}  [gain]  How much to increase the flash to full opacity. Defaults to 0 (start instantly).
+/// @param {number}  [step]  Rounds the opacity of the flash when gaining/decaying. Defaults to 0 (no rounding).
+function screen_flash(_duration, _colour = c_white, _decay = 0, _gain = 0, _step = 0) {
+	var _flash = array_create(ScreenFlashNote.sizeof);
+	_flash[ScreenFlashNote.alpha] = real(_gain <= 0);
+	_flash[ScreenFlashNote.colour] = _colour;
+	_flash[ScreenFlashNote.timer] = abs(_duration);
+	_flash[ScreenFlashNote.gain] = max(_gain, 0);
+	_flash[ScreenFlashNote.decay] = max(_decay, 0);
+	_flash[ScreenFlashNote.step] = clamp(_step, 0, 1);
+	_flash[ScreenFlashNote.isDone] = false;
+	
 	with (objSystem.flasher) {
-		timer = _duration;
-		colour = _colour;
+		array_push(flashes, _flash);
+		flashCount++;
+	}
+	
+	return _flash;
+}
+
+/// @func stop_screen_flash(_flash)
+/// @desc Stops a specific screen flash instance
+///		  Normally used to stop a sustained screen flash
+///
+/// @param {ScreenFlashNote}  flash  The screen flash instance to stop
+function stop_screen_flash(_flash) {
+	_flash[ScreenFlashNote.isDone] = true;
+}
+
+/// @func stop_screen_flash_all()
+/// @desc Tells the game to stop all instances of flashing the screen
+function stop_screen_flash_all() {
+	with (objSystem.flasher) {
+		flashes = [];
+		flashCount = 0;
 	}
 }
 
-/// @func screen_shake(duration, strength_x, strength_y)
+#endregion
+
+#region Screen Shake
+
+/// @func screen_shake(duration, strength_x, strength_y, decay)
 /// @desc Performs a screen shake
 ///
-/// @param {number}  duration  How long the shake should last.
+/// @param {int}  duration  How long the shake should last.
 /// @param {number}  strength_x  Horizontal strength of the shake
 /// @param {number}  strength_y  Vertical strength of the shake
-function screen_shake(_duration, _strengthX, _strengthY) {
+/// @param {number}  [decay]  How much to reduce the strengths by after the duration. Defaults to 0 (end instantly).
+///
+/// @returns {ScreenShakeNote}
+function screen_shake(_duration, _strengthX, _strengthY, _decay = 0) {
+	var _shake = array_create(ScreenShakeNote.sizeof);
+	_shake[ScreenShakeNote.strengthX] = abs(_strengthX);
+	_shake[ScreenShakeNote.strengthY] = abs(_strengthY);
+	_shake[ScreenShakeNote.timer] = abs(_duration);
+	_shake[ScreenShakeNote.decay] = max(_decay, 0);
+	_shake[ScreenShakeNote.isDone] = false;
+	
 	with (objSystem.shaker) {
-		timer = _duration;
-		strengthX = _strengthX;
-		strengthY = _strengthY;
+		array_push(shakes, _shake);
+		shakeCount++;
+	}
+	
+	return _shake;
+}
+
+/// @func stop_screen_shake(shake)
+/// @desc Stops a specific screen shake instance
+///		  Normally used to stop a sustained screen shake
+///
+/// @param {ScreenShakeNote}  shake  The screen shake instance to stop
+function stop_screen_shake(_shake) {
+	_shake[ScreenShakeNote.isDone] = true;
+}
+
+/// @func stop_screen_shake_all()
+/// @desc Tells the game to stop all instances of shaking the screen
+function stop_screen_shake_all() {
+	with (objSystem.shaker) {
+		shakes = [];
+		shakeCount = 0;
 	}
 }
 
-/// @func stop_screen_flash()
-/// @desc Tells the game to stop flashing the screen
-///		  Normally used to stop a sustained screen flash
-function stop_screen_flash() {
-	screen_flash(0);
+#endregion
+
+#region Other
+
+/// @func find_section_at(x, y)
+/// @desc Finds an objSection at the given location
+///
+/// @param {number}  x  x-coordinate to find a section at
+/// @param {number}  y  y-coordinate to find a section at
+///
+/// @returns {objSection}  The objSection at this position. Returns noone if nothing is found.
+function find_section_at(_x, _y) {
+	return instance_position(_x, _y, objSection);
 }
 
-/// @func stop_screen_shake()
-/// @desc Tells the game to stop shaking the screen
-///		  Normally used to stop a sustained screen shake
-function stop_screen_shake() {
-	screen_shake(0, 0, 0);
-}
+#endregion

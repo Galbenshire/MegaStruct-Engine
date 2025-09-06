@@ -2,14 +2,17 @@
 function __debug_view_instance_count() {
 	DEBUG_VIEW_HTML5_CHECK
 	
-	var _debug = objSystem.debug;
+	var _debugSystem = objSystem.debug;
 	
+	// == The View
 	var _view = dbg_view("Instance Count", false, -1, -1, 475, 300);
 	
+	// -- Section - Main
 	var _main = dbg_section("Main");
-	dbg_watch(ref_create(_debug, "instanceCountActive"), "Instance Count (Current): ");
-	dbg_watch(ref_create(_debug, "instanceCountRoomStart"), "Instance Count (On Room Start): ");
+	dbg_watch(ref_create(_debugSystem, "instanceCountActive"), "Instance Count (Current): ");
+	dbg_watch(ref_create(_debugSystem, "instanceCountRoomStart"), "Instance Count (On Room Start): ");
 	
+	// -- Section - Snapshot
 	var _snapshot = dbg_section("Snapshot");
 	dbg_button("Take Snapshot", function() {
 		var _objects = [];
@@ -36,9 +39,9 @@ function __debug_view_instance_count() {
 			}
 		}
 	});
-	dbg_text(ref_create(_debug, "instanceListNames"));
+	dbg_text(ref_create(_debugSystem, "instanceListNames"));
 	dbg_same_line();
-	dbg_text(ref_create(_debug, "instanceListCounts"));
+	dbg_text(ref_create(_debugSystem, "instanceListCounts"));
 }
 
 /// @func __debug_view_options_data()
@@ -100,4 +103,24 @@ function __debug_view_room_select() {
 		else
 			go_to_room(global.nextRoom);
 	});
+}
+
+/// @func __debug_view_timers()
+function __debug_view_timers() {
+	DEBUG_VIEW_HTML5_CHECK
+	
+	// == The View
+	var _view = dbg_view("Timers", false, -1, -1, 250, 200);
+	
+	// -- Section - System
+	var _system = dbg_section("System");
+	dbg_watch(ref_create(global, "roomTimer"), "Room: ");
+	dbg_watch(ref_create(global, "sessionTimer"), "Session: ");
+	dbg_watch(ref_create(global, "systemTimer"), "System: ");
+	
+	// -- Section - Stopwatch
+	var _stopwatch = dbg_section("Stopwatch");
+	dbg_watch(ref_create(global, "stopwatchTimer"), "Stopwatch: ");
+	dbg_checkbox(ref_create(global, "stopwatchActive"), "Is Active");
+	dbg_button("Reset", function() /*=>*/ { global.stopwatchTimer = 0; });
 }

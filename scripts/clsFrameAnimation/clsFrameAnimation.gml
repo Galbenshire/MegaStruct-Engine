@@ -85,6 +85,16 @@ function FrameAnimationPlayer() constructor {
     #endregion
     
     #region Functions - Getters
+    
+    /// @method get_animation(animation_name)
+	/// @desc Get the specified animation
+	///
+	/// @param {string}  [animation_name]  The name of the animation
+	///
+	/// @returns {FrameAnimation?}  The animation. Returns `undefined` if not found
+    static get_animation = function(_animName) {
+		return self.has_animation(_animName) ? animationMap[$ _animName] : undefined;
+    };
 	
 	/// @method get_animation_duration(animation_name, ignore_time_scale)
 	/// @desc Get the total duration of the specified animation, in frames
@@ -243,6 +253,17 @@ function FrameAnimationPlayer() constructor {
     static reset_frame_counter = function() {
         frameCounter = currentAnimation.get_frame_duration(currentFrame);
     };
+    
+    /// @method transfer_animation(animation)
+	/// @desc Transfers an already-existing FrameAnimation into this player
+	///
+	/// @param {FrameAnimation}  animation  The animation to transfer
+    static transfer_animation = function(_anim) {
+		_anim.owner = owner;
+		if (!is_undefined(_anim.callback))
+			_anim.add_callback(_anim.callback); // Changes the context of the callback
+		animationMap[$ _anim.id] = _anim;
+    };
 	
 	#endregion
 }
@@ -368,6 +389,28 @@ function FrameAnimation() constructor {
     #endregion
     
     #region Functions - Other
+    
+    /// @method change_property(property, new_name)
+	/// @desc Swaps out an existing property for a new one
+	///
+	/// @param {string}  property  The name of the original variable on the owner
+	/// @param {string}  new_name  The name of the new variable
+	///
+	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
+    static change_property = function(_property, _newName) {
+		var _propertyHashed = variable_get_hash(_property),
+			i = 0;
+		
+		repeat(propertyCount) {
+			if (properties[i][0] == _propertyHashed) {
+				properties[i][0] = variable_get_hash(_newName);
+				break;
+			}
+			i++;
+		}
+		
+        return self;
+    };
     
     /// @method is_looping()
 	/// @desc Returns whether this animation loops or not
