@@ -10,6 +10,14 @@ function Character_ProtoMan() : Character() constructor {
 	name = "Proto Man";
 	entityObject = objProtoMan;
 	
+	entityProps.walkSpeed = 1.375;
+	entityProps.brakeFrames = 13;
+	entityProps.jumpSpeed = 5.17109375;
+	entityProps.minJumpThreshold = 2.12109375;
+	entityProps.minJumpCutoff = 1;
+	entityProps.climbSpeed = 1;
+	entityProps.maxFallSpeed = 12;
+	
 	playerColours[PalettePlayer.primary] = $0028DC;
 	playerColours[PalettePlayer.secondary] = $BCBCBC;
 	playerColours[PalettePlayer.outline] = $000000;

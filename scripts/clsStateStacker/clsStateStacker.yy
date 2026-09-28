@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"clsEntityState",
+  "%Name":"clsStateStacker",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"clsEntityState",
+  "name":"clsStateStacker",
   "parent":{
     "name":"Classes",
     "path":"folders/_System/Classes.yy",

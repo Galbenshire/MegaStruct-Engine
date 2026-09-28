@@ -1,5 +1,5 @@
 /// @description Boss Posttick
 event_inherited();
 
-if (animator.flag == "shoot")
+if (animator.has_flag("shoot"))
     shootFlag = true;

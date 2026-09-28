@@ -386,6 +386,14 @@ enum PlayerShootType {
 	COUNT
 }
 
+// Player Substates
+#macro SUBSTATE_AIR_FALL 0
+#macro SUBSTATE_AIR_JUMP 1
+#macro SUBSTATE_GROUND_IDLE 0
+#macro SUBSTATE_GROUND_SIDESTEP 1
+#macro SUBSTATE_GROUND_BRAKE 2
+#macro SUBSTATE_GROUND_WALK 3
+
 // Player Physics
 #macro COYOTE_FALL_BUFFER 4
 #macro FULL_HEALTHBAR 28

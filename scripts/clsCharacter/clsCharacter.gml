@@ -26,6 +26,38 @@ function Character() constructor {
 	// The entity object representing this character. When the player spawns into a level, this object will be created for them to control.
 	entityObject = prtPlayer;
 	
+	// Default properties for the entity object
+	entityProps = {
+		// Walking
+		walkSpeed: 1.3,
+		stepFrames: 6,
+		brakeFrames: 0,
+		brakeSpeed: 0.5,
+		
+		// Jumping
+		jumpSpeed: 5,
+		minJumpThreshold: 0,
+		minJumpCutoff: 0,
+		maxMidairJumps: 0,
+		
+		// Sliding
+		slideSpeed: 2.5,
+		slideFrames: 26,
+		slideBoostEnabled: false,
+		slideShootEnabled: false,
+		
+		// Climbing
+		climbSpeed: 1.3,
+		climbJumpEnabled: false,
+		
+		// Misc.
+		airSpeed: 1.3,
+		maxFallSpeed: DEFAULT_FALL_SPEED,
+		iceDecelIdle: DEFAULT_ICE_DECEL_IDLE,
+		iceDecelWalk: DEFAULT_ICE_DECEL_WALK,
+		waterGravMod: 0.38
+	};
+	
 	// A list of weapons this character will have available to them
 	weapons = [ WeaponType.BUSTER ]; /// @is {array<int>}
 	
@@ -84,12 +116,14 @@ function Character() constructor {
 		return _upper ? string_upper(name) : name;
 	};
 	
-	/// -- get_player_colours()
+	/// -- get_player_colours(copy)
 	/// Gets the default colours of the entity representing this character. That is, without any changes by weapons.
 	///
-	/// @returns {PalettePlayer}  A copy of this characters's colours.
-	static get_player_colours = function() {
-		return variable_clone(playerColours);
+	/// @param {bool}  [copy]  Whether to return the colours as a reference (false, default) or a copy (true).
+	///
+	/// @returns {PalettePlayer}  This characters's colours.
+	static get_player_colours = function(_copy = false) {
+		return _copy ? variable_clone(playerColours) : playerColours;
 	};
 	
 	/// -- get_sprite(sprite_id)
@@ -112,12 +146,14 @@ function Character() constructor {
 		return spriteFrameCount[_spriteID];
 	};
 	
-	/// -- get_weapons()
+	/// -- get_weapons(copy)
 	/// Gets this character's associated loadout of weapons. Playing as this character gives you these weapons.
 	///
+	/// @param {bool}  [copy]  Whether to return the weapons list as a reference (false, default) or a copy (true).
+	///
 	/// @returns {array<int>}  A copy of this characters's loadout.
-	static get_weapons = function() {
-		return variable_clone(weapons);
+	static get_weapons = function(_copy = false) {
+		return _copy ? variable_clone(weapons) : weapons;
 	};
 	
 	#endregion

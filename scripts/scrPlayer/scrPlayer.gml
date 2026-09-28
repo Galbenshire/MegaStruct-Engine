@@ -1,3 +1,43 @@
+/// @interface
+/// @func player_init_physics(player)
+/// @desc Creates variables related to physics for the given player entity
+///
+/// @param {prtPlayer}  player  The player entity to call this on
+///
+/// @returns {bool}  Whether this player is ready (true), or not (false)
+function player_init_physics() {
+	// Walking
+	walkSpeed = 1.3;
+	stepFrames = 6;
+	brakeFrames = 0;
+	brakeSpeed = 0.5;
+	
+	// Jumping
+	jumpSpeed = 5;
+	minJumpThreshold = 0;
+	minJumpCutoff = 0;
+	maxMidairJumps = 0;
+	
+	// Sliding
+	slideSpeed = 2.5;
+	slideFrames = 26;
+	slideBoostEnabled = false;
+	slideShootEnabled = false;
+	
+	// Climbing
+	climbSpeed = 1.3;
+	climbJumpEnabled = false;
+	
+	// Air
+	airSpeed = 1.3;
+	maxFallSpeed = DEFAULT_FALL_SPEED;
+	
+	// Misc.
+	iceDecelIdle = DEFAULT_ICE_DECEL_IDLE;
+	iceDecelWalk = DEFAULT_ICE_DECEL_WALK;
+	waterGravMod = 0.38;
+}
+
 /// @func is_a_player(scope)
 /// @desc Checks if the specified instance is a player object.
 ///

@@ -8,12 +8,12 @@ event_inherited();
 // - ThrowCutter
 // - Hurt
 
-with (stateMachine.add("Run")) {
-	set_event("enter", function() {
+stateMachine.add_state("Run", {
+	enter: function(_prevState) {
         animator.play("walk");
         xspeed.value = 1.125 * image_xscale;
-	});
-	set_event("tick", function() {
+	},
+	tick: function(_substate, _timer) {
 		animator.play(ground ? "walk" : "jump");
 		
 		if (!ground)
@@ -32,79 +32,74 @@ with (stateMachine.add("Run")) {
 		
 		if (test_move_x(8 * image_xscale)) // Wall Ahead?
 			stateMachine.change_state("Jump");
-	});
-}
-with (stateMachine.add("Jump")) {
-	set_event("enter", function() {
+	}
+});
+stateMachine.add_state("Jump", {
+	enter: function(_prevState) {
         animator.play("jump");
         yspeed.value = -6;
         moveSpeed = xspeed.value;
         canThrowInAir = !cutterExists && airThrowTimer > 0;
-	});
-	set_event("tick", function() {
-		xspeed.value = moveSpeed;
-	});
-	set_event("posttick", function() {
+	},
+	tick: function(_substate, _timer) /*=>*/ { xspeed.value = moveSpeed; },
+	posttick: function(_substate, _timer) {
 		if (canThrowInAir && yspeed.value >= 0)
 			stateMachine.change_state("ThrowCutter");
-		
-		if (ground)
+		else if (ground)
 			stateMachine.change_state("Run");
-	});
-}
-// ================================
-with (stateMachine.add("CutterPose")) {
-	set_event("enter", function() {
+	}
+});
+stateMachine.add_state("CutterPose", {
+	enter: function(_prevState) {
         animator.play("cutter-pose");
         xspeed.value = 0;
-	});
-	set_event("tick", function() {
-		if (stateMachine.timer >= 68) {
+	},
+	tick: function(_substate, _timer) {
+		if (_timer >= 68) {
 			stateMachine.change_state("ThrowCutter");
 			animator.set_time_scale(2);
 		}
-	});
-}
-// ================================
-with (stateMachine.add("ThrowCutter")) {
-	set_event("enter", function() {
+	},
+	leave: function(_newState) {
+		if (_newState == "Hurt")
+			cutterRetaliate = true;
+	}
+});
+stateMachine.add_state("ThrowCutter", {
+	enter: function(_prevState) {
         animator.play("cutter-throw");
-	});
-	set_event("tick", function() {
+	},
+	tick: function(_substate, _timer) {
 		xspeed.value *= !ground;
 		
-		if (stateMachine.substate == 0) {
+		if (_substate == 0) {
 			if (shootFlag) {
 				cutterInstance = self.create_projectile("cutter", 12, 4);
 				cutterExists = true;
-				
-				stateMachine.substate++;
-				stateMachine.timer = 0;
+				stateMachine.change_substate(1);
 				airThrowTimer = 20;
 				shootFlag = false;
 			}
-		} else if (stateMachine.timer >= 18) {
+		} else if (_timer >= 18) {
 			stateMachine.change_state("Run");
 		}
-	});
-	set_event("leave", function() {
-		shootFlag = false;
-	});
-}
-with (stateMachine.add("Hurt")) {
-	set_event("enter", function() {
+	},
+	leave: function(_newState) /*=>*/ { shootFlag = false; }
+});
+stateMachine.add_state("Hurt", {
+	enter: function(_prevState) {
         animator.play("hurt");
         xspeed.value = image_xscale * -0.5;
 		yspeed.value = -1.5 * gravDir;
-	});
-	set_event("tick", function() {
-		if (stateMachine.timer >= 30) {
+	},
+	tick: function(_substate, _timer) {
+		if (_timer >= 30) {
 			if (instance_exists(cutterInstance)) {
 				stateMachine.change_state("Run");
 			} else {
-				var _wasPosing = stateMachine.get_previous_state() == "CutterPose";
-				stateMachine.change_state(_wasPosing || (random(1) < 0.33) ? "ThrowCutter" : "CutterPose");
+				stateMachine.change_state(cutterRetaliate || (random(1) < 0.33) ? "ThrowCutter" : "CutterPose");
 			}
 		}
-	});
-}
+	},
+	leave: function(_newState) /*=>*/ { cutterRetaliate = false; }
+});

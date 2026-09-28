@@ -3,6 +3,6 @@ if (global.switchingSections)
 
 repeat(global.gameTimeScale.integer) {
     stateMachine.tick();
-    stateMachine.update_timer();
+    stateMachine.update_state();
     animator.update();
 }

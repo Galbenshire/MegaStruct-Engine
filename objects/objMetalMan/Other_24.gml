@@ -7,10 +7,11 @@ if (!isFighting)
 conveyorTimer++;
 if (conveyorTimer mod conveyorSwitchInterval == 0) {
     var _gameView = game_view();
-    with (instance_create_depth(_gameView.left_edge(), _gameView.top_edge(), depth + 10, objGenericEffect)) {
+    with (instance_create_layer(_gameView.left_edge(), _gameView.top_edge(), LAYER_SECTION_GRID, objGenericEffect)) {
         sprite_index = sprDot;
         image_xscale = GAME_WIDTH;
         image_yscale = GAME_HEIGHT;
+        depth -= 1;
         lifeDuration = 2;
     }
     

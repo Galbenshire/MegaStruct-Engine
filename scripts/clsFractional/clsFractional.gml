@@ -9,6 +9,17 @@ function Fractional(_init_val = 0) constructor {
     fractional = 0;
     integer = 0;
     
+    /// @method approach_value(target, amount)
+	/// @desc Increases the value towards the given end value, without overshooting it
+	///
+	/// @param {number}  target  The value we wish to approach
+	/// @param {number}  amount  How much to approach by
+    static approach_value = function(_target, _amount) {
+        value = (value < _target)
+			? min(value + _amount, _target) 
+			: max(value - _amount, _target);
+    };
+    
     /// @method clear_fractional()
 	/// @desc Clears the fractional & integer components of the number, without affecting the number's actual value
     static clear_fractional = function() {

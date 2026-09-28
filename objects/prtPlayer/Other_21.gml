@@ -192,7 +192,7 @@
 	///
 	/// @param {Weapon}  weapon  The weapon to use. Defaults to the player's current.
 	function get_palette(_weapon = weapon) {
-		var _characterPalette = characterSpecs.get_player_colours();
+		var _characterPalette = characterSpecs.get_player_colours(true);
 		_characterPalette[PalettePlayer.primary] = _weapon.colours[PaletteWeapon.primary];
 		_characterPalette[PalettePlayer.secondary] = _weapon.colours[PaletteWeapon.secondary];
 		
@@ -259,12 +259,16 @@
 		if (yDir == 0 || self.is_action_locked(PlayerAction.CLIMB))
 			return false;
 		
-		if (yDir != gravDir)
+		if (yDir == -gravDir && (!jumpedOffLadder || yspeed * gravDir > 0))
 			ladderInstance = collision_line(bbox_x_center(), bbox_top + 2, bbox_x_center(), bbox_bottom - 1, objLadder, false, false);
 		else if (ground)
 			ladderInstance = instance_position(sprite_x_center(), bbox_vertical(gravDir) + gravDir, objLadder);
 		
-		return ladderInstance != noone && !test_move_x(bbox_x_center(ladderInstance) - x);
+		var _result = ladderInstance != noone && !test_move_x(bbox_x_center(ladderInstance) - x);
+		if (!_result)
+			ladderInstance = noone;
+		
+		return _result;
 	}
 	
 	/// -- try_sliding()
@@ -274,9 +278,7 @@
 	function try_sliding() {
 		if (!ground || self.is_action_locked(PlayerAction.SLIDE))
 			return false;
-		
-		var _input = inputs.is_pressed(InputActions.SLIDE) || self.check_input_down_jump_slide(true);
-		if (!_input)
+		if (!inputs.is_pressed(InputActions.SLIDE) && !self.check_input_down_jump_slide(true))
 			return false;
 		
 		// Check if there's space ahead
@@ -425,88 +427,6 @@
 	#endregion
 	
 	#region Other
-	
-	/// -- common_state_air(event)
-	/// Executes code common across multiple "air" states
-	///
-	/// @param {string}  event  The event to execute
-	///
-	/// @returns {bool}  `true` if a state change has occurred, `false` otherwise
-	function common_state_air(_event) {
-		switch (_event) {
-			case "enter":
-				ground = false;
-				groundInstance = noone;
-				break;
-			
-			case "tick":
-				var _airSpeed = slideBoostActive ? slideSpeed : airSpeed;
-				xspeed.value = _airSpeed * xDir * !self.is_action_locked(PlayerAction.MOVE_AIR);
-				
-				if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_AIR))
-					image_xscale = xDir;
-				break;
-			
-			case "posttick":
-				if (self.try_climbing()) {
-					stateMachine.change_state("Climb");
-					return true;
-				}
-				
-				if (ground) {
-					stateMachine.change_state(xDir == 0 ? "Idle" : "Walk");
-					play_sfx(sfxLand);
-					return true;
-				}
-				break;
-		}
-		return false;
-	}
-	
-	/// -- common_state_ground(event)
-	/// Executes code common across multiple "ground" states
-	///
-	/// @param {string}  event  The event to execute
-	///
-	/// @returns {bool}  `true` if a state change has occurred, `false` otherwise
-	function common_state_ground(_event) {
-		switch (_event) {
-			case "enter":
-				slideBoostActive = false;
-				midairJumps = 0;
-				break;
-			
-			case "tick":
-				if (self.check_input_jump() && !self.check_input_down_jump_slide()) {
-					stateMachine.change_state("Jump");
-					return true;
-				}
-				
-				if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_GROUND))
-					image_xscale = xDir;
-				break;
-			
-			case "posttick":
-				if (self.try_climbing()) {
-					stateMachine.change_state("Climb");
-					return true;
-				}
-				
-				if (!ground) {
-					move_and_collide_y(gravDir);
-					stateMachine.change_state("Fall");
-					coyoteTimer = COYOTE_FALL_BUFFER;
-					return true;
-				}
-				
-				if (self.try_sliding()) {
-					stateMachine.change_state("Slide");
-					return true;
-				}
-				break;
-		}
-		return false;
-	}
 
 	/// -- is_action_locked(player_action)
 	/// Checks if the given player action is locked on this player
@@ -528,6 +448,39 @@
 	/// @returns {bool}  Whether this player is being controlled (true), or not (false)
 	function is_user_controlled() {
 		return !is_undefined(playerUser);
+	}
+	
+	/// -- reset_property(name)
+	/// Resets a specific property to what's defined on the player's character specs
+	///
+	/// @param {string}  name  The name of the property to reset
+	function reset_property(_name) {
+		if (!struct_exists(characterSpecs.entityProps, _name))
+			return;
+		
+		self[$ _name] = characterSpecs.entityProps[$ _name];
+		
+		// Update lockpools, if specific properties were set
+		switch (_name) {
+			case "slideShootEnabled":
+				if (slideShootEnabled)
+					slideLock.remove_actions(PlayerAction.SHOOT);
+				else
+					slideLock.add_actions(PlayerAction.SHOOT);
+				break;
+		}
+	}
+	
+	/// -- reset_all_properties()
+	/// Resets all properties defined on the player's character specs
+	function reset_all_properties() {
+		var _originalProps = characterSpecs.entityProps,
+			_propKeys = struct_get_names(_originalProps);
+		
+		var i = 0; repeat(struct_names_count(_originalProps)) {
+			self.reset_property(_propKeys[i]);
+			i++;
+		}
 	}
 	
 	#endregion

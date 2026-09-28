@@ -32,42 +32,6 @@
 	
 	#region Other
 	
-	/// -- common_state_intro_spawn(event)
-	/// Executes code common for an intro state
-	///
-	/// @param {string}  event  The event to execute
-	function common_state_intro_spawn(_event) {
-		switch (_event) {
-			case "enter":
-				isIntro = true;
-				visible = true;
-				
-				if (lockControlsDuringIntro) {
-					introLock.activate();
-					introPauseLock.activate();
-				}
-				
-				if (playBossMusic) {
-					preFightMusicCache[MusicSnapshot.musicID] = objSystem.audio.trackID;
-					preFightMusicCache[MusicSnapshot.startAt] = audio_sound_get_track_position(objSystem.audio.track);
-					preFightMusicCache[MusicSnapshot.volume] = objSystem.audio.trackVolume;
-					play_music(bossMusicID);
-				}
-				break;
-			
-			case "posttick":
-				if (strikeIntroPose)
-					stateMachine.change_state("!!Intro_Pose");
-				else
-					stateMachine.change_state("!!FinishIntro");
-				break;
-			
-			case "leave":
-				isIntro = false;
-				break;
-		}
-	}
-	
 	/// -- create_projectile(id, x, y, params)
 	/// Creates an attack, based on the ID & further parameters provided
 	///
@@ -82,24 +46,38 @@
 		return noone;
 	}
 	
+	/// -- get_intro_sequence()
+	/// Gets a list of states that makes up the boss's intro sequence
+	function get_intro_sequence() {
+		if (!array_empty(customIntroSequence))
+			return customIntroSequence;
+		
+		var _sequence = [];
+		if (lockControlsDuringIntro)
+			array_push(_sequence, "!!Intro_WaitForOthers");
+		if (showHealthbar)
+			array_push(_sequence, "!!Intro_FillHealthbar");
+		if (strikeIntroPose)
+			array_push(_sequence, "!!Intro_Pose");
+		if (introType == "Custom") {
+			assert(!string_empty(customIntroState), $"{object_get_name(object_index)} was set to have a custom intro spawn, but the state was not specified");
+			array_push(_sequence, customIntroState);
+		} else {
+			array_push(_sequence, "!!Intro_Spawn");
+		}
+		return _sequence;
+	}
+	
 	/// -- restore_music()
 	/// Halts the boss music, restoring the music that was playing before the fight began
 	/// (or cutting the music altogether if configured to do so)
 	function restore_music() {
 		if (stopMusicOnDeath) {
 			audio_stop_all();
-		} else if (playBossMusic) {
+		} else if (playBossMusic && preFightMusicCache[MusicSnapshot.musicID] != -1) {
 			play_music(preFightMusicCache[MusicSnapshot.musicID], preFightMusicCache[MusicSnapshot.volume]);
 			audio_sound_set_track_position(objSystem.audio.track, preFightMusicCache[MusicSnapshot.startAt]);
 		}
-	}
-	
-	/// -- require_animation(animation_name)
-	/// Helper function for ensure the boss as a required animation defined
-	///
-	/// @param {string}  animation_name  The name of the required animation
-	function require_animation(_animName) {
-		assert(animator.has_animation(_animName), $"Missing animation for {object_get_name(object_index)} (\"{_animName}\")");
 	}
 	
 	#endregion

@@ -47,6 +47,24 @@ function music_is_playing() {
 	return false;
 }
 
+/// @func music_snapshot()
+/// @desc Gets a snapshot of the currently playing track
+///
+/// @returns {MusicSnapshot}  
+function music_snapshot() {
+	var _snapshot = array_create(MusicSnapshot.sizeof);
+	
+	if (music_is_playing()) {
+		_snapshot[MusicSnapshot.musicID] = objSystem.audio.trackID;
+		_snapshot[MusicSnapshot.startAt] = audio_sound_get_track_position(objSystem.audio.track);
+		_snapshot[MusicSnapshot.volume] = objSystem.audio.trackVolume;
+	} else {
+		_snapshot[MusicSnapshot.musicID] = -1;
+	}
+	
+	return _snapshot;
+}
+
 /// @func pause_music()
 /// @desc Pauses the music currently playing
 function pause_music() {

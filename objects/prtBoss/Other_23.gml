@@ -1,21 +1,24 @@
 /// @description State Machine Init
-// Base Boss States
+// ==== Base Boss States ====
 // (All bosses will have these by default, but more can be added as needed for a given boss)
 // - !!Inactive
-// - !!Intro_Spawn_DropIn
-// - !!Intro_Spawn_PopIn
-// - !!Intro_Spawn_TeleportIn
+// - !!Intro
+// - !!Intro_Spawn
 // - !!Intro_Pose
-// - !!FinishIntro
+// - !!Intro_FillHealthbar
+// - !!Intro_WaitForOthers
 
-with (stateMachine.add("!!Inactive")) {
-	set_event("enter", function() {
+
+#region Main States
+
+stateMachine.add_state("!!Inactive", {
+	enter: function(_prevState) {
 		introCache = {
-            canTakeDamage: canTakeDamage,
-            canDealDamage: canDealDamage,
-            gravEnabled: gravEnabled,
-            grav: grav,
-            collideWithSolids: collideWithSolids
+            canTakeDamage,
+            canDealDamage,
+            gravEnabled,
+            grav,
+            collideWithSolids
         };
         
 		isInactive = true;
@@ -24,134 +27,42 @@ with (stateMachine.add("!!Inactive")) {
 		gravEnabled = false;
 		collideWithSolids = false;
 		visible = false;	
-	});
-	set_event("tick", function() {
-		if (!instance_all(prtPlayer, function(el, i) /*=>*/ {return !el.isIntro}))
-			return;
-		
-		if (introType == "Custom") {
-			assert(!string_empty(customIntroState), $"{object_get_name(object_index)} was set to have a custom intro spawn, but the state was not specified");
-			stateMachine.change_state(customIntroState);
-		} else {
-			stateMachine.change_state($"!!Intro_Spawn_{introType}");
-		}
-	});
-	set_event("leave", function() /*=>*/ { isInactive = false; });
-}
-with (stateMachine.add("!!Intro_Spawn_DropIn")) {
-	set_event("enter", function() {
-		self.require_animation("!!dropin");
-		if (lockControlsDuringIntro)
-			self.require_animation("!!dropin-end");
-		
-		self.common_state_intro_spawn("enter");
-		
-		y = game_view().top_edge(-sprite_height / 2);
-		collideWithSolids = false;
-		gravEnabled = true;
-		grav = DEFAULT_GRAVITY;
-		animator.play("!!dropin");
-	});
-	set_event("posttick", function() {
-		if (y >= ystart)
-			self.common_state_intro_spawn("posttick");
-	});
-	set_event("leave", function() {
-		self.common_state_intro_spawn("leave");
-		
-		y = ystart;
-		yspeed.clear_all();
-		gravEnabled = false;
-		
-		if (lockControlsDuringIntro)
-			animator.play("!!dropin-end");
-	});
-}
-with (stateMachine.add("!!Intro_Spawn_PopIn")) {
-	set_event("enter", function() /*=>*/ { self.common_state_intro_spawn("enter"); });
-	set_event("posttick", function() /*=>*/ { self.common_state_intro_spawn("posttick"); });
-	set_event("leave", function() /*=>*/ { self.common_state_intro_spawn("leave"); });
-}
-with (stateMachine.add("!!Intro_Spawn_TeleportIn")) {
-	set_event("enter", function() {
-		self.common_state_intro_spawn("enter");
-		
-		y = game_view().top_edge(-sprite_height / 2);
-		yspeed.value = 8;
-		animator.play("!!teleport-idle");
-		collideWithSolids = false;
-		isTeleporting = true;
-	});
-	set_event("posttick", function() {
-		if (stateMachine.substate == 0) {
-			if (y >= ystart) {
-				y = ystart;
-				yspeed.clear_all();
-				stateMachine.change_substate(1);
-				animator.play("!!teleport-in");
-			}
-		} else if (animator.is_animation_finished()) {
-			self.common_state_intro_spawn("posttick");
-		}
-	});
-	set_event("leave", function() {
-		self.common_state_intro_spawn("leave");
-		
-		y = ystart;
-		yspeed.clear_all();
-		isTeleporting = false;
-	});
-}
-with (stateMachine.add("!!Intro_Pose")) {
-	set_event("enter", function() {
-		self.require_animation("!!pose");
+	},
+	posttick: function(_substate, _timer) {
+		// Wait until all user-controlled players are not doing their intros
+		var _anyPlayersNotReady = instance_any(prtPlayer, function(el, i) /*=>*/ {return el.isIntro && el.is_user_controlled()});
+		if (!_anyPlayersNotReady)
+			stateMachine.change_state("!!Intro");
+	},
+	leave: function(_newState) /*=>*/ { isInactive = false; }
+});
+stateMachine.add_state("!!Intro", {
+	enter: function(_prevState) {
 		isIntro = true;
-		animator.play("!!pose");
-	});
-	set_event("posttick", function() {
-		if (animator.is_animation_finished() || (animator.loops > 0))
-			stateMachine.change_state("!!FinishIntro");
-	});
-	set_event("leave", function() {
-		isIntro = false;
-	});
-}
-with (stateMachine.add("!!FinishIntro")) {
-	set_event("enter", function() {
-		isReady = false;
-	});
-	set_event("posttick", function() {
-		switch (stateMachine.substate) {
-			case 0: // Delay before showing healthbar
-				if (stateMachine.timer >= healthbarFillDelay) {
-					if (showHealthbar) {
-						self.connect_hud();
-						hudElement.healthpoints *= !lockControlsDuringIntro;
-						isFillingHealthBar = true;
-					}
-					stateMachine.change_substate(1 + !showHealthbar);
-				}
-				break;
-			
-			case 1: // Wait for the healtbar to refill fully
-				if (!isFillingHealthBar)
-					stateMachine.change_substate(2);
-				break;
-			
-			case 2: // Ready to fight
-				isReady = true;
-				
-				if (isReady) {
-					assert(!string_empty(initialFightState), $"{nameof(initialFightState)} was not set for {object_get_name(object_index)}");
-					stateMachine.change_state(initialFightState);
-				}
-				break;
+		visible = true;
+		
+		if (lockControlsDuringIntro) {
+			introLock.activate();
+			introPauseLock.activate();
 		}
-	});
-	set_event("leave", function() {
+		
+		if (playBossMusic) {
+			preFightMusicCache = music_snapshot();
+			play_music(bossMusicID);
+		}
+		
+		array_foreach(self.get_intro_sequence(), function(_state, i) /*=>*/ { stateMachine.push_state(_state); });
+	},
+	posttick: function(_substate, _timer) {
+		assert(!string_empty(initialFightState), $"{nameof(initialFightState)} was not set for {object_get_name(object_index)}");
+		stateMachine.change_state(initialFightState);
+	},
+	leave: function(_newState) {
+		isIntro = false;
 		isFighting = true;
-        canTakeDamage = introCache.canTakeDamage;
-        canDealDamage = introCache.canDealDamage;
+		isReady = true;
+		canTakeDamage = introCache.canTakeDamage;
+		canDealDamage = introCache.canDealDamage;
         gravEnabled = introCache.gravEnabled;
         grav = introCache.grav;
         collideWithSolids = introCache.collideWithSolids;
@@ -161,7 +72,95 @@ with (stateMachine.add("!!FinishIntro")) {
 		
 		ground = true;
 		entity_check_ground();
-	});
-}
+	}
+});
 
-stateMachine.change_state("!!Inactive");
+#endregion
+
+#region Intro Component States
+
+stateMachine.add_state("!!Intro_Spawn", {
+	enter: function(_prevState) {
+		switch (introType) {
+			case "DropIn":
+				y = game_view().top_edge(-sprite_height / 2);
+				collideWithSolids = false;
+				gravEnabled = true;
+				grav = DEFAULT_GRAVITY;
+				animator.play("!!dropin");
+				break;
+			case "TeleportIn":
+				y = game_view().top_edge(-sprite_height / 2);
+				yspeed.value = 8;
+				animator.play("!!teleport-idle");
+				collideWithSolids = false;
+				isTeleporting = true;
+				break;
+			case "PopIn": break;
+		}
+	},
+	posttick: function(_substate, _timer) {
+		switch (introType) {
+			case "DropIn":
+				if (y >= ystart)
+					stateMachine.pop_state();
+				break;
+			case "TeleportIn":
+				if (stateMachine.substate == 0) {
+					if (y >= ystart) {
+						y = ystart;
+						yspeed.clear_all();
+						stateMachine.change_substate(1);
+						animator.play("!!teleport-in");
+					}
+				} else if (animator.is_animation_finished()) {
+					stateMachine.pop_state();
+				}
+				break;
+			case "PopIn": stateMachine.pop_state(); break;
+		}
+	},
+	leave: function(_newState) {
+		y = ystart;
+		visible = true;
+		yspeed.clear_all();
+		gravEnabled = false;
+		isTeleporting = false;
+		
+		if (introType == "DropIn")
+			animator.play("!!dropin-end");
+	}
+});
+stateMachine.add_state("!!Intro_Pose", {
+	enter: function(_prevState) /*=>*/ { animator.play("!!pose"); },
+	resume: function(_prevState) /*=>*/ { animator.play("!!pose"); },
+	tick: function(_substate, _timer) {
+		if (animator.is_animation_finished(true))
+			stateMachine.pop_state();
+	}
+});
+stateMachine.add_state("!!Intro_FillHealthbar", {
+	enter: function(_prevState) /*=>*/ { isFillingHealthBar = false; },
+	tick: function(_substate, _timer) {
+		if (_substate == 0) { // Delay before showing healthbar
+			if (_timer >= healthbarFillDelay) {
+				self.connect_hud();
+				hudElement.healthpoints *= !lockControlsDuringIntro;
+				isFillingHealthBar = true;
+				stateMachine.set_substate(1);
+			}
+		} else if (!isFillingHealthBar) { // Wait for the healtbar to refill fully
+			stateMachine.pop_state();
+		}
+	},
+	leave: function(_newState) /*=>*/ { isFillingHealthBar = false; },
+});
+stateMachine.add_state("!!Intro_WaitForOthers", {
+	tick: function(_substate, _timer) {
+		isReady = true;
+		if (instance_all(prtBoss, function(el, i) /*=>*/ {return el.isReady}))
+			stateMachine.pop_state();
+	}
+});
+
+#endregion

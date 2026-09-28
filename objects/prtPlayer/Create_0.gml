@@ -2,6 +2,8 @@ event_inherited();
 
 mask_index = maskNormal;
 
+#region Variables
+
 // Character Specs (i.e. details about the playable character represented by this object)
 characterSpecs = character_create_from_id(characterID); /// @is {Character}
 assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object_get_name(object_index)} (ID: {characterID})");
@@ -15,7 +17,8 @@ weaponSize = 1;
 animator = new FrameAnimationPlayer();
 
 // State Machine
-stateMachine = new EntityState("Idle");
+stateMachine = new StateStacker("StandardGround", true);
+//stateMachine.loggingEnabled = true;
 
 // Player stuff
 playerID = -1; // Which player is controlling this object
@@ -35,6 +38,9 @@ midairJumps = 0;
 // Sliding
 slideMaskHeightDelta = abs(sprite_get_bbox_height(maskNormal) - sprite_get_bbox_height(maskSlide)); /// @is {number}
 slideBoostActive = false;
+
+// Climbing
+jumpedOffLadder = false;
 
 // Shooting
 shootTimer = 0;
@@ -56,7 +62,7 @@ skinIndex = 0;
 skinOffset = 0;
 
 // Palette
-palette = new ColourPalette(characterSpecs.get_player_colours());
+palette = new ColourPalette(characterSpecs.get_player_colours(true));
 
 // HUD
 hudElement = new HUDElement_Player();
@@ -83,7 +89,10 @@ isFreeMovement = false;
 // temp vars
 ignoreCamera = false;
 
-// Callbacks
+#endregion
+
+#region Callbacks
+
 onSpawn = method(id, cbkOnSpawn_prtPlayer); /// @is {function<void>}
 onDespawn = method(id, cbkOnDespawn_prtPlayer); /// @is {function<void>}
 onSetDamage = method(id, cbkOnSetDamage_prtPlayer); /// @is {function<DamageSource, void>}
@@ -91,10 +100,15 @@ onHurt = method(id, cbkOnHurt_prtPlayer); /// @is {function<DamageSource, void>}
 onDeath = method(id, cbkOnDeath_prtPlayer); /// @is {function<DamageSource, void>}
 onDraw = method(id, cbkOnDraw_prtPlayer); /// @is {function<bool, void>}
 
-// Event User Inits
+#endregion
+
+#region Event User Inits
+
 event_user(EVENT_PLAYER_METHOD_INIT);
 event_user(EVENT_PLAYER_ANIMATION_INIT);
 event_user(EVENT_PLAYER_STATEMACHINE_INIT);
+
+#endregion
 
 // Set the player to an idle state
 stateMachine.change_state("Idle");

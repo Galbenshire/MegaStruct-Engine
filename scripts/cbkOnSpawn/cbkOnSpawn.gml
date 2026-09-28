@@ -35,6 +35,7 @@ function cbkOnSpawn_prtPlayer() {
     
     healthpoints = healthpointsStart;
     self.refresh_palette();
+    self.reset_all_properties();
 }
 
 #endregion

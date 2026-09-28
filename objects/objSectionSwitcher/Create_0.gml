@@ -1,5 +1,5 @@
 // State Machine
-stateMachine = new EntityState();
+stateMachine = new StateStacker("_PreTransition", true);
 // Movement
 xspeed = new Fractional();
 yspeed = new Fractional();

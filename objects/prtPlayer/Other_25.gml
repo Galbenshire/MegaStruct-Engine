@@ -1,6 +1,6 @@
 /// @description Entity Posttick
-stateMachine.posttick();
-stateMachine.update_timer();
+stateMachine.tick("posttick");
+stateMachine.update_state();
 
 if (entity_is_dead())
 	exit;

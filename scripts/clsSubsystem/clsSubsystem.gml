@@ -257,12 +257,13 @@ function Subsystem_Debug() : Subsystem() constructor {
 				
 				if (keyboard_check_pressed(vk_f9)) {
 					with (global.player) {
-						if (!instance_exists(body))
-							break;
-						if (body.isIntro)
+						if (!instance_exists(body) || body.isIntro)
 							break;
 						
-						body.stateMachine.change_state(body.isFreeMovement ? "Idle" : "Debug_FreeMovement");
+						if (keyboard_check(vk_shift))
+							entity_kill_self(body);
+						else
+							body.stateMachine.change_state(body.isFreeMovement ? "StandardAir" : "Debug_FreeMovement");
 					}
 				}
 			}

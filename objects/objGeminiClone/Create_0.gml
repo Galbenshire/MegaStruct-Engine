@@ -1,7 +1,7 @@
 event_inherited();
 
 // required prtBoss variables, so the clone doesn't crash the game
-stateMachine = new EntityState();
+stateMachine = new StateStacker("!!Inactive", true);
 animator = new FrameAnimationPlayer();
 introCache = {};
 isInactive = true;

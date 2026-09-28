@@ -3,5 +3,5 @@ event_inherited();
 
 sprite_index = cutterExists ? sprCutManNaked : sprCutMan;
 
-if (animator.flag == "shoot")
+if (animator.has_flag("shoot"))
     shootFlag = true;

@@ -6,6 +6,7 @@ moveSpeed = 0;
 
 cutterExists = false;
 cutterInstance = noone;
+cutterRetaliate = false;
 
 canThrowInAir = false;
 airThrowTimer = 0;

@@ -10,6 +10,12 @@ function Character_Bass() : Character() constructor {
 	name = "Bass";
 	entityObject = objBass;
 	
+	entityProps.jumpSpeed = 4.89453125;
+	entityProps.minJumpThreshold = 1;
+	entityProps.minJumpCutoff = 0.5;
+	entityProps.maxMidairJumps = 1;
+	entityProps.slideBoostEnabled = true;
+	
 	playerColours[PalettePlayer.primary] = $707070;
 	playerColours[PalettePlayer.secondary] = $3898F8;
 	playerColours[PalettePlayer.outline] = $000000;
