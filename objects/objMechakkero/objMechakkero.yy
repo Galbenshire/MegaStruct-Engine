@@ -13,7 +13,7 @@
   ],
   "parent":{
     "name":"Mechakkero",
-    "path":"folders/Enemies/MM3/Mechakkero.yy",
+    "path":"folders/Entities/Enemies/MM3/Mechakkero.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -33,9 +33,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"jumpDelay","filters":[],"listItems":[],"multiselect":false,"name":"jumpDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"startJumpTimerAt","filters":[],"listItems":[],"multiselect":false,"name":"startJumpTimerAt","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"jumpDelay","filters":[],"listItems":[],"multiselect":false,"name":"jumpDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"startJumpTimerAt","filters":[],"listItems":[],"multiselect":false,"name":"startJumpTimerAt","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

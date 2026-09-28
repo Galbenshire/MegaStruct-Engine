@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprHealthEnergyBig",
   "bboxMode":2,
   "bbox_bottom":14,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"562c1f25-9375-4666-840d-1f026f0c2100","name":"562c1f25-9375-4666-840d-1f026f0c2100","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"fe59839d-f300-4aaa-bb14-d28e4b3b79ed","name":"fe59839d-f300-4aaa-bb14-d28e4b3b79ed","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"562c1f25-9375-4666-840d-1f026f0c2100","name":"562c1f25-9375-4666-840d-1f026f0c2100","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"fe59839d-f300-4aaa-bb14-d28e4b3b79ed","name":"fe59839d-f300-4aaa-bb14-d28e4b3b79ed","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Items/Sprites.yy",
+    "path":"folders/Entities/Items/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

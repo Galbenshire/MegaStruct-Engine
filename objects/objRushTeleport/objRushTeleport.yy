@@ -36,9 +36,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"isTeleportingOut","filters":[],"listItems":[],"multiselect":false,"name":"isTeleportingOut","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"teleportSpeed","filters":[],"listItems":[],"multiselect":false,"name":"teleportSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"teleportObject","filters":[
+    {"$GMObjectProperty":"v2","%Name":"isTeleportingOut","filters":[],"listItems":[],"multiselect":false,"name":"isTeleportingOut","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"teleportSpeed","filters":[],"listItems":[],"multiselect":false,"name":"teleportSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"teleportObject","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"teleportObject","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"objRushCoil","path":"objects/objRushCoil/objRushCoil.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"objRushCoil","varType":5,},
   ],

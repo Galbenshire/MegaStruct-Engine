@@ -16,7 +16,7 @@
   ],
   "parent":{
     "name":"Blader",
-    "path":"folders/Enemies/MM1/Blader.yy",
+    "path":"folders/Entities/Enemies/MM1/Blader.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -36,12 +36,12 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"colourPreset","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"colourPreset","filters":[],"listItems":[
         "\"Green\"",
         "\"Blue\"",
         "\"Custom\"",
       ],"multiselect":false,"name":"colourPreset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"Green\"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

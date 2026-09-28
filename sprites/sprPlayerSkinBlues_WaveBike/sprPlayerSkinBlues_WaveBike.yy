@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinBlues_WaveBike",
   "bboxMode":0,
   "bbox_bottom":25,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"d7343e74-43b2-4ce7-8995-6b88c282cb95","name":"d7343e74-43b2-4ce7-8995-6b88c282cb95","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"9080a7c3-6a5b-41cd-ab75-3d200b54e3d9","name":"9080a7c3-6a5b-41cd-ab75-3d200b54e3d9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d7343e74-43b2-4ce7-8995-6b88c282cb95","name":"d7343e74-43b2-4ce7-8995-6b88c282cb95","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"9080a7c3-6a5b-41cd-ab75-3d200b54e3d9","name":"9080a7c3-6a5b-41cd-ab75-3d200b54e3d9","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Proto Man/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Proto Man/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

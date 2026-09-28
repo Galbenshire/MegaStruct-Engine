@@ -3,7 +3,7 @@ event_inherited();
 characterSpecs ??= character_create_from_id(characterID); /// @is {Character}
 assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object_get_name(object_index)} (ID: {characterID})");
 
-sprite_index = characterSpecs.coilSprite;
+sprite_index = characterSpecs.get_sprite(PlayerSpriteType.COIL);
 
 hasCoiled = false;
 weapon = undefined;

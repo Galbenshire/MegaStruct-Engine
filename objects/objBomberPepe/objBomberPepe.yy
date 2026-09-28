@@ -14,7 +14,7 @@
   ],
   "parent":{
     "name":"Bomber Pepe",
-    "path":"folders/Enemies/MM3/Bomber Pepe.yy",
+    "path":"folders/Entities/Enemies/MM3/Bomber Pepe.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",

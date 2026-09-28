@@ -12,22 +12,25 @@ if (!variable_global_exists("__gameInit")) {
 	if (!global.shadersSupported)
 		print_err("ERROR: Shaders not supported on your system");
 	
-	var _shaders = asset_get_ids(asset_shader),
-		_shaderCount = array_length(_shaders);
-	for (var i = 0; i < _shaderCount; i++) {
-		var _shaderName = shader_get_name(_shaders[i]),
-			_shaderCompiled = shader_is_compiled(_shaders[i]);
-		
+	array_foreach(asset_get_ids(asset_shader), function(_shader, i) {
+		var _shaderName = shader_get_name(_shader),
+			_shaderCompiled = shader_is_compiled(_shader);
 		struct_set(global.shadersCompiled, _shaderName, _shaderCompiled);
-		
 		if (!_shaderCompiled)
 			print_err($"ERROR: Shader {_shaderName} did not compile");
-	}
+	});
 	
 	// ===== Custom Assets =====
 	show_debug_message("Building Custom Assets...");
+	
+	// Standard assets
 	global.font = font_add_sprite(sprFontMM9, ord(" "), false, 0); /// @is {font}
 	global.musicTracks = __init_jukebox();
+	
+	// Caching stuff
+	global.characterList = cache_game_assets("Character");
+	global.characterEntityList = cache_character_entities();
+	global.weaponList = cache_game_assets("Weapon");
 	
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");

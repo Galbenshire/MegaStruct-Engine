@@ -16,7 +16,7 @@
   ],
   "parent":{
     "name":"Suzy",
-    "path":"folders/Enemies/MM1/Suzy.yy",
+    "path":"folders/Entities/Enemies/MM1/Suzy.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -36,20 +36,20 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"isHorizontal","filters":[],"listItems":[],"multiselect":false,"name":"isHorizontal","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"startDirection","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"isHorizontal","filters":[],"listItems":[],"multiselect":false,"name":"isHorizontal","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"startDirection","filters":[],"listItems":[
         "\"Right/Down\"",
         "\"Left/Up\"",
       ],"multiselect":false,"name":"startDirection","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"Right/Down\"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"startMoving","filters":[],"listItems":[],"multiselect":false,"name":"startMoving","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"colourPreset","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"startMoving","filters":[],"listItems":[],"multiselect":false,"name":"startMoving","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"colourPreset","filters":[],"listItems":[
         "\"Red\"",
         "\"Orange\"",
         "\"Blue\"",
         "\"Custom\"",
       ],"multiselect":false,"name":"colourPreset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"Red\"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFFFFFF","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFFFFFF","varType":7,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

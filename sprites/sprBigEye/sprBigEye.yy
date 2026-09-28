@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBigEye",
   "bboxMode":2,
   "bbox_bottom":46,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"371c20eb-b00e-4685-a6df-d2514ead6795","name":"371c20eb-b00e-4685-a6df-d2514ead6795","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"f45f92a1-c19a-43c8-9c67-2d2abb8a3115","name":"f45f92a1-c19a-43c8-9c67-2d2abb8a3115","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"4f9bd689-fdd4-46d5-aff7-9c91de15ea24","name":"4f9bd689-fdd4-46d5-aff7-9c91de15ea24","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"743e520f-59e8-40fb-b748-57f1060ff291","name":"743e520f-59e8-40fb-b748-57f1060ff291","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"bb47fe4d-e2de-4d1b-a37e-b3f162149252","name":"bb47fe4d-e2de-4d1b-a37e-b3f162149252","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"371c20eb-b00e-4685-a6df-d2514ead6795","name":"371c20eb-b00e-4685-a6df-d2514ead6795","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f45f92a1-c19a-43c8-9c67-2d2abb8a3115","name":"f45f92a1-c19a-43c8-9c67-2d2abb8a3115","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"4f9bd689-fdd4-46d5-aff7-9c91de15ea24","name":"4f9bd689-fdd4-46d5-aff7-9c91de15ea24","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"743e520f-59e8-40fb-b748-57f1060ff291","name":"743e520f-59e8-40fb-b748-57f1060ff291","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"bb47fe4d-e2de-4d1b-a37e-b3f162149252","name":"bb47fe4d-e2de-4d1b-a37e-b3f162149252","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -49,7 +49,7 @@
   "origin":9,
   "parent":{
     "name":"Big Eye",
-    "path":"folders/Enemies/MM1/Big Eye.yy",
+    "path":"folders/Entities/Enemies/MM1/Big Eye.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

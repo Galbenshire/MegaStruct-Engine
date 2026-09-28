@@ -36,25 +36,25 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"depthOffset","filters":[],"listItems":[],"multiselect":false,"name":"depthOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"healthpointsStart","filters":[],"listItems":[],"multiselect":false,"name":"healthpointsStart","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"contactDamage","filters":[],"listItems":[],"multiselect":false,"name":"contactDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"canTakeDamage","filters":[],"listItems":[],"multiselect":false,"name":"canTakeDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"canDealDamage","filters":[],"listItems":[],"multiselect":false,"name":"canDealDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"collisionPriority","filters":[],"listItems":[],"multiselect":false,"name":"collisionPriority","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"penetrate","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"depthOffset","filters":[],"listItems":[],"multiselect":false,"name":"depthOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"healthpointsStart","filters":[],"listItems":[],"multiselect":false,"name":"healthpointsStart","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"contactDamage","filters":[],"listItems":[],"multiselect":false,"name":"contactDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"canTakeDamage","filters":[],"listItems":[],"multiselect":false,"name":"canTakeDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"canDealDamage","filters":[],"listItems":[],"multiselect":false,"name":"canDealDamage","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"collisionPriority","filters":[],"listItems":[],"multiselect":false,"name":"collisionPriority","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"penetrate","filters":[],"listItems":[
         "PenetrateType.NONE",
         "PenetrateType.NO_DAMAGE",
         "PenetrateType.NO_DAMAGE_AND_COLLISION",
         "PenetrateType.BYPASS_GUARD",
       ],"multiselect":false,"name":"penetrate","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"PenetrateType.NONE","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"pierces","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"pierces","filters":[],"listItems":[
         "PierceType.NEVER",
         "PierceType.ON_KILLS_ONLY",
         "PierceType.ALWAYS",
       ],"multiselect":false,"name":"pierces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"PierceType.ALWAYS","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"attackDelay","filters":[],"listItems":[],"multiselect":false,"name":"attackDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"factionLayer","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"attackDelay","filters":[],"listItems":[],"multiselect":false,"name":"attackDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"factionLayer","filters":[],"listItems":[
         "Faction.PICKUP",
         "Faction.PLAYER",
         "Faction.PLAYER_PROJECTILE",
@@ -63,7 +63,7 @@
         "Faction.NEUTRAL",
         "Faction.NEUTRAL_PROJECTILE",
       ],"multiselect":true,"name":"factionLayer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Faction.ENEMY","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"factionMask","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"factionMask","filters":[],"listItems":[
         "Faction.PICKUP",
         "Faction.PLAYER",
         "Faction.PLAYER_PROJECTILE",
@@ -72,8 +72,8 @@
         "Faction.NEUTRAL",
         "Faction.NEUTRAL_PROJECTILE",
       ],"multiselect":true,"name":"factionMask","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Faction.PLAYER","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"isTargetable","filters":[],"listItems":[],"multiselect":false,"name":"isTargetable","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"targetingPreset","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"isTargetable","filters":[],"listItems":[],"multiselect":false,"name":"isTargetable","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"targetingPreset","filters":[],"listItems":[
         "ReticlePresetType.GENERIC",
         "ReticlePresetType.NEAREST",
         "ReticlePresetType.SWITCH_REGULARLY",
@@ -81,9 +81,9 @@
         "ReticlePresetType.CUSTOM",
         "ReticlePresetType.NO_TARGET",
       ],"multiselect":false,"name":"targetingPreset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"ReticlePresetType.GENERIC","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"faceTarget","filters":[],"listItems":[],"multiselect":false,"name":"faceTarget","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"faceTargetOnSpawn","filters":[],"listItems":[],"multiselect":false,"name":"faceTargetOnSpawn","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"factionTargetWhitelist","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"faceTarget","filters":[],"listItems":[],"multiselect":false,"name":"faceTarget","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"faceTargetOnSpawn","filters":[],"listItems":[],"multiselect":false,"name":"faceTargetOnSpawn","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"factionTargetWhitelist","filters":[],"listItems":[
         "Faction.PICKUP",
         "Faction.PLAYER",
         "Faction.PLAYER_PROJECTILE",
@@ -92,8 +92,8 @@
         "Faction.NEUTRAL",
         "Faction.NEUTRAL_PROJECTILE",
       ],"multiselect":true,"name":"factionTargetWhitelist","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"collideWithSolids","filters":[],"listItems":[],"multiselect":false,"name":"collideWithSolids","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"factionSolidWhitelist","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"collideWithSolids","filters":[],"listItems":[],"multiselect":false,"name":"collideWithSolids","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"factionSolidWhitelist","filters":[],"listItems":[
         "Faction.PICKUP",
         "Faction.PLAYER",
         "Faction.PLAYER_PROJECTILE",
@@ -102,39 +102,39 @@
         "Faction.NEUTRAL",
         "Faction.NEUTRAL_PROJECTILE",
       ],"multiselect":true,"name":"factionSolidWhitelist","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"maxSlopeSteepness","filters":[],"listItems":[],"multiselect":false,"name":"maxSlopeSteepness","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_MAX_SLOPE_STEEPNESS","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"gravEnabled","filters":[],"listItems":[],"multiselect":false,"name":"gravEnabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"grav","filters":[],"listItems":[],"multiselect":false,"name":"grav","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"gravDir","filters":[],"listItems":[],"multiselect":false,"name":"gravDir","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"maxFallSpeed","filters":[],"listItems":[],"multiselect":false,"name":"maxFallSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_FALL_SPEED","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"respawnType","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"maxSlopeSteepness","filters":[],"listItems":[],"multiselect":false,"name":"maxSlopeSteepness","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_MAX_SLOPE_STEEPNESS","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"gravEnabled","filters":[],"listItems":[],"multiselect":false,"name":"gravEnabled","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"grav","filters":[],"listItems":[],"multiselect":false,"name":"grav","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"gravDir","filters":[],"listItems":[],"multiselect":false,"name":"gravDir","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"maxFallSpeed","filters":[],"listItems":[],"multiselect":false,"name":"maxFallSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_FALL_SPEED","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"respawnType","filters":[],"listItems":[
         "RespawnType.ENABLED",
         "RespawnType.DISABLE_ON_DEATH",
         "RespawnType.DESTROY_ON_DEATH",
         "RespawnType.DISABLED",
       ],"multiselect":false,"name":"respawnType","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"RespawnType.ENABLED","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"respawnRange","filters":[],"listItems":[],"multiselect":false,"name":"respawnRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"despawnRange","filters":[],"listItems":[],"multiselect":false,"name":"despawnRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"sectionSwitchBehaviour","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"respawnRange","filters":[],"listItems":[],"multiselect":false,"name":"respawnRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"despawnRange","filters":[],"listItems":[],"multiselect":false,"name":"despawnRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"4","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"sectionSwitchBehaviour","filters":[],"listItems":[
         "SectionSwitchBehaviour.HIDDEN",
         "SectionSwitchBehaviour.VISIBLE",
         "SectionSwitchBehaviour.PERSISTANT",
       ],"multiselect":false,"name":"sectionSwitchBehaviour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"SectionSwitchBehaviour.HIDDEN","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"canBeFrozen","filters":[],"listItems":[],"multiselect":false,"name":"canBeFrozen","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"interactWithWater","filters":[],"listItems":[],"multiselect":false,"name":"interactWithWater","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"waterGravMod","filters":[],"listItems":[],"multiselect":false,"name":"waterGravMod","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY_WATER_MODIFIER","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"canMakeBubble","filters":[],"listItems":[],"multiselect":false,"name":"canMakeBubble","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"bubbleXOffset","filters":[],"listItems":[],"multiselect":false,"name":"bubbleXOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"bubbleYOffset","filters":[],"listItems":[],"multiselect":false,"name":"bubbleYOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"itemDropType","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"canBeFrozen","filters":[],"listItems":[],"multiselect":false,"name":"canBeFrozen","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"interactWithWater","filters":[],"listItems":[],"multiselect":false,"name":"interactWithWater","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"waterGravMod","filters":[],"listItems":[],"multiselect":false,"name":"waterGravMod","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"DEFAULT_GRAVITY_WATER_MODIFIER","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"canMakeBubble","filters":[],"listItems":[],"multiselect":false,"name":"canMakeBubble","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"bubbleXOffset","filters":[],"listItems":[],"multiselect":false,"name":"bubbleXOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"bubbleYOffset","filters":[],"listItems":[],"multiselect":false,"name":"bubbleYOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"itemDropType","filters":[],"listItems":[
         "ItemDropType.NONE",
         "ItemDropType.RANDOM",
         "ItemDropType.CUSTOM",
       ],"multiselect":false,"name":"itemDropType","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"ItemDropType.RANDOM","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"customItemDrop","filters":[
+    {"$GMObjectProperty":"v2","%Name":"customItemDrop","filters":[
         "GMObject",
       ],"listItems":[],"multiselect":false,"name":"customItemDrop","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
-    {"$GMObjectProperty":"v1","%Name":"dropItemOnce","filters":[],"listItems":[],"multiselect":false,"name":"dropItemOnce","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"dropItemOnce","filters":[],"listItems":[],"multiselect":false,"name":"dropItemOnce","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -29,7 +29,7 @@ function Weapon_SkullBarrier() : Weapon() constructor {
 			object: objSkullBarrier,
 			limit: 1,
 			cost: 2,
-			shootAnimation: PlayerStandardAnimationSubType.IDLE,
+			shootAnimation: PlayerShootType.IDLE,
 		});
 		
 		with (_shot) {

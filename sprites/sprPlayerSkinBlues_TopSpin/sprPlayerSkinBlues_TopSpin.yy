@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinBlues_TopSpin",
   "bboxMode":0,
   "bbox_bottom":29,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"6cf71f20-8cd2-4d9c-b7d3-87db8c5e2c27","name":"6cf71f20-8cd2-4d9c-b7d3-87db8c5e2c27","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"ee074b17-3d89-414b-94c2-7a0645924360","name":"ee074b17-3d89-414b-94c2-7a0645924360","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"663b84ee-0e01-497a-81fb-1cdae43cdb79","name":"663b84ee-0e01-497a-81fb-1cdae43cdb79","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"c08f61e6-a2a0-4631-b111-f5546dfa8af8","name":"c08f61e6-a2a0-4631-b111-f5546dfa8af8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6cf71f20-8cd2-4d9c-b7d3-87db8c5e2c27","name":"6cf71f20-8cd2-4d9c-b7d3-87db8c5e2c27","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ee074b17-3d89-414b-94c2-7a0645924360","name":"ee074b17-3d89-414b-94c2-7a0645924360","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"663b84ee-0e01-497a-81fb-1cdae43cdb79","name":"663b84ee-0e01-497a-81fb-1cdae43cdb79","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c08f61e6-a2a0-4631-b111-f5546dfa8af8","name":"c08f61e6-a2a0-4631-b111-f5546dfa8af8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -29,7 +29,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Proto Man/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Proto Man/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

@@ -1,38 +1,73 @@
 /// @description Animation Init
-// -- Basic Actions
+
+#region Basic Actions
+
 animator.add_animation_ext("idle", [120, 8])
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_IDLE, PLAYER_ANIM_FRAME_IDLE + 1]);
-animator.add_animation_non_loop("sidestep", 1, 8)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_SIDESTEP]);
-animator.add_animation_non_loop("brake", 1, 8)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_SIDESTEP]);
+	.add_property("skinSprite", PlayerSpriteType.IDLE)
+	.add_property("skinIndex", [0, 1]);
+	
+animator.add_animation_single_frame("sidestep")
+	.add_property("skinSprite", PlayerSpriteType.SIDESTEP)
+	.add_property("skinIndex", 0);
+	
+animator.add_animation_single_frame("brake")
+	.add_property("skinSprite", PlayerSpriteType.SIDESTEP)
+	.add_property("skinIndex", 0);
+	
 animator.add_animation("walk", 4, 6.66)
-	.add_property("skinIndex", array_create_ext(4, function(i) /*=>*/ {return PLAYER_ANIM_FRAME_WALK + i}));
+	.add_property("skinSprite", PlayerSpriteType.WALK)
+	.add_property("skinIndex", [0, 1, 2, 3]);
+	
 animator.add_animation("jump", 2, 3.33)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_JUMP, PLAYER_ANIM_FRAME_JUMP + 1]);
+	.add_property("skinSprite", PlayerSpriteType.JUMP)
+	.add_property("skinIndex", [0, 1]);
+	
 animator.add_animation("fall", 2, 3.33)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_FALL, PLAYER_ANIM_FRAME_FALL + 1]);
+	.add_property("skinSprite", PlayerSpriteType.FALL)
+	.add_property("skinIndex", [0, 1]);
+	
 animator.add_animation("slide", 2, 3.33)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_SLIDE, PLAYER_ANIM_FRAME_SLIDE + 1]);
+	.add_property("skinSprite", PlayerSpriteType.SLIDE)
+	.add_property("skinIndex", [0, 1]);
+	
 animator.add_animation("climb", 2, 8)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_CLIMB, PLAYER_ANIM_FRAME_CLIMB + 1]);
-animator.add_animation_non_loop("climb-top", 1, 8)
-	.add_property("skinIndex", [PLAYER_ANIM_FRAME_CLIMB + 2]);
-// -- Hurt / Stun
-animator.add_animation_non_loop("hurt", 1, 8)
-	.add_property("skinSprite", [PlayerAnimationType.HURTSTUN])
-	.add_property("skinIndex", [0]);
-animator.add_animation_non_loop("stun", 1, 8)
-	.add_property("skinSprite", [PlayerAnimationType.HURTSTUN])
-	.add_property("skinIndex", [1]);
-// -- Telepor'
-animator.add_animation_non_loop("teleport-idle", 1, 8)
-	.add_property("skinSprite", [PlayerAnimationType.TELEPORT])
-	.add_property("skinIndex", [0]);
+	.add_property("skinSprite", PlayerSpriteType.CLIMB)
+	.add_property("skinIndex", [0, 1]);
+	
+animator.add_animation_single_frame("climb-top")
+	.add_property("skinSprite", PlayerSpriteType.CLIMB_TOP)
+	.add_property("skinIndex", 0);
+
+#endregion
+
+#region Hurt/Stun
+
+animator.add_animation_single_frame("hurt")
+	.add_property("skinSprite", PlayerSpriteType.HURTSTUN)
+	.add_property("skinIndex", 0);
+
+animator.add_animation_single_frame("stun")
+	.add_property("skinSprite", PlayerSpriteType.HURTSTUN)
+	.add_property("skinIndex", 1);
+
+#endregion
+
+#region Telepor'
+
+animator.add_animation_single_frame("teleport-idle")
+	.add_property("skinSprite", PlayerSpriteType.TELEPORT)
+	.add_property("skinIndex", 0);
+
 animator.add_animation_non_loop("teleport-in", 4, 3)
-	.add_property("skinSprite", [PlayerAnimationType.TELEPORT])
-	.add_property("skinIndex", array_create_ext(4, function(i) /*=>*/ {return ((i/2) + 0.5) * (i & 1)})); //[0, 1, 0, 2]
-// -- Rotat e
+	.add_property("skinSprite", PlayerSpriteType.TELEPORT)
+	.add_property("skinIndex", [0, 1, 0, 2]);
+
+#endregion
+
+#region Misc.
+
 animator.add_animation("turnaround", 10, 8)
-	.add_property("skinSprite", [PlayerAnimationType.TURNAROUND])
+	.add_property("skinSprite", PlayerSpriteType.TURNAROUND)
 	.add_property("skinIndex", array_create_ext(10, function(i) /*=>*/ {return i}));
+
+#endregion

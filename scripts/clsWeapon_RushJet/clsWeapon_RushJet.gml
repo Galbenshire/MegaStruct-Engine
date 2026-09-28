@@ -30,7 +30,7 @@ function Weapon_RushJet() : Weapon() constructor {
 				object: objRushTeleport,
 				limit: 1,
 				cost: 0,
-				shootAnimation: PlayerStandardAnimationSubType.IDLE,
+				shootAnimation: PlayerShootType.IDLE,
 				offsetX: 20,
 				depthOffset: -1,
 				projParams: {
@@ -53,7 +53,7 @@ function Weapon_RushJet() : Weapon() constructor {
 				object: objBusterShot,
 				limit: 4,
 				cost: 0,
-				shootAnimation: PlayerStandardAnimationSubType.SHOOT,
+				shootAnimation: PlayerShootType.SHOOT,
 				autoShootDelay: 8
 			});
 			

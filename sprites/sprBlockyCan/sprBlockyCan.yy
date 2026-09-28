@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBlockyCan",
   "bboxMode":2,
   "bbox_bottom":14,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"06fa9649-37ff-4eb2-8c79-b2966ec90fcf","name":"06fa9649-37ff-4eb2-8c79-b2966ec90fcf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"99c06ae7-983e-4076-a66d-59677272cac3","name":"99c06ae7-983e-4076-a66d-59677272cac3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"2668fc3c-851b-47b5-b734-2854266e31e4","name":"2668fc3c-851b-47b5-b734-2854266e31e4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"06fa9649-37ff-4eb2-8c79-b2966ec90fcf","name":"06fa9649-37ff-4eb2-8c79-b2966ec90fcf","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"99c06ae7-983e-4076-a66d-59677272cac3","name":"99c06ae7-983e-4076-a66d-59677272cac3","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"2668fc3c-851b-47b5-b734-2854266e31e4","name":"2668fc3c-851b-47b5-b734-2854266e31e4","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -28,7 +28,7 @@
   "origin":1,
   "parent":{
     "name":"Blocky",
-    "path":"folders/Enemies/MM2/Blocky.yy",
+    "path":"folders/Entities/Enemies/MM2/Blocky.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

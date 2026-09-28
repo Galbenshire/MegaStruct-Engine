@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"mskPlayerSlideExtended",
   "bboxMode":2,
   "bbox_bottom":22,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"a8e42928-40c4-4ba0-8d7b-13cb88d35bbb","name":"a8e42928-40c4-4ba0-8d7b-13cb88d35bbb","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"a8e42928-40c4-4ba0-8d7b-13cb88d35bbb","name":"a8e42928-40c4-4ba0-8d7b-13cb88d35bbb","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"Playable Characters",
-    "path":"folders/Playable Characters.yy",
+    "path":"folders/Entities/Playable Characters.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

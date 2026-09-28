@@ -31,9 +31,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"teleportSpeed","filters":[],"listItems":[],"multiselect":false,"name":"teleportSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"waitDuration","filters":[],"listItems":[],"multiselect":false,"name":"waitDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"120","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"triggerDelay","filters":[],"listItems":[],"multiselect":false,"name":"triggerDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"32","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"teleportSpeed","filters":[],"listItems":[],"multiselect":false,"name":"teleportSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"waitDuration","filters":[],"listItems":[],"multiselect":false,"name":"waitDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"120","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"triggerDelay","filters":[],"listItems":[],"multiselect":false,"name":"triggerDelay","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"32","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

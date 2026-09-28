@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinRockMan_HurtStun",
   "bboxMode":0,
   "bbox_bottom":27,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"e7ff0cd7-9ed1-4a09-bf3a-0aa272deafed","name":"e7ff0cd7-9ed1-4a09-bf3a-0aa272deafed","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"d0f15d54-77ce-45ca-8a19-d93dccb78cf8","name":"d0f15d54-77ce-45ca-8a19-d93dccb78cf8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e7ff0cd7-9ed1-4a09-bf3a-0aa272deafed","name":"e7ff0cd7-9ed1-4a09-bf3a-0aa272deafed","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"d0f15d54-77ce-45ca-8a19-d93dccb78cf8","name":"d0f15d54-77ce-45ca-8a19-d93dccb78cf8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Mega Man/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Mega Man/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

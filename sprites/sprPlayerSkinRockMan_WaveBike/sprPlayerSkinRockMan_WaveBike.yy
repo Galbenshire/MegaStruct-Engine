@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinRockMan_WaveBike",
   "bboxMode":0,
   "bbox_bottom":25,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"16b99622-4c89-42f8-b9d3-87181bb1fb59","name":"16b99622-4c89-42f8-b9d3-87181bb1fb59","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"3f3501d3-c7dd-47dd-84e3-43d4c162f50f","name":"3f3501d3-c7dd-47dd-84e3-43d4c162f50f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"16b99622-4c89-42f8-b9d3-87181bb1fb59","name":"16b99622-4c89-42f8-b9d3-87181bb1fb59","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"3f3501d3-c7dd-47dd-84e3-43d4c162f50f","name":"3f3501d3-c7dd-47dd-84e3-43d4c162f50f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Mega Man/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Mega Man/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

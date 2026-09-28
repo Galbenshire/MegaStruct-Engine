@@ -23,7 +23,7 @@
   ],
   "parent":{
     "name":"Penpen Maker",
-    "path":"folders/Enemies/MM3/Penpen Maker.yy",
+    "path":"folders/Entities/Enemies/MM3/Penpen Maker.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -43,9 +43,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"handleSpeed","filters":[],"listItems":[],"multiselect":false,"name":"handleSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.1","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"spawnRateSlow","filters":[],"listItems":[],"multiselect":false,"name":"spawnRateSlow","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"spawnRateFast","filters":[],"listItems":[],"multiselect":false,"name":"spawnRateFast","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"30","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"handleSpeed","filters":[],"listItems":[],"multiselect":false,"name":"handleSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.1","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"spawnRateSlow","filters":[],"listItems":[],"multiselect":false,"name":"spawnRateSlow","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"spawnRateFast","filters":[],"listItems":[],"multiselect":false,"name":"spawnRateFast","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"30","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

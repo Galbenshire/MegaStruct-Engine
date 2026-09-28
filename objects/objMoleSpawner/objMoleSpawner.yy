@@ -12,7 +12,7 @@
   ],
   "parent":{
     "name":"Mole",
-    "path":"folders/Enemies/MM2/Mole.yy",
+    "path":"folders/Entities/Enemies/MM2/Mole.yy",
   },
   "parentObjectId":{
     "name":"prtInterval",
@@ -32,8 +32,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"maxMoles","filters":[],"listItems":[],"multiselect":false,"name":"maxMoles","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"molesMakeSparks","filters":[],"listItems":[],"multiselect":false,"name":"molesMakeSparks","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"maxMoles","filters":[],"listItems":[],"multiselect":false,"name":"maxMoles","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"molesMakeSparks","filters":[],"listItems":[],"multiselect":false,"name":"molesMakeSparks","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

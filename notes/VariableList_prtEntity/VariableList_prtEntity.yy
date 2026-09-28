@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"",
+  "$GMNotes":"v1",
   "%Name":"VariableList_prtEntity",
   "name":"VariableList_prtEntity",
   "parent":{

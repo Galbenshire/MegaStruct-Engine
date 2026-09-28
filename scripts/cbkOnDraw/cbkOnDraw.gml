@@ -54,16 +54,17 @@ function cbkOnDraw_prtBoss(_whiteflash) {
 function cbkOnDraw_prtPlayer(_whiteflash) {
 	var _colReplacer = colour_replacer(),
 		_paletteMode = palette.colourMode,
-		_skinSprite = characterSpecs.playerSprites[skinSprite];
+		_skinSprite = characterSpecs.get_sprite(skinSprite),
+		_skinIndex = characterSpecs.get_image_index(skinSprite, skinIndex, skinOffset);
 	
 	if (!_whiteflash && _colReplacer.is_mode_supported(_paletteMode)) {
 		_colReplacer.activate(_paletteMode)
 			.apply_palette(palette)
 			.update_uniforms();
-		draw_sprite_ext(_skinSprite, skinIndex, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+		draw_sprite_ext(_skinSprite, _skinIndex, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 		_colReplacer.deactivate();
 	} else {
-		draw_sprite_ext(_skinSprite, skinIndex, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+		draw_sprite_ext(_skinSprite, _skinIndex, x, y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 	}
 }
 

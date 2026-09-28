@@ -20,7 +20,7 @@
   ],
   "parent":{
     "name":"Proto Man",
-    "path":"folders/Playable Characters/Proto Man.yy",
+    "path":"folders/Entities/Playable Characters/Proto Man.yy",
   },
   "parentObjectId":{
     "name":"prtPlayer",

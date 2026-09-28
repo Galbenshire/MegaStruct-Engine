@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBusterShotHalfCharge",
   "bboxMode":0,
   "bbox_bottom":7,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"f1b6ae69-6a7e-46c7-a8ba-79a3ea6505e8","name":"f1b6ae69-6a7e-46c7-a8ba-79a3ea6505e8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"20601acb-d6f4-40a1-b457-e64323090e3d","name":"20601acb-d6f4-40a1-b457-e64323090e3d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f1b6ae69-6a7e-46c7-a8ba-79a3ea6505e8","name":"f1b6ae69-6a7e-46c7-a8ba-79a3ea6505e8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"20601acb-d6f4-40a1-b457-e64323090e3d","name":"20601acb-d6f4-40a1-b457-e64323090e3d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

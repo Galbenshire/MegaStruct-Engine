@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBlader",
   "bboxMode":0,
   "bbox_bottom":19,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"ef5d96ab-aecb-4bde-b9d7-25da91655e56","name":"ef5d96ab-aecb-4bde-b9d7-25da91655e56","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"eb9a601d-8d70-4d38-86b1-a9a58949951c","name":"eb9a601d-8d70-4d38-86b1-a9a58949951c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ef5d96ab-aecb-4bde-b9d7-25da91655e56","name":"ef5d96ab-aecb-4bde-b9d7-25da91655e56","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"eb9a601d-8d70-4d38-86b1-a9a58949951c","name":"eb9a601d-8d70-4d38-86b1-a9a58949951c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":4,
   "parent":{
     "name":"Blader",
-    "path":"folders/Enemies/MM1/Blader.yy",
+    "path":"folders/Entities/Enemies/MM1/Blader.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

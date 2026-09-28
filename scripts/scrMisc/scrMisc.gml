@@ -1,3 +1,26 @@
+/// @func cache_game_assets(parent_name)
+/// @desc Generates a cache of all constructor functions (classes) that share a given parent
+///		  For this to work, the classes must have an `id` variable, unique to each child
+///
+/// @param {string}  parent_name  The name of the parent constructor function
+///
+/// @returns {array}  An array of the constructor functions that share the same parent. The parent itself is not included.
+function cache_game_assets(_parent) {
+	var _childrenScripts = tag_get_asset_ids($"@@parent={_parent}", asset_script),
+		_count = array_length(_childrenScripts),
+		_children = array_create(_count);
+	
+	// Put the children in the correct order (according to their ID)
+	var i = 0; repeat(_count) {
+		var _item = new _childrenScripts[i]();
+		_children[_item.id] = _childrenScripts[i];
+		delete _item;
+		i++;
+	}
+	
+	return _children;
+}
+
 /// @func event_user_scope(numb)
 /// @desc Version of event_user that can be called on a specific instance
 ///

@@ -13,7 +13,7 @@
   ],
   "parent":{
     "name":"Blocky",
-    "path":"folders/Enemies/MM2/Blocky.yy",
+    "path":"folders/Entities/Enemies/MM2/Blocky.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",

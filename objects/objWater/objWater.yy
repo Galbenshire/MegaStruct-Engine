@@ -29,7 +29,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"splashDirection","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"splashDirection","filters":[],"listItems":[
         "AngleDir.RIGHT",
         "AngleDir.UP",
         "AngleDir.LEFT",

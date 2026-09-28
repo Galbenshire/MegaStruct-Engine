@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBoltSmall",
   "bboxMode":2,
   "bbox_bottom":6,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"15412f18-addc-428e-b8fc-6b3726d2b455","name":"15412f18-addc-428e-b8fc-6b3726d2b455","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"15412f18-addc-428e-b8fc-6b3726d2b455","name":"15412f18-addc-428e-b8fc-6b3726d2b455","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Items/Sprites.yy",
+    "path":"folders/Entities/Items/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

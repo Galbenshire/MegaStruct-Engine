@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprSuzy",
   "bboxMode":2,
   "bbox_bottom":14,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"94de6475-0d6b-4b29-871f-1e076e2d3543","name":"94de6475-0d6b-4b29-871f-1e076e2d3543","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"85d8d881-aa57-444e-9f9c-9aaa7a29e10a","name":"85d8d881-aa57-444e-9f9c-9aaa7a29e10a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"ec45dc86-5d37-48ca-a8ea-5296d7eb0d5d","name":"ec45dc86-5d37-48ca-a8ea-5296d7eb0d5d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"94de6475-0d6b-4b29-871f-1e076e2d3543","name":"94de6475-0d6b-4b29-871f-1e076e2d3543","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"85d8d881-aa57-444e-9f9c-9aaa7a29e10a","name":"85d8d881-aa57-444e-9f9c-9aaa7a29e10a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ec45dc86-5d37-48ca-a8ea-5296d7eb0d5d","name":"ec45dc86-5d37-48ca-a8ea-5296d7eb0d5d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -47,7 +47,7 @@
   "origin":0,
   "parent":{
     "name":"Suzy",
-    "path":"folders/Enemies/MM1/Suzy.yy",
+    "path":"folders/Entities/Enemies/MM1/Suzy.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

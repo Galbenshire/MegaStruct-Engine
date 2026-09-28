@@ -12,7 +12,7 @@
   ],
   "parent":{
     "name":"Gyoraboi",
-    "path":"folders/Enemies/MM3/Gyoraboi.yy",
+    "path":"folders/Entities/Enemies/MM3/Gyoraboi.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",
@@ -32,7 +32,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"launchSpeed","filters":[],"listItems":[],"multiselect":false,"name":"launchSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"launchSpeed","filters":[],"listItems":[],"multiselect":false,"name":"launchSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

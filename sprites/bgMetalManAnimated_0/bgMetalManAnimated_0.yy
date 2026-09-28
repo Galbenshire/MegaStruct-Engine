@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"bgMetalManAnimated_0",
   "bboxMode":0,
   "bbox_bottom":79,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"beca9532-647b-4a72-a4a9-7e2cf3b7c686","name":"beca9532-647b-4a72-a4a9-7e2cf3b7c686","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"beca9532-647b-4a72-a4a9-7e2cf3b7c686","name":"beca9532-647b-4a72-a4a9-7e2cf3b7c686","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

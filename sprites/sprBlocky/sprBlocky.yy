@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBlocky",
   "bboxMode":2,
   "bbox_bottom":62,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"37622bf3-0120-40b2-b6d5-a3f7e2aebaa8","name":"37622bf3-0120-40b2-b6d5-a3f7e2aebaa8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"075c74ab-d4fa-4133-9fcc-1611a3173b43","name":"075c74ab-d4fa-4133-9fcc-1611a3173b43","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"1314f5f1-5d11-4443-b357-54e4c9ccdab0","name":"1314f5f1-5d11-4443-b357-54e4c9ccdab0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"8ecc5954-bc8a-472f-ac0f-11a5c8d5c308","name":"8ecc5954-bc8a-472f-ac0f-11a5c8d5c308","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"37622bf3-0120-40b2-b6d5-a3f7e2aebaa8","name":"37622bf3-0120-40b2-b6d5-a3f7e2aebaa8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"075c74ab-d4fa-4133-9fcc-1611a3173b43","name":"075c74ab-d4fa-4133-9fcc-1611a3173b43","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"1314f5f1-5d11-4443-b357-54e4c9ccdab0","name":"1314f5f1-5d11-4443-b357-54e4c9ccdab0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8ecc5954-bc8a-472f-ac0f-11a5c8d5c308","name":"8ecc5954-bc8a-472f-ac0f-11a5c8d5c308","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -29,7 +29,7 @@
   "origin":1,
   "parent":{
     "name":"Blocky",
-    "path":"folders/Enemies/MM2/Blocky.yy",
+    "path":"folders/Entities/Enemies/MM2/Blocky.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

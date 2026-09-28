@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprMM2MenuTileShadow",
   "bboxMode":0,
   "bbox_bottom":23,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"20fa1b74-d4ba-4b7d-a647-58dc6c47bec5","name":"20fa1b74-d4ba-4b7d-a647-58dc6c47bec5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"20fa1b74-d4ba-4b7d-a647-58dc6c47bec5","name":"20fa1b74-d4ba-4b7d-a647-58dc6c47bec5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

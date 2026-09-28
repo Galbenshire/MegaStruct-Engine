@@ -15,7 +15,7 @@
   ],
   "parent":{
     "name":"Flying Shell",
-    "path":"folders/Enemies/MM1/Flying Shell.yy",
+    "path":"folders/Entities/Enemies/MM1/Flying Shell.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -35,9 +35,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.25","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"bulletSpeed","filters":[],"listItems":[],"multiselect":false,"name":"bulletSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3.75","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"bulletCount","filters":[],"listItems":[],"multiselect":false,"name":"bulletCount","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.25","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"bulletSpeed","filters":[],"listItems":[],"multiselect":false,"name":"bulletSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3.75","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"bulletCount","filters":[],"listItems":[],"multiselect":false,"name":"bulletCount","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

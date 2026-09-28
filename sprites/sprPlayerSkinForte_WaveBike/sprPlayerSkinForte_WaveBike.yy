@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinForte_WaveBike",
   "bboxMode":0,
   "bbox_bottom":27,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"92c73f7a-d056-431e-8607-05f15e141cd2","name":"92c73f7a-d056-431e-8607-05f15e141cd2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"67b6ad42-0254-46b1-beba-962648e9b393","name":"67b6ad42-0254-46b1-beba-962648e9b393","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"92c73f7a-d056-431e-8607-05f15e141cd2","name":"92c73f7a-d056-431e-8607-05f15e141cd2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"67b6ad42-0254-46b1-beba-962648e9b393","name":"67b6ad42-0254-46b1-beba-962648e9b393","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Bass/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Bass/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

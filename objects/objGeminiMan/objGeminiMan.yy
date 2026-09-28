@@ -22,7 +22,7 @@
   ],
   "parent":{
     "name":"Gemini Man",
-    "path":"folders/Bosses/Gemini Man.yy",
+    "path":"folders/Entities/Bosses/Gemini Man.yy",
   },
   "parentObjectId":{
     "name":"prtBoss",

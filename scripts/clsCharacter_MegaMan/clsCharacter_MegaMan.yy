@@ -6,7 +6,7 @@
   "name":"clsCharacter_MegaMan",
   "parent":{
     "name":"Mega Man",
-    "path":"folders/Playable Characters/Mega Man.yy",
+    "path":"folders/Entities/Playable Characters/Mega Man.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

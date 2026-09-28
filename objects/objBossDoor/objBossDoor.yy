@@ -49,8 +49,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"isLocked","filters":[],"listItems":[],"multiselect":false,"name":"isLocked","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"doorOpenSpeed","filters":[],"listItems":[],"multiselect":false,"name":"doorOpenSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.125","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"isLocked","filters":[],"listItems":[],"multiselect":false,"name":"isLocked","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"doorOpenSpeed","filters":[],"listItems":[],"multiselect":false,"name":"doorOpenSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.125","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

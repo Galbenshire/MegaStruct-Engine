@@ -15,6 +15,14 @@ function array_at(_array, _index) {
 	return (_index >= 0) ? _array[_index] : _array[_index + _length];
 }
 
+/// @func array_clear(array)
+/// @desc Clears an array of all its contents
+///
+/// @param {array}  array  The array to clear
+function array_clear(_array) {
+	array_resize(_array, 0);
+}
+
 /// @func array_empty(array)
 /// @desc Checks if the given array is empty
 ///
@@ -65,6 +73,18 @@ function array_slice(_array, _offset, _length) {
 	var _slicedArray = [];
 	array_copy(_slicedArray, 0, _array, _offset, _length);
 	return _slicedArray;
+}
+
+/// @func array_sum(array, offset, length)
+/// @desc Returns the sum of all numbers in the array
+///
+/// @param {array}  array  The array to get the sum of
+/// @param {int}  offset  The index within the array to start summing from
+/// @param {int}  length  The number of array to calculate the sum of
+///
+/// @returns {array}  The sliced array
+function array_sum(_array, _offset = 0, _length = infinity) {
+	return array_reduce(_array, function(_prev, _curr, i) /*=>*/ {return _prev + _curr}, 0, _offset, _length);
 }
 
 /// @func choose_from_array(array)

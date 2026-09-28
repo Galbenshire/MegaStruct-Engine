@@ -38,9 +38,9 @@ function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor 
 		palette: global.player.body.palette,
 		x: -32,
 		y: 4,
-		sprite_index: sprPlayerSkinRockMan_Standard
+		sprite_index: sprPlayerSkinRockMan_Idle
 	};
-	playerData.sprite_index = playerData.characterSpecs.playerSprites[PlayerAnimationType.STANDARD];
+	playerData.sprite_index = playerData.characterSpecs.get_sprite(PlayerSpriteType.IDLE);
 	
     /// @method on_render(x, y)
     static on_render = function(_x, _y) {

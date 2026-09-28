@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinBlues_HurtStun",
   "bboxMode":0,
   "bbox_bottom":27,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"7ed3ba69-d7b8-4285-b1ac-b7306f75ecec","name":"7ed3ba69-d7b8-4285-b1ac-b7306f75ecec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"35c80ad6-26eb-4593-beed-6ae7c42af9e0","name":"35c80ad6-26eb-4593-beed-6ae7c42af9e0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"7ed3ba69-d7b8-4285-b1ac-b7306f75ecec","name":"7ed3ba69-d7b8-4285-b1ac-b7306f75ecec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"35c80ad6-26eb-4593-beed-6ae7c42af9e0","name":"35c80ad6-26eb-4593-beed-6ae7c42af9e0","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Proto Man/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Proto Man/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

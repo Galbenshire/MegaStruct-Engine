@@ -39,9 +39,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sightRange","filters":[],"listItems":[],"multiselect":false,"name":"sightRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"retractSpeed","filters":[],"listItems":[],"multiselect":false,"name":"retractSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.4","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"isChainLethal","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"sightRange","filters":[],"listItems":[],"multiselect":false,"name":"sightRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"retractSpeed","filters":[],"listItems":[],"multiselect":false,"name":"retractSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.4","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"isChainLethal","filters":[],"listItems":[
         "\"No\"",
         "\"Yes\"",
         "\"Retract Only\"",

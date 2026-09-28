@@ -14,7 +14,7 @@
   ],
   "parent":{
     "name":"Tadpole",
-    "path":"folders/Enemies/MM3/Tadpole.yy",
+    "path":"folders/Entities/Enemies/MM3/Tadpole.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -34,8 +34,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"followSpeed","filters":[],"listItems":[],"multiselect":false,"name":"followSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"followSpeed","filters":[],"listItems":[],"multiselect":false,"name":"followSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.2","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

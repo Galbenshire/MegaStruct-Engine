@@ -9,7 +9,7 @@
   ],
   "parent":{
     "name":"Items",
-    "path":"folders/Items.yy",
+    "path":"folders/Entities/Items.yy",
   },
   "parentObjectId":{
     "name":"objHealthEnergySmall",

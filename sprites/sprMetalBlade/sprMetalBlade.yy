@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprMetalBlade",
   "bboxMode":0,
   "bbox_bottom":15,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"aacc2e02-c4b6-48ff-8a06-64ff53aefa7d","name":"aacc2e02-c4b6-48ff-8a06-64ff53aefa7d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"f5299194-3996-4e6e-af8f-dfcef7c6111d","name":"f5299194-3996-4e6e-af8f-dfcef7c6111d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"aacc2e02-c4b6-48ff-8a06-64ff53aefa7d","name":"aacc2e02-c4b6-48ff-8a06-64ff53aefa7d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f5299194-3996-4e6e-af8f-dfcef7c6111d","name":"f5299194-3996-4e6e-af8f-dfcef7c6111d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

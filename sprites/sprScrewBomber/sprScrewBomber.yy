@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprScrewBomber",
   "bboxMode":2,
   "bbox_bottom":14,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"b04d9c61-8667-4327-88e5-705b4fea37ca","name":"b04d9c61-8667-4327-88e5-705b4fea37ca","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"045550fe-dccf-4711-a435-4acb0653ff86","name":"045550fe-dccf-4711-a435-4acb0653ff86","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"456d022f-d907-42b8-9492-785bdc2f559a","name":"456d022f-d907-42b8-9492-785bdc2f559a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"376f0b9e-540a-4dd3-94e2-d3556b41d115","name":"376f0b9e-540a-4dd3-94e2-d3556b41d115","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"c45f2600-792a-4b8e-93d2-70247dc071d2","name":"c45f2600-792a-4b8e-93d2-70247dc071d2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b04d9c61-8667-4327-88e5-705b4fea37ca","name":"b04d9c61-8667-4327-88e5-705b4fea37ca","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"045550fe-dccf-4711-a435-4acb0653ff86","name":"045550fe-dccf-4711-a435-4acb0653ff86","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"456d022f-d907-42b8-9492-785bdc2f559a","name":"456d022f-d907-42b8-9492-785bdc2f559a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"376f0b9e-540a-4dd3-94e2-d3556b41d115","name":"376f0b9e-540a-4dd3-94e2-d3556b41d115","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c45f2600-792a-4b8e-93d2-70247dc071d2","name":"c45f2600-792a-4b8e-93d2-70247dc071d2","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -30,7 +30,7 @@
   "origin":9,
   "parent":{
     "name":"Screw Bomber",
-    "path":"folders/Enemies/MM1/Screw Bomber.yy",
+    "path":"folders/Entities/Enemies/MM1/Screw Bomber.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

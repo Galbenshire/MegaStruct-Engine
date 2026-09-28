@@ -23,7 +23,6 @@ function Character_Bass() : Character() constructor {
 	coilColours[PalettePlayer.skin] = $A0E0F8;
 	coilColours[PalettePlayer.face] = $000000;
 	coilColours[PalettePlayer.eyes] = $F8F8F8;
-	jetColours = coilColours;
     
 	weapons = [
         WeaponType.BUSTER_BASS,
@@ -35,21 +34,29 @@ function Character_Bass() : Character() constructor {
     ];
     
     // Main Player Sprites
-	playerSprites[PlayerAnimationType.STANDARD] = sprPlayerSkinForte_Standard;
-    playerSprites[PlayerAnimationType.HURTSTUN] = sprPlayerSkinForte_HurtStun;
+	spriteList[PlayerSpriteType.IDLE] = sprPlayerSkinForte_Idle;
+	spriteList[PlayerSpriteType.SIDESTEP] = sprPlayerSkinForte_Sidestep;
+	spriteList[PlayerSpriteType.WALK] = sprPlayerSkinForte_Walk;
+	spriteList[PlayerSpriteType.JUMP] = sprPlayerSkinForte_Jump;
+	spriteList[PlayerSpriteType.FALL] = sprPlayerSkinForte_Jump;
+	spriteList[PlayerSpriteType.SLIDE] = sprPlayerSkinForte_Slide;
+	spriteList[PlayerSpriteType.CLIMB] = sprPlayerSkinForte_Climb;
+	spriteList[PlayerSpriteType.CLIMB_TOP] = sprPlayerSkinForte_ClimbTop;
     // Weapons
-    playerSprites[PlayerAnimationType.BREAK_DASH] = sprPlayerSkinForte_BreakDash;
-	playerSprites[PlayerAnimationType.SLASH_CLAW] = sprPlayerSkinForte_SlashClaw;
-	playerSprites[PlayerAnimationType.TOP_SPIN] = sprPlayerSkinForte_TopSpin;
+    spriteList[PlayerSpriteType.BREAK_DASH] = sprPlayerSkinForte_BreakDash;
+	spriteList[PlayerSpriteType.SLASH_CLAW] = sprPlayerSkinForte_SlashClaw;
+	spriteList[PlayerSpriteType.TOP_SPIN] = sprPlayerSkinForte_TopSpin;
+	// Utilities
+	spriteList[PlayerSpriteType.COIL] = sprPlayerSkinForte_Coil;
+	spriteList[PlayerSpriteType.JET] = sprPlayerSkinForte_Jet;
 	// Misc.
-    playerSprites[PlayerAnimationType.TORNADO_BATTERY] = sprPlayerSkinForte_TornadoBattery;
-    playerSprites[PlayerAnimationType.TURNAROUND] = sprPlayerSkinForte_Turnaround;
-    playerSprites[PlayerAnimationType.WAVE_BIKE] = sprPlayerSkinForte_WaveBike;
-    
-    mugshotSprite = sprMugshotBass;
-    lifeSprite = sprLifeBass;
-    coilSprite = sprRushCoilBass;
-	jetSprite = sprRushJetBass;
+	spriteList[PlayerSpriteType.HURTSTUN] = sprPlayerSkinForte_HurtStun;
+    spriteList[PlayerSpriteType.TORNADO_BATTERY] = sprPlayerSkinForte_TornadoBattery;
+    spriteList[PlayerSpriteType.TURNAROUND] = sprPlayerSkinForte_Turnaround;
+    spriteList[PlayerSpriteType.WAVE_BIKE] = sprPlayerSkinForte_WaveBike;
+    // Indirect
+	spriteList[PlayerSpriteType.LIFE] = sprPlayerSkinForte_Life;
+	spriteList[PlayerSpriteType.MUGSHOT] = sprPlayerSkinForte_Mugshot;
 	
 	#endregion
 	
@@ -77,17 +84,12 @@ function Character_Bass() : Character() constructor {
 	// I didn't think I'd need to do this explicitly for Bass,
 	// since his sprites are just Mega Man's with extra detail slapped on.
 	// Then I remembered he dashes, rather than slides.
-	for (var i = 0; i < PlayerStandardAnimationSubType.COUNT; i++) {
-		var _baseIndex = i * PLAYER_STANDARD_FRAME_COUNT,
-			_slideFrame = _baseIndex + PLAYER_ANIM_FRAME_SLIDE;
-		
-		switch (i) {
-			default: array_set_multiple(gunOffsetLookup, _slideFrame, 2, [18, 8]); break;
-			case PlayerStandardAnimationSubType.SHOOT_UP: array_set_multiple(gunOffsetLookup, _slideFrame, 2, [15, -1]); break;
-			case PlayerStandardAnimationSubType.SHOOT_DIAGONAL_UP: array_set_multiple(gunOffsetLookup, _slideFrame, 2, [18, 0]); break;
-			case PlayerStandardAnimationSubType.SHOOT_DIAGONAL_DOWN: array_set_multiple(gunOffsetLookup, _slideFrame, 2, [15, 14]); break;
-		}
-	}
+	
+	self.set_gun_offset(PlayerShootType.SHOOT, PlayerSpriteType.SLIDE, 18, 8);
+	self.set_gun_offset(PlayerShootType.THROW, PlayerSpriteType.SLIDE, 18, 8);
+	self.set_gun_offset(PlayerShootType.SHOOT_UP, PlayerSpriteType.SLIDE, 15, -1);
+	self.set_gun_offset(PlayerShootType.SHOOT_DIAGONAL_UP, PlayerSpriteType.SLIDE, 18, 0);
+	self.set_gun_offset(PlayerShootType.SHOOT_DIAGONAL_DOWN, PlayerSpriteType.SLIDE, 15, 14);
 	
 	#endregion
 }

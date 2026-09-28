@@ -4,21 +4,20 @@ function FrameAnimationPlayer() constructor {
     #region Variables
 	
 	owner = other; /// @is {instance}
+	animationMap = {}; /// @is {struct}
 	
     currentAnimation = undefined; /// @is {FrameAnimation?}
     currentAnimationName = ""; // Name of the current animation
-    currentFrame = 0; // Current frame of the current animation
     
-    timeScale = new Fractional(1); /// @is {Fractional}
+    timeScale = 1;
     animTimer = 0; // How long the current animation has been playing for.
-    frameCounter = 0; // How many in-game frames the current frame lasts for. Affected by `timeScale`
+    frameCounter = 0; // Our progress in the current animation.
     loops = 0;
-    flag = "";
     
-    animationMap = {}; /// @is {struct}
-    
-    __newFrame = false;
-    __animFinished = false;
+    __isNewFrame = false;
+    __prevFrame = 0;
+    __readFlags = [];
+    __queue = []; // [ [ animation, time_scale ] ... ]
 	
 	#endregion
 	
@@ -46,16 +45,8 @@ function FrameAnimationPlayer() constructor {
 	///
 	/// @returns {FrameAnimation}  The new animation.
 	static add_animation_ext = function(_id, _framesDurations, _resetFrame = 0) {
-		var _anim = new FrameAnimation();
-		_anim.id = _id;
-		_anim.owner = owner;
-		_anim.frames = array_length(_framesDurations);
-		_anim.frameDurations = _framesDurations;
-		_anim.resetFrame = _resetFrame;
-		_anim.flags = array_create(_anim.frames);
-		
-		animationMap[$ _anim.id] = _anim;
-		
+		var _anim = new FrameAnimation(_id, owner, _framesDurations, _resetFrame);
+		animationMap[$ _id] = _anim;
 		return _anim;
     };
     
@@ -82,6 +73,16 @@ function FrameAnimationPlayer() constructor {
 		return add_animation_ext(_id, _framesDurations, -1);
     };
     
+    /// @method add_animation_single_frame(id)
+	/// @desc Adds an animation with only one frame. Considered non-looping.
+	///
+	/// @param {string}  id  Name of this animation. This will be its key in the animation map.
+	///
+	/// @returns {FrameAnimation}  The new animation.
+	static add_animation_single_frame = function(_id) {
+		return add_animation_ext(_id, [2], -1);
+    };
+    
     #endregion
     
     #region Functions - Getters
@@ -96,32 +97,22 @@ function FrameAnimationPlayer() constructor {
 		return self.has_animation(_animName) ? animationMap[$ _animName] : undefined;
     };
 	
-	/// @method get_animation_duration(animation_name, ignore_time_scale)
+	/// @method get_animation_duration(animation_name)
 	/// @desc Get the total duration of the specified animation, in frames
 	///
 	/// @param {string}  [animation_name]  The animation to get the duration of. Defaults to the current animation.
-	/// @param {bool}  [ignore_time_scale]  Choose to ignore the player's current time scale. Defaults to false.
 	///
 	/// @returns {number}  The duration of the animation, in frames. Returns 0 if the animation could not be found
-    static get_animation_duration = function(_animName = currentAnimationName, _ignoreScale = false) {
-		if (!has_animation(_animName))
-			return 0;
-		
-		var _duration = animationMap[$ _animName].get_total_duration();
-		if (!_ignoreScale)
-			_duration = (timeScale.value != 0) ? (_duration / timeScale.value) : infinity;
-		
-		return _duration;
+    static get_animation_duration = function(_animName = currentAnimationName) {
+		return self.has_animation(_animName) ? animationMap[$ _animName].duration : 0;
     };
     
-    /// @method get_animation_time(ignore_time_scale)
-	/// @desc Gets how long the current animation has been running for
+    /// @method get_current_frame()
+	/// @desc Gets the current frame of the animation currently running
 	///
-	/// @param {bool}  [ignore_time_scale]  Choose to ignore the player's current time scale. Defaults to false.
-	///
-	/// @returns {number}  The timer's value
-    static get_animation_time = function(_ignoreScale = false) {
-        return animTimer * (_ignoreScale ? 1 : timeScale.value);
+	/// @returns {int}  The current frame. Returns 0 if there is no animation playing.
+    static get_current_frame = function() {
+		return is_undefined(currentAnimation) ? 0 : currentAnimation.find_frame(frameCounter);
     };
 	
 	#endregion
@@ -132,75 +123,134 @@ function FrameAnimationPlayer() constructor {
 	/// @desc Sets the time scale of the animation player. Affects the currently playing animation.
 	///
 	/// @param {number}  new_scale  New time scale
+	///
+	/// @returns {FrameAnimationPlayer}  This player. Useful for method chaining.
     static set_time_scale = function(_new_scale) {
-		timeScale.value	= _new_scale;
+		timeScale = max(0, _new_scale);
+		return self;
     };
 	
 	#endregion
 	
-	#region Updaing the current Animation
+	#region Functions - Playing Animations
 	
-	/// @method update()
-	/// @desc Runs through the current animation
-    static update = function() {
-        if (is_undefined(currentAnimation))
+	/// @method play(animation_name, force_play, time_scale)
+	/// @desc Tells the animation player to start playing the given animation.
+	///
+	/// @param {string}  animation_name  The animation to play
+	/// @param {bool}  [force_play]  If true, the animation will play from the beginning, even if it's already the current animation. Defaults to false.
+	/// @param {number}  [time_scale]  Play the animation at a slower/faster speed than what's defined. Defaults to 1, regular speed.
+	///
+	/// @returns {FrameAnimationPlayer}  This player. Useful for method chaining.
+    static play = function(_animName, _force = false, _timeScale = 1) {
+        if (_animName == currentAnimationName && !_force)
             return;
         
-        timeScale.update();
-        animTimer++;
-        flag = "";
+        animTimer = 0;
+        frameCounter = 0;
+        timeScale = _timeScale;
+        loops = 0;
+        __isNewFrame = true;
+        __prevFrame = 0;
         
-        var _ticks = abs(timeScale.integer);
-        if (_ticks <= 0) {
-			__process_animation();
-			return;
+        if (!struct_exists(animationMap, _animName)) {
+			currentAnimation = undefined;
+			currentAnimationName = "";
+			return self;
         }
-		repeat (_ticks)
-			__tick();
-    }
-    
-    /// @method __process_animation()
-	/// @desc Goes throughs the current animations properties & callback.
-    static __process_animation = function() {
-		currentAnimation.run(currentFrame);
-		if (__newFrame)
-			flag = currentAnimation.get_flag(currentFrame);
-		__newFrame = false;
+        
+        currentAnimation = animationMap[$ _animName];
+        currentAnimationName = currentAnimation.id;
+        return self;
     };
     
-    /// @method __tick()
-	/// @desc Represents a tick during the update function
-    static __tick = function() {
-		__process_animation();
-        frameCounter--;
+    /// @method queue(animation_name, time_scale)
+	/// @desc Queues the animation for when the current animation (& prior queued animations) is finished.
+	///		  Note: If the animation doesn't loop, it cannot "finish"
+	///
+	/// @param {string}  animation_name  The animation to queue
+	/// @param {number}  [time_scale]  Play the animation at a slower/faster speed than what's defined. Defaults to 1, regular speed.
+	///
+	/// @returns {FrameAnimationPlayer}  This player. Useful for method chaining.
+    static queue = function(_animName, _timeScale = 1) {
+		if (self.has_animation(_animName))
+			array_push(__queue, _animName, _timeScale);
+		return self;
+    };
+    
+    /// @method update()
+	/// @desc Runs through the current animation
+    static update = function() {
+		if (is_undefined(currentAnimation))
+            return;
         
-        if (frameCounter > 0)
-			return;
-		
-		var _prevFrame = currentFrame;
-		currentFrame++;
-		
-		if (currentFrame >= currentAnimation.frames) {
-			if (currentAnimation.is_looping()) {
-				currentFrame = currentAnimation.resetFrame;
-				loops++;
-			} else {
-				__animFinished = true;
+        var _isStalled = (timeScale == 0),
+			_totalSteps = _isStalled ? 1 : ceil(timeScale),
+			_timeScale = _isStalled ? 0 : timeScale;
+        
+        array_clear(__readFlags);
+        
+        repeat(_totalSteps) {
+			var _step = (_timeScale > 1) ? sign(_timeScale) : _timeScale;
+			
+			if (__isNewFrame && !_isStalled) {
+				var _flag = currentAnimation.get_flag(__prevFrame);
+				if (!string_empty(_flag))
+					array_push(__readFlags, _flag);
 			}
-		}
-        
-        var _remainder = frameCounter;
-		reset_frame_counter();
-		frameCounter += _remainder;
-		
-		__newFrame = (currentAnimation.get_frame(currentFrame) != _prevFrame) && !__animFinished;
+			
+			currentAnimation.seek(frameCounter, __isNewFrame && !_isStalled);
+			animTimer += _step;
+			frameCounter += _step;
+			_timeScale--;
+			
+			if (_isStalled)
+				continue;
+			
+			if (frameCounter >= currentAnimation.duration) {
+				var _overflow = frameCounter - currentAnimation.duration;
+				
+				if (currentAnimation.is_looping()) {
+					frameCounter = currentAnimation.find_frame_start_time(currentAnimation.resetFrame) + _overflow;
+					loops++;
+					
+					__isNewFrame = true;
+					__prevFrame = currentAnimation.resetFrame;
+				} else if (!array_empty(__queue)) {
+					var _nextAnim = array_shift(__queue),
+						_nextTimeScale = array_shift(__queue);
+					self.play(_nextAnim, true, _nextTimeScale);
+					frameCounter += _overflow;
+				} else {
+					frameCounter = currentAnimation.duration;
+				}
+			} else {
+				var _newFrame = currentAnimation.find_frame(frameCounter);
+				__isNewFrame = (__prevFrame != _newFrame);
+				__prevFrame = _newFrame;
+			}
+        }
     };
 	
 	#endregion
-	
-	#region Functions - Other
-	
-	/// @method has_animation(animation_name)
+    
+    #region Functions - Other
+    
+    /// @method change_time_scale(shift)
+	/// @desc Changes the time scale of the animation player by a set amount. Affects the currently playing animation.
+	///
+	/// @param {number}  shift  The amount to change by
+    static change_time_scale = function(_shift) {
+		timeScale = max(0, timeScale + _shift);
+    };
+    
+    /// @method clear_queue()
+	/// @desc Clears the animation queu
+    static clear_queue = function() {
+		array_clear(__queue);
+    }
+    
+    /// @method has_animation(animation_name)
 	/// @desc Checks if the player has the specified animation.
 	///
 	/// @param {string}  animation_name  The animation to check for
@@ -210,51 +260,41 @@ function FrameAnimationPlayer() constructor {
 		return struct_exists(animationMap, _animName);
 	};
 	
-	/// @method is_animation_finished()
-	/// @desc Checks if the current animation has finished.
-	///		  Note: If the animation doesn't loop, it cannot "finish"
+	/// @method has_flag(flag)
+	/// @desc Checks if the player has read a flag from the currently playing animation
 	///
-	/// @returns {bool}  Whether the animation has finished (true) or not (false)
-	static is_animation_finished = function() {
-		return __animFinished;
+	/// @param {string}  flag  The flag to check for
+	///
+	/// @returns {bool}  Whether the flag was read (true) or not (false)
+	static has_flag = function(_flag) {
+		return array_contains(__readFlags, _flag);
 	};
 	
-	/// @method play(animation_name, force_play, time_scale)
-	/// @desc Tells the animation player to start playing the given animation.
+	/// @method is_animation_finished(count_looping)
+	/// @desc Checks if the current animation has finished.
 	///
-	/// @param {string}  animation_name  The animation to play
-	/// @param {bool}  [force_play]  If true, the animation will play from the beginning, even if it's already the current animation. Defaults to false.
-	/// @param {number}  [time_scale]  Play the animation at a slower/faster speed than what's defined. Defaults to 1, regular speed.
-    static play = function(_animName, _force = false, _timeScale = 1) {
-        if (_animName == currentAnimationName && !_force)
-            return;
-        
-        currentFrame = 0;
-        loops = 0;
-        animTimer = 0;
-        timeScale.clear_all();
-        timeScale.value = _timeScale;
-        __newFrame = true;
-        __animFinished = false;
-        
-        if (!struct_exists(animationMap, _animName)) {
-			currentAnimation = undefined;
-			currentAnimationName = "";
-			return;
-        }
-        
-        currentAnimation = animationMap[$ _animName];
-        currentAnimationName = currentAnimation.id;
-        reset_frame_counter();
+	/// @param {bool}  [count_looping]  If true, looping animations will return `true` after looping once
+	///		If false (default), looping animations will always return `false`, since they do not "finish"
+	///
+	/// @returns {bool}  Whether the animation has finished (true) or not (false)
+	static is_animation_finished = function(_countLoop = false) {
+		if (is_undefined(currentAnimation))
+			return true;
+		if (currentAnimation.is_looping())
+			return _countLoop ? (loops > 0) : false;
+		return frameCounter >= currentAnimation.duration;
+	};
+	
+	/// @method reset_frame()
+	/// @desc Resets the `frameCounter` to the start of the current frame.
+    static reset_frame = function() {
+		var _frame = currentAnimation.find_frame(frameCounter);
+		frameCounter = currentAnimation.find_frame_start_time(_frame);
+        __isNewFrame = true;
+		__prevFrame = _frame;
     };
-    
-    /// @method reset_frame_counter()
-	/// @desc Resets the `frameCounter` to the duration of the current frame.
-    static reset_frame_counter = function() {
-        frameCounter = currentAnimation.get_frame_duration(currentFrame);
-    };
-    
-    /// @method transfer_animation(animation)
+	
+	/// @method transfer_animation(animation)
 	/// @desc Transfers an already-existing FrameAnimation into this player
 	///
 	/// @param {FrameAnimation}  animation  The animation to transfer
@@ -264,38 +304,54 @@ function FrameAnimationPlayer() constructor {
 			_anim.add_callback(_anim.callback); // Changes the context of the callback
 		animationMap[$ _anim.id] = _anim;
     };
-	
-	#endregion
+    
+    #endregion
 }
 
-/// @func FrameAnimation()
+/// @func FrameAnimation(id, owner, frames, reset_frame)
 /// @desc Holds data for a specific animation, that will be played by a FrameAnimationPlayer instance.
-///		  No parameters here, since you're expected to create FrameAnimations via the `add` functions on the FrameAnimationPlayer.
-function FrameAnimation() constructor {
+///
+/// @param {string}  id  The name of the animation
+/// @param {instance}  owner  Instance this FrameAnimation is bound to
+/// @param {array<number>}  frames  An array representing the timing of the animation. Each element denotes how long that frame lasts.
+/// @param {int}  [reset_frame]  The frame FrameAnimationPlayer should reset to after reaching the end of this animation. < 0 means the animation doesn't loop.
+function FrameAnimation(_id, _owner, _frames, _resetFrame = 0) constructor {
+	#region Constants (in spirit)
+	
+	static INDEX_NAME = 0;
+	static INDEX_DATASTART = 1;
+	
+	#endregion
+	
 	#region Variables
 	
-    id = "";
-    owner = noone; /// @is {instance}
-    frames = 0;
-    resetFrame = 0; // -1 means the animation doesn't loop
-    frameDurations = []; /// @is {array<number>}
+    id = _id;
+    owner = _owner;
     
-    properties = []; /// @is {array<tuple<number, rest<any>>>}
+    frames = _frames;
+    totalFrames = array_length(_frames);
+    resetFrame = clamp(_resetFrame, -1, totalFrames - 1);
+    
+    duration = array_sum(frames); /// @is {array<number>}
+    timeLookup = self.__init_time_lookup(); /// @is {array<number>}
+    
+    properties = []; // [ [ name, data... ] ... ]
     propertyCount = 0;
     
-    callback = undefined; /// @is {function<int, void>?}
-    
-    flags = []; /// @is {array<string>}
-    __hasFlags = false;
+    flags = array_create(totalFrames);
+    callback = undefined; /// @is {function<int,number,bool,void>?} fn(frame, frame_progress, is_new_frame)
     
     #endregion
     
-    #region Functions - Adding Properies/Callbacks
+    #region Functions - Adding Properties/Callbacks
     
     /// @method add_callback(callback)
-	/// @desc Adds a callback to this animation
+	/// @desc Adds a callback to this animation. If one already exists, the old one is replaced.
 	///
-	/// @param {function<int, void>}  callback  The callback
+	/// @param {function<int,number,bool,void>}  callback  The callback to assign, with the following arguments:
+	///		-- frame: number  - The current frame
+	///		-- frame_progress: number  - Progress within the current frame
+	///		-- is_new_frame: bool  - Whether this should be treated as a new frame (true) or not (false)
 	///
 	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
     static add_callback = function(_callback) {
@@ -304,39 +360,104 @@ function FrameAnimation() constructor {
     };
     
     /// @method add_flag(frame, flag)
-	/// @desc Adds a flag on the specified frame of the animation
+	/// @desc Adds a flag on the specified frame of the animation. If one already exists, the old one is replaced.
 	///
 	/// @param {int}  frame  Which frame of the animation to add the flag to. Will be clamped if out of range
 	/// @param {string}  flag  The flag for the given frame
 	///
 	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
     static add_flag = function(_frame, _flag) {
-		flags[get_frame(_frame)] = _flag;
-		__hasFlags = true;
+		_frame = clamp(_frame, 0, totalFrames - 1);
+		flags[_frame] = _flag;
 		return self;
     };
     
-    /// @method add_property(property, values)
+    /// @method add_property(property, values, lerp_type, ease_type)
 	/// @desc Adds a property of the owner for the animation to update
 	///
 	/// @param {string}  property  The name of the variable on the owner to adjust
-	/// @param {array<any>}  values  The value `property` becomes on each frame of this animation
+	/// @param {array<any>|any}  values  The value `property` becomes on each frame of this animation.
+	///		If supplied as a single value, it will be applied on all frames.
+	///		If the array is smaller than the frame count, the last value is repeated for all remaining frames.
 	///
 	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
     static add_property = function(_property, _values) {
-		var _valuesLength = array_length(_values);
-		if (_valuesLength > frames) {
-			array_resize(_values, frames);
-		} else {
-			while (_valuesLength < frames) {
-				_values[_valuesLength] = _values[_valuesLength - 1];
-				_valuesLength++;
-			}
+		if (!is_array(_values))
+			_values = [_values];
+		
+		var _propertyData = array_create(INDEX_DATASTART + totalFrames);
+		_propertyData[INDEX_NAME] = _property;
+		
+		// Apply the values for the property on each animation frame
+		var _valuesLength = array_length(_values),
+			_thisValue = 0;
+		var i = 0; repeat(totalFrames) {
+			if (i < _valuesLength)
+				_thisValue = _values[i];
+			_propertyData[INDEX_DATASTART + i] = _thisValue;
+			i++;
 		}
 		
-		var _propertyData = array_concat([variable_get_hash(_property)], _values);
-        array_push(properties, _propertyData);
-        propertyCount++;
+		// Check if this property already exists in the animation
+		var _alreadyPresentIndex = undefined;
+		var i = 0; repeat(propertyCount) {
+			if (properties[i][INDEX_NAME] == _propertyData[INDEX_NAME]) {
+				_alreadyPresentIndex = i;
+				break;
+			}
+			i++;
+		}
+		
+		if (is_undefined(_alreadyPresentIndex)) {
+			array_push(properties, _propertyData);
+			propertyCount++;
+		} else {
+			properties[_alreadyPresentIndex] = _propertyData;
+		}
+		
+		return self;
+    };
+    
+    #endregion
+    
+    #region Modifying Properties
+    
+    /// @method remove_property(name)
+	/// @desc Removes an property currently tracked by this animation
+	///
+	/// @param {string}  property  The name of the property
+	///
+	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
+    static remove_property = function(_name) {
+		var i = 0; repeat(propertyCount) {
+			if (properties[i][INDEX_NAME] == _name) {
+				array_delete(properties, i, 1);
+				propertyCount--;
+				break;
+			}
+			i++;
+		}
+		
+        return self;
+    };
+    
+    /// @method rename_property(property, new_name)
+	/// @desc Renames an existing property
+	///
+	/// @param {string}  property  The name of the original variable on the owner
+	/// @param {string}  new_name  The name of the new variable
+	///
+	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
+    static rename_property = function(_property, _newName) {
+		var i = 0; repeat(propertyCount) {
+			var _prop = properties[i];
+			if (_prop[INDEX_NAME] == _property) {
+				_prop[INDEX_NAME] = _newName;
+				break;
+			}
+			i++;
+		}
+		
         return self;
     };
     
@@ -347,70 +468,66 @@ function FrameAnimation() constructor {
     /// @method get_flag(frame)
 	/// @desc Gets the flag set for the specific frame of the animation, if one is set.
 	///
-	/// @param {int}  frame  Which frame of the animation to check. Will be clamped if out of range
+	/// @param {int}  frame  Which frame of the animation to check
 	///
 	/// @returns {string}  The flag for the specified frame. Returns an empty string if the frame has no flag.
     static get_flag = function(_frame) {
-		if (!__hasFlags)
-			return "";
-		
-		var _flag = flags[get_frame(_frame)];
+		var _flag = array_at(flags, _frame) ?? "";
 		return is_string(_flag) ? _flag : "";
-    };
-    
-    /// @method get_frame(frame)
-	/// @desc Gets a specific frame from the animation.
-	///
-	/// @param {int}  frame  Which frame of the animation to get. Will be clamped if out of range
-	///
-	/// @returns {int}  The index of the specified animation
-    static get_frame = function(_frame) {
-		return clamp(_frame, 0, frames - 1);
     };
     
     /// @method get_frame_duration(frame)
 	/// @desc Get the duration of a specific frame of this animation, in in-game frames
 	///
-	/// @param {int}  frame  Which frame of the animation to check. Will be clamped if out of range
+	/// @param {int}  frame  Which frame of the animation to check
 	///
 	/// @returns {number}  The duration of the specified frame
     static get_frame_duration = function(_frame) {
-		return frameDurations[get_frame(_frame)];
+		return array_at(frames, _frame) ?? 0;
     };
     
-    /// @method get_total_duration()
-	/// @desc Get the total duration of this animation, in in-game frames
+    #endregion
+    
+    #region Functions - Finding
+    
+    /// @method find_frame(time)
+	/// @desc Get a frame of the animation, given the time specified
 	///
-	/// @returns {number}  The duration of this animation, in frames
-    static get_total_duration = function() {
-        return array_reduce(frameDurations, function(_prev, _curr, i) /*=>*/ {return _prev + _curr});
+	/// @param {number}  time  How far along the animation to search
+	///
+	/// @returns {int}  The frame within which the specified time lies
+    static find_frame = function(_time) {
+		if (_time <= 0)
+			return 0;
+		if (_time >= duration)
+			return max(0, totalFrames - 1);
+		
+		var i = totalFrames - 1; repeat(totalFrames) {
+			if (_time >= timeLookup[i])
+				return i;
+			i--;
+		}
+		
+		return 0;
+    };
+    
+    /// @method find_frame_start_time(frame)
+	/// @desc Finds the time in the animation the given frame starts at
+	///
+	/// @param {int}  frame  The frame to get the start time for
+	///
+	/// @returns {number}  The time at which the given frame starts
+    static find_frame_start_time = function(_frame) {
+		if (_frame <= 0)
+			return 0;
+		if (_frame >= totalFrames)
+			return duration;
+		return timeLookup[_frame];
     };
     
     #endregion
     
     #region Functions - Other
-    
-    /// @method change_property(property, new_name)
-	/// @desc Swaps out an existing property for a new one
-	///
-	/// @param {string}  property  The name of the original variable on the owner
-	/// @param {string}  new_name  The name of the new variable
-	///
-	/// @returns {FrameAnimation}  This FrameAnimation. Useful for method chaining.
-    static change_property = function(_property, _newName) {
-		var _propertyHashed = variable_get_hash(_property),
-			i = 0;
-		
-		repeat(propertyCount) {
-			if (properties[i][0] == _propertyHashed) {
-				properties[i][0] = variable_get_hash(_newName);
-				break;
-			}
-			i++;
-		}
-		
-        return self;
-    };
     
     /// @method is_looping()
 	/// @desc Returns whether this animation loops or not
@@ -420,18 +537,50 @@ function FrameAnimation() constructor {
 		return resetFrame >= 0;	
     };
     
-    /// @method run(frame)
-	/// @desc Updates the owner's properties, based on the current frame.
-	///		  Also executes the callback, if it's set.
+    /// @method seek(time, is_new_frame)
+	/// @desc Processes the animation at the given point of time
 	///
-	/// @param {int}  frame  Which frame of the animation to use. Will be clamped if out of range
-    static run = function(_frame) {
-		_frame = get_frame(_frame);
-        for (var i = 0; i < propertyCount; i++)
-            struct_set_from_hash(owner, properties[i][0], properties[i][_frame + 1]);
+	/// @param {number}  time  The point of time within the animation
+	/// @param {bool}  is_new_frame  Whether this should be treated as a newly-entered frame (true) or not (false)
+    static seek = function(_time, _isNewFrame) {
+		var _frame = self.find_frame(_time),
+			_frameStartAt = self.find_frame_start_time(_frame),
+			_frameEndAt = _frameStartAt + frames[_frame],
+			_frameProgress = invlerp(_frameStartAt, _frameEndAt, _time);
+		
+		var _nextFrame = _frame + 1;
+		if (_nextFrame >= totalFrames)
+			_nextFrame = self.is_looping() ? resetFrame : _frame;
+		
+		for (var i = 0; i < propertyCount; i++) {
+			var _prop = properties[i],
+				_value = _prop[INDEX_DATASTART + _frame];
+			
+			owner[$ _prop[INDEX_NAME]] = _value;
+		}
         
         if (!is_undefined(callback))
-			callback(_frame);
+			callback(_frame, _frameProgress, _isNewFrame);
+    };
+    
+    /// @method __init_time_lookup()
+	/// @desc Internal function for setting up `timeLookup`
+	///
+	/// @returns {array<number>}
+    static __init_time_lookup = function() {
+		if (totalFrames <= 0)
+			return [];
+		
+		var _timeLookup = array_create(totalFrames),
+			_timeLookupCounter = 0;
+		
+		var i = 0; repeat(totalFrames) {
+			_timeLookup[i] = _timeLookupCounter;
+			_timeLookupCounter += frames[i];
+			i++;
+		}
+		
+		return _timeLookup;
     };
     
     #endregion

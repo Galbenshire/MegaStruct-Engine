@@ -17,7 +17,7 @@
   ],
   "parent":{
     "name":"Nitron",
-    "path":"folders/Enemies/MM3/Nitron.yy",
+    "path":"folders/Entities/Enemies/MM3/Nitron.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -37,11 +37,11 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sightRange","filters":[],"listItems":[],"multiselect":false,"name":"sightRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"72","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"fireHeight","filters":[],"listItems":[],"multiselect":false,"name":"fireHeight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"fireGrowRate","filters":[],"listItems":[],"multiselect":false,"name":"fireGrowRate","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.3","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"firePeakDuration","filters":[],"listItems":[],"multiselect":false,"name":"firePeakDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.1","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"sightRange","filters":[],"listItems":[],"multiselect":false,"name":"sightRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"72","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"fireHeight","filters":[],"listItems":[],"multiselect":false,"name":"fireHeight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"fireGrowRate","filters":[],"listItems":[],"multiselect":false,"name":"fireGrowRate","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.3","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"firePeakDuration","filters":[],"listItems":[],"multiselect":false,"name":"firePeakDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.1","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

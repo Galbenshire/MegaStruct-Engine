@@ -12,7 +12,7 @@
   ],
   "parent":{
     "name":"Met",
-    "path":"folders/Enemies/MM1/Met.yy",
+    "path":"folders/Entities/Enemies/MM1/Met.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -32,7 +32,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"sightRange","filters":[],"listItems":[],"multiselect":false,"name":"sightRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"64","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"sightRange","filters":[],"listItems":[],"multiselect":false,"name":"sightRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"64","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -18,7 +18,7 @@
   ],
   "parent":{
     "name":"Pierobot",
-    "path":"folders/Enemies/MM2/Pierobot.yy",
+    "path":"folders/Entities/Enemies/MM2/Pierobot.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -43,8 +43,8 @@
   ],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.15","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"maxGearBounces","filters":[],"listItems":[],"multiselect":false,"name":"maxGearBounces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.15","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"maxGearBounces","filters":[],"listItems":[],"multiselect":false,"name":"maxGearBounces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

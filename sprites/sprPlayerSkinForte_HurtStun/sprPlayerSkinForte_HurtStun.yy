@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinForte_HurtStun",
   "bboxMode":0,
   "bbox_bottom":29,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"6e415d0e-13a0-4b0f-96ee-451be28dd926","name":"6e415d0e-13a0-4b0f-96ee-451be28dd926","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"fbda9909-64a5-46fd-872c-7b41afc5fa4c","name":"fbda9909-64a5-46fd-872c-7b41afc5fa4c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6e415d0e-13a0-4b0f-96ee-451be28dd926","name":"6e415d0e-13a0-4b0f-96ee-451be28dd926","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"fbda9909-64a5-46fd-872c-7b41afc5fa4c","name":"fbda9909-64a5-46fd-872c-7b41afc5fa4c","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Bass/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Bass/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

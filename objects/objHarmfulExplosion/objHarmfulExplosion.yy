@@ -13,7 +13,7 @@
   ],
   "parent":{
     "name":"Enemies",
-    "path":"folders/Enemies.yy",
+    "path":"folders/Entities/Enemies.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",
@@ -33,8 +33,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.3","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"damageDisablePoint","filters":[],"listItems":[],"multiselect":false,"name":"damageDisablePoint","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"6","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.3","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"damageDisablePoint","filters":[],"listItems":[],"multiselect":false,"name":"damageDisablePoint","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"6","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

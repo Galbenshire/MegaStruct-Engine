@@ -30,8 +30,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"playProtoWhistle","filters":[],"listItems":[],"multiselect":false,"name":"playProtoWhistle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-    {"$GMObjectProperty":"v1","%Name":"whistleSFX","filters":[
+    {"$GMObjectProperty":"v2","%Name":"playProtoWhistle","filters":[],"listItems":[],"multiselect":false,"name":"playProtoWhistle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"whistleSFX","filters":[
         "GMSound",
       ],"listItems":[],"multiselect":false,"name":"whistleSFX","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"sfxProtoWhistle","path":"sounds/sfxProtoWhistle/sfxProtoWhistle.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"sfxProtoWhistle","varType":5,},
   ],

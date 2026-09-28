@@ -16,7 +16,7 @@
   ],
   "parent":{
     "name":"Yambow",
-    "path":"folders/Enemies/MM3/Yambow.yy",
+    "path":"folders/Entities/Enemies/MM3/Yambow.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -36,11 +36,11 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"activateRange","filters":[],"listItems":[],"multiselect":false,"name":"activateRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"96","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3.5","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"behindOffset","filters":[],"listItems":[],"multiselect":false,"name":"behindOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"32","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"initialDropHeight","filters":[],"listItems":[],"multiselect":false,"name":"initialDropHeight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"64","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"animSpeed","filters":[],"listItems":[],"multiselect":false,"name":"animSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"activateRange","filters":[],"listItems":[],"multiselect":false,"name":"activateRange","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"96","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"moveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"moveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3.5","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"behindOffset","filters":[],"listItems":[],"multiselect":false,"name":"behindOffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"32","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"initialDropHeight","filters":[],"listItems":[],"multiselect":false,"name":"initialDropHeight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"64","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

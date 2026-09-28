@@ -29,7 +29,7 @@ function Weapon_IceSlasher() : Weapon() constructor {
 			object: objIceSlasher,
 			limit: 2,
 			cost: 1,
-			shootAnimation: PlayerStandardAnimationSubType.SHOOT,
+			shootAnimation: PlayerShootType.SHOOT,
 			autoShootDelay: 14
 		});
 		

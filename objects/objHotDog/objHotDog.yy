@@ -33,7 +33,7 @@
   ],
   "parent":{
     "name":"Hot Dog",
-    "path":"folders/Midbosses/Hot Dog.yy",
+    "path":"folders/Entities/Midbosses/Hot Dog.yy",
   },
   "parentObjectId":{
     "name":"prtBoss",

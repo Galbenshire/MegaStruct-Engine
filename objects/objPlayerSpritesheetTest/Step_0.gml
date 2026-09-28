@@ -1,16 +1,25 @@
-var _xDir = keyboard_check_pressed(vk_numpad6) - keyboard_check_pressed(vk_numpad4);
-if (_xDir != 0)
-    cellX = modf(cellX + _xDir, global.spriteAtlas_Player.columns);
+var _charDir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
+if (_charDir != 0) {
+    characterIndex = modf(characterIndex + _charDir, CharacterType.COUNT);
+    currentCharacter = characterList[characterIndex];
+}
 
-var _yDir = keyboard_check_pressed(vk_numpad2) - keyboard_check_pressed(vk_numpad8);
-if (_yDir != 0)
-    cellY = modf(cellY + _yDir, global.spriteAtlas_Player.rows);
+var _spriteDir = inputs.is_pressed(InputActions.DOWN) - inputs.is_pressed(InputActions.UP);
+if (_spriteDir != 0) {
+    var _prevSprite = playerSprite;
+    playerSprite = modf(playerSprite + _spriteDir, PlayerSpriteType.COUNT);
+    playerImgIndex = 0;
+    if (playerSprite >= PlayerSpriteType.COUNT_STANDARD || _prevSprite >= PlayerSpriteType.COUNT_STANDARD)
+        playerShootType = PlayerShootType.IDLE;
+}
 
-var _sDir = keyboard_check_pressed(vk_numpad3) - keyboard_check_pressed(vk_numpad9);
-if (_sDir != 0)
-    cellPage = modf(cellPage + _sDir, sprite_get_number(global.spriteAtlas_Player.sprite));
-
-if (global.roomTimer & 1) {
-    gunX += keyboard_check(ord("D")) - keyboard_check(ord("A"));
-    gunY += keyboard_check(ord("S")) - keyboard_check(ord("W"));
+var _frameDir = inputs.is_pressed(InputActions.RIGHT) - inputs.is_pressed(InputActions.LEFT);
+if (_frameDir != 0) {
+    if (inputs.is_held(InputActions.SLIDE)) {
+        playerShootType += _frameDir;
+        if (playerSprite < PlayerSpriteType.COUNT_STANDARD)
+            playerShootType = modf(playerShootType, PlayerShootType.COUNT);
+    } else {
+        playerImgIndex = modf(playerImgIndex + _frameDir, currentCharacter.get_sprite_frame_count(playerSprite));
+    }
 }

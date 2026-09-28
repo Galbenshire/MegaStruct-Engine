@@ -29,21 +29,21 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"offsetXAbsolute","filters":[],"listItems":[],"multiselect":false,"name":"offsetXAbsolute","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"offsetYAbsolute","filters":[],"listItems":[],"multiselect":false,"name":"offsetYAbsolute","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"offsetXRelative","filters":[],"listItems":[],"multiselect":false,"name":"offsetXRelative","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"offsetYRelative","filters":[],"listItems":[],"multiselect":false,"name":"offsetYRelative","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"areaLeft","filters":[],"listItems":[],"multiselect":false,"name":"areaLeft","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"areaTop","filters":[],"listItems":[],"multiselect":false,"name":"areaTop","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"areaRight","filters":[],"listItems":[],"multiselect":false,"name":"areaRight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"areaBottom","filters":[],"listItems":[],"multiselect":false,"name":"areaBottom","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"alignX","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"offsetXAbsolute","filters":[],"listItems":[],"multiselect":false,"name":"offsetXAbsolute","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"offsetYAbsolute","filters":[],"listItems":[],"multiselect":false,"name":"offsetYAbsolute","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"offsetXRelative","filters":[],"listItems":[],"multiselect":false,"name":"offsetXRelative","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"offsetYRelative","filters":[],"listItems":[],"multiselect":false,"name":"offsetYRelative","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"areaLeft","filters":[],"listItems":[],"multiselect":false,"name":"areaLeft","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"areaTop","filters":[],"listItems":[],"multiselect":false,"name":"areaTop","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"areaRight","filters":[],"listItems":[],"multiselect":false,"name":"areaRight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"areaBottom","filters":[],"listItems":[],"multiselect":false,"name":"areaBottom","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"USE_SECTION_EDGE","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"alignX","filters":[],"listItems":[
         "\"No Align\"",
         "\"Left\"",
         "\"Center\"",
         "\"Right\"",
       ],"multiselect":false,"name":"alignX","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"No Align\"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"alignY","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"alignY","filters":[],"listItems":[
         "\"No Align\"",
         "\"Top\"",
         "\"Center\"",

@@ -12,7 +12,7 @@
   ],
   "parent":{
     "name":"Mole",
-    "path":"folders/Enemies/MM2/Mole.yy",
+    "path":"folders/Entities/Enemies/MM2/Mole.yy",
   },
   "parentObjectId":{
     "name":"prtEffect",

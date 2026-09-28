@@ -13,7 +13,7 @@
   ],
   "parent":{
     "name":"Gemini Man",
-    "path":"folders/Bosses/Gemini Man.yy",
+    "path":"folders/Entities/Bosses/Gemini Man.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",
@@ -33,7 +33,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"maxBounces","filters":[],"listItems":[],"multiselect":false,"name":"maxBounces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"maxBounces","filters":[],"listItems":[],"multiselect":false,"name":"maxBounces","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

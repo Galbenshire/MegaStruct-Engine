@@ -16,7 +16,7 @@
   ],
   "parent":{
     "name":"Beak",
-    "path":"folders/Enemies/MM1/Beak.yy",
+    "path":"folders/Entities/Enemies/MM1/Beak.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -36,14 +36,14 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"colourPreset","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"colourPreset","filters":[],"listItems":[
         "\"Red\"",
         "\"Orange\"",
         "\"Blue\"",
         "\"Custom\"",
       ],"multiselect":false,"name":"colourPreset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"Red\"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
-    {"$GMObjectProperty":"v1","%Name":"startTimerAt","filters":[],"listItems":[],"multiselect":false,"name":"startTimerAt","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"startTimerAt","filters":[],"listItems":[],"multiselect":false,"name":"startTimerAt","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

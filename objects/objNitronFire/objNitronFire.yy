@@ -14,7 +14,7 @@
   ],
   "parent":{
     "name":"Nitron",
-    "path":"folders/Enemies/MM3/Nitron.yy",
+    "path":"folders/Entities/Enemies/MM3/Nitron.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",
@@ -34,9 +34,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"maxHeight","filters":[],"listItems":[],"multiselect":false,"name":"maxHeight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":1,},
-    {"$GMObjectProperty":"v1","%Name":"growRate","filters":[],"listItems":[],"multiselect":false,"name":"growRate","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.3","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"peakDuration","filters":[],"listItems":[],"multiselect":false,"name":"peakDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"maxHeight","filters":[],"listItems":[],"multiselect":false,"name":"maxHeight","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"5","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"growRate","filters":[],"listItems":[],"multiselect":false,"name":"growRate","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.3","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"peakDuration","filters":[],"listItems":[],"multiselect":false,"name":"peakDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"40","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

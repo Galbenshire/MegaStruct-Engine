@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBeak",
   "bboxMode":2,
   "bbox_bottom":15,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"da8ec26b-a824-4224-ad3e-8bb25d1e6a7b","name":"da8ec26b-a824-4224-ad3e-8bb25d1e6a7b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"64bfba5a-23fa-427b-815f-3e16051c79b6","name":"64bfba5a-23fa-427b-815f-3e16051c79b6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"bdbf9c37-d8af-4bab-b540-981e89d792ec","name":"bdbf9c37-d8af-4bab-b540-981e89d792ec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e2df0be3-3dbb-4eee-8409-08f9a36c0754","name":"e2df0be3-3dbb-4eee-8409-08f9a36c0754","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"da8ec26b-a824-4224-ad3e-8bb25d1e6a7b","name":"da8ec26b-a824-4224-ad3e-8bb25d1e6a7b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"64bfba5a-23fa-427b-815f-3e16051c79b6","name":"64bfba5a-23fa-427b-815f-3e16051c79b6","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"bdbf9c37-d8af-4bab-b540-981e89d792ec","name":"bdbf9c37-d8af-4bab-b540-981e89d792ec","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e2df0be3-3dbb-4eee-8409-08f9a36c0754","name":"e2df0be3-3dbb-4eee-8409-08f9a36c0754","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -48,7 +48,7 @@
   "origin":0,
   "parent":{
     "name":"Beak",
-    "path":"folders/Enemies/MM1/Beak.yy",
+    "path":"folders/Entities/Enemies/MM1/Beak.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

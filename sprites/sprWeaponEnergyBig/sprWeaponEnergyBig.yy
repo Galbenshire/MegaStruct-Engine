@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprWeaponEnergyBig",
   "bboxMode":2,
   "bbox_bottom":10,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"eed1d15a-f81d-483f-a93b-f1f83009a90a","name":"eed1d15a-f81d-483f-a93b-f1f83009a90a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"91d4f57e-f699-4bbb-ba2d-950437caa4ca","name":"91d4f57e-f699-4bbb-ba2d-950437caa4ca","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"eed1d15a-f81d-483f-a93b-f1f83009a90a","name":"eed1d15a-f81d-483f-a93b-f1f83009a90a","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"91d4f57e-f699-4bbb-ba2d-950437caa4ca","name":"91d4f57e-f699-4bbb-ba2d-950437caa4ca","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Items/Sprites.yy",
+    "path":"folders/Entities/Items/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

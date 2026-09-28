@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprHotDogTeleport",
   "bboxMode":2,
   "bbox_bottom":78,
@@ -12,9 +12,9 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"acf01dad-18c5-4b2e-8e3f-92ea24d18a0b","name":"acf01dad-18c5-4b2e-8e3f-92ea24d18a0b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"489342b2-1a0b-4acb-95b4-9098cfc5c7d1","name":"489342b2-1a0b-4acb-95b4-9098cfc5c7d1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"c7f42812-df04-40fb-872c-0a23fb63d19b","name":"c7f42812-df04-40fb-872c-0a23fb63d19b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"acf01dad-18c5-4b2e-8e3f-92ea24d18a0b","name":"acf01dad-18c5-4b2e-8e3f-92ea24d18a0b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"489342b2-1a0b-4acb-95b4-9098cfc5c7d1","name":"489342b2-1a0b-4acb-95b4-9098cfc5c7d1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c7f42812-df04-40fb-872c-0a23fb63d19b","name":"c7f42812-df04-40fb-872c-0a23fb63d19b","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -28,7 +28,7 @@
   "origin":4,
   "parent":{
     "name":"Hot Dog",
-    "path":"folders/Midbosses/Hot Dog.yy",
+    "path":"folders/Entities/Midbosses/Hot Dog.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
@@ -70,9 +70,15 @@
     "timeUnits":1,
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"acf01dad-18c5-4b2e-8e3f-92ea24d18a0b","path":"sprites/sprHotDogTeleport/sprHotDogTeleport.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"6dd77fc3-ed45-40e3-aa1e-6b1132778f40","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"489342b2-1a0b-4acb-95b4-9098cfc5c7d1","path":"sprites/sprHotDogTeleport/sprHotDogTeleport.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"7f5fb953-33e8-4080-a941-8dafaf5d4ab3","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
-            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{"0":{"$SpriteFrameKeyframe":"","Id":{"name":"c7f42812-df04-40fb-872c-0a23fb63d19b","path":"sprites/sprHotDogTeleport/sprHotDogTeleport.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},},"Disabled":false,"id":"49f6bfa9-6ceb-4319-b699-9aa0c1735cbe","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"acf01dad-18c5-4b2e-8e3f-92ea24d18a0b","path":"sprites/sprHotDogTeleport/sprHotDogTeleport.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"6dd77fc3-ed45-40e3-aa1e-6b1132778f40","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"489342b2-1a0b-4acb-95b4-9098cfc5c7d1","path":"sprites/sprHotDogTeleport/sprHotDogTeleport.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"7f5fb953-33e8-4080-a941-8dafaf5d4ab3","IsCreationKey":false,"Key":1.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
+            {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"c7f42812-df04-40fb-872c-0a23fb63d19b","path":"sprites/sprHotDogTeleport/sprHotDogTeleport.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+              },"Disabled":false,"id":"49f6bfa9-6ceb-4319-b699-9aa0c1735cbe","IsCreationKey":false,"Key":2.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,

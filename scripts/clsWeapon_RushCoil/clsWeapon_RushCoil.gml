@@ -30,7 +30,7 @@ function Weapon_RushCoil() : Weapon() constructor {
 				object: objRushTeleport,
 				limit: 1,
 				cost: 0,
-				shootAnimation: PlayerStandardAnimationSubType.IDLE,
+				shootAnimation: PlayerShootType.IDLE,
 				offsetX: 20,
 				projParams: {
 					teleportObject: objRushCoil
@@ -51,7 +51,7 @@ function Weapon_RushCoil() : Weapon() constructor {
 				object: objBusterShot,
 				limit: 4,
 				cost: 0,
-				shootAnimation: PlayerStandardAnimationSubType.SHOOT,
+				shootAnimation: PlayerShootType.SHOOT,
 				autoShootDelay: 8
 			});
 			

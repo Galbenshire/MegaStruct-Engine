@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprSpringHead",
   "bboxMode":0,
   "bbox_bottom":31,
@@ -12,11 +12,11 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"bd85a185-9bff-4f2f-b0b8-2df9b26f4dfd","name":"bd85a185-9bff-4f2f-b0b8-2df9b26f4dfd","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"e5f58c39-15f0-4aa5-90f7-9f72b5362a58","name":"e5f58c39-15f0-4aa5-90f7-9f72b5362a58","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"8b63a204-083e-4d57-b6f3-6c30306b5d40","name":"8b63a204-083e-4d57-b6f3-6c30306b5d40","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"f9c004a0-3fdd-4a66-9484-eab9bea75765","name":"f9c004a0-3fdd-4a66-9484-eab9bea75765","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"c73817dd-153a-49f8-aeba-f127737acac5","name":"c73817dd-153a-49f8-aeba-f127737acac5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"bd85a185-9bff-4f2f-b0b8-2df9b26f4dfd","name":"bd85a185-9bff-4f2f-b0b8-2df9b26f4dfd","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e5f58c39-15f0-4aa5-90f7-9f72b5362a58","name":"e5f58c39-15f0-4aa5-90f7-9f72b5362a58","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"8b63a204-083e-4d57-b6f3-6c30306b5d40","name":"8b63a204-083e-4d57-b6f3-6c30306b5d40","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"f9c004a0-3fdd-4a66-9484-eab9bea75765","name":"f9c004a0-3fdd-4a66-9484-eab9bea75765","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c73817dd-153a-49f8-aeba-f127737acac5","name":"c73817dd-153a-49f8-aeba-f127737acac5","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -30,7 +30,7 @@
   "origin":7,
   "parent":{
     "name":"Spring Head",
-    "path":"folders/Enemies/MM2/Spring Head.yy",
+    "path":"folders/Entities/Enemies/MM2/Spring Head.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

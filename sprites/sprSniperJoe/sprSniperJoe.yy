@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprSniperJoe",
   "bboxMode":2,
   "bbox_bottom":22,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"4842d7b9-f7d6-4f6c-8c89-4683eeaf5ae8","name":"4842d7b9-f7d6-4f6c-8c89-4683eeaf5ae8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"7caca2a4-c3ed-4e69-a73d-90150f5c6628","name":"7caca2a4-c3ed-4e69-a73d-90150f5c6628","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"4842d7b9-f7d6-4f6c-8c89-4683eeaf5ae8","name":"4842d7b9-f7d6-4f6c-8c89-4683eeaf5ae8","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"7caca2a4-c3ed-4e69-a73d-90150f5c6628","name":"7caca2a4-c3ed-4e69-a73d-90150f5c6628","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Sniper Joe",
-    "path":"folders/Enemies/MM2/Sniper Joe.yy",
+    "path":"folders/Entities/Enemies/MM2/Sniper Joe.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

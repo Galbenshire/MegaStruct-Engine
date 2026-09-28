@@ -26,7 +26,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"solidType","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"solidType","filters":[],"listItems":[
         "SolidType.NOT_SOLID",
         "SolidType.SOLID",
         "SolidType.TOP_SOLID",

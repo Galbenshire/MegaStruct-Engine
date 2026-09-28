@@ -456,12 +456,10 @@ with (stateMachine.add("Debug_FreeMovement")) {
 		
 		var _cellDir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
 		if (_cellDir != 0) {
-			if (inputs.is_held(InputActions.SHOOT))
-				skinPage = modf(skinPage + _cellDir, PlayerSpritesheetPage.COUNT);
-			else if (inputs.is_held(InputActions.SLIDE))
-				skinCellY = modf(skinCellY + _cellDir, global.spriteAtlas_Player.rows);
+			if (inputs.is_held(InputActions.SLIDE))
+				skinSprite = modf(skinSprite + _cellDir, PlayerSpriteType.COUNT);
 			else
-				skinCellX = modf(skinCellX + _cellDir, global.spriteAtlas_Player.columns);
+				skinIndex += _cellDir;
 		}
 		
 		if (stateMachine.timer mod 4 == 0) {

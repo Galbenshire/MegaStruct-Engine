@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"bgCutMan",
   "bboxMode":0,
   "bbox_bottom":67,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"b9c177d5-79ac-4e64-b0b9-3f34d37aa007","name":"b9c177d5-79ac-4e64-b0b9-3f34d37aa007","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"b9c177d5-79ac-4e64-b0b9-3f34d37aa007","name":"b9c177d5-79ac-4e64-b0b9-3f34d37aa007","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

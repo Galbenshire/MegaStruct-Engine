@@ -29,7 +29,7 @@ function Weapon_SearchSnake() : Weapon() constructor {
 			object: objSearchSnake,
 			limit: 3,
 			cost: 0.5,
-			shootAnimation: PlayerStandardAnimationSubType.SHOOT,
+			shootAnimation: PlayerShootType.SHOOT,
 			autoShootDelay: 10
 		});
 		

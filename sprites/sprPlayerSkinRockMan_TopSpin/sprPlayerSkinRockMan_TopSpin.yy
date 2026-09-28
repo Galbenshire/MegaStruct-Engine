@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprPlayerSkinRockMan_TopSpin",
   "bboxMode":0,
   "bbox_bottom":29,
@@ -12,10 +12,10 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"e3b145cb-5f77-42d0-b598-1ad67b7c5007","name":"e3b145cb-5f77-42d0-b598-1ad67b7c5007","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"dd7e13e9-d16c-4c20-bad7-86960a164067","name":"dd7e13e9-d16c-4c20-bad7-86960a164067","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"be008703-944d-4871-9aa0-6b2722203ae1","name":"be008703-944d-4871-9aa0-6b2722203ae1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"ba301851-27e4-4193-a323-afd752b37099","name":"ba301851-27e4-4193-a323-afd752b37099","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"e3b145cb-5f77-42d0-b598-1ad67b7c5007","name":"e3b145cb-5f77-42d0-b598-1ad67b7c5007","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"dd7e13e9-d16c-4c20-bad7-86960a164067","name":"dd7e13e9-d16c-4c20-bad7-86960a164067","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"be008703-944d-4871-9aa0-6b2722203ae1","name":"be008703-944d-4871-9aa0-6b2722203ae1","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"ba301851-27e4-4193-a323-afd752b37099","name":"ba301851-27e4-4193-a323-afd752b37099","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -29,7 +29,7 @@
   "origin":9,
   "parent":{
     "name":"Sprites",
-    "path":"folders/Playable Characters/Mega Man/Sprites.yy",
+    "path":"folders/Entities/Playable Characters/Mega Man/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

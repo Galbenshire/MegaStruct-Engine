@@ -38,7 +38,7 @@ slideBoostActive = false;
 
 // Shooting
 shootTimer = 0;
-shootAnimation = PlayerStandardAnimationSubType.IDLE;
+shootType = PlayerShootType.IDLE;
 autoFireTimer = 0;
 
 // Weapon Switching
@@ -51,9 +51,9 @@ canDieToPits = true;
 diedToAPit = false;
 
 // Player Sprite
-skinSprite = PlayerAnimationType.STANDARD;
+skinSprite = PlayerSpriteType.IDLE;
 skinIndex = 0;
-skinLastStandardFrame = 0;
+skinOffset = 0;
 
 // Palette
 palette = new ColourPalette(characterSpecs.get_player_colours());

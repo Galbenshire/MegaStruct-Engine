@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprMet",
   "bboxMode":2,
   "bbox_bottom":13,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"070d5323-d909-484b-b9fc-ff8b79045005","name":"070d5323-d909-484b-b9fc-ff8b79045005","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"964ac263-c7a6-4911-a948-ef8182373135","name":"964ac263-c7a6-4911-a948-ef8182373135","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"070d5323-d909-484b-b9fc-ff8b79045005","name":"070d5323-d909-484b-b9fc-ff8b79045005","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"964ac263-c7a6-4911-a948-ef8182373135","name":"964ac263-c7a6-4911-a948-ef8182373135","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":9,
   "parent":{
     "name":"Met",
-    "path":"folders/Enemies/MM1/Met.yy",
+    "path":"folders/Entities/Enemies/MM1/Met.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

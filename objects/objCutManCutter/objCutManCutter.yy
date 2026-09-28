@@ -14,7 +14,7 @@
   ],
   "parent":{
     "name":"Cut Man",
-    "path":"folders/Bosses/Cut Man.yy",
+    "path":"folders/Entities/Bosses/Cut Man.yy",
   },
   "parentObjectId":{
     "name":"prtProjectile",

@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprProtoShotHalfCharge",
   "bboxMode":0,
   "bbox_bottom":9,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"171e51bf-27f9-4ed3-bd6b-07bc26be6618","name":"171e51bf-27f9-4ed3-bd6b-07bc26be6618","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"171e51bf-27f9-4ed3-bd6b-07bc26be6618","name":"171e51bf-27f9-4ed3-bd6b-07bc26be6618","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

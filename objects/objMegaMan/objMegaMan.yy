@@ -9,7 +9,7 @@
   ],
   "parent":{
     "name":"Mega Man",
-    "path":"folders/Playable Characters/Mega Man.yy",
+    "path":"folders/Entities/Playable Characters/Mega Man.yy",
   },
   "parentObjectId":{
     "name":"prtPlayer",

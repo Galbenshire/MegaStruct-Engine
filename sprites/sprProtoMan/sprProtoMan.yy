@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprProtoMan",
   "bboxMode":0,
   "bbox_bottom":23,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"60b31ad8-96cf-49c4-b3ed-0872b2dac9bc","name":"60b31ad8-96cf-49c4-b3ed-0872b2dac9bc","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"60b31ad8-96cf-49c4-b3ed-0872b2dac9bc","name":"60b31ad8-96cf-49c4-b3ed-0872b2dac9bc","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -26,7 +26,7 @@
   "origin":9,
   "parent":{
     "name":"Proto Man",
-    "path":"folders/Playable Characters/Proto Man.yy",
+    "path":"folders/Entities/Playable Characters/Proto Man.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

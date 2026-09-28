@@ -31,7 +31,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"nextRoom","filters":[
+    {"$GMObjectProperty":"v2","%Name":"nextRoom","filters":[
         "GMRoom",
       ],"listItems":[],"multiselect":false,"name":"nextRoom","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"rmTitleScreen","path":"rooms/rmTitleScreen/rmTitleScreen.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"rmTitleScreen","varType":5,},
   ],

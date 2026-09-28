@@ -17,7 +17,7 @@
   ],
   "parent":{
     "name":"Spring Head",
-    "path":"folders/Enemies/MM2/Spring Head.yy",
+    "path":"folders/Entities/Enemies/MM2/Spring Head.yy",
   },
   "parentObjectId":{
     "name":"prtEntity",
@@ -37,14 +37,14 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"slowSpeed","filters":[],"listItems":[],"multiselect":false,"name":"slowSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"fastSpeed","filters":[],"listItems":[],"multiselect":false,"name":"fastSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
-    {"$GMObjectProperty":"v1","%Name":"colourPreset","filters":[],"listItems":[
+    {"$GMObjectProperty":"v2","%Name":"slowSpeed","filters":[],"listItems":[],"multiselect":false,"name":"slowSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.25","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"fastSpeed","filters":[],"listItems":[],"multiselect":false,"name":"fastSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"colourPreset","filters":[],"listItems":[
         "\"Blue\"",
         "\"Grey\"",
         "\"Custom\"",
       ],"multiselect":false,"name":"colourPreset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"Blue\"","varType":6,},
-    {"$GMObjectProperty":"v1","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"customColour","filters":[],"listItems":[],"multiselect":false,"name":"customColour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

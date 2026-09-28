@@ -1,3 +1,9 @@
+// NOTE: These are not ALL the macros currently in the engine.
+// There are macros that are more closely tied to specific classes in the system
+//
+// See Also:
+// - Character
+
 #region _Engine Configurations
 
 #macro DEBUG_ENABLED true // Enables various debug keys & features (should be false for a release build)
@@ -46,21 +52,6 @@ enum ColourReplacerMode {
 }
 
 #macro COLOUR_REPLACER_MAX_COLOURS 32
-
-#endregion
-
-
-#region Characters
-
-// All playable characters available in this engine
-
-enum CharacterType {
-	MEGA,
-	PROTO,
-	BASS,
-	
-	COUNT
-}
 
 #endregion
 
@@ -346,11 +337,16 @@ enum PlayerAction {
 
 // Animation Enums
 
-enum PlayerAnimationType {
+enum PlayerSpriteType {
 	// The Main Ones
-	STANDARD,
-	HURTSTUN,
-	TELEPORT,
+	IDLE,
+	SIDESTEP,
+	WALK,
+	JUMP,
+	FALL,
+	SLIDE,
+	CLIMB,
+	CLIMB_TOP,
 	
 	// Weapons
 	BREAK_DASH,
@@ -358,15 +354,26 @@ enum PlayerAnimationType {
 	TENGU_BLADE,
 	TOP_SPIN,
 	
+	// Utilities
+	COIL,
+	JET,
+	
 	// Misc. Actions
+	HURTSTUN,
+	TELEPORT,
 	TORNADO_BATTERY,
 	TURNAROUND,
 	WAVE_BIKE,
 	
-	COUNT
+	// Indirect Sprites
+	LIFE,
+	MUGSHOT,
+	
+	COUNT,
+	COUNT_STANDARD = PlayerSpriteType.CLIMB_TOP + 1
 }
 
-enum PlayerStandardAnimationSubType {
+enum PlayerShootType {
 	IDLE,
 	SHOOT,
 	THROW,
@@ -374,20 +381,10 @@ enum PlayerStandardAnimationSubType {
 	SHOOT_DIAGONAL_UP,
 	SHOOT_DIAGONAL_DOWN,
 	SUPER_ARM,
-	WIRE_ADAPTOR,
+	LOOKUP,
 	
 	COUNT
 }
-
-// Standard Animation Key Frames
-#macro PLAYER_ANIM_FRAME_IDLE 0
-#macro PLAYER_ANIM_FRAME_SIDESTEP 2
-#macro PLAYER_ANIM_FRAME_WALK 3
-#macro PLAYER_ANIM_FRAME_JUMP 7
-#macro PLAYER_ANIM_FRAME_FALL 9
-#macro PLAYER_ANIM_FRAME_SLIDE 11
-#macro PLAYER_ANIM_FRAME_CLIMB 13
-#macro PLAYER_STANDARD_FRAME_COUNT 16
 
 // Player Physics
 #macro COYOTE_FALL_BUFFER 4

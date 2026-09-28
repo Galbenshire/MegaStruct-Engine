@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"bgGeminiManAnimated_0",
   "bboxMode":0,
   "bbox_bottom":134,
@@ -12,7 +12,7 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"c025071a-3e19-40ea-98b4-9625fd8d9e9d","name":"c025071a-3e19-40ea-98b4-9625fd8d9e9d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"c025071a-3e19-40ea-98b4-9625fd8d9e9d","name":"c025071a-3e19-40ea-98b4-9625fd8d9e9d","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,

@@ -1,5 +1,5 @@
 {
-  "$GMSprite":"",
+  "$GMSprite":"v2",
   "%Name":"sprBeakBullet",
   "bboxMode":2,
   "bbox_bottom":4,
@@ -12,8 +12,8 @@
   "edgeFiltering":false,
   "For3D":false,
   "frames":[
-    {"$GMSpriteFrame":"","%Name":"6696ec05-9261-44df-9746-33a34dcc7a6f","name":"6696ec05-9261-44df-9746-33a34dcc7a6f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
-    {"$GMSpriteFrame":"","%Name":"1926a320-3f20-4d93-82ac-56145e243afe","name":"1926a320-3f20-4d93-82ac-56145e243afe","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"6696ec05-9261-44df-9746-33a34dcc7a6f","name":"6696ec05-9261-44df-9746-33a34dcc7a6f","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
+    {"$GMSpriteFrame":"v1","%Name":"1926a320-3f20-4d93-82ac-56145e243afe","name":"1926a320-3f20-4d93-82ac-56145e243afe","resourceType":"GMSpriteFrame","resourceVersion":"2.0",},
   ],
   "gridX":0,
   "gridY":0,
@@ -27,7 +27,7 @@
   "origin":4,
   "parent":{
     "name":"Beak",
-    "path":"folders/Enemies/MM1/Beak.yy",
+    "path":"folders/Entities/Enemies/MM1/Beak.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

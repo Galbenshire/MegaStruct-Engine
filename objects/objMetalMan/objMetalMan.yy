@@ -21,7 +21,7 @@
   ],
   "parent":{
     "name":"Metal Man",
-    "path":"folders/Bosses/Metal Man.yy",
+    "path":"folders/Entities/Bosses/Metal Man.yy",
   },
   "parentObjectId":{
     "name":"prtBoss",
@@ -41,7 +41,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v1","%Name":"conveyorSwitchInterval","filters":[],"listItems":[],"multiselect":false,"name":"conveyorSwitchInterval","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"420","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"conveyorSwitchInterval","filters":[],"listItems":[],"multiselect":false,"name":"conveyorSwitchInterval","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"420","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

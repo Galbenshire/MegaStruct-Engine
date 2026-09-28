@@ -6,7 +6,7 @@
   "name":"clsCharacter_Bass",
   "parent":{
     "name":"Bass",
-    "path":"folders/Playable Characters/Bass.yy",
+    "path":"folders/Entities/Playable Characters/Bass.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

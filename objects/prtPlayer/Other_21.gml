@@ -68,14 +68,13 @@
 		if (self.is_action_locked(PlayerAction.SPRITE_CHANGE))
 			return;
 		
-		skinSprite = PlayerAnimationType.STANDARD;
+		skinSprite = PlayerSpriteType.IDLE;
 		skinIndex = 0;
+		skinOffset = 0;
 		animator.update();
 		
-		if (skinSprite == PlayerAnimationType.STANDARD) {
-			skinLastStandardFrame = skinIndex;
-			skinIndex += shootAnimation * PLAYER_STANDARD_FRAME_COUNT;
-		}
+		if (skinSprite < PlayerSpriteType.COUNT_STANDARD)
+			skinOffset = shootType;
 	}
 	
 	/// -- handle_input()
@@ -134,10 +133,10 @@
 		autoFireTimer--;
 		
 		if (isShooting) {
-			shootTimer = approach(shootTimer, 0, 1);
+			shootTimer = max(shootTimer - 1, 0);
 			if (shootTimer == 0) {
 				isShooting = false;
-				shootAnimation = PlayerStandardAnimationSubType.IDLE;
+				shootType = PlayerShootType.IDLE;
 				shootStandStillLock.deactivate();
 			}
 		}
@@ -375,7 +374,7 @@
 		
 		// We should be good to go
 		isShooting = true;
-		shootAnimation = _params.shootAnimation;
+		shootType = _params.shootAnimation;
 		shootTimer = 16;
 		shootStandStillLock.deactivate();
 		if (_params[$ "autoShootDelay"] ?? false)
@@ -391,7 +390,7 @@
 			shootStandStillLock.activate();
 		
 		// Make the bullet
-		var _gunOffset = characterSpecs.get_gun_offset_at(skinLastStandardFrame + (shootAnimation * PLAYER_STANDARD_FRAME_COUNT)),
+		var _gunOffset = characterSpecs.get_gun_offset_at(shootType, skinSprite),
 			_bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
 			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
 			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),
