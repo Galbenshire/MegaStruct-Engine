@@ -35,7 +35,7 @@ function GameWindow() constructor {
 			var _scale = pixelPerfect ? 1 : (fullscreen ? MAX_SCALE : screenSize);
 			surface_resize(application_surface, GAME_WIDTH * _scale, GAME_HEIGHT * _scale);
 			display_set_gui_maximize();
-			signal_bus().emit_signal("appSurfaceResize");
+			signal_bus().emit_signal(SIGNAL_APPSURF_RESIZE);
 			display_reset(0, vsync);
 		}
 	};

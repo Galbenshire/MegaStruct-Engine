@@ -8,15 +8,23 @@ function Weapon_BassBuster() : Weapon() constructor {
 	
 	#region Variables
 	
-	colours = [ $707070, $3898F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	// == Base Weapon Variables ==
 	
 	// - Icon
 	icon = sprWeaponIcons;
 	iconIndex = 2;
+	iconColours = [ $707070, $3898F8, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Name
 	name = "Bass Buster";
 	shortName = "B.Buster";
+	
+	// - Shot Data
+	shotData.set_shot_object(objBassShot)
+		.set_shot_limit(4, [ objBassShot ])
+		.set_shoot_animation(PlayerShootType.SHOOT)
+		.set_shoot_standstill(true)
+		.set_auto_shoot_delay(6);
 	
 	#endregion
 	
@@ -30,23 +38,16 @@ function Weapon_BassBuster() : Weapon() constructor {
 			if (isShooting)
 				shootTimer = max(shootTimer, 2);
 			
-			var _shotData = {
-				object: objBassShot,
-				limit: 4,
-				cost: 0,
-				shootAnimation: PlayerShootType.SHOOT,
-				standstill: true,
-				autoShootDelay: 6
-			};
-			
+			var _shootAnim = PlayerShootType.SHOOT;
 			if (yDir == -1 && xDir == 0)
-				_shotData.shootAnimation = PlayerShootType.SHOOT_UP;
+				_shootAnim = PlayerShootType.SHOOT_UP;
 			else if (yDir == -1 && xDir != 0)
-				_shotData.shootAnimation = PlayerShootType.SHOOT_DIAGONAL_UP;
+				_shootAnim = PlayerShootType.SHOOT_DIAGONAL_UP;
 			else if (yDir)
-				_shotData.shootAnimation = PlayerShootType.SHOOT_DIAGONAL_DOWN;
+				_shootAnim = PlayerShootType.SHOOT_DIAGONAL_DOWN;
+			other.shotData.set_shoot_animation(_shootAnim);
 			
-			var _shot = self.fire_weapon(_shotData);
+			var _shot = self.fire_weapon(other.shotData);
 			if (_shot != noone) {
 				var _shotDir = 180 * (image_xscale < 0);
 				if (yDir != 0) {

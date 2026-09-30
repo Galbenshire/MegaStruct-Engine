@@ -193,8 +193,8 @@
 	/// @param {Weapon}  weapon  The weapon to use. Defaults to the player's current.
 	function get_palette(_weapon = weapon) {
 		var _characterPalette = characterSpecs.get_player_colours(true);
-		_characterPalette[PalettePlayer.primary] = _weapon.colours[PaletteWeapon.primary];
-		_characterPalette[PalettePlayer.secondary] = _weapon.colours[PaletteWeapon.secondary];
+		_characterPalette[PalettePlayer.primary] = _weapon.iconColours[PaletteWeapon.primary];
+		_characterPalette[PalettePlayer.secondary] = _weapon.iconColours[PaletteWeapon.secondary];
 		
 		return _characterPalette;
 	}
@@ -326,88 +326,48 @@
 		weapon.on_equip(self);
 	}
 	
-	/// -- fire_weapon(params, player)
+	/// -- fire_weapon(shot_data)
 	/// Function to make the player fire a weapon.
 	///
-	/// @param {struct}  params  Defines various parameters towards firing this projectile.
-	///		The list of applicable parameters are as follows:
-	///		-- REQUIRED --
-	///		- object: The object of the projectile to create
-	///		- cost: Uses up this many units of ammo to fire. If you have no ammo, this projectile will not be created.
-	///		- limit: A limit to the number of projectiles onscreen
-	///		- shootAnimation: The player's shoot animation after firing
-	///		-- OPTIONAL --
-	///		- weapon: What weapon this projectile is for. Used for ammo checks. Defaults to the player's current weapon
-	///		- offsetX: x-offset from the player, in addition to the base offset from the player's "gun" position
-	///		- offsetY: y-offset from the player, in addition to the base offset from the player's "gun" position
-	///		- depthOffset: Depth of the bullet relative to the player. Defaults to one value in front of the player
-	///		- standstill: A boolean for if the player should be put in a standstill. Defaults to false.
-	///		- autoShootDelay: Controls rate of fire when Auto-Fire is enabled
-	///		- projParams: a struct that defines parameters on the projectile itself
+	/// @param {WeaponShotBuilder}  shot_data  Defines various parameters towards firing this projectile.
 	///
 	/// @returns {instance}  The projectile. Returns `noone` if something prevented a projectile being created.
-	function fire_weapon(_params = {}) {
-		// Check for the bullet limit
-		if (_params.limit > 0) {
-			var _limit = _params.limit;
-			
-			with (prtProjectile) {
-				if (owner != other.id)
-					continue;
-				
-				_limit -= bulletLimitCost;
-				if (_limit <= 0)
-					return noone;
-			}
+	function fire_weapon(_shotData) {
+		// Able to shoot?
+		if (!_shotData.check_shot_limit(self) || !_shotData.check_ammo_cost())
+			return noone;
+		
+		// Set the player into a shooting state (if told to)
+		if (!is_undefined(_shotData.shootAnimation)) {
+			isShooting = true;
+			shootType = _shotData.shootAnimation;
+			shootTimer = 16;
 		}
-		
-		// What weapon is this for?
-		var _weapon = _params[$ "weapon"] ?? weapon;
-		
-		// Check for ammo
-		if (_params.cost > 0 && !is_undefined(_weapon)) {
-			if (_weapon.ammo <= 0)
-				return noone;
-				
-			_weapon.change_ammo(-_params.cost);
-			if (hudElement.weaponID == _weapon.id)
-				hudElement.weaponAmmo = _weapon.ammo;
-		}
-		
-		// We should be good to go
-		isShooting = true;
-		shootType = _params.shootAnimation;
-		shootTimer = 16;
-		shootStandStillLock.deactivate();
-		if (_params[$ "autoShootDelay"] ?? false)
-			autoFireTimer = _params.autoShootDelay;
 		
 		// Standstill stuff
-		var _standstill = _params[$ "standstill"] ?? false;
-		if (_standstill || isClimbing) {
+		shootStandStillLock.deactivate();
+		if (_shotData.shootStandstill || isClimbing) {
 			if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_GROUND))
 				image_xscale = xDir;
 		}
-		if (_standstill)
+		if (_shotData.shootStandstill)
 			shootStandStillLock.activate();
 		
+		// Reset Auto Fire timer
+		autoFireTimer = _shotData.autoShootDelay;
+		
+		// Reduce Ammo
+		if (_shotData.ammoCost > 0) {
+			_shotData.weapon.change_ammo(-_shotData.ammoCost);
+			if (hudElement.weaponID == _shotData.weapon.id)
+				hudElement.weaponAmmo = _shotData.weapon.ammo;
+		}
+		
 		// Make the bullet
-		var _gunOffset = characterSpecs.get_gun_offset_at(shootType, skinSprite),
-			_bulletX = x + (_gunOffset[Vector2.x] + (_params[$ "offsetX"] ?? 0)) * image_xscale,
-			_bulletY = y + (_gunOffset[Vector2.y] + (_params[$ "offsetY"] ?? 0)) * image_yscale,
-			_bulletDepth = depth + (_params[$ "depthOffset"] ?? 1),
-			_bulletObj = _params.object;
-		
-		var _bulletParams = _params[$ "projParams"] ?? {};
-		_bulletParams.image_xscale = sign(image_xscale);
-		_bulletParams.image_yscale = sign(image_yscale);
-		
-		var _bullet = spawn_entity(_bulletX, _bulletY, _bulletDepth, _bulletObj, _bulletParams);
-		_bullet.owner = id;
-		_bullet.playerID = playerID;
+		var _bullet = _shotData.generate_shot(self);
 		
 		// Let others know we just shot this projectile
-		signal_bus().emit_signal("playerShot", {
+		signal_bus().emit_signal(SIGNAL_PLAYER_SHOT, {
 			player: self.id,
 			projectile: _bullet
 		});

@@ -56,6 +56,29 @@ function is_shader_supported(_shader) {
 	return global.shadersCompiled[$ _shaderName];
 }
 
+/// @func spawn_child_effect(x_offset, y_offset, depth_offset, object, var_struct, parent)
+/// @desc Spawns an effect as a child of another entity.
+///
+/// @param {number}  x_offset  Horizontal offset from the parent. Takes into account the parent's x-scale
+/// @param {number}  y_offset  Vertical offset from the parent. Takes into account the parent's y-scale
+/// @param {number}  depth_offset  Relative depth from the parent
+/// @param {prtEffect}  obj  The object index the child will be an instance of
+/// @param {struct}  [var_struct]  A struct with variables to assign to the new instance. Optional.
+/// @param {prtEntity}  [parent]  The entity that will act as the parent. Defaults to the calling instance.
+///
+/// @returns {instance}  An instance of the entity specified
+function spawn_child_effect(_xOffset, _yOffset, _depthOffset, _obj, _vars = {}, _parent = self) {
+	var _entityX = entity_x(_parent) + _xOffset * _parent.image_xscale,
+		_entityY = entity_y(_parent) + _yOffset * _parent.image_yscale,
+		_entityDepth = _parent.depth + _depthOffset;
+	
+	var _entity = instance_create_depth(_entityX, _entityY, _entityDepth, _obj, _vars);
+	_entity.owner = _parent.id;
+	_entity.createdBy = _parent.id;
+	
+	return _entity;
+}
+
 /// @method spawn_damage_popup(x, y, text)
 /// @desc Spawns a damage popup that displays the provided text
 ///

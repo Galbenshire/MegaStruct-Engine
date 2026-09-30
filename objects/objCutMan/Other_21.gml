@@ -19,12 +19,8 @@ event_inherited();
 		if (_id != "cutter")
 			return;
 		
-		var _x = x + 12 * image_xscale,
-			_y = y + 4 * image_yscale;
-		
-		var _cutter = spawn_entity(_x, _y, depth, objCutManCutter);
+		var _cutter = spawn_child_entity(12, 4, 0, objCutManCutter);
 		_cutter.xspeed = 3 * image_xscale;
-		_cutter.owner = self;
 		set_velocity_vector(3, point_direction(x, y, reticle.x, reticle.y), _cutter);
 		return _cutter;
 	}

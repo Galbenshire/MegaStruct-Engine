@@ -3,3 +3,6 @@
 
 visible = false;
 timer = startingWaitTime; /// @is {int}
+
+owner = noone;
+createdBy = noone;

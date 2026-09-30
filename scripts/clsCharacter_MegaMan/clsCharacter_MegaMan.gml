@@ -42,8 +42,8 @@ function Character_MegaMan() : Character() constructor {
 	static personalize_weapon = function(_weapon) {
 		switch (_weapon.id) {
 			case WeaponType.BUSTER:
-				//_weapon.set_colours([ $F87800, $D8E800 ]); // NES
-				_weapon.set_colours([ $EC7000, $F8B838 ]); // MM9-10
+				//_weapon.set_icon_colours([ $F87800, $D8E800 ]); // NES
+				_weapon.set_icon_colours([ $EC7000, $F8B838 ]); // MM9-10
 				break;
 		}
 	};

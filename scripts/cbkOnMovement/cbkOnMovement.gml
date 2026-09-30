@@ -40,7 +40,7 @@ function cbkOnMovement_player() {
 	
 	entity_handle_external_forces();
 	entity_movement_horizontal();
-	entity_movement_vertical();
+	entity_movement_vertical(2);
 	if (!self.is_action_locked(PlayerAction.GRAVITY))
 		entity_apply_gravity();
 	entity_check_ground();

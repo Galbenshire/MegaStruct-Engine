@@ -73,12 +73,12 @@ function Character_Bass() : Character() constructor {
 			case WeaponType.RUSH_COIL:
 				_weapon.set_name("Treble Coil");
 				_weapon.set_icon(sprWeaponIcons, 11);
-				_weapon.set_colours([ $707070, $F00080 ]);
+				_weapon.set_icon_colours([ $707070, $F00080 ]);
 				break;
 			case WeaponType.RUSH_JET:
 				_weapon.set_name("Treble Jet");
 				_weapon.set_icon(sprWeaponIcons, 12);
-				_weapon.set_colours([ $707070, $F00080 ]);
+				_weapon.set_icon_colours([ $707070, $F00080 ]);
 				break;
 		}
 	};

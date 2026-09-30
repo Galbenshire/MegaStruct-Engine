@@ -37,8 +37,5 @@ function projectile_reflection_proto_shield(_reflector) {
     collideWithSolids = false;
     despawnRange = 4;
     pierces = PierceType.NEVER;
-    
-    owner = _reflector.id;
-	factionLayer = (_reflector.factionLayer & Faction.MAIN_ALL) | (factionLayer & Faction.SUB_ALL);
-	factionMask = _reflector.factionMask;
+    entity_transfer_ownership(self, _reflector);
 }

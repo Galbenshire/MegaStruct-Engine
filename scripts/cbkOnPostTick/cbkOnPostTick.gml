@@ -35,7 +35,7 @@ function cbkOnPostTick_base(_tick) {
 /// @param {int}  tick  Current Tick
 function cbkOnPostTick_player(_tick) {
     event_user(EVENT_ENTITY_POSTTICK);
-    signal_bus().emit_signal("playerInput", {
+    signal_bus().emit_signal(SIGNAL_PLAYER_INPUT, {
         player: self.id,
         inputs: inputs
     });

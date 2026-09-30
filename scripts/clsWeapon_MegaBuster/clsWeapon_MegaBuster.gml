@@ -18,15 +18,20 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	
 	// == Base Weapon Variables ==
 	
-	colours = [ $EC7000, $F8B838, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
-	
 	// - Icon
 	icon = sprWeaponIcons;
 	iconIndex = 1;
+	iconColours = [ $EC7000, $F8B838, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Name
 	name = "Mega Buster";
 	shortName = "M.Buster";
+	
+	// - Shot Data
+	shotData.set_shot_object(objBusterShot)
+		.set_shot_limit(3, [ objBusterShot, objBusterShotHalfCharge, objBusterShotCharged ])
+		.set_shoot_animation(PlayerShootType.SHOOT)
+		.set_auto_shoot_delay(8);
 	
 	// == Buster-Specific Variables ==
 	
@@ -36,7 +41,6 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	barAmount = 0;
 	
 	playerRef = noone; // Reference to the player using this weapon
-	playerInputs = undefined; // Reference to the player's (main) InputMap
 	hudRef = undefined; // Reference to the player's HUD element
 	
 	#endregion
@@ -56,7 +60,6 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		self.change_charge_state(0);
 		
 		playerRef = _player;
-		playerInputs = _player.inputs;
 		hudRef = playerRef.hudElement;
 		hudRef.weaponVisible = options_data().chargeBar;
 		hudRef.weaponAmmo = 0;
@@ -69,7 +72,6 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		with (playerRef)
 			isCharging = false;
 		playerRef = noone;
-		playerInputs = undefined;
 		hudRef = undefined;
 	};
 	
@@ -113,10 +115,12 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				_index = min(_index, 3);
 				self.update_player_colour(PalettePlayer.outline, chargeColoursOutline[_index]);
 				
-				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
+				barAmount = remap(0, chargeDuration, 0, FULL_HEALTHBAR, chargeTimer);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
-					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
+				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+					if (playerRef.is_action_locked(PlayerAction.SHOOT))
+						self.clear_charge();
+					else
 						self.fire_buster_shot(1);
 				} else if (chargeTimer >= chargeDuration) {
 					self.change_charge_state(3);
@@ -131,10 +135,14 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				
 				var _chargeCycle = (chargeTimer div 3) mod 3;
 				for (var i = 0; i < 3; i++)
-					self.update_player_colour(i, colours[modf(_chargeCycle + i, 3)]);
+					self.update_player_colour(i, iconColours[modf(_chargeCycle + i, 3)]);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
-					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
+				barAmount = FULL_HEALTHBAR;
+				
+				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+					if (playerRef.is_action_locked(PlayerAction.SHOOT))
+						self.clear_charge();
+					else
 						self.fire_buster_shot(2);
 				}
 				break;
@@ -145,40 +153,42 @@ function Weapon_MegaBuster() : Weapon() constructor {
 	
 	#region Functions - Other
 	
+	static clear_charge = function() {
+		stop_sfx(sfxCharging);
+		stop_sfx(sfxCharged);
+		self.change_charge_state(0);
+		playerRef.refresh_palette();
+		playerRef.isCharging = false;
+	};
+	
 	static fire_buster_shot = function(_chargeLevel) {
-		var _moveSpeed = 5,
+		var _shotObject = objBusterShot,
+			_offsetX = 0,
+			_moveSpeed = 5,
 			_sfx = sfxBuster;
-		var _shotData = {
-			object: objBusterShot,
-			limit: 3,
-			cost: 0,
-			shootAnimation: PlayerShootType.SHOOT,
-			autoShootDelay: 8
-		};
 		
 		if (_chargeLevel == 1) {
-			_shotData.object = objBusterShotHalfCharge;
-			_shotData.offsetX = -4;
+			_shotObject = objBusterShotHalfCharge;
+			_offsetX = -4;
 			_sfx = sfxBusterHalfCharge;
 		} else if (_chargeLevel >= 2) {
-			_shotData.object = objBusterShotCharged;
-			_shotData.offsetX = 4;
+			_shotObject = objBusterShotCharged;
+			_offsetX = 4;
 			_moveSpeed = 5.5;
 			_sfx = sfxBusterCharged;
 		}
 		
-		var _shot = playerRef.fire_weapon(_shotData);
+		shotData.set_shot_object(_shotObject);
+		shotData.set_spawn_offset(_offsetX, 0);
+		
+		var _shot = playerRef.fire_weapon(shotData);
 		if (_shot != noone) {
 			_shot.xspeed = _moveSpeed * playerRef.image_xscale;
 			chargeToggle = (_chargeLevel <= 0 && playerRef.is_user_controlled() && options_data().chargeToggle);
 			play_sfx(_sfx);
 		}
 		
-		stop_sfx(sfxCharging);
-		stop_sfx(sfxCharged);
-		self.change_charge_state(0);
-		playerRef.refresh_palette();
-		playerRef.isCharging = false;
+		self.clear_charge();
 	};
 	
 	static player_can_charge = function() {
@@ -188,7 +198,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		var _chargeToggle = playerRef.is_user_controlled() ? options_data().autoFire : false;
 		return _chargeToggle
 			? chargeToggle
-			: playerInputs.is_held(InputActions.SHOOT);
+			: playerRef.inputs.is_held(InputActions.SHOOT);
 	};
 	
 	static update_player_colour = function(_index, _colour) {

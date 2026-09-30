@@ -421,6 +421,16 @@ enum PlayerShootType {
 #endregion
 
 
+#region Signal Names
+
+#macro SIGNAL_APPSURF_RESIZE "appSurfaceResized"
+#macro SIGNAL_PLAYER_INPUT "playerInput"
+#macro SIGNAL_PLAYER_SHOT "playerShot"
+#macro SIGNAL_READY_COMPLETE "readyCompleted"
+
+#endregion
+
+
 #region Tuples
 
 // These enums represent fixed-size arrays
@@ -481,10 +491,6 @@ enum PalettePlayer {
 	skin, /// @is {int}
 	face, /// @is {int}
 	eyes, /// @is {int}
-	
-	primaryShaded, /// @is {int}
-	secondaryShaded, /// @is {int}
-	skinShaded, /// @is {int}
 	
 	sizeof
 }

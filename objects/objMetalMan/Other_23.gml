@@ -30,7 +30,7 @@ stateMachine.add_state("Idle", {
 stateMachine.add_state("JumpUp_PreAttack", {
 	enter: function(_prevState) {
         animator.play("jump");
-        yspeed = -choose(4, 5.66, 6.93);
+        yspeed = -choose(3.75, 5.66, 6.93);
 	},
 	tick: function(_substate, _timer) {
 		if (yspeed >= 0)

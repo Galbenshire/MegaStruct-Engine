@@ -23,9 +23,8 @@ event_inherited();
 			return;
 			
 		play_sfx(sfxMetalBlade);
-		with (spawn_entity(x + 8 * image_xscale, y, depth, objGenericEnemyBullet)) {
+		with (spawn_child_entity(8, 0, 0, objGenericEnemyBullet)) {
 			sprite_index = sprMetalBlade;
-			owner = other.id;
 			animSpeed = 0.35;
 			contactDamage = 3;
 			xspeed = 4 * other.image_xscale;

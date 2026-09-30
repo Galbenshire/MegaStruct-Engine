@@ -4,6 +4,8 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":24,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":23,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":25,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objRushCoil",
@@ -43,6 +45,7 @@
     {"$GMObjectProperty":"v2","%Name":"lifeDuration","filters":[],"listItems":[],"multiselect":false,"name":"lifeDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"240","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"launchSpeed","filters":[],"listItems":[],"multiselect":false,"name":"launchSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"7.5","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"ammoCost","filters":[],"listItems":[],"multiselect":false,"name":"ammoCost","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"teleportSpeed","filters":[],"listItems":[],"multiselect":false,"name":"teleportSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

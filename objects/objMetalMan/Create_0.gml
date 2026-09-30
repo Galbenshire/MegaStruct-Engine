@@ -16,7 +16,7 @@ onSpawn = function() {
     cbkOnSpawn_base();
     
     distanceToMiddle = abs(x - game_view().center_x());
-    playerShotListener = signal_bus().connect_to_signal("playerShot", self, function(_data) {
+    playerShotListener = signal_bus().connect_to_signal(SIGNAL_PLAYER_SHOT, self, function(_data) {
         if (_data.player == reticle.target)
             jumpFlag = true;
     });

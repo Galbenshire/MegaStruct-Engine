@@ -10,7 +10,7 @@ if (weaponIconTimer > 0) {
 	colour_replacer()
 		.activate(ColourReplacerMode.GREYSCALE)
 		.set_colour_count(PaletteWeapon.sizeof)
-		.apply_output_colours(weapon.colours)
+		.apply_output_colours(weapon.iconColours)
 		.update_uniforms();
 	weapon.draw_icon(x - 8, y - 30 * image_yscale);
 	colour_replacer().deactivate();

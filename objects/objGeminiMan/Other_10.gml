@@ -25,7 +25,7 @@ onSpawn = function() {
     var _middleX = game_view().center_x();
     runToX = x;
 	jumpToX = _middleX - (x - _middleX);
-    playerShotListener = signal_bus().connect_to_signal("playerShot", self, function(_data) {
+    playerShotListener = signal_bus().connect_to_signal(SIGNAL_PLAYER_SHOT, self, function(_data) {
         if (_data.player == reticle.target)
             counterFlag = true;
     });

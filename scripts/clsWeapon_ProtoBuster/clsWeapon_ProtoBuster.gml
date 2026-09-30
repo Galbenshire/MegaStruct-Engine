@@ -19,15 +19,20 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	
 	// == Base Weapon Variables ==
 	
-	colours =  [ $0028DC, $BCBCBC, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
-	
 	// - Icon
 	icon = sprWeaponIcons;
 	iconIndex = 1;
+	iconColours =  [ $0028DC, $BCBCBC, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Name
 	name = "Proto Buster";
 	shortName = "P.Buster";
+	
+	// - Shot Data
+	shotData.set_shot_object(objProtoShot)
+		.set_shot_limit(3, [ objProtoShot, objProtoShotHalfCharge, objProtoShotCharged ])
+		.set_shoot_animation(PlayerShootType.SHOOT)
+		.set_auto_shoot_delay(8);
 	
 	// == Buster-Specific Variables ==
 	
@@ -37,7 +42,6 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	barAmount = 0;
 	
 	playerRef = noone; // Reference to the player using this weapon
-	playerInputs = undefined; // Reference to the player's (main) InputMap
 	hudRef = undefined; // Reference to the player's HUD element, if they have one
 	
 	#endregion
@@ -57,7 +61,6 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		self.change_charge_state(0);
 		
 		playerRef = _player;
-		playerInputs = _player.inputs;
 		hudRef = playerRef.hudElement;
 		hudRef.weaponVisible = options_data().chargeBar;
 		hudRef.weaponAmmo = 0;
@@ -69,7 +72,6 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		with (playerRef)
 			isCharging = false;
 		playerRef = noone;
-		playerInputs = undefined;
 		hudRef = undefined;
 	};
 	
@@ -115,8 +117,10 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 				
 				barAmount = remap(0, chargeDuration, 0, 28, chargeTimer);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
-					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
+				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+					if (playerRef.is_action_locked(PlayerAction.SHOOT))
+						self.clear_charge();
+					else
 						self.fire_buster_shot(1);
 				} else if (chargeTimer >= chargeDuration) {
 					self.change_charge_state(3);
@@ -138,8 +142,10 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 						break;
 				}
 				
-				if (!self.player_can_charge() || (chargeToggle && playerInputs.is_pressed(InputActions.SHOOT))) {
-					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
+				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
+					if (playerRef.is_action_locked(PlayerAction.SHOOT))
+						self.clear_charge();
+					else
 						self.fire_buster_shot(2);
 				}
 				break;
@@ -150,39 +156,41 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 	
 	#region Functions - Other
 	
+	static clear_charge = function() {
+		stop_sfx(sfxChargingProto);
+		self.change_charge_state(0);
+		playerRef.refresh_palette();
+		playerRef.isCharging = false;
+	};
+	
 	static fire_buster_shot = function(_chargeLevel) {
-		var _moveSpeed = 5,
+		var _shotObject = objProtoShot,
+			_offsetX = 0,
+			_moveSpeed = 5,
 			_sfx = sfxBuster;
-		var _shotData = {
-			object: objProtoShot,
-			limit: 3,
-			cost: 0,
-			shootAnimation: PlayerShootType.SHOOT,
-			autoShootDelay: 8
-		};
 		
 		if (_chargeLevel == 1) {
-			_shotData.object = objProtoShotHalfCharge;
-			_shotData.offsetX = -4;
+			_shotObject = objProtoShotHalfCharge;
+			_offsetX = -4;
 			_sfx = sfxBusterHalfCharge;
 		} else if (_chargeLevel >= 2) {
-			_shotData.object = objProtoShotCharged;
-			_shotData.offsetX = 4;
+			_shotObject = objProtoShotCharged;
+			_offsetX = 4;
 			_moveSpeed = 5.5;
 			_sfx = sfxBusterCharged;
 		}
 		
-		var _shot = playerRef.fire_weapon(_shotData);
+		shotData.set_shot_object(_shotObject);
+		shotData.set_spawn_offset(_offsetX, 0);
+		
+		var _shot = playerRef.fire_weapon(shotData);
 		if (_shot != noone) {
 			_shot.xspeed = _moveSpeed * playerRef.image_xscale;
 			chargeToggle = (_chargeLevel <= 0 && playerRef.is_user_controlled() && options_data().chargeToggle);
 			play_sfx(_sfx);
 		}
 		
-		stop_sfx(sfxChargingProto);
-		self.change_charge_state(0);
-		playerRef.refresh_palette();
-		playerRef.isCharging = false;
+		self.clear_charge();
 	};
 	
 	static player_can_charge = function() {

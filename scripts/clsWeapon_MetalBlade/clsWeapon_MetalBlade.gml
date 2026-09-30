@@ -7,15 +7,25 @@ function Weapon_MetalBlade() : Weapon() constructor {
 	
 	#region Variables
 	
-	colours = [ $007088, $A8E0FF, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
+	// == Base Weapon Variables ==
 	
 	// - Icon
 	icon = sprWeaponIcons;
 	iconIndex = 3;
+	iconColours = [ $007088, $A8E0FF, $000000, $A8D8FC, $F8F8F8 ]; /// @is {PaletteWeapon}
 	
 	// - Name
 	name = "Metal Blade";
 	shortName = "M.Blade";
+	
+	// - Shot Data
+	shotData.set_shot_object(objMetalBlade)
+		.set_shot_limit(3, [ objMetalBlade ])
+		.set_ammo_cost(0.5, false)
+		.set_shoot_animation(PlayerShootType.THROW)
+		.set_shoot_standstill(true)
+		.set_spawn_offset(0, 3)
+		.set_auto_shoot_delay(20);
 	
 	#endregion
 	
@@ -26,16 +36,7 @@ function Weapon_MetalBlade() : Weapon() constructor {
             if (!self.check_input_shoot())
 				return;
 			
-			var _shot = self.fire_weapon({
-				object: objMetalBlade,
-				limit: 3,
-				cost: 0.5,
-				shootAnimation: PlayerShootType.THROW,
-				offsetY: 3,
-				standstill: true,
-				autoShootDelay: 20
-			});
-			
+			var _shot = self.fire_weapon(other.shotData);
 			if (_shot != noone) {
 				var _dir = 180 * (image_xscale < 0);
                 

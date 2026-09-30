@@ -1,6 +1,6 @@
 /// @description Post Tick
-animTimer += animSpeed;
-image_index = animTimer;
+if (sprite_index != sprRushTeleport)
+	image_index = modf(image_index + animSpeed, 2);
 
 if (xcoll != 0 || (!is_undefined(weapon) && weapon.ammo <= 0))
-	entity_kill_self();
+	stateMachine.change_state("TeleportOut");

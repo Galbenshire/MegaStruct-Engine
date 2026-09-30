@@ -46,6 +46,45 @@ function entity_within_respawn_range(_scope = self) {
 	return true;
 }
 
+/// @func spawn_child_entity(x_offset, y_offset, depth_offset, object, var_struct, parent)
+/// @desc Spawns an entity as a child of another entity.
+///		  The child entity will inherit some properties from the parent.
+///
+/// @param {number}  x_offset  Horizontal offset from the parent. Takes into account the parent's x-scale
+/// @param {number}  y_offset  Vertical offset from the parent. Takes into account the parent's y-scale
+/// @param {number}  depth_offset  Relative depth from the parent
+/// @param {prtEntity}  obj  The object index the child will be an instance of
+/// @param {struct}  [var_struct]  A struct with variables to assign to the new instance. Optional.
+/// @param {prtEntity}  [parent]  The entity that will act as the parent. Defaults to the calling instance.
+///
+/// @returns {instance}  An instance of the entity specified
+function spawn_child_entity(_xOffset, _yOffset, _depthOffset, _obj, _vars = {}, _parent = self) {
+	var _entityX = entity_x(_parent) + _xOffset * _parent.image_xscale,
+		_entityY = entity_y(_parent) + _yOffset * _parent.image_yscale,
+		_entityDepth = _parent.depth + _depthOffset;
+	
+	var _entity = instance_create_depth(floor(_entityX), floor(_entityY), _entityDepth, _obj, _vars);
+	entity_set_x(_entityX, _entity);
+	entity_set_y(_entityY, _entity);
+	
+	_entity.image_xscale = abs(_entity.image_xscale) * sign(_parent.image_xscale);
+	_entity.image_yscale = abs(_entity.image_yscale) * sign(_parent.image_yscale);
+	
+	_entity.owner = _parent.id;
+	_entity.createdBy = _parent.id;
+	_entity.lifeState = LifeState.ALIVE;
+	_entity.respawnType = RespawnType.DISABLED;
+	_entity.factionLayer = (_parent.factionLayer & Faction.MAIN_ALL) | (_entity.factionLayer & Faction.SUB_ALL);
+	_entity.factionMask = _parent.factionMask;
+	
+	if (!is_undefined(_entity.reticle))
+		_entity.reticle.target = _parent.reticle.target;
+	
+	_entity.onSpawn();
+	
+	return _entity;
+}
+
 /// @func spawn_entity(x, y, depth_or_layer, object, var_struct)
 /// @desc Spawns an entity.
 ///		  This works like instance_create_*, but will take the actions needed to spawn the entity correctly
@@ -58,7 +97,9 @@ function entity_within_respawn_range(_scope = self) {
 ///
 /// @returns {instance}  An instance of the entity specified
 function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
-	var _entity = instance_create(_x, _y, _depthOrLayer, _obj, _vars);
+	var _entity = instance_create(floor(_x), floor(_y), _depthOrLayer, _obj, _vars);
+	entity_set_x(_x, _entity);
+	entity_set_y(_y, _entity);
 	_entity.lifeState = LifeState.ALIVE;
 	_entity.onSpawn();
 	return _entity;
@@ -202,6 +243,17 @@ function entity_set_gravity(_enabled, _strength = grav, _dir = gravDir, _scope =
 	_scope.gravEnabled = bool(_enabled);
 	_scope.grav = abs(_strength);
 	_scope.gravDir = sign_nonzero(_dir);
+}
+
+/// @func entity_transfer_ownership(child, new_parent)
+/// @desc Assigns an entity as being a "child" of another entity
+///
+/// @param {prtEntity}  child  The entity who will get a new owner
+/// @param {prtEntity}  [new_parent]  The new owner. Defaults to the calling instance.
+function entity_transfer_ownership(_child, _parent = self) {
+	_child.owner = _parent.id;
+	_child.factionLayer = (_parent.factionLayer & Faction.MAIN_ALL) | (_child.factionLayer & Faction.SUB_ALL);
+	_child.factionMask = _parent.factionMask;
 }
 
 #endregion

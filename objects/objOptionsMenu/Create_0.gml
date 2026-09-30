@@ -13,4 +13,4 @@ bgSpeed = 1/5;
 
 event_user(0); // Menu Init
 
-appSurfResizeListener = signal_bus().connect_to_signal("appSurfaceResize", self, function(_data) /*=>*/ { menu.get_submenu("display").refresh_item_values(); });
+appSurfResizeListener = signal_bus().connect_to_signal(SIGNAL_APPSURF_RESIZE, self, function(_data) /*=>*/ { menu.get_submenu("display").refresh_item_values(); });

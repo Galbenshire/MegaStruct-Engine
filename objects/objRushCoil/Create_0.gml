@@ -5,30 +5,29 @@ assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object
 
 sprite_index = characterSpecs.get_sprite(PlayerSpriteType.COIL);
 
-hasCoiled = false;
-weapon = undefined;
-animTimer = 0;
-
-// Palette
+stateMachine = new StateStacker("TeleportIn", true);
 palette = new ColourPalette(characterSpecs.coilColours);
 
+weapon = undefined; // If tied to a weapon, it will decrement ammo on use
+tailWagTimer = 0;
+
+teleportIndex = 0;
+teleportFrames = [0, 1, 0, 2];
+teleportFrameCount = array_length(teleportFrames);
+
 // Callbacks
-onSpawn = function() {
-	ground = true;
-	entity_check_ground(2);
-};
 onDeath = function(_damageSource) {
 	cbkOnDeath_projectile(_damageSource);
-	
-	if (characterSpecs.id == CharacterType.PROTO) {
-		instance_create_depth(bbox_x_center(), bbox_y_center(), depth, objExplosion);
-	} else {
-		with (spawn_entity(x, bbox_bottom, depth, objRushTeleport, { isTeleportingOut: true })) {
-			weapon = other.weapon;
-			characterSpecs = other.characterSpecs;
-			owner = other.owner;
-			palette.set_output_colours(other.characterSpecs.coilColours);
-		}
-	}
+	instance_create_depth(bbox_x_center(), bbox_y_center(), depth, objExplosion);
 };
-onDraw = method(id, cbkOnDraw_colour_replacer);
+onDraw = function() {
+	var _y = y;
+	if (sprite_index == sprRushTeleport)
+		y -= 16 * image_yscale;
+	cbkOnDraw_colour_replacer();
+	y = _y;
+	
+	draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
+};
+
+event_user(EVENT_PLAYER_STATEMACHINE_INIT); // Init the State Machine

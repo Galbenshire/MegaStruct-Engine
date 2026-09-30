@@ -6,6 +6,9 @@ image_speed = 0;
 
 #region Variables
 
+owner = noone; /// @is {prtEntity}
+createdBy = noone; /// @is {prtEntity}
+
 healthpoints = healthpointsStart;
 lifeState = LifeState.DEAD_OFFSCREEN; /// @is {int}
 iFrames = 0;

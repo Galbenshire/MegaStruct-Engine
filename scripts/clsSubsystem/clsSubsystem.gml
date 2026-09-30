@@ -488,7 +488,7 @@ function Subsystem_Level() : Subsystem() constructor {
 		with (prtPlayer) {
 			if (self.is_user_controlled()) {
 				stateMachine.change_state("Inactive");
-				signal_bus().connect_to_signal("readyComplete", self, function(_data) /*=>*/ { stateMachine.change_state("Intro"); }, true);
+				signal_bus().connect_to_signal(SIGNAL_READY_COMPLETE, self, function(_data) /*=>*/ { stateMachine.change_state("Intro"); }, true);
 			}
 		}
 		

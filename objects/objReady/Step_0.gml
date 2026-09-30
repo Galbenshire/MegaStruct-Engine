@@ -10,6 +10,6 @@ if (--countdown <= 0 && (!playProtoWhistle || !audio_is_playing(whistleSFXInst))
     if (canMuteMusic)
         resume_music();
     
-    signal_bus().emit_signal("readyComplete");
+    signal_bus().emit_signal(SIGNAL_READY_COMPLETE);
     instance_destroy();
 }

@@ -13,23 +13,18 @@ function Weapon() constructor {
 	
 	#region Variables (can differ on a per-instance basis)
 	
-	// Colour palette for this weapon's icon. Also used by the player
-	colours = array_create(PaletteWeapon.sizeof); /// @is {PaletteWeapon}
-	
-	// Sprite of the weapon's icon (appears in the Pause Menu, and above the player's head when quick switching)
+	// The weapon icon
 	icon = sprWeaponIcons;
-	
-	// Which frame of the icon sprite to use
 	iconIndex = 0;
+	iconColours = array_create(PaletteWeapon.sizeof); /// @is {PaletteWeapon} Also used to determine the player's colours
 	
-	// Name of the weapon
+	// Naming the weapon
 	name = "";
+	shortName = ""; // Used in the Pause Menu.
 	
-	// Shortened version of the weapon name. Used in the Pause Menu.
-	shortName = "";
-	
-	// How much ammo an instance of this weapon uses
+	// Other
 	ammo = FULL_HEALTHBAR;
+	shotData = new WeaponShotBuilder();
 	
 	#endregion
 	
@@ -63,12 +58,14 @@ function Weapon() constructor {
 	
 	#region Functions - Getters
 	
-	/// @method get_colours()
-	/// @desc Gets the colours of this weapon. Used to change the player's colours, for example.
+	/// @method get_icon_colours(copy)
+	/// @desc Gets the colours of this weapon's icon. Also influences player colours when equipped.
+	///
+	/// @param {bool}  [copy]  Whether to return the colours as a reference (false, default) or a copy (true).
 	///
 	/// @returns {PaletteWeapon}  A copy of this weapon's colours.
-	static get_colours = function() {
-		return variable_clone(colours);
+	static get_icon_colours = function(_copy = false) {
+		return _copy ? variable_clone(iconColours) : iconColours;
 	};
 	
 	/// @method get_name(short_name, uppercase)
@@ -102,36 +99,36 @@ function Weapon() constructor {
 		return self;
 	};
 	
-	/// @method set_colours(colours, offset)
-	/// @desc Sets multiple colours across the weapon's palette
+	/// @method set_icon_colours(colours, offset)
+	/// @desc Sets multiple colours across the weapon's icon palette
 	///
 	/// @param {array<int>}  colours  The new colours to apply
 	/// @param {int}  [offset]  At which index to start applying the new colours. Defaults to 0
 	///
 	/// @returns {Weapon}  A reference to this struct. Useful for method chaining.
-    static set_colours = function(_colours, _offset = 0) {
+    static set_icon_colours = function(_colours, _offset = 0) {
 		for (var i = 0, n = array_length(_colours); i < n; i++) {
 			if (i + _offset >= PaletteWeapon.sizeof)
 				break;
-			self.set_colour_at(i + _offset, _colours[i]);
+			self.set_icon_colour_at(i + _offset, _colours[i]);
 		}
 		return self;
     };
 	
-	/// @method set_colour_at(index, colour)
-	/// @desc Sets a specific index in the weapon's palette to the given colour
+	/// @method set_icon_colour_at(index, colour)
+	/// @desc Sets a specific index in the weapon's icon palette to the given colour
 	///
 	/// @param {int}  index  The index to target
 	/// @param {int}  colour  The colour to set to
 	///
 	/// @returns {Weapon}  A reference to this struct. Useful for method chaining.
-	static set_colour_at = function(_index, _col) {
+	static set_icon_colour_at = function(_index, _col) {
 		if (!in_range(_index, 0, PaletteWeapon.sizeof)) {
 			show_debug_message($"Weapon Warning: Trying to set an out-of-range index ({_index})");
 			return self;	
 		}
 		
-		colours[_index] = _col;
+		iconColours[_index] = _col;
 		return self;
 	};
 	
@@ -219,6 +216,20 @@ function Weapon() constructor {
 	/// @returns {bool}  If the weapon has the relevant flag (true) or not (false)
 	static has_flag = function(_flag) {
 		return bitmask_has_bit(flags, _flag);
+	};
+	
+	/// @method reset_personalization()
+	/// @desc Resets any personalizations that had been applied to this weapon
+	static reset_personalization = function() {
+		var _masterCopy = weapon_create_from_id(id);
+		
+		icon = _masterCopy.icon;
+		iconIndex = _masterCopy.iconIndex;
+		iconColours = variable_clone(_masterCopy.iconColours);
+		name = _masterCopy.name;
+		shortName = _masterCopy.shortName;
+		
+		delete _masterCopy;
 	};
 	
 	#endregion
