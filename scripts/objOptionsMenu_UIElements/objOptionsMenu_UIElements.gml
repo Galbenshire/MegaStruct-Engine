@@ -155,8 +155,8 @@ function OptionsMenu_Item_SwitchSubmenu(_label, _submenuID) : OptionsMenu_Item("
 		
 		// No subbmenu assigned? Let's leave the Options Menu then.
 		play_sfx(sfxMenuSelect);
-		if (room == rmOptions) {
-			go_to_room(rmTitleScreen);
+		if (room == mnuOptions) {
+			go_to_room(mnuTitleScreen);
 		} else {
 			screen_fade({
 				onFadeOutEnd: function() /*=>*/ { instance_destroy(owner); },

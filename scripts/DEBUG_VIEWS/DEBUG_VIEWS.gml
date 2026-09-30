@@ -86,9 +86,9 @@ function __debug_view_room_select() {
 	var _view = dbg_view("Rooms", false, -1, -1, 400, 250);
 	
 	var _shortcuts = dbg_section("Shortcuts");
-	dbg_button("Title Screen", function() /*=>*/ { go_to_room(rmTitleScreen); });
+	dbg_button("Title Screen", function() /*=>*/ { go_to_room(mnuTitleScreen); });
 	dbg_same_line();
-	dbg_button("Spritesheet Test", function() /*=>*/ { go_to_room(rmPlayerSpritesheetTest); });
+	dbg_button("Spritesheet Test", function() /*=>*/ { go_to_room(mnuPlayerSpritesheetTest); });
 	
 	var _roomIDs = asset_get_ids(asset_room),
 		_roomList = array_map(asset_get_ids(asset_room), function(_room, i) /*=>*/ {return string("{0}:{1}", room_get_name(_room), int64(_room))});

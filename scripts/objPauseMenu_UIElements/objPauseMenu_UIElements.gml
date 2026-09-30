@@ -94,7 +94,7 @@ function PauseMenu_Item_Text(_id, _text) : UIFramework_Item(_id) constructor {
 				if (!isConfirming)
 					isConfirming = true;
 				else
-					go_to_room(rmTitleScreen);
+					go_to_room(mnuTitleScreen);
 				break;
 		}
     };

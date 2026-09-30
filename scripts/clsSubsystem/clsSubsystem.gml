@@ -463,7 +463,6 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		global.player.set_body(spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, global.player.characterID));
 		with (global.player.body) {
-			depth += depthOffset;
 			image_xscale = _spawnDir;
 			hudElement.healthpoints = healthpoints;
 			

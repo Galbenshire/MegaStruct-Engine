@@ -12,7 +12,7 @@ options = [
         options[1][0] = string("CHARACTER: {0}", characters[characterIndex].name);
         play_sfx(sfxMenuMove);
     }],
-    ["OPTIONS", function() /*=>*/ { go_to_room(rmOptions); }]
+    ["OPTIONS", function() /*=>*/ { go_to_room(mnuOptions); }]
 ];
 optionCount = array_length(options);
 currentOption = optionCount - 1;
