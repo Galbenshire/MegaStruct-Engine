@@ -15,7 +15,7 @@ deathTimer = 0;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     hitbox_create_simple(-6, -41, 27, 16);
     
     spawnTimer = 0;
@@ -25,7 +25,7 @@ onSpawn = function() {
     handleIndex = 0;
     handleInFront = false;
     
-    canDealDamage = true;
+    hitmaskMaster = HitMask.FULL;
     isDying = false;
     deathTimer = 0;
     
@@ -33,14 +33,14 @@ onSpawn = function() {
 };
 onDeath = function(_damageSource) {
     if (isDying) {
-        cbkOnDeath_prtEntity(_damageSource);
+        cbkOnDeath_base(_damageSource);
     } else {
         isDying = true;
-        canDealDamage = false;
+        hitmaskMaster = 0;
         entity_clear_hitboxes();
     }
 };
-onDraw = function(_whiteflash) {
+onDraw = function() {
     if (!handleInFront)
         draw_self();
     draw_sprite_ext(handleSprite, handleIndex, x, y - sprite_yoffset, image_xscale, image_yscale, image_angle, image_blend, image_alpha);

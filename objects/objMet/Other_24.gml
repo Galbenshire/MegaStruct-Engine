@@ -30,4 +30,5 @@ switch (phase) {
         break;
 }
 
+hitmask = bitmask_toggle_bit(hitmask, HitMask.BLOCK, image_index == 0);
 phaseTimer = (phaseTimer + 1) * (phase == _prevPhase);

@@ -1,4 +1,4 @@
-/// @func Reticle()
+/// @func Reticle(preset)
 /// @desc A struct that allows for an entity to target other entities
 ///
 /// @param {int}  preset  The preset to apply, corresponding to the `ReticlePresetType` enum
@@ -51,7 +51,7 @@ function Reticle(_preset) constructor {
 	///
 	/// @returns {number}  The direction towards the target
     static direction_to_target = function() {
-    	return point_direction(owner.x, owner.y, x, y);
+		return point_direction(owner.x, owner.y, x, y);
     };
     
     /// -- direction_to_target_x()
@@ -142,9 +142,9 @@ function Reticle(_preset) constructor {
 	///
 	/// @returns {bool}  If the target is valid (true) or not (false)
     static is_target_valid = function(_target = target) {
-        if (!instance_exists(_target))
-            return false;
-        return !entity_is_dead(_target) && _target.canTakeDamage && bitmask_has_bit(entity_faction_targets(owner), _target.factionLayer);
+		return instance_exists(_target)
+			? !entity_is_dead(_target) && entity_has_hitmask_flag(HitMask.TAKE_DAMAGE, _target) && bitmask_has_bit(owner.factionTargetMask, _target.factionLayer)
+			: false;
     };
     
     /// -- switch_target(new_target)
@@ -241,7 +241,7 @@ function fnsReticle_onRetarget_PickAtRandom() {
     if (array_length(_entities) <= 0)
         return;
     
-    switch_target(choose_from_array(_entities));
+    self.switch_target(choose_from_array(_entities));
 }
 
 /// @self {Reticle}
@@ -254,7 +254,7 @@ function fnsReticle_onRetarget_PickNearest() {
     if (array_length(_entities) <= 0)
         return;
     
-    switch_target(_entities[0]);
+    self.switch_target(_entities[0]);
 }
 
 /// @self {Reticle}
@@ -279,7 +279,7 @@ function fnsReticle_onRetarget_PickNearestEstimate() {
         }
     }
     
-    switch_target(choose_from_array(_entities));
+    self.switch_target(choose_from_array(_entities));
 }
 
 #endregion

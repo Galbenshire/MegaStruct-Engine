@@ -9,6 +9,7 @@ var _width = image_xscale,
 
 image_xscale = 1;
 image_yscale = 1;
+depth += depthOffset;
 autoGenerate = false;
 
 for (var i = 0; i < _width; i++) {

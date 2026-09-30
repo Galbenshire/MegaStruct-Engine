@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scrCollision",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Physics",
+    "path":"folders/Scripts/Physics.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

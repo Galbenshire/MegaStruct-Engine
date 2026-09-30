@@ -11,7 +11,7 @@ hatchIndex = 0;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     isFiringMissile = false;
     missileTimer = 0;
     hatchIndex = 0;

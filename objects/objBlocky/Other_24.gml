@@ -34,7 +34,7 @@ switch (phase) {
                 
                 if (!is_undefined(palette)) {
 					_can.palette = palette;
-					_can.onDraw = method(_can.id, cbkOnDraw_colourReplacer);
+					_can.onDraw = method(_can.id, cbkOnDraw_colour_replacer);
 				}
                 
                 return _can;
@@ -45,6 +45,7 @@ switch (phase) {
     case 3: // Collapsed - Reforming
         if (!array_any(reformCans, function(_can, i) /*=>*/ {return instance_exists(_can)})) {
             phase = 0;
+            weakspot.hitmask = bitmask_set_bit(weakspot.hitmask, HitMask.TAKE_DAMAGE);
             sprite_index = sprBlocky;
             y -= 48;
         }

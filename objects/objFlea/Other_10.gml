@@ -12,5 +12,5 @@ switch (colourPreset) {
 
 if (!is_undefined(_colour)) {
     palette = new ColourPalette([ _colour ], [ $FF7800 ]);
-    onDraw = method(id, cbkOnDraw_colourReplacer);
+    onDraw = method(id, cbkOnDraw_colour_replacer);
 }

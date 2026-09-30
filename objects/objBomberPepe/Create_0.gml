@@ -6,7 +6,7 @@ eggCounter = 0;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     jumpTimer = 0;
     eggCounter = irandom_range(30, 140);
 };

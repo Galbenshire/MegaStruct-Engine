@@ -56,12 +56,14 @@ function is_shader_supported(_shader) {
 	return global.shadersCompiled[$ _shaderName];
 }
 
-/// @func string_empty(str)
-/// @desc This function returns if the given string is empty
+/// @method spawn_damage_popup(x, y, text)
+/// @desc Spawns a damage popup that displays the provided text
 ///
-/// @param {string}  str  The string to check
+/// @param {number}  x  The x position to spawn the popup at
+/// @param {number}  y  The y position to spawn the popup at
+/// @param {string}  text  The text the popup should display
 ///
-/// @returns {bool}  Whether the string is empty (true) or not (false)
-function string_empty(_str) {
-	return string_length(_str) <= 0;
+/// @returns {objDamagePopup}  The damage popup
+function spawn_damage_popup(_x, _y, _text) {
+	return instance_create_depth(_x, _y, layer_get_depth(LAYER_FADER) + 10, objDamagePopup, { display: _text });
 }

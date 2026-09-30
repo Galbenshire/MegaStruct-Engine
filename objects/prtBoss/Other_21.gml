@@ -46,6 +46,15 @@
 		return noone;
 	}
 	
+	/// -- death_effect()
+	/// Boss death effect
+	function death_effect() {
+		if (doPlayerDeathExplosion) {
+			player_death_explosion(x, y, depth);
+			play_sfx(sfxDeath);
+		}
+	}
+	
 	/// -- get_intro_sequence()
 	/// Gets a list of states that makes up the boss's intro sequence
 	function get_intro_sequence() {

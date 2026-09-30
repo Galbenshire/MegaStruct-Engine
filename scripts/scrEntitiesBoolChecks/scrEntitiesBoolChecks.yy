@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrEntitiesBoolChecks",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrEntitiesBoolChecks",
+  "parent":{
+    "name":"Entities",
+    "path":"folders/Scripts/Entities.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

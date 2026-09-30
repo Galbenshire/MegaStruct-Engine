@@ -24,7 +24,7 @@ switch (phase) {
                 xspeed.value *= image_xscale;
 				contactDamage = 2;
 				colours = other.bulletPalette;
-                onDraw = method(id, cbkOnDraw_enemyBulletMM1);
+                onDraw = method(id, cbkOnDraw_enemy_bullet_mm1);
             }
             play_sfx(sfxEnemyShootClassic);
             bulletCount++;
@@ -41,4 +41,5 @@ switch (phase) {
         break;
 }
 
+hitmask = bitmask_toggle_bit(hitmask, HitMask.BLOCK, image_index == 0);
 phaseTimer = (phaseTimer + 1) * (phase == _prevPhase);

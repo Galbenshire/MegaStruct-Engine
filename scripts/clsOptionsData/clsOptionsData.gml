@@ -29,8 +29,8 @@ function OptionsData() constructor {
     volumeSound = 1;
     
     // Controls
-    keys = default_key_bindings(); /// @is {array<int>}
-    buttons = default_button_bindings(); /// @is {array<gamepad_button>}
+    keys = self.default_key_bindings(); /// @is {array<int>}
+    buttons = self.default_button_bindings(); /// @is {array<gamepad_button>}
     downJumpSlide = true;
     autoFire = false;
     chargeToggle = false;
@@ -39,6 +39,7 @@ function OptionsData() constructor {
     gameSpeed = 1;
     chargeBar = false;
     instantHealthFill = false;
+    damagePopup = false;
     
     #endregion
     

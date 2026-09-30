@@ -9,10 +9,9 @@ if (__spawnedBurrowed && burrowBitField == bitMask_HeadExposed) {
     burrowBitField = _prevBurrowBitfield;
 }
 
-canTakeDamage = (burrowBitField != bitMask_FullyBuried);
-canDealDamage = canTakeDamage;
+hitmask = bitmask_toggle_bit(hitmask, HitMask.DEAL_DAMAGE | HitMask.TAKE_DAMAGE, burrowBitField != bitMask_FullyBuried);
 if (burrowBitField == bitMask_HeadExposed) {
-    canDealDamage = false;
+    hitmask = bitmask_unset_bit(hitmask, HitMask.DEAL_DAMAGE);
     __dealDamageDelay = 20;
 }
 

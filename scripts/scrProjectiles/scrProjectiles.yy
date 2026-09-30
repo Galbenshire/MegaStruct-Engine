@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scrProjectiles",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scrProjectiles",
+  "parent":{
+    "name":"Entities",
+    "path":"folders/Scripts/Entities.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

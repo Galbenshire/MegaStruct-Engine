@@ -2,14 +2,13 @@
   "$GMObject":"",
   "%Name":"objProtoMan",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":22,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":22,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":25,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objProtoMan",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"maxFallSpeed","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"12",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtPlayer","path":"objects/prtPlayer/prtPlayer.yy",},"propertyId":{"name":"characterID","path":"objects/prtPlayer/prtPlayer.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"CharacterType.PROTO",},
   ],
   "parent":{

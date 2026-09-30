@@ -1,5 +1,5 @@
 /// @description Entity Tick
-if (reflected)
+if (isBlocked)
 	exit;
 
 image_index += imageSpeed;

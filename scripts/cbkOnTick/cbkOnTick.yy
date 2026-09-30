@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"cbkOnTick",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cbkOnTick",
+  "parent":{
+    "name":"Callbacks",
+    "path":"folders/_System/Callbacks.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

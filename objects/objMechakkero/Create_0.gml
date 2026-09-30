@@ -8,7 +8,7 @@ landTimer = 0;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     jumpTimer = startJumpTimerAt;
     landTimer = 0;
     intendedXSpeed = 0;

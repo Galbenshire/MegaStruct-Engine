@@ -5,7 +5,7 @@ event_user(0);
 
 // == Gemini Man Specific Callbacks
 onHurt = function(_damageSource) {
-	cbkOnHurt_prtBoss(_damageSource);
+	cbkOnHurt_boss(_damageSource);
 	
 	with (clone)
 		iFrames = other.iFrames;
@@ -19,7 +19,7 @@ onHurt = function(_damageSource) {
 	}
 };
 onDeath = function(_damageSource) {
-	cbkOnDeath_prtBoss(_damageSource);
+	cbkOnDeath_boss(_damageSource);
 	
 	with (objGenericEnemyBullet) {
         if (owner == other.id)

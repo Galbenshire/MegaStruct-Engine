@@ -12,11 +12,11 @@
 
 #region Base Callbacks
 
-/// @func cbkOnHurt_prtEntity(damage_source)
+/// @func cbkOnHurt_base(damage_source)
 /// @desc Default onHurt callback for all entities
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnHurt_prtEntity(_damageSource) {
+function cbkOnHurt_base(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Hurt - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
     
@@ -24,24 +24,28 @@ function cbkOnHurt_prtEntity(_damageSource) {
     play_sfx(_damageSource.hitSFX);
 }
 
-/// @func cbkOnHurt_prtBoss(damage_source)
+#endregion
+
+#region Available Presets
+
+/// @func cbkOnHurt_boss(damage_source)
 /// @desc Default onHurt callback for bosses
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnHurt_prtBoss(_damageSource) {
+function cbkOnHurt_boss(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Hurt - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
     
     iFrames = max(1, iFrameDuration);
-    play_sfx(_damageSource.hitSFX);
     self.update_hud(healthpoints);
+    play_sfx(_damageSource.hitSFX);
 }
 
-/// @func cbkOnHurt_prtPlayer(damage_source)
+/// @func cbkOnHurt_player(damage_source)
 /// @desc Default onHurt callback for players
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnHurt_prtPlayer(_damageSource) {
+function cbkOnHurt_player(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Player Hurt by {0}", object_get_name(_damageSource.attacker.object_index));
     

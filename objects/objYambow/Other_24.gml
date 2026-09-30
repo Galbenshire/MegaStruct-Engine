@@ -10,8 +10,7 @@ switch (phase) {
             phase++;
             yspeed.value = 1;
             gravEnabled = true;
-            canDealDamage = true;
-            canTakeDamage = true;
+            hitmaskMaster = HitMask.FULL;
             visible = true;
         }
         break;

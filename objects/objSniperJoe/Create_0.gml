@@ -6,19 +6,22 @@ shootAmount = 0;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     image_index = 0;
     isShooting = false;
     shootTimer = 0;
     shootAmount = 0;
 };
-onGuard = function(_damageSource) {
-    if (image_index != 0)
-        return;
+onHandleBlock = function(_damageSource) {
+    _damageSource.blockType = BlockType.NONE;
     
-    var _spr = sprite_index;
-    sprite_index = mskSniperJoeShield;
-    if (place_meeting(x, y, _damageSource.attacker))
-        _damageSource.guard = GuardType.REFLECT;
-    sprite_index = _spr;
+    if (image_index == 0) {
+        var _spr = sprite_index;
+        sprite_index = mskSniperJoeShield;
+        if (place_meeting(x, y, _damageSource.attackerHitbox))
+            _damageSource.blockType = BlockType.REFLECT;
+        sprite_index = _spr;
+    }
+    
+    cbkOnHandleBlock_base(_damageSource);
 };

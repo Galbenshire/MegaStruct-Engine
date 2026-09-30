@@ -14,16 +14,14 @@
 stateMachine.add_state("!!Inactive", {
 	enter: function(_prevState) {
 		introCache = {
-            canTakeDamage,
-            canDealDamage,
+            hitmaskMaster,
             gravEnabled,
             grav,
             collideWithSolids
         };
         
 		isInactive = true;
-		canTakeDamage = false;
-		canDealDamage = false;
+		hitmaskMaster = 0;
 		gravEnabled = false;
 		collideWithSolids = false;
 		visible = false;	
@@ -61,8 +59,7 @@ stateMachine.add_state("!!Intro", {
 		isIntro = false;
 		isFighting = true;
 		isReady = true;
-		canTakeDamage = introCache.canTakeDamage;
-		canDealDamage = introCache.canDealDamage;
+		hitmaskMaster = introCache.hitmaskMaster;
         gravEnabled = introCache.gravEnabled;
         grav = introCache.grav;
         collideWithSolids = introCache.collideWithSolids;
@@ -90,11 +87,16 @@ stateMachine.add_state("!!Intro_Spawn", {
 				animator.play("!!dropin");
 				break;
 			case "TeleportIn":
-				y = game_view().top_edge(-sprite_height / 2);
-				yspeed.value = 8;
-				animator.play("!!teleport-idle");
-				collideWithSolids = false;
-				isTeleporting = true;
+				teleportRef = instance_create_depth(x, y, depth, objTeleportInEffect, {
+					sprite_index: sprHotDogTeleport,
+					image_xscale,
+					image_yscale,
+					colourPrimary: healthColourPrimary,
+					colourSecondary: healthColourSecondary,
+					teleportSFX
+				});
+				teleportRef.target = self.id;
+				visible = false;
 				break;
 			case "PopIn": break;
 		}
@@ -106,16 +108,8 @@ stateMachine.add_state("!!Intro_Spawn", {
 					stateMachine.pop_state();
 				break;
 			case "TeleportIn":
-				if (stateMachine.substate == 0) {
-					if (y >= ystart) {
-						y = ystart;
-						yspeed.clear_all();
-						stateMachine.change_substate(1);
-						animator.play("!!teleport-in");
-					}
-				} else if (animator.is_animation_finished()) {
+				if (!instance_exists(teleportRef))
 					stateMachine.pop_state();
-				}
 				break;
 			case "PopIn": stateMachine.pop_state(); break;
 		}
@@ -125,7 +119,6 @@ stateMachine.add_state("!!Intro_Spawn", {
 		visible = true;
 		yspeed.clear_all();
 		gravEnabled = false;
-		isTeleporting = false;
 		
 		if (introType == "DropIn")
 			animator.play("!!dropin-end");

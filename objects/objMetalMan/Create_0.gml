@@ -13,7 +13,7 @@ playerShotListener = undefined;
 
 // == Callbacks ==
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     
     distanceToMiddle = abs(x - game_view().center_x());
     playerShotListener = signal_bus().connect_to_signal("playerShot", self, function(_data) {
@@ -22,11 +22,11 @@ onSpawn = function() {
     });
 };
 onDespawn = function() {
-    cbkOnDespawn_prtEntity();
+    cbkOnDespawn_base();
     event_perform(ev_cleanup, 0);
 };
 onDeath = function(_damageSource) {
-    cbkOnDeath_prtBoss(_damageSource);
+    cbkOnDeath_boss(_damageSource);
     
     with (objGenericEnemyBullet) {
         if (owner == other.id)

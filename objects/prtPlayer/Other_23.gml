@@ -395,6 +395,7 @@ stateMachine.add_state("Hurt", {
 			isHurt = true;
 			hitTimer = 0;
 			iFrames = 999;
+			iFrameFlashStyle = IFrameFlashType.HITSPARK;
 		}
 		
 		play_sfx(sfxPlayerHit);
@@ -423,6 +424,7 @@ stateMachine.add_state("Hurt", {
 	leave: function(_newState, _stateData) {
 		if (!_stateData.skipIFrames)
 			iFrames = 60;
+		iFrameFlashStyle = IFrameFlashType.FLICKER;
 		hitTimer = 0;
 		hitstunLock.deactivate();
 		hitstunLock.remove_actions(PlayerAction.CHARGE);
@@ -433,7 +435,7 @@ stateMachine.add_state("Death", {
 	init: function(_stateData) /*=>*/ { _stateData.diedToPit = false; },
 	enter: function(_prevState, _payload, _stateData) {
 		_stateData.diedToPit = _payload[$ "diedToPit"] ?? false;
-		canTakeDamage = false;
+		hitmaskMaster = 0;
 		canDieToPits = false;
 		iFrames = 0;
 		
@@ -472,7 +474,7 @@ stateMachine.add_state("Death", {
 stateMachine.add_state("Inactive", {
 	enter: function(_prevState) {
 		isIntro = true;
-		canTakeDamage = false;
+		hitmaskMaster = 0;
 		gravEnabled = false;
 		visible = false;
 		
@@ -482,7 +484,7 @@ stateMachine.add_state("Inactive", {
 	},
 	leave: function(_newState) {
 		isIntro = false;
-		canTakeDamage = true;
+		hitmaskMaster = HitMask.FULL;
 		gravEnabled = true;
 		visible = true;
 		
@@ -494,7 +496,7 @@ stateMachine.add_state("Inactive", {
 stateMachine.add_state("Intro", {
 	enter: function(_prevState) {
 		isIntro = true;
-		canTakeDamage = false;
+		hitmaskMaster = 0;
 		collideWithSolids = false;
 		gravEnabled = false;
 		interactWithWater = false;
@@ -525,7 +527,7 @@ stateMachine.add_state("Intro", {
 		isIntro = false;
 		collideWithSolids = true;
 		gravEnabled = true;
-		canTakeDamage = true;
+		hitmaskMaster = HitMask.FULL;
 		ground = true;
 		interactWithWater = true;
 		ignoreCamera = false;
@@ -539,7 +541,7 @@ stateMachine.add_state("Debug_FreeMovement", {
 		isFreeMovement = true;
 		gravEnabled = false;
 		collideWithSolids = false;
-		canTakeDamage = false;
+		hitmaskMaster = 0;
 		interactWithWater = false;
 		xspeed.clear_all();
 		yspeed.clear_all();
@@ -576,7 +578,7 @@ stateMachine.add_state("Debug_FreeMovement", {
 		isFreeMovement = false;
 		gravEnabled = true;
 		collideWithSolids = true;
-		canTakeDamage = true;
+		hitmaskMaster = HitMask.FULL;
 		interactWithWater = true;
 		freeMovementLock.deactivate();
 		play_sfx(sfxYasichi);

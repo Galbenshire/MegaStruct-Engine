@@ -7,7 +7,7 @@ intendedXSpeed = 0;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     image_index = 2;
     timer = 0;
     repeatCount = 0;

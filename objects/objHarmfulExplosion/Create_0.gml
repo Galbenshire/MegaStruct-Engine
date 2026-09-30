@@ -1,4 +1,4 @@
 event_inherited();
 
 // Callbacks
-onReflected = method(id, cbkOnReflected_prtEntity);
+onBlocked = method(id, cbkOnBlocked_base);

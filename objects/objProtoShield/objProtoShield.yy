@@ -5,10 +5,8 @@
   "managed":true,
   "name":"objProtoShield",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtHitbox","path":"objects/prtHitbox/prtHitbox.yy",},"propertyId":{"name":"active","path":"objects/prtHitbox/prtHitbox.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtHitbox","path":"objects/prtHitbox/prtHitbox.yy",},"propertyId":{"name":"canTakeDamage","path":"objects/prtHitbox/prtHitbox.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtHitbox","path":"objects/prtHitbox/prtHitbox.yy",},"propertyId":{"name":"offsetX","path":"objects/prtHitbox/prtHitbox.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"10",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtHitbox","path":"objects/prtHitbox/prtHitbox.yy",},"propertyId":{"name":"offsetY","path":"objects/prtHitbox/prtHitbox.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"5",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtHitbox","path":"objects/prtHitbox/prtHitbox.yy",},"propertyId":{"name":"offsetX","path":"objects/prtHitbox/prtHitbox.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"10",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtHitbox","path":"objects/prtHitbox/prtHitbox.yy",},"propertyId":{"name":"offsetY","path":"objects/prtHitbox/prtHitbox.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"5",},
   ],
   "parent":{
     "name":"Proto Man",

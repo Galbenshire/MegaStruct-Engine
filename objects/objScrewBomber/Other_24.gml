@@ -42,7 +42,7 @@ switch (phase) {
                         contactDamage = 2;
                         
                         colours = other.bulletPalette;
-                        onDraw = method(id, cbkOnDraw_enemyBulletMM1);
+                        onDraw = method(id, cbkOnDraw_enemy_bullet_mm1);
                     }
                 }
                 

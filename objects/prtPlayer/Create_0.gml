@@ -86,6 +86,9 @@ isCharging = false;
 isHurt = false;
 isFreeMovement = false;
 
+// Misc.
+iFrameFlashStyle = IFrameFlashType.FLICKER;
+
 // temp vars
 ignoreCamera = false;
 
@@ -93,12 +96,20 @@ ignoreCamera = false;
 
 #region Callbacks
 
-onSpawn = method(id, cbkOnSpawn_prtPlayer); /// @is {function<void>}
-onDespawn = method(id, cbkOnDespawn_prtPlayer); /// @is {function<void>}
-onSetDamage = method(id, cbkOnSetDamage_prtPlayer); /// @is {function<DamageSource, void>}
-onHurt = method(id, cbkOnHurt_prtPlayer); /// @is {function<DamageSource, void>}
-onDeath = method(id, cbkOnDeath_prtPlayer); /// @is {function<DamageSource, void>}
-onDraw = method(id, cbkOnDraw_prtPlayer); /// @is {function<bool, void>}
+// - Spawning
+onSpawn = method(id, cbkOnSpawn_player); /// @is {function<void>}
+onDespawn = method(id, cbkOnDespawn_player); /// @is {function<void>}
+// - Step
+onPostTick = method(id, cbkOnPostTick_player); /// @is {function<int,void>}
+onMovement = method(id, cbkOnMovement_player); /// @is {function<void>}
+onFrame = method(id, cbkOnFrame_player); /// @is {function<void>}
+onFrameEnd = method(id, cbkOnFrameEnd_player); /// @is {function<void>}
+// - Attacking
+onSetDamage = method(id, cbkOnSetDamage_player); /// @is {function<DamageSource, void>}
+onHurt = method(id, cbkOnHurt_player); /// @is {function<DamageSource, void>}
+onDeath = method(id, cbkOnDeath_player); /// @is {function<DamageSource, void>}
+// - Drawing
+onDraw = method(id, cbkOnDraw_player); /// @is {function<bool, void>}
 
 #endregion
 
@@ -109,6 +120,3 @@ event_user(EVENT_PLAYER_ANIMATION_INIT);
 event_user(EVENT_PLAYER_STATEMACHINE_INIT);
 
 #endregion
-
-// Set the player to an idle state
-stateMachine.change_state("Idle");

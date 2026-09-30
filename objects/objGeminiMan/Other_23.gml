@@ -34,8 +34,7 @@ stateMachine.add_state("CloneDelay", {
 		animator.play("idle");
 		
 		isFighting = true;
-        canTakeDamage = introCache.canTakeDamage;
-        canDealDamage = introCache.canDealDamage;
+        hitmaskMaster = introCache.hitmaskMaster;
         gravEnabled = introCache.gravEnabled;
         grav = introCache.grav;
         collideWithSolids = introCache.collideWithSolids;

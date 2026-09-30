@@ -12,5 +12,5 @@ if (tailTimer > 75 && tailTimer mod 4 == 0) {
 	tailImgIndex = 0;
 }
 
-if (animator.flag == "shoot")
+if (animator.has_flag("shoot"))
     shootFlag = true;

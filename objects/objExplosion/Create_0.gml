@@ -1,4 +1,4 @@
 event_inherited();
 
-itemDrop = noone;
-onItemDrop = undefined;
+itemDrop = undefined; /// @is {ItemDrop?}
+hasDroppedItem = false;

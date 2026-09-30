@@ -15,11 +15,11 @@ shootFlag = false;
 
 // == Callbacks ==
 onHurt = function(_damageSource) {
-    cbkOnHurt_prtBoss(_damageSource);
+    cbkOnHurt_boss(_damageSource);
     stateMachine.change_state("Hurt");
 };
 onDeath = function(_damageSource) {
-    cbkOnDeath_prtBoss(_damageSource);
+    cbkOnDeath_boss(_damageSource);
     with (objCutManCutter)
         instance_destroy();
 };

@@ -22,7 +22,8 @@ function Weapon_SearchSnake() : Weapon() constructor {
 	#region Callbacks
 	
 	static on_tick = function(_player) {
-		if (!_player.check_input_shoot())
+		// Temporary disable
+		if (!_player.check_input_shoot() || true)
 			return;
 		
 		var _shot = _player.fire_weapon({

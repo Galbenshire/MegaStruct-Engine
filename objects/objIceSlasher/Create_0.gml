@@ -5,6 +5,6 @@ onAttackEnd = function(_damageSource) {
     with (_damageSource) {
         if (hasKilled || !subject.canBeFrozen)
             return;
-        subject.frozenTimer = 360;
+        entity_freeze(360, $FF7800, subject);
     }
 };

@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"clsItemDrop",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"clsItemDrop",
+  "parent":{
+    "name":"Classes",
+    "path":"folders/_System/Classes.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

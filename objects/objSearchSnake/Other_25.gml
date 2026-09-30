@@ -1,5 +1,5 @@
 /// @description Entity Posttick
-if (!isSlithering || reflected)
+if (!isSlithering || isBlocked)
 	exit;
 
 var _prevMoveDir = moveDir;

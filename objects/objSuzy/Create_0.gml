@@ -6,7 +6,7 @@ moveDir = 1;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     image_index = 1;
     phase = 2 * startMoving;
     phaseTimer = 10 * startMoving;

@@ -323,32 +323,26 @@ function modf(_x, _divisor = 1) {
 	return _x - floor(_x / _divisor) * _divisor;
 }
 
-/// @func weighted_random(...outcomes)
+/// @func weighted_random(outcomes, weights)
 /// @desc A function to return a random value from a given set,
 ///		  with weights given to each possible value to make them either more or less likely.
 ///		  Think of it as an alternative to using the 'choose' function.
 ///
-/// @param {rest<WeightedOutcome>}  [...outcomes]  The possible outcomes, each in the format of [value, weight]
+/// @param {array<any>}  outcomes  The possible outcomes
+/// @param {array<number>}  [weights]  The weights for each outcome
 ///
 /// @returns {any?}  The randomly-chosen outcome. Returns `undefined` if nothing could be chosen.
-function weighted_random() {
-	var _accumulate = 0,
-		i = 0;
-	repeat(argument_count) {
-		var _outcome/*:WeightedOutcome*/ = argument[i];
-		_outcome[@WeightedOutcome.weight] = max(0, _outcome[WeightedOutcome.weight]);
-		_accumulate += _outcome[WeightedOutcome.weight];
-		i++;
-	}
+function weighted_random(_outcomes, _weights) {
+	if (is_undefined(_weights))
+		return choose_from_array(_outcomes);
 	
-	var _rand = random(_accumulate),
-		i = 0;
-	repeat(argument_count) {
-		var _outcome/*:WeightedOutcome*/ = argument[i];
-		if (_rand < _outcome[WeightedOutcome.weight])
-			return _outcome[WeightedOutcome.value];
-		
-		_rand -= _outcome[WeightedOutcome.weight];
+	var _totalWeight = array_reduce(_weights, function(_prev, _curr, i) /*=>*/ {return _prev + max(0, _curr)}, 0),
+		_rand = random(_totalWeight);
+	
+	var i = 0; repeat(array_length(_outcomes)) {
+		if (_rand < _weights[i])
+			return _outcomes[i];
+		_rand -= max(0, _weights[i]);
 		i++;
 	}
 	

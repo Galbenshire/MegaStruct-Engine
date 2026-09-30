@@ -14,5 +14,4 @@ repeat(transitionCount) {
     i++;
 }
 __canOpen &= !isLocked;
-
-factionSolidWhitelist = (0xFFFFFFFF & ~Faction.PLAYER) * __canOpen;
+factionSolidMask = bitmask_toggle_bit(factionSolidMask, Faction.PLAYER, !__canOpen);

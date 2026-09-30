@@ -7,21 +7,21 @@ myPiero = noone;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     phase = 0;
     phaseTimer = 0;
     gravEnabled = false;
     collideWithSolids = false;
 };
 onDespawn = function() {
-    cbkOnDespawn_prtEntity();
+    cbkOnDespawn_base();
     
     with (myPiero)
         event_user(1);
     myPiero = noone;
 };
 onDeath = function(_damageSource) {
-    cbkOnDeath_prtEntity(_damageSource);
+    cbkOnDeath_base(_damageSource);
     
     with (myPiero)
         event_user(0);

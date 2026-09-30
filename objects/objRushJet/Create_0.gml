@@ -18,7 +18,7 @@ onSpawn = function() {
 	jetLock.pool = owner.lockpool;
 };
 onDeath = function(_damageSource) {
-	cbkOnDeath_prtProjectile(_damageSource);
+	cbkOnDeath_projectile(_damageSource);
 	
 	if (characterSpecs.id == CharacterType.PROTO) {
 		instance_create_depth(bbox_x_center(), bbox_y_center(), depth, objExplosion);
@@ -31,4 +31,4 @@ onDeath = function(_damageSource) {
 		}
 	}
 };
-onDraw = method(id, cbkOnDraw_colourReplacer);
+onDraw = method(id, cbkOnDraw_colour_replacer);

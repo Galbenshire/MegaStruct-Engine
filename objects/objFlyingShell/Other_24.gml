@@ -11,7 +11,8 @@ if (isShooting) {
             with (spawn_entity(x, y, depth, objGenericEnemyBullet)) {
                 sprite_index = sprBeakBullet;
                 contactDamage = 2;
-                palette = other.bulletPalette;
+                colours = other.bulletPalette;
+                onDraw = method(id, cbkOnDraw_enemy_bullet_mm1);
                 
                 set_velocity_vector(other.bulletSpeed, i * _spreadAngle);
                 xspeed.value *= sign(image_xscale);
@@ -31,4 +32,5 @@ if (isShooting) {
 if (isShooting != _prev_shooting)
     shootTimer = 0;
 
+hitmask = bitmask_toggle_bit(hitmask, HitMask.BLOCK, !isShooting);
 image_index = isShooting;

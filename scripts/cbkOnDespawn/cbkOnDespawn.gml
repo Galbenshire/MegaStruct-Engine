@@ -10,27 +10,31 @@
 // This would be important for when an entity is deactivated during section switches,
 // as instance deactivation is not covered by the Cleanup Event
 
-#region Base Callbacks
+#region Base Callback
 
-/// @func cbkOnDespawn_prtEntity()
+/// @func cbkOnDespawn_base()
 /// @desc Default onDespawn callback for all entities
-function cbkOnDespawn_prtEntity() {
+function cbkOnDespawn_base() {
     if (DEBUG_ENABLED)
         show_debug_message("Despawn - {0} ({1}, {2})", object_get_name(object_index), x, y);
     
     entity_clear_hitboxes();
 }
 
-/// @func cbkOnDespawn_prtBoss()
+#endregion
+
+#region Available Presets
+
+/// @func cbkOnDespawn_boss()
 /// @desc Default onDespawn callback for bosses
-function cbkOnDespawn_prtBoss() {
-    cbkOnDespawn_prtEntity();
+function cbkOnDespawn_boss() {
+    cbkOnDespawn_base();
 	self.disconnect_hud();
 }
 
-/// @func cbkOnDespawn_prtPlayer()
+/// @func cbkOnDespawn_player()
 /// @desc Default onDespawn callback for players
-function cbkOnDespawn_prtPlayer() {
+function cbkOnDespawn_player() {
     if (DEBUG_ENABLED)
         show_debug_message($"Player Despawn ({x}, {y})");
 }

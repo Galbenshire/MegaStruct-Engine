@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"cbkOnBlocked",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"cbkOnBlocked",
+  "parent":{
+    "name":"Callbacks",
+    "path":"folders/_System/Callbacks.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

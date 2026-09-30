@@ -15,10 +15,9 @@ customIntroSequence = [];
 preFightMusicCache = array_create(MusicSnapshot.sizeof);
 preFightMusicCache[MusicSnapshot.musicID] = -1;
 
-// Teleportin'
-teleportSprite = sprHotDogTeleport;
-teleportImg = 0;
-teleportPalette = new ColourPalette([ healthColourPrimary, healthColourSecondary, $000000 ]);
+// (for if you choose teleporting as an intro type)
+teleportRef = noone;
+teleportSFX = noone;
 
 // Variables to store various lockpool locks
 introLock = new PlayerLockPoolSwitch(global.player.lockpool,
@@ -31,19 +30,20 @@ introPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
 // Bool flags for when specific actions are ocurring
 isInactive = true;
 isIntro = false;
-isTeleporting = false;
 isFillingHealthBar = false;
 isReady = false;
 isFighting = false;
+
+iFrameFlashStyle = IFrameFlashType.HITSPARK;
 
 #endregion
 
 #region Callbacks
 
-onSetDamage = method(id, cbkOnSetDamage_prtBoss);
-onHurt = method(id, cbkOnHurt_prtBoss);
-onDeath = method(id, cbkOnDeath_prtBoss);
-onDraw = method(id, cbkOnDraw_prtBoss);
+onDespawn = method(id, cbkOnDespawn_boss);
+onSetDamage = method(id, cbkOnSetDamage_boss);
+onHurt = method(id, cbkOnHurt_boss);
+onDeath = method(id, cbkOnDeath_boss);
 
 #endregion
 

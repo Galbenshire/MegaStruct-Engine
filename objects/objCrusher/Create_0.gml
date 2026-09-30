@@ -11,13 +11,12 @@ chainPieceHeight = sprite_get_height(sprCrusherChain);
 
 // Callbacks
 onSpawn = function(_damageSource) {
-	cbkOnSpawn_prtEntity();
+	cbkOnSpawn_base();
 	phase = 0;
 	phaseTimer = 0;
 	gravEnabled = false;
 };
-onGuard = method(id, cbkOnGuard_alwaysReflectOrIgnore);
-onDraw = function(_whiteflash) {
+onDraw = function() {
 	draw_sprite_ext(sprCrusherChain, 0, x, chainEndY, 1, -chainYScale, 0, c_white, 1);
 	draw_self();
 };

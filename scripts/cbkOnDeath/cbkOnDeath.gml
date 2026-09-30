@@ -11,44 +11,54 @@
 
 #region Base Callbacks
 
-/// @func cbkOnDeath_prtEntity(damage_source)
+/// @func cbkOnDeath_base(damage_source)
 /// @desc Default onDeath callback for all entities
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnDeath_prtEntity(_damageSource) {
-    if (DEBUG_ENABLED)
-        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
+function cbkOnDeath_base(_damageSource) {
+    cbkOnDeath_base_no_fx(_damageSource);
+    entity_death_explosion(_damageSource.can_drop_item());
+}
+
+/// @func cbkOnDeath_base_no_fx(damage_source)
+/// @desc Default onDeath callback for all entities, without the explosion & gib effects
+///
+/// @param {DamageSource}  damage_source  Details on the attack
+function cbkOnDeath_base_no_fx(_damageSource) {
+    if (DEBUG_ENABLED) {
+		var _attacker = _damageSource.attacker,
+			_attackerName = (_attacker == self) ? "self" : object_get_name(_attacker.object_index);
+		show_debug_message("Death - {0} (by {1})", object_get_name(object_index), _attackerName);
+    }
     
     lifeState = LifeState.DEAD_ONSCREEN;
-    entity_item_drop();
     entity_clear_hitboxes();
 }
 
-/// @func cbkOnDeath_prtBoss(damage_source)
+#endregion
+
+#region Available Presets
+
+/// @func cbkOnDeath_boss(damage_source)
 /// @desc Default onDeath callback for bosses
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnDeath_prtBoss(_damageSource) {
-    if (DEBUG_ENABLED)
-        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
-    
-    lifeState = LifeState.DEAD_ONSCREEN;
-	entity_clear_hitboxes();
-	entity_item_drop();
+function cbkOnDeath_boss(_damageSource) {
+    cbkOnDeath_base_no_fx(_damageSource);
 	self.disconnect_hud();
+	self.clear_attacks();
 	self.restore_music();
+	self.death_effect();
 	
-	if (doPlayerDeathExplosion) {
-		player_death_explosion(x, y, depth);
-		play_sfx(sfxDeath);
-	}
+	if (_damageSource.can_drop_item())
+		itemDrop.spawn_item(bbox_x_center(), bbox_y_center(), depth);
 }
 
-/// @func cbkOnDeath_prtPlayer(damage_source)
+/// @func cbkOnDeath_player(damage_source)
 /// @desc Default onDeath callback for players
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnDeath_prtPlayer(_damageSource) {
+function cbkOnDeath_player(_damageSource) {
     if (DEBUG_ENABLED)
         show_debug_message("Player Death by {0}", object_get_name(_damageSource.attacker.object_index));
     
@@ -68,17 +78,13 @@ function cbkOnDeath_prtPlayer(_damageSource) {
     stateMachine.change_state("Death");
 }
 
-/// @func cbkOnDeath_prtProjectile(damage_source)
+/// @func cbkOnDeath_projectile(damage_source)
 /// @desc Default onDeath callback for projectiles
 ///
 /// @param {DamageSource}  damage_source  Details on the attack
-function cbkOnDeath_prtProjectile(_damageSource) {
-    if (DEBUG_ENABLED)
-        show_debug_message("Death - {0} (by {1})", object_get_name(object_index), object_get_name(_damageSource.attacker.object_index));
-    
-    lifeState = LifeState.DEAD_ONSCREEN;
+function cbkOnDeath_projectile(_damageSource) {
+    cbkOnDeath_base_no_fx(_damageSource);
     visible = false;
-    entity_clear_hitboxes();
 }
 
 #endregion

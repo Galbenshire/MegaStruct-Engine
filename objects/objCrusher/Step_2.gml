@@ -21,14 +21,20 @@ var _entityArr = array_concat(
 	instance_place_array(x, y, prtEntity, true),
 	collision_rectangle_array(x - 3, chainStartY, x + 3, chainEndY, prtEntity, true, true, true)
 );
-var _numEntities = array_length(_entityArr);
 array_sort(_entityArr, function(_a, _b) /*=>*/ {return _a.collisionPriority < _b.collisionPriority});
 
-var i = 0;
-repeat(_numEntities) {
-	var _subject = _entityArr[i];
-	if (entity_can_attack_target(_subject) && !(_subject.lastHitBy == self && hitTimer == 0))
-		entity_entity_collision(contactDamage, _subject, _subject);
+var _damageSource = new DamageSource(self.id, self.id, contactDamage);
+var i = 0; repeat(array_length(_entityArr)) {
+	_damageSource.set_subject(_entityArr[i]);
+	if (_damageSource.subject.lastHitBy == self.id && _damageSource.subject.hitTimer == 0)
+		continue;
+	
+	_damageSource.refresh_state(contactDamage);
+	_damageSource.process_attack();
+	
+	if (!entity_can_deal_damage())
+		break;
 	
 	i++;
 }
+delete _damageSource;

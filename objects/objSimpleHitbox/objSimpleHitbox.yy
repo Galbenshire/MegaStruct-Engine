@@ -6,8 +6,8 @@
   "name":"objSimpleHitbox",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/_System/Objects.yy",
+    "name":"Hitboxes",
+    "path":"folders/Hitboxes.yy",
   },
   "parentObjectId":{
     "name":"prtHitbox",

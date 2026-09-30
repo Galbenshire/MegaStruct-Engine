@@ -23,6 +23,8 @@ assert(__init == 1, $"Only one instance of {instanceof(self)} can be present at 
 
 #macro DEBUG_VIEW_HTML5_CHECK if (is_html5()) { return; }
 
+#macro FOG_ENABLED gpu_get_fog()[0]
+
 #macro PLAYER_ONLY_FUNCTION assert(is_a_player(_player),\
 $"{_GMFUNCTION_} can only be used by an object that inherits from {object_get_name(prtPlayer)}");
 
@@ -60,18 +62,28 @@ enum ColourReplacerMode {
 
 // The list of factions an entity can be a part of, or can target, in this game
 enum Faction {
+	// Main Factions
 	PICKUP = 1 << 0,
 	PLAYER = 1 << 1,
-	PLAYER_PROJECTILE = 1 << 2,
-	ENEMY = 1 << 3,
-	ENEMY_PROJECTILE = 1 << 4,
-	NEUTRAL = 1 << 5,
-	NEUTRAL_PROJECTILE = 1 << 6,
+	ENEMY = 1 << 2,
+	NEUTRAL = 1 << 3,
+	
+	// Sub Factions
+	PROJECTILE = 1 << 16,
 	
 	// Shortcuts
-	PLAYER_FULL = Faction.PLAYER | Faction.PLAYER_PROJECTILE,
-	ENEMY_FULL = Faction.ENEMY | Faction.ENEMY_PROJECTILE,
-	NEUTRAL_FULL = Faction.NEUTRAL | Faction.NEUTRAL_PROJECTILE
+	PLAYER_PROJECTILE = Faction.PLAYER | Faction.PROJECTILE,
+	ENEMY_PROJECTILE = Faction.ENEMY | Faction.PROJECTILE,
+	NEUTRAL_PROJECTILE = Faction.NEUTRAL | Faction.PROJECTILE,
+	MAIN_ALL = 0x0000FFFF,
+	SUB_ALL = 0xFFFF0000
+}
+
+// How an entity should flash if they have i-frames
+enum IFrameFlashType {
+	WHITEFLASH,
+	HITSPARK,
+	FLICKER
 }
 
 // Determines what an entity can drop
@@ -141,32 +153,36 @@ enum SectionSwitchBehaviour {
 	PERSISTANT
 }
 
+#macro FROZEN_FLICKER_POINT 42
+
 #endregion
 
 
 #region Entity-Entity Collisions
 
+// If an entity has the BLOCK flag set, this enum determines the type of block
+enum BlockType {
+	NONE,
+	REFLECT,
+	DESTROY,
+	PROTO_SHIELD
+}
+
 // Denotes various attributes of an entity attack
 enum DamageFlags {
-	NO_DAMAGE = 1 << 0,
-	MOCK_DAMAGE = 1 << 1
+	MOCK_DAMAGE = 1 << 0, // Attack seemingly causes damage, but neither reduces health nor kills
+	NO_POPUP = 1 << 1, // Prevents damage popups, even when enabled
+	NO_RANDOM_ITEMDROP = 1 << 2, // Prevents random item drops (set drops still allowed)
+	IGNORE_IFRAMES = 1 << 3, // Attack will ignore i-frames
 }
 
-// How an entity should guard against an attack
-enum GuardType {
-	DAMAGE,
-	REFLECT,
-	IGNORE,
-	REFLECT_OR_IGNORE,
-	FORCE_REFLECT
-}
-
-// Denotes how an entity should react to being guarded
-enum PenetrateType {
-	NONE,
-	NO_DAMAGE,
-	NO_DAMAGE_AND_COLLISION,
-	BYPASS_GUARD
+// Determines if an entity can take/deal damage, and if they can block attacks
+enum HitMask {
+	DEAL_DAMAGE = 1 << 0,
+	TAKE_DAMAGE = 1 << 1,
+	BLOCK = 1 << 2,
+	
+	FULL = HitMask.DEAL_DAMAGE | HitMask.TAKE_DAMAGE | HitMask.BLOCK
 }
 
 // Denotes if an entity should be killed after dealing damage

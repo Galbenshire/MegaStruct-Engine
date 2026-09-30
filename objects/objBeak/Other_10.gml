@@ -16,5 +16,5 @@ switch (colourPreset) {
 if (!is_undefined(_colour)) {
 	palette = new ColourPalette([ _colour ], [ $5800E4 ]);
 	bulletPalette[0] = _colour;
-	onDraw = method(id, cbkOnDraw_colourReplacer);
+	onDraw = method(id, cbkOnDraw_colour_replacer);
 }

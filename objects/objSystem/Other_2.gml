@@ -32,6 +32,10 @@ if (!variable_global_exists("__gameInit")) {
 	global.characterEntityList = cache_character_entities();
 	global.weaponList = cache_game_assets("Weapon");
 	
+	// Random Drop Tale
+	global.randomDropTable = [ objHealthEnergyBig, objWeaponEnergyBig, objHealthEnergySmall, objWeaponEnergySmall, objBoltBig, objBoltSmall, noone ];
+	global.randomDropWeights = [ 20, 20, 25, 25, 25, 120, 480 ];
+	
 	// ===== Global Variables =====
 	show_debug_message("Generating Global Variables...");
 	

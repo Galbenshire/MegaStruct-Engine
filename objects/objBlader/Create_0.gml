@@ -5,6 +5,6 @@ phaseTimer = 0;
 targetY = y;
 
 // Callbacks
-onSpawn = method(id, cbkOnSpawn_phaseReset);
+onSpawn = method(id, cbkOnSpawn_phase_reset);
 
 event_user(0); // Init Palette

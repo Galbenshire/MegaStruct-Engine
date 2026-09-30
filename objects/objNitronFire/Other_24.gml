@@ -6,7 +6,7 @@ switch (phase) {
             visible = false;
             gravEnabled = false;
             collideWithSolids = false;
-            canDealDamage = false;
+            hitmask = bitmask_unset_bit(hitmask, HitMask.DEAL_DAMAGE);
             yspeed.value = 0;
             explosionRef = instance_create_depth(x, y - 4, depth, objExplosion);
             phase++;
@@ -16,7 +16,7 @@ switch (phase) {
     case 1: // Wait for the explosion to go away
         if (!instance_exists(explosionRef)) {
             visible = true;
-            canDealDamage = true;
+            hitmask = bitmask_set_bit(hitmask, HitMask.DEAL_DAMAGE);
             animTimer = 0;
             phase++;
         }

@@ -1,0 +1,53 @@
+{
+  "$GMObject":"",
+  "%Name":"objTeleportInEffect",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":25,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":24,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
+  "managed":true,
+  "name":"objTeleportInEffect",
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEffect","path":"objects/prtEffect/prtEffect.yy",},"propertyId":{"name":"maxFallSpeed","path":"objects/prtEffect/prtEffect.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"8",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEffect","path":"objects/prtEffect/prtEffect.yy",},"propertyId":{"name":"destroyOutsideView","path":"objects/prtEffect/prtEffect.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
+  ],
+  "parent":{
+    "name":"Teleport Effect",
+    "path":"folders/Effects/Teleport Effect.yy",
+  },
+  "parentObjectId":{
+    "name":"prtEffect",
+    "path":"objects/prtEffect/prtEffect.yy",
+  },
+  "persistent":false,
+  "physicsAngularDamping":0.1,
+  "physicsDensity":0.5,
+  "physicsFriction":0.2,
+  "physicsGroup":1,
+  "physicsKinematic":false,
+  "physicsLinearDamping":0.1,
+  "physicsObject":false,
+  "physicsRestitution":0.1,
+  "physicsSensor":false,
+  "physicsShape":1,
+  "physicsShapePoints":[],
+  "physicsStartAwake":true,
+  "properties":[
+    {"$GMObjectProperty":"v2","%Name":"colourPrimary","filters":[],"listItems":[],"multiselect":false,"name":"colourPrimary","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFF5800","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"colourSecondary","filters":[],"listItems":[],"multiselect":false,"name":"colourSecondary","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFDCEC00","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"colourOutline","filters":[],"listItems":[],"multiselect":false,"name":"colourOutline","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FF000000","varType":7,},
+    {"$GMObjectProperty":"v2","%Name":"teleportSFX","filters":[
+        "GMSound",
+      ],"listItems":[],"multiselect":false,"name":"teleportSFX","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"noone","varType":5,},
+  ],
+  "resourceType":"GMObject",
+  "resourceVersion":"2.0",
+  "solid":false,
+  "spriteId":{
+    "name":"sprRushTeleport",
+    "path":"sprites/sprRushTeleport/sprRushTeleport.yy",
+  },
+  "spriteMaskId":null,
+  "visible":true,
+}

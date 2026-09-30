@@ -3,13 +3,12 @@ event_inherited();
 isShooting = false;
 shootTimer = 0;
 
-bulletPalette = new ColourReplacerPalette([ $5800E4 ], [ $40A4FF ]);
+bulletPalette = [ $40A4FF, $F8F8F8 ];
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     image_index = 0;
     isShooting = false;
     shootTimer = 20;
 };
-onGuard = method(id, cbkOnGuard_imageIndex);

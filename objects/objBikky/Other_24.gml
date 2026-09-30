@@ -20,8 +20,10 @@ switch (phase) {
             xspeed.value = moveSpeed * image_xscale;
             yspeed.value = -jumpSpeed;
             intendedXSpeed = xspeed.value;
-            phase++;
+            hitmask = bitmask_unset_bit(hitmask, HitMask.BLOCK);
             image_index = 3;
+            
+            phase++;
         }
         break;
     
@@ -35,6 +37,7 @@ switch (phase) {
             image_index -= 0.1 * 2;
             if (image_index <= 1) {
                 phase = 0;
+                hitmask = bitmask_set_bit(hitmask, HitMask.BLOCK);
                 image_index = 0;
             }
         }

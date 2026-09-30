@@ -2,7 +2,7 @@
 if (image_index + animSpeed < image_number)
     image_index += animSpeed;
 else
-    entity_kill_self();
+    instance_destroy();
 
 if (image_index >= damageDisablePoint)
-    canDealDamage = false;
+    hitmaskMaster = bitmask_unset_bit(hitmaskMaster, HitMask.DEAL_DAMAGE);

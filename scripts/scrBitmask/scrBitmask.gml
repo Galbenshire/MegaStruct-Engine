@@ -30,15 +30,19 @@ function bitmask_set_bit(_mask, _bit) {
     return _mask | _bit;
 }
 
-/// @func bitmask_toggle_bit(bitmask, bit)
+/// @func bitmask_toggle_bit(bitmask, bit, force)
 /// @desc Toggles the specified bit on a given bitmask
 ///
 /// @param {int}  bitmask  The bitmask to use
 /// @param {int}  bit  The bit to toggle
+/// @param {bool?}  [force]  If defined, forces the it to set/unset, depending on the bool value.
+///         If undefined (default), acts as a toggle
 ///
 /// @returns {int}  The new bitmask
-function bitmask_toggle_bit(_mask, _bit) {
-    return _mask ^ _bit;
+function bitmask_toggle_bit(_mask, _bit, _force) {
+    if (is_undefined(_force))
+        return _mask ^ _bit;
+    return bool(_force) ? bitmask_set_bit(_mask, _bit) : bitmask_unset_bit(_mask, _bit);
 }
 
 /// @func bitmask_unset_bit(bitmask, bit)

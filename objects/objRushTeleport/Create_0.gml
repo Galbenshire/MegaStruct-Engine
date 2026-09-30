@@ -19,7 +19,7 @@ animator.add_animation_non_loop("teleport-out", 4, 3)
 animator.play(isTeleportingOut ? "teleport-out" : "teleport-idle");
 
 // Callbacks
-onDraw = method(id, cbkOnDraw_colourReplacer);
+onDraw = method(id, cbkOnDraw_colour_replacer);
 
 if (isTeleportingOut)
     play_sfx(sfxTeleportOut);

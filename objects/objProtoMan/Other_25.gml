@@ -1,7 +1,7 @@
 /// @description Post Tick
 event_inherited();
 
-with (shieldHitbox) {
-	active = !owner.isIntro && !owner.ground && !owner.isClimbing
-		&& !owner.isHurt && !owner.isShooting;
-}
+var _shieldActive = !isIntro && !ground && !isClimbing && !isHurt && !isShooting;
+with (shieldHitbox)
+	hitmask = bitmask_toggle_bit(hitmask, HitMask.BLOCK, _shieldActive);
+

@@ -26,8 +26,7 @@ function DamageTable() constructor {
     /// @method remove_all_entries(object)
     /// @desc Removes all sources of damage currently in the table
     static remove_all_entries = function() {
-		delete entries;
-		entries = {};
+		struct_remove_all(entries);
     };
     
     /// @method remove_entry(object)
@@ -59,13 +58,18 @@ function DamageTable() constructor {
 				return _attackDamage;
 			
 			_attackObject = object_get_parent(_attackObject);
-		} until(_attackObject == -100);
+		} until(_attackObject == -100 || _attackObject == -1);
 		
 		return _defaultDamage; // Nothing found? Use the default value.
     };
     
     /// @method get_entry_damage(object, instance)
     /// @desc Finds the damage value in the table for the given object
+    ///
+	/// @param {object}  object  The object to get the entry for
+	/// @param {instance}  [instance]  An instance of `object`. Optional.
+	///
+	/// @returns {number?}  The damage value, or `undefined` if nothing was found
     static get_entry_damage = function(_object, _instance = noone) {
 		return entries[$ object_get_name(_object)];
     }

@@ -9,22 +9,21 @@ animCycle = 0;
 
 reformCans = [];
 
+weakspot = noone;
+
 palette = undefined;
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     sprite_index = sprBlocky;
     phase = 0;
     phaseTimer = 0;
-};
-onGuard = function(_damageSource) {
-    if (phase != 0 || !in_range(bbox_y_center(_damageSource.attacker), y + 16, y + 32))
-        _damageSource.guard = GuardType.REFLECT_OR_IGNORE;
+    weakspot = hitbox_create_simple(-6, 18, 12, 12, HitMask.TAKE_DAMAGE);
+    //weakspot.visible = true;
 };
 onHurt = function(_damageSource) {
-    cbkOnHurt_prtEntity(_damageSource);
-    
+    cbkOnHurt_base(_damageSource);
     if (healthpoints <= 0)
         return;
     
@@ -39,7 +38,7 @@ onHurt = function(_damageSource) {
             
             if (!is_undefined(other.palette)) {
 				palette = other.palette;
-				onDraw = method(id, cbkOnDraw_colourReplacer);
+				onDraw = method(id, cbkOnDraw_colour_replacer);
             }
         }
     }
@@ -51,6 +50,7 @@ onHurt = function(_damageSource) {
     phaseTimer = 0;
     xspeed.value = 0;
     ground = false;
+    weakspot.hitmask = bitmask_unset_bit(weakspot.hitmask, HitMask.TAKE_DAMAGE);
 };
 
 event_user(0); // Palette Init

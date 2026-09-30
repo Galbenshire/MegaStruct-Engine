@@ -20,7 +20,7 @@ stallCache = {};
 
 // == Callbacks (common to both Gemini & his clone) ==
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     
     var _middleX = game_view().center_x();
     runToX = x;
@@ -31,7 +31,7 @@ onSpawn = function() {
     });
 };
 onDespawn = function() {
-    cbkOnDespawn_prtEntity();
+    cbkOnDespawn_base();
     event_perform(ev_cleanup, 0);
 };
 

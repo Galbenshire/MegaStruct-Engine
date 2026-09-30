@@ -123,7 +123,7 @@
 		var _fellIntoPit = _fallingDown ? y > _section.bottom + 16 : y < _section.top - 16;
 		if (_fellIntoPit) {
 			diedToAPit = true;
-			stateMachine.change_state("Death");
+			stateMachine.change_state("Death", { diedToPit: true });
 		}
 	}
 	

@@ -11,7 +11,7 @@ jumps = [
 
 // Callbacks
 onSpawn = function() {
-    cbkOnSpawn_prtEntity();
+    cbkOnSpawn_base();
     isJumping = false;
     timer = 0;
     mask_index = sprite_index;
