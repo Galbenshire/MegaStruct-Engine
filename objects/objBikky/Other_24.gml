@@ -17,9 +17,9 @@ switch (phase) {
         image_index += 0.1;
         if (image_index >= 3) {
             calibrate_direction_object(reticle.target);
-            xspeed.value = moveSpeed * image_xscale;
-            yspeed.value = -jumpSpeed;
-            intendedXSpeed = xspeed.value;
+            xspeed = moveSpeed * image_xscale;
+            yspeed = -jumpSpeed;
+            intendedXSpeed = xspeed;
             hitmask = bitmask_unset_bit(hitmask, HitMask.BLOCK);
             image_index = 3;
             
@@ -29,8 +29,8 @@ switch (phase) {
     
     case 2: // Leap & Land
         if (ground) {
-            if (xspeed.value != 0) {
-                xspeed.value = 0;
+            if (xspeed != 0) {
+                xspeed = 0;
                 play_sfx(sfxBikkyLand);
             }
             

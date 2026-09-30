@@ -15,5 +15,5 @@ onSpawn = function() {
     isFiringMissile = false;
     missileTimer = 0;
     hatchIndex = 0;
-    xspeed.value = moveSpeedPreFire * image_xscale;
+    xspeed = moveSpeedPreFire * image_xscale;
 };

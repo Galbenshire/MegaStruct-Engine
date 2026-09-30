@@ -4,9 +4,9 @@ maxSlopeSteepness = 999;
 
 moveDir = 0;
 snakeAngle = 0;
-isSlithering = false;
-wasOnTopSolid = false;
 deathExplode = false;
+
+isSlithering = false;
 
 __enableCeilings = false;
 
@@ -19,8 +19,8 @@ onBlocked = function(_damageSource) {
     collideWithSolids = false;
     gravEnabled = false;
     
-    hspeed = xspeed.value;
-    vspeed = yspeed.value;
+    hspeed = xspeed;
+    vspeed = yspeed;
     set_velocity_vector(6, direction - 135);
 }
 onDeath = function(_damageSource) {
@@ -34,11 +34,10 @@ onMovement = function() {
 		return;
 	}
 	
-	// Temporarily disabled for now
-	// entity_handle_external_forces();
-	// entity_gravity();
-	// event_user(moveDir & 1);
-	// entity_water();
+	entity_handle_external_forces();
+    entity_apply_gravity();
+	event_user(moveDir & 1);
+	entity_handle_water();
 };
 onDraw = function() {
     var _angle = image_angle;

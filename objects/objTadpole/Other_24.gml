@@ -6,6 +6,6 @@ if (reticle.targetExists) {
         _dir = reticle.direction_to_target();
     set_velocity_vector(_spd, _dir);
 } else {
-    xspeed.value = followSpeed * image_xscale;
-    yspeed.value = 0;
+    xspeed = followSpeed * image_xscale;
+    yspeed = 0;
 }

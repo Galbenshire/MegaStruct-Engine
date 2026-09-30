@@ -8,7 +8,7 @@ switch (phase) {
         if (reticle.targetExists && reticle.distance_to_target_x() < activateRange) {
             calibrate_direction_object(reticle.target);
             phase++;
-            yspeed.value = 1;
+            yspeed = 1;
             gravEnabled = true;
             hitmaskMaster = HitMask.FULL;
             visible = true;
@@ -19,23 +19,23 @@ switch (phase) {
     case 5:
         if (y >= reticle.y - initialDropHeight * (phase == 1)) {
             gravEnabled = false;
-            yspeed.value = 0;
+            yspeed = 0;
             phase++;
         }
         break;
     
     case 2: // Bounceback from stopping
     case 6:
-        yspeed.value = 0;
+        yspeed = 0;
         
         if (phaseTimer < 4) {
-            yspeed.value = 1.5;
+            yspeed = 1.5;
         } else if (phaseTimer < 9) {
-            yspeed.value = -1.5;
+            yspeed = -1.5;
         } else if (phaseTimer >= 20) {
             calibrate_direction_object(reticle.target);
             phase++;
-            xspeed.value = moveSpeed * image_xscale;
+            xspeed = moveSpeed * image_xscale;
         }
         break;
     
@@ -43,14 +43,14 @@ switch (phase) {
         if ((x - reticle.x) * sign(image_xscale) > behindOffset) {
             calibrate_direction_object(reticle.target);
             phase++;
-            xspeed.value = 0;
+            xspeed = 0;
         }
         break;
     
     case 4: // Delay before dropping again
         if (phaseTimer >= 15) {
             phase++;
-            yspeed.value = 1;
+            yspeed = 1;
             gravEnabled = true;
         }
         break;

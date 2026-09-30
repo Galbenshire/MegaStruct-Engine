@@ -15,7 +15,7 @@ if (!isShooting) {
             play_sfx(sfxEnemyShootClassic);
             
             var i = spawn_entity(x + 6 * image_xscale, y + 8, depth, objGenericEnemyBullet);
-            i.xspeed.value = image_xscale * 2;
+            i.xspeed = image_xscale * 2;
             i.contactDamage = 2;
         }
         

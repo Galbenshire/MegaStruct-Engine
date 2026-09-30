@@ -33,8 +33,8 @@ onHurt = function(_damageSource) {
             _canY += 16;
         
         with (spawn_entity(x, _canY, depth, objBlockyCan)) {
-            xspeed.value = (2 - (0.5 * i)) * other.image_xscale;
-            yspeed.value = -4.5 + 0.75 * i;
+            xspeed = (2 - (0.5 * i)) * other.image_xscale;
+            yspeed = -4.5 + 0.75 * i;
             
             if (!is_undefined(other.palette)) {
 				palette = other.palette;
@@ -48,7 +48,7 @@ onHurt = function(_damageSource) {
     y += 16;
     phase = 1;
     phaseTimer = 0;
-    xspeed.value = 0;
+    xspeed = 0;
     ground = false;
     weakspot.hitmask = bitmask_unset_bit(weakspot.hitmask, HitMask.TAKE_DAMAGE);
 };

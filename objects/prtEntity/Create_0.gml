@@ -30,10 +30,12 @@ hitboxCount = 0;
 reticle = (targetingPreset != ReticlePresetType.NO_TARGET) ? (new Reticle(targetingPreset)) : undefined; /// @is {Reticle}
 itemDrop = new ItemDrop(itemDropType, dropItemOnce, customItemDrop);
 
-xspeed = new Fractional();
-yspeed = new Fractional();
-externalXForce = new Fractional();
-externalYForce = new Fractional();
+xspeed = 0;
+yspeed = 0;
+externalXForce = 0;
+externalYForce = 0;
+
+collisionOverrides = {};
 
 xcoll = 0;
 xcollInstance = noone; /// @is {instance}
@@ -43,6 +45,7 @@ ycollInstance = noone; /// @is {instance}
 ground = gravEnabled; /// @is {bool}
 groundInstance = noone; /// @is {instance}
 ladderInstance = noone; /// @is {instance}
+wallInstance = noone; /// @is {instance}
 maxSlopeSteepness = DEFAULT_MAX_SLOPE_STEEPNESS;
 
 grav = abs(grav);

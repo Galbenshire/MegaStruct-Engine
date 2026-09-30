@@ -7,15 +7,15 @@ if (jumpTimer == 0) {
 } else if (jumpTimer == 40) {
     calibrate_direction_object(reticle.target);
     image_index = 1;
-    xspeed.value = image_xscale;
-    yspeed.value = -3.5;
-    intendedXSpeed = xspeed.value;
+    xspeed = image_xscale;
+    yspeed = -3.5;
+    intendedXSpeed = xspeed;
 } else if (jumpTimer > 40) {
-    xspeed.value = intendedXSpeed;
+    xspeed = intendedXSpeed;
     
     if (ground) {
         image_index = 2;
-        xspeed.value = 0;
+        xspeed = 0;
         jumpTimer = -5;
     }
 }
@@ -23,7 +23,7 @@ if (jumpTimer == 0) {
 if (eggCounter-- <= 0) {
     var _egg = spawn_entity(x, y, depth, objBomberPepeEgg);
     _egg.owner = self.id;
-    _egg.xspeed.value = image_xscale;
-    _egg.yspeed.value = -1;
+    _egg.xspeed = image_xscale;
+    _egg.yspeed = -1;
     eggCounter = irandom_range(30, 140);
 }

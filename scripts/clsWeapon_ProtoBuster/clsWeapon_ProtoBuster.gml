@@ -174,7 +174,7 @@ function Weapon_ProtoBuster() : Weapon() constructor {
 		
 		var _shot = playerRef.fire_weapon(_shotData);
 		if (_shot != noone) {
-			_shot.xspeed.value = _moveSpeed * playerRef.image_xscale;
+			_shot.xspeed = _moveSpeed * playerRef.image_xscale;
 			chargeToggle = (_chargeLevel <= 0 && playerRef.is_user_controlled() && options_data().chargeToggle);
 			play_sfx(_sfx);
 		}

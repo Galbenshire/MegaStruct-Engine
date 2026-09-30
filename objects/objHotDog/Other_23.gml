@@ -19,7 +19,7 @@ stateMachine.add_state("Main", {
 			
 			case 1: // Fire Breath
 				if (_timer mod 4 == 0)
-					self.create_projectile("fire", 16, 0);
+					self.perform_action("fire");
 				
 				if (_timer >= fireDuration) {
 					animator.play("main", true);
@@ -35,8 +35,12 @@ stateMachine.add_state("Dying", {
 		animator.play("freeze-in-place");
 	},
 	tick: function(_substate, _timer) {
-		if (_timer mod 5 == 0)
-			self.create_projectile("death_explode", irandom_range(bbox_left, bbox_right), irandom_range(bbox_top, bbox_bottom));
+		if (_timer mod 5 == 0) {
+			self.perform_action("death_explode", {
+				x: irandom_range(bbox_left, bbox_right),
+				y: irandom_range(bbox_top, bbox_bottom)
+			});
+		}
 		
 		if (_timer >= 60)
 			entity_kill_self();

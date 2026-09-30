@@ -69,10 +69,7 @@ function cbkOnDeath_player(_damageSource) {
 			animator.play("fall");
 			animator.update();
 		}
-		
-		yspeed.value = ycoll;
-		yspeed.update();
-		y += yspeed.integer;
+		y += ycoll;
     }
     
     stateMachine.change_state("Death");

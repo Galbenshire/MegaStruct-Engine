@@ -123,7 +123,7 @@ function stop_screen_flash(_flash) {
 /// @desc Tells the game to stop all instances of flashing the screen
 function stop_screen_flash_all() {
 	with (objSystem.flasher) {
-		flashes = [];
+		array_clear(flashes);
 		flashCount = 0;
 	}
 }
@@ -170,7 +170,7 @@ function stop_screen_shake(_shake) {
 /// @desc Tells the game to stop all instances of shaking the screen
 function stop_screen_shake_all() {
 	with (objSystem.shaker) {
-		shakes = [];
+		array_clear(shakes);
 		shakeCount = 0;
 	}
 }

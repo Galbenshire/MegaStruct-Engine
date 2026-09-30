@@ -35,9 +35,9 @@ stateMachine.add_state("StandardGround", {
 			case SUBSTATE_GROUND_IDLE:
 				animator.play("idle");
 				if (_isOnIce)
-					xspeed.approach_value(0, DEFAULT_ICE_DECEL_IDLE);
+					xspeed = approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE);
 				else
-					xspeed.value = 0;
+					xspeed = 0;
 				break;
 			case SUBSTATE_GROUND_SIDESTEP:
 				if (_timer == 0) {
@@ -46,23 +46,23 @@ stateMachine.add_state("StandardGround", {
 				}
 				animator.play("sidestep");
 				if (_isOnIce)
-					xspeed.approach_value(0, DEFAULT_ICE_DECEL_IDLE);
+					xspeed = approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE);
 				else
-					xspeed.value = 0;
+					xspeed = 0;
 				break;
 			case SUBSTATE_GROUND_BRAKE:
 				animator.play("brake");
 				if (_isOnIce)
-					xspeed.approach_value(0, DEFAULT_ICE_DECEL_IDLE);
+					xspeed = approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE);
 				else
-					xspeed.value = brakeSpeed * image_xscale;
+					xspeed = brakeSpeed * image_xscale;
 				break;
 			case SUBSTATE_GROUND_WALK:
 				animator.play("walk");
 				if (_isOnIce)
-					xspeed.approach_value(walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
+					xspeed = approach(xspeed, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
 				else
-					xspeed.value = walkSpeed * xDir;
+					xspeed = walkSpeed * xDir;
 				break;
 		}
 	},
@@ -129,11 +129,11 @@ stateMachine.add_state("StandardAir", {
 			stateMachine.change_state("StandardGround");
 	},
 	tick: function(_substate, _timer) {
-		xspeed.value = airSpeed * xDir * !self.is_action_locked(PlayerAction.MOVE_AIR);
+		xspeed = airSpeed * xDir * !self.is_action_locked(PlayerAction.MOVE_AIR);
 		if (xDir != 0 && !self.is_action_locked(PlayerAction.TURN_AIR))
 			image_xscale = xDir;
 		
-		var _relativeYSpeed = yspeed.value * gravDir;
+		var _relativeYSpeed = yspeed * gravDir;
 		animator.play((_relativeYSpeed >= 0) ? "fall" : "jump");
 		
 		var _canJump = inputs.is_pressed(InputActions.JUMP)
@@ -146,7 +146,7 @@ stateMachine.add_state("StandardAir", {
 		
 		if (_substate == SUBSTATE_AIR_JUMP) { // Jumping
 			if (canMinJump && _relativeYSpeed < -minJumpThreshold && !inputs.is_held(InputActions.JUMP)) {
-				yspeed.value = -minJumpCutoff;
+				yspeed = -minJumpCutoff;
 				canMinJump = false;
 			}
 			if (_relativeYSpeed >= 0)
@@ -176,7 +176,7 @@ stateMachine.add_state("Jump", {
 			_canMinJump = _payload[$ "canMinJump"] ?? true,
 			_isMidairJump = _payload[$ "isMidairJump"] ?? false;
 		
-		yspeed.value = _speed * -gravDir;
+		yspeed = _speed * -gravDir;
 		canMinJump = _canMinJump;
 		coyoteTimer = 0;
 		jumpBufferTimer = 0;
@@ -190,7 +190,7 @@ stateMachine.add_state("Jump", {
 			for (var i = -1; i <= 1; i += 2) {
 				with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objSlideDust)) {
 					image_xscale = i;
-					xspeed.value = i;
+					xspeed = i;
 				}
 			}
 		}
@@ -207,8 +207,8 @@ stateMachine.add_state("Slide", {
 		if (!isCharging)
 			slideLock.add_actions(PlayerAction.CHARGE);
 		
-		xspeed.value = slideSpeed * image_xscale;
-		yspeed.clear_all();
+		xspeed = slideSpeed * image_xscale;
+		yspeed = 0;
 		animator.play("slide");
 		
 		with (instance_create_depth(bbox_horizontal(-image_xscale), bbox_vertical(image_yscale) - 4 * image_yscale, depth, objSlideDust))
@@ -222,10 +222,10 @@ stateMachine.add_state("Slide", {
 		
 		mask_index = maskSlide;
 		animator.play("slide");
-		xspeed.value = slideSpeed * image_xscale;
+		xspeed = slideSpeed * image_xscale;
 		slideLock.remove_actions(PlayerAction.MOVE_FULL);
 	},
-	tick: function(_substate, _timer) /*=>*/ { xspeed.value = slideSpeed * image_xscale; },
+	tick: function(_substate, _timer) /*=>*/ { xspeed = slideSpeed * image_xscale; },
 	posttick: function(_substate, _timer) {
 		if (self.try_climbing()) {
 			stateMachine.change_state("Climb");
@@ -235,11 +235,9 @@ stateMachine.add_state("Slide", {
 		if (!ground) {
 			mask_index = maskSlideExtended;
 			ground = true;
-			entity_check_ground();
+			entity_check_ground(gravDir, false);
 			mask_index = maskSlide;
-			
-			if (ground)
-				yspeed.clear_all();
+			yspeed *= !ground;
 		}
 		
 		var _freeSpaceAbove = !test_move_y(-slideMaskHeightDelta * gravDir);
@@ -296,7 +294,7 @@ stateMachine.add_state("Slide", {
 		slideLock.deactivate();
 		slideLock.remove_actions(PlayerAction.CHARGE, PlayerAction.MOVE_FULL);
 		mask_index = maskNormal;
-		entity_check_ground();
+		entity_check_ground(gravDir, false);
 	}
 });
 stateMachine.add_state("Climb", {
@@ -304,8 +302,8 @@ stateMachine.add_state("Climb", {
 		x = bbox_x_center(ladderInstance);
 		y = clamp(y, ladderInstance.bbox_top - 8 * (gravDir > 0), ladderInstance.bbox_bottom + 8 * (gravDir < 0));
 		
-		xspeed.clear_all();
-		yspeed.clear_all();
+		xspeed = 0;
+		yspeed = 0;
 		animator.play("climb");
 		
 		ground = false;
@@ -323,14 +321,14 @@ stateMachine.add_state("Climb", {
 			return;
 		}
 		
-		yspeed.value = climbSpeed * yDir * !isShooting * !self.is_action_locked(PlayerAction.CLIMB);
+		yspeed = climbSpeed * yDir * !isShooting * !self.is_action_locked(PlayerAction.CLIMB);
 		
 		var _ladderTopDistance = (bbox_vertical(-gravDir, ladderInstance) - y) * gravDir;
 		if (_ladderTopDistance > 4) {
 			animator.play("climb-top");
 		} else {
 			animator.play("climb");
-			animator.set_time_scale(abs(yspeed.value) != 0);
+			animator.set_time_scale(abs(yspeed) != 0);
 			if (animator.timeScale == 0)
 				animator.reset_frame();
 		}
@@ -379,7 +377,7 @@ stateMachine.add_state("Climb", {
 		isClimbing = false;
 		ladderInstance = noone;
 		gravEnabled = true;
-		yspeed.clear_all();
+		yspeed = 0;
 	}
 });
 
@@ -408,15 +406,15 @@ stateMachine.add_state("Hurt", {
 		var _moveLocked = self.is_action_locked(PlayerAction.MOVE_FULL),
 			_gravLocked = self.is_action_locked(PlayerAction.GRAVITY);
 		var _factorX = 0.5 * !_moveLocked,
-			_factorY = (yspeed.value * gravDir <= 0) * !_moveLocked * !_gravLocked * gravEnabled;
-		xspeed.value = -image_xscale * _factorX;
-		yspeed.value = (-1.5 * gravDir) * _factorY;
+			_factorY = (yspeed * gravDir <= 0) * !_moveLocked * !_gravLocked * gravEnabled;
+		xspeed = -image_xscale * _factorX;
+		yspeed = (-1.5 * gravDir) * _factorY;
 	},
 	tick: function(_substate, _timer) {
 		if (ground)
-			xspeed.value *= !self.is_action_locked(PlayerAction.MOVE_GROUND);
+			xspeed *= !self.is_action_locked(PlayerAction.MOVE_GROUND);
 		else
-			xspeed.value *= !self.is_action_locked(PlayerAction.MOVE_AIR);
+			xspeed *= !self.is_action_locked(PlayerAction.MOVE_AIR);
 		
 		if (_timer >= 32)
 			stateMachine.pop_state();
@@ -543,8 +541,8 @@ stateMachine.add_state("Debug_FreeMovement", {
 		collideWithSolids = false;
 		hitmaskMaster = 0;
 		interactWithWater = false;
-		xspeed.clear_all();
-		yspeed.clear_all();
+		xspeed = 0;
+		yspeed = 0;
 		freeMovementLock.activate();
 		play_sfx(sfxYasichi);
 	},

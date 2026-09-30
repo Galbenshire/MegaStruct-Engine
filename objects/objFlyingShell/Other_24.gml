@@ -15,16 +15,16 @@ if (isShooting) {
                 onDraw = method(id, cbkOnDraw_enemy_bullet_mm1);
                 
                 set_velocity_vector(other.bulletSpeed, i * _spreadAngle);
-                xspeed.value *= sign(image_xscale);
+                xspeed *= sign(image_xscale);
             }
         }
     } else if (shootTimer >= 35) {
         isShooting = false;
     }
 } else {
-    xspeed.value = moveSpeed * image_xscale;
+    xspeed = moveSpeed * image_xscale;
     if (shootTimer >= 60) {
-        xspeed.value = 0;
+        xspeed = 0;
         isShooting = true;
     }
 }

@@ -6,8 +6,8 @@ if (entity_is_dead()) {
 		exit;
 	}
 	
-	xspeed.clear_all();
-    yspeed.clear_all();
+	xspeed = 0;
+    yspeed = 0;
     healthpoints = healthpointsStart;
     iFrames = 0;
     frozenTimer = 0;

@@ -32,8 +32,8 @@ function projectile_reflection_proto_shield(_reflector) {
 	play_sfx(sfxReflect);
     image_xscale *= -1;
     direction += 180;
-    xspeed.value *= -1;
-    yspeed.value *= -1;
+    xspeed *= -1;
+    yspeed *= -1;
     collideWithSolids = false;
     despawnRange = 4;
     pierces = PierceType.NEVER;

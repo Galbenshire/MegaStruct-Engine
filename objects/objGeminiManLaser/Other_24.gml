@@ -1,14 +1,14 @@
 /// @description Tick
 if (xcoll != 0) {
-    xspeed.value = -xcoll;
+    xspeed = -xcoll;
     maxBounces--;
     
     if (image_index == 0) {
         image_index = 1;
-        yspeed.value = -abs(xspeed.value);
+        yspeed = -abs(xspeed);
     }
 } else if (ycoll != 0) {
-    yspeed.value = -ycoll;
+    yspeed = -ycoll;
     maxBounces--;
 }
 

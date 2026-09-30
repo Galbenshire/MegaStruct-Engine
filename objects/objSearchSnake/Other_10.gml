@@ -1,23 +1,47 @@
-/// @description Update variables based on move direction
-switch (moveDir) {
-	case 0: // On the floor
-	case 2: // On the ceiling
-		gravEnabled = true;
-		gravDir = -moveDir + 1;
-		xspeed.value = slitherSpeed * image_xscale * gravDir;
-		yspeed.value = 0;
-		ground = true;
-		entity_check_ground();
+/// @description Snake Movement (Floor/Ceiling)
+xcoll = 0;
+xcollInstance = noone;
+ycoll = 0;
+ycollInstance = noone;
+
+var _isOnFloor = (moveDir == 0),
+	_totalSpeed = xspeed + externalXForce,
+	_wasOnTopSolid = false,
+	_bboxHeight = bbox_height();
+
+if (ground) {
+	var _solidType = get_collidable_type(groundInstance, self);
+	if (_solidType == SolidType.SLOPE) {
+		var _steepness = abs(groundInstance.steepness);
+		if (_steepness > 1)
+			_totalSpeed *= (1 / _steepness);
+	}
+	_wasOnTopSolid = (_solidType == SolidType.TOP_SOLID);
+}
+
+while (abs(_totalSpeed) > 0) {
+	var _step = abs(_totalSpeed) > 1 ? sign(_totalSpeed) : _totalSpeed;
+    xcollInstance = move_and_collide_x(_step);
+    entity_check_ground(_bboxHeight);
+    
+    if (xcollInstance != noone) {
+        xcoll = xspeed;
+		subPixelX = xcollInstance.subPixelX;
+		moveDir = _isOnFloor ? 1 : 3;
+		event_user(2);
 		break;
+    }
+    if (!ground) {
+		if (_wasOnTopSolid) {
+			isSlithering = false;
+			entity_apply_gravity();
+		} else {
+			move_and_collide_y(gravDir);
+			moveDir = _isOnFloor ? 3 : 1;
+			event_user(2);
+		}
+		break;
+    }
 	
-	case 1: // UP a wall
-	case 3: // DOWN a wall
-		var _yDir = moveDir - 2;
-		gravEnabled = false;
-		ground = false;
-		groundInstance = noone;
-		xspeed.value = 0;
-		yspeed.value = slitherSpeed * _yDir;
-		move_and_collide_x(-image_xscale * _yDir);
-		break;
+	_totalSpeed = approach(_totalSpeed, 0, 1);
 }

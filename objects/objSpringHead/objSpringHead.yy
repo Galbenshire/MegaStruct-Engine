@@ -4,8 +4,8 @@
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":24,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":24,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":25,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
@@ -16,6 +16,7 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"despawnRange","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"16",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"respawnRange","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"0",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"faceTargetOnSpawn","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtEntity","path":"objects/prtEntity/prtEntity.yy",},"propertyId":{"name":"hitmask","path":"objects/prtEntity/prtEntity.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"HitMask.DEAL_DAMAGE, HitMask.TAKE_DAMAGE, HitMask.BLOCK",},
   ],
   "parent":{
     "name":"Spring Head",

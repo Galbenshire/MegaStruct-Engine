@@ -17,8 +17,8 @@ switch (phase) {
     case 2: // Opening Eye
         image_index = 1;
         if (phaseTimer >= 10) {
-            xspeed.value = moveSpeed * moveDir * isHorizontal;
-            yspeed.value = moveSpeed * moveDir * !isHorizontal;
+            xspeed = moveSpeed * moveDir * isHorizontal;
+            yspeed = moveSpeed * moveDir * !isHorizontal;
             phase++;
         }
         break;
@@ -26,8 +26,8 @@ switch (phase) {
     case 3: // Moving
         image_index = 2;
         if (xcoll != 0 || ycoll != 0) {
-            xspeed.clear_all();
-            yspeed.clear_all();
+            xspeed = 0;
+            yspeed = 0;
             moveDir *= -1;
             phase = 0;
         }

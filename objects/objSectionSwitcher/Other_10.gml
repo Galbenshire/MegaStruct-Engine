@@ -30,8 +30,8 @@ stateMachine.add_state("_PreTransition", {
 			y = gameViewRef.yView;
 			objSystem.camera.active = false;
 			
-			playerXSpeedCache = playerInstance.xspeed.value;
-			playerYSpeedCache = playerInstance.yspeed.value;
+			playerXSpeedCache = playerInstance.xspeed;
+			playerYSpeedCache = playerInstance.yspeed;
 			playerInstance.refresh_palette();
 			
 			stateMachine.change_substate(1);
@@ -60,19 +60,19 @@ stateMachine.add_state("Transition", {
 		playerMoveXSpeed = (_targetX - playerInstance.x) / scrollDuration;
 		playerMoveYSpeed = (_targetY - playerInstance.y) / scrollDuration;
 		
-		xspeed.value = screenScrollXSpeed;
-		yspeed.value = screenScrollYSpeed;
-		playerInstance.xspeed.value = playerMoveXSpeed;
-		playerInstance.yspeed.value = playerMoveYSpeed;
+		xspeed = screenScrollXSpeed;
+		yspeed = screenScrollYSpeed;
+		playerInstance.xspeed = playerMoveXSpeed;
+		playerInstance.yspeed = playerMoveYSpeed;
 		
 		animatePlayer = array_contains(persistentAnimations, playerInstance.animator.currentAnimationName)
 			&& !playerInstance.is_action_locked(PlayerAction.SPRITE_CHANGE);
 	},
 	resume: function(_prevState) {
-		xspeed.value = screenScrollXSpeed;
-		yspeed.value = screenScrollYSpeed;
-		playerInstance.xspeed.value = playerMoveXSpeed;
-		playerInstance.yspeed.value = playerMoveYSpeed;
+		xspeed = screenScrollXSpeed;
+		yspeed = screenScrollYSpeed;
+		playerInstance.xspeed = playerMoveXSpeed;
+		playerInstance.yspeed = playerMoveYSpeed;
 	},
 	tick: function(_substate, _timer) {
 		if (_timer < scrollDuration) {
@@ -100,8 +100,8 @@ stateMachine.add_state("_PostTransition", {
 			stateMachine.change_substate(1);
 		} else {
 			objSystem.camera.active = true;
-			playerInstance.xspeed.value = playerXSpeedCache;
-			playerInstance.yspeed.value = playerYSpeedCache;
+			playerInstance.xspeed = playerXSpeedCache;
+			playerInstance.yspeed = playerYSpeedCache;
 			
 			instance_destroy();
 		}
@@ -116,8 +116,8 @@ stateMachine.add_state("FixCameraIn", {
 	enter: function(_prevState) {
         alignmentFixXDir = ((x < targetSection.left) - (x + GAME_WIDTH > targetSection.right)) * isVerticalTransition;
 		alignmentFixYDir = ((y < targetSection.top) - (y + GAME_HEIGHT > targetSection.bottom)) * !isVerticalTransition;
-		xspeed.value = alignmentFixSpeed * alignmentFixXDir;
-		yspeed.value = alignmentFixSpeed * alignmentFixYDir;
+		xspeed = alignmentFixSpeed * alignmentFixXDir;
+		yspeed = alignmentFixSpeed * alignmentFixYDir;
 		xstart = (alignmentFixXDir > 0) ? targetSection.left : (targetSection.right - GAME_WIDTH);
 		ystart = (alignmentFixYDir > 0) ? targetSection.top : (targetSection.bottom - GAME_HEIGHT);
 		
@@ -174,8 +174,8 @@ stateMachine.add_state("FixCameraOut", {
 		
 		xstart = gameViewRef.xView;
 		ystart = gameViewRef.yView;
-		xspeed.value = alignmentFixSpeed * alignmentFixXDir;
-		yspeed.value = alignmentFixSpeed * alignmentFixYDir;
+		xspeed = alignmentFixSpeed * alignmentFixXDir;
+		yspeed = alignmentFixSpeed * alignmentFixYDir;
 		gameViewRef.set_position(x, y);
 		
 		if (alignmentFixXDir == 0 && alignmentFixYDir == 0)

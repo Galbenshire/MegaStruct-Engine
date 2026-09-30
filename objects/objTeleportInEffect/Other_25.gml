@@ -5,13 +5,13 @@ if (isMoving) {
     with (target)
         other.ystart = y + other.targetOffsetY;
     
-    if (!inside_view() && game_view().direction_to_center_y(y) == sign(yspeed.value))
+    if (!inside_view() && game_view().direction_to_center_y(y) == sign(yspeed))
         destroyOutsideView = true;
     
-    if ((y - ystart) * sign(yspeed.value) >= 0 && (target == noone || instance_exists(target))) {
+    if ((y - ystart) * sign(yspeed) >= 0 && (target == noone || instance_exists(target))) {
         y = ystart;
         isMoving = false;
-        yspeed.value = 0;
+        yspeed = 0;
         animator.play("teleport-in");
         
         if (teleportSFX != noone)

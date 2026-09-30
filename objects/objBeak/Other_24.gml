@@ -21,7 +21,7 @@ switch (phase) {
                 sprite_index = sprBeakBullet;
                 image_xscale = other.image_xscale;
                 set_velocity_vector(3, 45 - (other.bulletCount * 30));
-                xspeed.value *= image_xscale;
+                xspeed *= image_xscale;
 				contactDamage = 2;
 				colours = other.bulletPalette;
                 onDraw = method(id, cbkOnDraw_enemy_bullet_mm1);

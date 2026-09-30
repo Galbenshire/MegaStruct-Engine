@@ -12,12 +12,12 @@ if (disappearTimer > 0) {
 }
 
 if (gravEnabled && ycoll * gravDir > 0) {
-    xspeed.value = 0;
+    xspeed = 0;
     
     if (!isHeavy) {
         var _force = -ycoll * 0.5;
         if (_force < -0.5) {
-            yspeed.value = _force;
+            yspeed = _force;
             ground = false;
         }
     }

@@ -2,9 +2,6 @@
 stateMachine.tick("posttick");
 stateMachine.update_state();
 
-if (entity_is_dead())
-	exit;
-
 self.handle_switching_weapons();
 self.handle_shooting();
 self.handle_animation();

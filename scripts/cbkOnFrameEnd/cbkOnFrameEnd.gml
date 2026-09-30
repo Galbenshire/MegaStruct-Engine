@@ -12,7 +12,6 @@
 /// @func cbkOnFrameEnd_base()
 /// @desc Default onFrameEnd callback for all entities
 function cbkOnFrameEnd_base() {
-    entity_update_subpixels();
 	entity_update_hitboxes();
 }
 

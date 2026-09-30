@@ -8,11 +8,11 @@ if (!hasCoiled) {
     with (prtPlayer) {
 		if (entity_is_dead() || !gravEnabled || !collideWithSolids)
 			continue;
-		if (yspeed.value * gravDir <= 0 || isClimbing)
+		if (yspeed * gravDir <= 0 || isClimbing)
 			continue;
 		
-		if (place_meeting(x, y, other.id) && !place_meeting(x, y - yspeed.value, other.id)) {
-			yspeed.value = -other.launchSpeed * gravDir;
+		if (place_meeting(x, y, other.id) && !place_meeting(x, y - yspeed, other.id)) {
+			yspeed = -other.launchSpeed * gravDir;
 			canMinJump = false;
 			ladderInstance = noone;
 			_spring = true;

@@ -19,7 +19,7 @@ switch (phase) {
                     with (spawn_entity(x + image_xscale * 8, sprite_y_center(), depth, objGenericEnemyBullet)) {
                         set_velocity_vector(2, i * 45);
                         image_xscale = other.image_xscale;
-                        xspeed.value *= image_xscale;
+                        xspeed *= image_xscale;
                     }
                 }
                 play_sfx(sfxEnemyShootClassic);

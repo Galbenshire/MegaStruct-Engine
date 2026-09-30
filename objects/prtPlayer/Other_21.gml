@@ -134,7 +134,7 @@
 		
 		if (isShooting) {
 			shootTimer = max(shootTimer - 1, 0);
-			if (shootTimer == 0) {
+			if (shootTimer <= 0) {
 				isShooting = false;
 				shootType = PlayerShootType.IDLE;
 				shootStandStillLock.deactivate();

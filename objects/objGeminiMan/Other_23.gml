@@ -50,16 +50,16 @@ stateMachine.add_state("CloneDelay", {
 stateMachine.add_state("DoubleTrouble_Jump", {
 	enter: function(_prevState) {
 		animator.play("jump");
-        yspeed.value = -7;
-        xspeed.value = calculate_arc_speed(x, y, jumpToX, y, yspeed.value, grav);
+        yspeed = -7;
+        xspeed = calculate_arc_speed(x, y, jumpToX, y, yspeed, grav);
         ground = false;
-        image_xscale = sign_nonzero(xspeed.value);
+        image_xscale = sign_nonzero(xspeed);
 	},
 	tick: function(_substate, _timer) {
 		if (isAlone) {
-			var _yspeed = yspeed.value;
+			var _yspeed = yspeed;
 			stateMachine.change_state("SoleSurvivor_Jump");
-			yspeed.value = _yspeed;
+			yspeed = _yspeed;
 		} else if (ground) {
 			stateMachine.change_state("DoubleTrouble_Land");
 		}
@@ -68,7 +68,7 @@ stateMachine.add_state("DoubleTrouble_Jump", {
 stateMachine.add_state("DoubleTrouble_Land", {
 	enter: function(_prevState) {
 		animator.play("idle");
-        xspeed.value = 0;
+        xspeed = 0;
 	},
 	tick: function(_substate, _timer) {
 		if (_timer >= 5)
@@ -78,7 +78,7 @@ stateMachine.add_state("DoubleTrouble_Land", {
 stateMachine.add_state("DoubleTrouble_Run", {
 	enter: function(_prevState) {
 		calibrate_direction_point(runToX);
-		xspeed.value = 3 * image_xscale;
+		xspeed = 3 * image_xscale;
 		animator.play("run");
         counterFlag = false;
 	},
@@ -97,7 +97,7 @@ stateMachine.add_state("DoubleTrouble_Run", {
 stateMachine.add_state("DoubleTrouble_Shoot", {
 	enter: function(_prevState) {
 		calibrate_direction_object(reticle.target);
-		xspeed.value = 0;
+		xspeed = 0;
 		animator.play("shoot");
         shootFlag = false;
         
@@ -106,7 +106,7 @@ stateMachine.add_state("DoubleTrouble_Shoot", {
 	},
 	tick: function(_substate, _timer) {
 		if (shootFlag) {
-			self.create_projectile("bullet", 12, 2);
+			self.perform_action("bullet");
 			shootFlag = false;
 		}
 		if (_timer >= 15)
@@ -125,7 +125,7 @@ stateMachine.add_state("DoubleTrouble_Shoot", {
 
 stateMachine.add_state("SoleSurvivor_Run", {
 	enter: function(_prevState) {
-		xspeed.value = 1.5 * image_xscale;
+		xspeed = 1.5 * image_xscale;
         animator.play("run");
         animator.set_time_scale(0.75);
         counterFlag = false;
@@ -138,11 +138,11 @@ stateMachine.add_state("SoleSurvivor_Run", {
 	},
 	posttick: function(_substate, _timer) {
 		if (xcoll != 0) {
-			xspeed.value = -xcoll;
-			image_xscale = sign(xspeed.value);
+			xspeed = -xcoll;
+			image_xscale = sign(xspeed);
         } else if (check_for_solids(x + (8 * image_xscale), y)) {
-			xspeed.value *= -1;
-			image_xscale = sign(xspeed.value);
+			xspeed *= -1;
+			image_xscale = sign(xspeed);
         }
         
         laserCounter -= !instance_exists(objGeminiManLaser);
@@ -151,8 +151,8 @@ stateMachine.add_state("SoleSurvivor_Run", {
 });
 stateMachine.add_state("SoleSurvivor_Jump", {
 	enter: function(_prevState) {
-		xspeed.value = 1.5 * image_xscale;
-        yspeed.value = -5;
+		xspeed = 1.5 * image_xscale;
+        yspeed = -5;
         animator.play("jump");
 	},
 	tick: function(_substate, _timer) {
@@ -166,7 +166,7 @@ stateMachine.add_state("SoleSurvivor_Jump", {
 });
 stateMachine.add_state("SoleSurvivor_Land", {
 	enter: function(_prevState) {
-		xspeed.value = 0;
+		xspeed = 0;
         animator.play("idle");
         counterFlag = false;
 	},
@@ -183,14 +183,14 @@ stateMachine.add_state("SoleSurvivor_Land", {
 });
 stateMachine.add_state("SoleSurvivor_Shoot", {
 	enter: function(_prevState) {
-		xspeed.value = 0;
+		xspeed = 0;
 		animator.play("shoot");
         shootFlag = false;
         laserCounter = 120;
 	},
 	tick: function(_substate, _timer) {
 		if (shootFlag) {
-			self.create_projectile("laser", 12, 2);
+			self.perform_action("laser");
 			shootFlag = false;
 		}
 		if (_timer >= 15)

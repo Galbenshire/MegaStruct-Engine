@@ -37,8 +37,8 @@ switch (phase) {
                         sprite_index = sprBeakBullet;
                         set_velocity_vector(3, 90 + 45 * i);
                         
-                        xspeed.value *= other.image_xscale;
-                        yspeed.value *= other.image_yscale;
+                        xspeed *= other.image_xscale;
+                        yspeed *= other.image_yscale;
                         contactDamage = 2;
                         
                         colours = other.bulletPalette;

@@ -26,6 +26,9 @@ __currentTick = 0; repeat(global.gameTimeScale.integer) {
 			calibrate_direction_object(reticle.target);
 	}
 	
+	if (ground && !instance_exists(groundInstance))
+		entity_check_ground(1, false);
+	
 	if (frozenTimer > 0) {
 		__currentTick++;
 		continue;

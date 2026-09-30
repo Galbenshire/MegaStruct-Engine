@@ -3,7 +3,7 @@ switch (phase) {
     // === TELEPORT IN ===
     
     case 0: // Moving down from the edge of the screen
-        yspeed.value = teleportSpeed * image_yscale;
+        yspeed = teleportSpeed * image_yscale;
         
         if (teleportObject == objRushJet && instance_exists(owner))
 			ystart = owner.y;
@@ -37,7 +37,7 @@ switch (phase) {
     
     case 10:
         if (animator.is_animation_finished()) {
-            yspeed.value = -teleportSpeed * image_yscale;
+            yspeed = -teleportSpeed * image_yscale;
             despawnRange = 1;
             phase = -99;
         }

@@ -22,8 +22,7 @@ function Weapon_SearchSnake() : Weapon() constructor {
 	#region Callbacks
 	
 	static on_tick = function(_player) {
-		// Temporary disable
-		if (!_player.check_input_shoot() || true)
+		if (!_player.check_input_shoot())
 			return;
 		
 		var _shot = _player.fire_weapon({
@@ -35,8 +34,8 @@ function Weapon_SearchSnake() : Weapon() constructor {
 		});
 		
 		if (_shot != noone) {
-			_shot.xspeed.value = 1 * _player.image_xscale;
-			_shot.yspeed.value = -3 * _player.image_yscale;
+			_shot.xspeed = 1 * _player.image_xscale;
+			_shot.yspeed = -3 * _player.image_yscale;
 			play_sfx(sfxBuster);
 		}
 	};

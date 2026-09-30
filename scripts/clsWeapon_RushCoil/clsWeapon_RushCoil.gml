@@ -56,7 +56,7 @@ function Weapon_RushCoil() : Weapon() constructor {
 			});
 			
 			if (_shot != noone) {
-				_shot.xspeed.value = 5 * _player.image_xscale;
+				_shot.xspeed = 5 * _player.image_xscale;
 				play_sfx(sfxBuster);
 			}
 		}

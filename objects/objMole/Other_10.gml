@@ -15,4 +15,4 @@ switch (burrowBitField) {
         break;
 }
 
-yspeed.value = _spd * image_yscale;
+yspeed = _spd * image_yscale;

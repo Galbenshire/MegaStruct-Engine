@@ -1,8 +1,8 @@
 // State Machine
 stateMachine = new StateStacker("_PreTransition", true);
 // Movement
-xspeed = new Fractional();
-yspeed = new Fractional();
+xspeed = 0;
+yspeed = 0;
 // Object References
 playerInstance = noone; /// @is {prtPlayer}
 transitionInstance = noone;  /// @is {objScreenTransition}

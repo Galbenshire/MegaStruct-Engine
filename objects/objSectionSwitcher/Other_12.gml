@@ -1,10 +1,8 @@
 /// @description Move Player
 with (playerInstance) {
-	xspeed.update();
-	yspeed.update();
-	x += xspeed.integer;
-	y += yspeed.integer;
+	move_x(xspeed);
+	move_y(yspeed);
 	
 	if (other.animatePlayer)
-		animator.update();
+		self.handle_animation();
 }

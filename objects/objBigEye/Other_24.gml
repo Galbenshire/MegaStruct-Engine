@@ -1,6 +1,6 @@
 /// @description Tick
 if (!ground) {
-    xspeed.value = intendedXSpeed;
+    xspeed = intendedXSpeed;
     exit;
 }
 
@@ -8,7 +8,7 @@ timer++;
 switch (timer) {
     case 1:
         image_index = 4;
-        xspeed.value = 0;
+        xspeed = 0;
         calibrate_direction_object(reticle.target);
         
         var _prevHighJump = isHighJumping;
@@ -21,9 +21,9 @@ switch (timer) {
     
     case 40:
         image_index = 2 + isHighJumping;
-        xspeed.value = image_xscale;
-        yspeed.value = -3 * (1 + isHighJumping);
+        xspeed = image_xscale;
+        yspeed = -3 * (1 + isHighJumping);
         timer = 0;
-        intendedXSpeed = xspeed.value;
+        intendedXSpeed = xspeed;
         break;
 }

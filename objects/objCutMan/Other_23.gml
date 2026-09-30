@@ -11,7 +11,7 @@ event_inherited();
 stateMachine.add_state("Run", {
 	enter: function(_prevState) {
         animator.play("walk");
-        xspeed.value = 1.125 * image_xscale;
+        xspeed = 1.125 * image_xscale;
 	},
 	tick: function(_substate, _timer) {
 		animator.play(ground ? "walk" : "jump");
@@ -22,10 +22,10 @@ stateMachine.add_state("Run", {
 		if (reticle.distance_to_target_x() <= 48) {
 			if (cutterExists || airThrowTimer > 0) {
 				stateMachine.change_state("Jump");
-				xspeed.value = calculate_horizontal_jump_speed(reticle.x - x, yspeed.value, grav);
+				xspeed = calculate_horizontal_jump_speed(reticle.x - x, yspeed, grav);
 			} else {
 				stateMachine.change_state((random(1) < 0.375) ? "CutterPose" : "ThrowCutter");
-				xspeed.value = 0;
+				xspeed = 0;
 			}
 			return;
 		}
@@ -37,13 +37,13 @@ stateMachine.add_state("Run", {
 stateMachine.add_state("Jump", {
 	enter: function(_prevState) {
         animator.play("jump");
-        yspeed.value = -6;
-        moveSpeed = xspeed.value;
+        yspeed = -6;
+        moveSpeed = xspeed;
         canThrowInAir = !cutterExists && airThrowTimer > 0;
 	},
-	tick: function(_substate, _timer) /*=>*/ { xspeed.value = moveSpeed; },
+	tick: function(_substate, _timer) /*=>*/ { xspeed = moveSpeed; },
 	posttick: function(_substate, _timer) {
-		if (canThrowInAir && yspeed.value >= 0)
+		if (canThrowInAir && yspeed >= 0)
 			stateMachine.change_state("ThrowCutter");
 		else if (ground)
 			stateMachine.change_state("Run");
@@ -52,7 +52,7 @@ stateMachine.add_state("Jump", {
 stateMachine.add_state("CutterPose", {
 	enter: function(_prevState) {
         animator.play("cutter-pose");
-        xspeed.value = 0;
+        xspeed = 0;
 	},
 	tick: function(_substate, _timer) {
 		if (_timer >= 68) {
@@ -70,11 +70,11 @@ stateMachine.add_state("ThrowCutter", {
         animator.play("cutter-throw");
 	},
 	tick: function(_substate, _timer) {
-		xspeed.value *= !ground;
+		xspeed *= !ground;
 		
 		if (_substate == 0) {
 			if (shootFlag) {
-				cutterInstance = self.create_projectile("cutter", 12, 4);
+				cutterInstance = self.perform_action("cutter");
 				cutterExists = true;
 				stateMachine.change_substate(1);
 				airThrowTimer = 20;
@@ -89,8 +89,8 @@ stateMachine.add_state("ThrowCutter", {
 stateMachine.add_state("Hurt", {
 	enter: function(_prevState) {
         animator.play("hurt");
-        xspeed.value = image_xscale * -0.5;
-		yspeed.value = -1.5 * gravDir;
+        xspeed = image_xscale * -0.5;
+		yspeed = -1.5 * gravDir;
 	},
 	tick: function(_substate, _timer) {
 		if (_timer >= 30) {

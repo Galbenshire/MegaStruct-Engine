@@ -1,157 +1,183 @@
-/// @self {prtEntity}
-/// @func entity_check_ground()
-/// @desc Any entity calling this function will check for a ground directly underneath them
-function entity_check_ground() {
-	if (!ground || !collideWithSolids || !gravEnabled || yspeed.value * gravDir < 0) {
-		ground = false;
-		groundInstance = noone;
-		return;
-	}
-	
-	var _groundRange = (abs(xspeed.integer) + 1) * gravDir,
-		_foundGround = false,
-		_collidables = get_ycoll_candidates(_groundRange),
-		_collidableCount = array_length(_collidables),
-		_distanceToMove = _groundRange,
-		_directionToMove = sign(_groundRange),
-		_groundInstance = noone;
-	
-	for (var i = 0; i < _collidableCount; i++) {
-		var _distanceToCollidable = distance_to_collidable_y(_collidables[i], gravDir);
-		
-		if (_distanceToCollidable * _directionToMove < 0 || abs(_distanceToCollidable) >= abs(_distanceToMove))
-            continue;
-        
-        _foundGround = true;
-        _distanceToMove = _distanceToCollidable;
-        _groundInstance = _collidables[i];
-	}
-	
-	y += _distanceToMove * _foundGround;
-	ground = _foundGround;
-	groundInstance = _groundInstance;
-	
-	if (_foundGround)
-		push_entities_y(_distanceToMove);
-}
+#region Physics
 
 /// @self {prtEntity}
-/// @func entity_gravity(force)
+/// @func entity_apply_gravity(force)
 /// @desc Applies gravity to an entity
 ///
 /// @param {number}  [force]  How strong the gravity should be. Defaults to the entity's gravity.
-function entity_gravity(_force = grav) {
+function entity_apply_gravity(_force = grav) {
 	if (ground || !gravEnabled)
 		return;
+	yspeed += _force * gravDir * (inWater ? waterGravMod : 1);
+	if (yspeed * gravDir > maxFallSpeed)
+		yspeed = maxFallSpeed * gravDir;
+}
+
+/// @self {prtEntity}
+/// @func entity_check_ground(range, snap_to_slopes, test_only)
+/// @desc Any entity calling this function will check for ground directly underneath them.
+///		  If ground is found, they will be snapped down to said ground.
+///
+/// @param {int}  [range]  The range at which to check for ground. Defaults to the entity's current xspeed.
+/// @param {bool}  [snap_to_slopes]  If true, snaps to slopes within range. Defaults to true.
+/// @param {bool}  [test_only]  If true, the entity won't actually be moved. Defaults to false.
+///
+/// @return {prtCollidable}  The collidable marked as ground. Returns noone if no collision occurs.
+function entity_check_ground(_range, _snapToSlopes = true, _testOnly = false) {
+	if (!ground || !collideWithSolids || !gravEnabled || yspeed * gravDir < 0) {
+		if (!_testOnly) {
+			ground = false;
+			groundInstance = noone;
+			return noone;
+		}
+	}
 	
-	yspeed.value += _force * gravDir * (inWater ? waterGravMod : 1);
-	if (yspeed.value * gravDir > maxFallSpeed)
-		yspeed.value = maxFallSpeed * gravDir;
+	// Adjust the check range
+	_range ??= xspeed;
+	_range = ceil(abs(_range) + 1) * gravDir;
+	
+	var _foundGround = false,
+		_distanceToMove = _range,
+		_directionToMove = sign(_range),
+		_groundInstance = noone;
+	
+	var _collidables = get_collidables_y(_range),
+		_collidableCount = array_length(_collidables);
+	for (var i = 0; i < _collidableCount; i++) {
+		var _collidable = _collidables[i],
+			_distanceToCollidable = distance_to_collidable_y(_collidable, gravDir);
+		
+		if (_distanceToCollidable * _directionToMove < 0) // In the wrong direction?
+			continue;
+		if (abs(_distanceToCollidable) > abs(_distanceToMove)) { // Further down than what we have so far?
+			if (_collidable.solidType != SolidType.SLOPE)
+				continue;
+			if (!_snapToSlopes || slope_is_steep(_collidable))
+				continue;
+		}
+		
+		_foundGround = true;
+		_distanceToMove = _distanceToCollidable;
+		_groundInstance = _collidable;
+	}
+	
+	if (!_testOnly) {
+		ground = _foundGround;
+		groundInstance = _groundInstance;
+		
+		if (_foundGround) {
+			y += _distanceToMove;
+			subPixelY = groundInstance.subPixelY;
+			push_entities_y(_distanceToMove);
+		}
+	}
+	
+	return _groundInstance;
 }
 
 /// @self {prtEntity}
 /// @func entity_handle_external_forces()
 /// @desc Entity interactions with movement-based gimmicks
 function entity_handle_external_forces() {
-	externalXForce.value = 0;
-	externalYForce.value = 0;
+	externalXForce = 0;
+	externalYForce = 0;
 	
 	// Conveyor Belts
 	if (ground && place_meeting(x, y, objConveyorBeltArea) && !asset_has_tags(object_index, "ignore_conveyor", asset_object)) {
 		var _belt = instance_place(x, y, objConveyorBeltArea);
 		if (instance_exists(_belt))
-			externalXForce.value += _belt.force * sign(_belt.image_xscale);
-	}
-	
-	externalXForce.update();
-	externalYForce.update();
-	
-	if (collideWithSolids) {
-		move_and_collide_x(externalXForce.integer);
-		move_and_collide_y(externalYForce.integer);
-	} else {
-		move_x(externalXForce.integer);
-		move_y(externalYForce.integer);
+			externalXForce += _belt.force * sign(_belt.image_xscale);
 	}
 }
 
 /// @self {prtEntity}
-/// @func entity_horizontal_movement()
+/// @func entity_movement_horizontal()
 /// @desc Moves an entity horizontally
-function entity_horizontal_movement() {
+function entity_movement_horizontal() {
+	var _totalForce = xspeed + externalXForce;
 	xcoll = 0;
 	xcollInstance = noone;
-	xspeed.update();
 	
-	if (collideWithSolids) {
-		xcollInstance = move_and_collide_x(xspeed.integer);
-		if (xcollInstance != noone) {
-			xcoll = xspeed.value;
-			xspeed.clear_all();
-		}
-	} else {
-		move_x(xspeed.integer);
+	if (!collideWithSolids) {
+		move_x(_totalForce);
+		return;
+	}
+	
+	xcollInstance = move_and_collide_x(_totalForce);
+	if (xcollInstance != noone) {
+		xcoll = xspeed;
+		subPixelX = xcollInstance.subPixelX;
+		xspeed = 0;
 	}
 }
+
+/// @self {prtEntity}
+/// @func entity_movement_vertical(slip_by)
+/// @desc Standard vertical movement of an entity
+///
+/// @param {int}  [slip_by]  Leniancy when moving upwards relative to gravity. Defaults to 0.
+function entity_movement_vertical(_slipBy = 0) {
+	var _totalForce = yspeed + externalYForce;
+	ycoll = 0;
+	ycollInstance = noone;
+	
+	if (!collideWithSolids) {
+		move_y(_totalForce);
+		return;
+	}
+	
+	ycollInstance = move_and_collide_y(_totalForce);
+	if (ycollInstance == noone)
+		return;
+	
+	if (gravEnabled) {
+		if (sign(_totalForce) == gravDir) { // If moving towards gravity, this means we hit ground
+			ground = true;
+			groundInstance = ycollInstance;
+		} else if (_slipBy > 0 && sign(_totalForce) == -gravDir) { // If moving away from gravity, check if we can slip past corners
+			for (var i = -1; i <= 1; i += 2) {
+				var _overflow = bbox_horizontal(i) - bbox_horizontal(-i, ycollInstance);
+				if (_overflow * i > _slipBy)
+					continue;
+				if (test_move_x(-_overflow))
+					continue;
+				
+				var _x = x;
+				move_and_collide_x(-_overflow);
+				if (test_move_y(-gravDir)) {
+					x = _x;
+					continue;
+				}
+				
+				ycollInstance = noone;
+				return;
+			}
+		}
+	}
+	
+	ycoll = yspeed;
+	subPixelY = ycollInstance.subPixelY;
+	yspeed = 0;
+}
+
+#endregion
+
+#region Other
 
 /// @self {prtEntity}
 /// @func entity_update_hitboxes()
 /// @desc Updates an entity's hitboxes
 function entity_update_hitboxes() {
-	var i = 0;
-	repeat(hitboxCount) {
+	var i = 0; repeat(hitboxCount) {
 		event_user_scope(0, hitboxes[i]);
 		i++;
 	}
 }
 
 /// @self {prtEntity}
-/// @func entity_update_subpixels()
-/// @desc Updates an entity's subpixels
-function entity_update_subpixels() {
-	if (options_data().pixelPerfect) {
-		subPixelX = 0;
-		subPixelY = 0;
-		return;
-	}
-	
-	subPixelX = xspeed.fractional;
-	subPixelY = yspeed.fractional;
-	
-	if (ground && instance_exists(groundInstance)) {
-		subPixelX = modf(subPixelX + groundInstance.subPixelX, 1.0);
-		subPixelY = modf(subPixelY + groundInstance.subPixelY, 1.0);
-	}
-}
-
-/// @self {prtEntity}
-/// @func entity_vertical_movement()
-/// @desc Moves an entity vertically
-function entity_vertical_movement() {
-	ycoll = 0;
-	ycollInstance = noone;
-	yspeed.update();
-	
-	if (collideWithSolids) {
-		ycollInstance = move_and_collide_y(yspeed.integer);
-		if (ycollInstance != noone) {
-			if (gravEnabled && sign(yspeed.value) == gravDir) {
-				ground = true;
-				groundInstance = ycollInstance;
-			}
-			
-			ycoll = yspeed.value;
-			yspeed.clear_all();
-		}
-	} else {
-		move_y(yspeed.integer);
-	}
-}
-
-/// @self {prtEntity}
-/// @func entity_water()
+/// @func entity_handle_water()
 /// @desc Entity interaction with water
-function entity_water() {
+function entity_handle_water() {
 	if (!interactWithWater) {
 		inWater = false;
 		return;
@@ -167,8 +193,13 @@ function entity_water() {
 		return;
 	}
 	
-	if (++bubbleTimer >= 64) {
-		bubbleTimer = 0;
-		instance_create_depth(x + bubbleXOffset, y + bubbleYOffset, depth, objAirBubble);
+	if (canMakeBubble) {
+		bubbleTimer++;
+		if (bubbleTimer >= 64) {
+			bubbleTimer = 0;
+			instance_create_depth(x + bubbleXOffset, y + bubbleYOffset, depth, objAirBubble);
+		}
 	}
 }
+
+#endregion

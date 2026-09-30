@@ -25,6 +25,9 @@ function cbkOnSpawn_base() {
 		if (faceTargetOnSpawn)
 			calibrate_direction_object(reticle.target);
     }
+    
+    ground = gravEnabled;
+    entity_check_ground(1, false);
 }
 
 #endregion
@@ -52,6 +55,9 @@ function cbkOnSpawn_player() {
     healthpoints = healthpointsStart;
     self.refresh_palette();
     self.reset_all_properties();
+    
+    ground = gravEnabled;
+    entity_check_ground(1, false);
 }
 
 #endregion

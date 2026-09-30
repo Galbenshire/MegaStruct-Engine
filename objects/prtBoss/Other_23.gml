@@ -68,7 +68,7 @@ stateMachine.add_state("!!Intro", {
         introPauseLock.deactivate();
 		
 		ground = true;
-		entity_check_ground();
+		entity_check_ground(1);
 	}
 });
 
@@ -117,7 +117,7 @@ stateMachine.add_state("!!Intro_Spawn", {
 	leave: function(_newState) {
 		y = ystart;
 		visible = true;
-		yspeed.clear_all();
+		yspeed = 0;
 		gravEnabled = false;
 		
 		if (introType == "DropIn")

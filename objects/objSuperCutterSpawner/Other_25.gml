@@ -7,7 +7,7 @@ if (abs(prtPlayer.x - x) > detectRange) {
 }
 
 with (spawn_entity(x, y, depth, objGenericEnemyBullet, cutterParams)) {
-    yspeed.value = -4.8;
-    xspeed.value = (reticle.x - x) / 48;
+    yspeed = -4.8;
+    xspeed = (reticle.x - x) / 48;
     calibrate_direction_object(reticle.target);
 }

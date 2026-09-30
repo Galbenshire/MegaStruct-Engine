@@ -2,11 +2,11 @@
 if (isJumping) {
     if (ground) {
         isJumping = false;
-        xspeed.value = 0;
+        xspeed = 0;
         timer = 0;
         mask_index = sprite_index;
     } else {
-        xspeed.value = intendedXSpeed;
+        xspeed = intendedXSpeed;
     }
 } else {
     if (++timer >= 30) {
@@ -15,12 +15,12 @@ if (isJumping) {
         ground = false;
         
         var _jump = choose_from_array(jumps);
-        xspeed.value = _jump[Vector2.x] * image_xscale;
-        yspeed.value = _jump[Vector2.y];
+        xspeed = _jump[Vector2.x] * image_xscale;
+        yspeed = _jump[Vector2.y];
         
         image_xscale = 1;
         mask_index = mskFleaJump;
-        intendedXSpeed = xspeed.value;
+        intendedXSpeed = xspeed;
     }
 }
 

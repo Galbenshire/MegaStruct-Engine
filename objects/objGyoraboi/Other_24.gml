@@ -12,13 +12,13 @@ if (isFiringMissile) {
         
         case 20:
             hatchIndex = 0;
-            xspeed.value = moveSpeedPostFire * image_xscale;
+            xspeed = moveSpeedPostFire * image_xscale;
             break;
     }
     missileTimer++;
 } else if (reticle.targetExists && (x - reticle.x) * sign(image_xscale) >= -moveSpeedPreFire) {
     isFiringMissile = true;
-    xspeed.value = 0;
+    xspeed = 0;
     phase++;
 }
 

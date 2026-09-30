@@ -10,7 +10,7 @@ event_inherited();
 stateMachine.add_state("Idle", {
 	enter: function(_prevState) {
         animator.play(position_meeting(x, y, objConveyorBeltArea) ? "walk" : "idle");
-        xspeed.value = 0;
+        xspeed = 0;
         jumpFlag = false;
 	},
 	tick: function(_substate, _timer) {
@@ -30,10 +30,10 @@ stateMachine.add_state("Idle", {
 stateMachine.add_state("JumpUp_PreAttack", {
 	enter: function(_prevState) {
         animator.play("jump");
-        yspeed.value = -choose(4, 5.66, 6.93);
+        yspeed = -choose(4, 5.66, 6.93);
 	},
 	tick: function(_substate, _timer) {
-		if (yspeed.value >= 0)
+		if (yspeed >= 0)
 			stateMachine.change_state("JumpUp_Attack");
 	}
 });
@@ -44,8 +44,8 @@ stateMachine.add_state("JumpUp_Attack", {
 			animator.play("blade_throw", true);
 		
 		if (shootFlag) {
-			self.create_projectile("metal_blade", 8, 0);
-			yspeed.value = min(0.4, yspeed.value);
+			self.perform_action("metal_blade");
+			yspeed = min(0.4, yspeed);
 			shootFlag = false;
 		}
 	},
@@ -58,20 +58,20 @@ stateMachine.add_state("JumpUp_Attack", {
 stateMachine.add_state("JumpOver", {
 	enter: function(_prevState) {
         animator.play("jump");
-        yspeed.value = -6.93;
+        yspeed = -6.93;
         
         var _centerX = game_view().center_x(),
 			_directionToMiddle = sign(x - _centerX),
 			_targetX = _centerX - distanceToMiddle * _directionToMiddle;
-		xspeed.value = calculate_horizontal_jump_speed(_targetX - x, -yspeed.value, grav);
+		xspeed = calculate_horizontal_jump_speed(_targetX - x, -yspeed, grav);
 	},
 	tick: function(_substate, _timer) {
-		if (_substate == 0 && yspeed.value >= 0) {
+		if (_substate == 0 && yspeed >= 0) {
 			animator.play("blade_throw");
 			stateMachine.set_substate(1);
 		}
 		if (shootFlag) {
-			self.create_projectile("metal_blade", 8, 0);
+			self.perform_action("metal_blade");
 			shootFlag = false;
 		}
 	},
@@ -80,7 +80,7 @@ stateMachine.add_state("JumpOver", {
 			stateMachine.change_state("Idle");
 	},
 	leave: function(_newState) {
-		xspeed.value = 0;
+		xspeed = 0;
 		shootFlag = false;
 	}
 });

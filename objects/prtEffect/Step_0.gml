@@ -3,17 +3,12 @@ if (!game_can_step(ignoreTimeScale))
 
 var _ticks = ignoreTimeScale ? 1 : global.gameTimeScale.integer;
 repeat(_ticks) {
-	xspeed.update();
-	yspeed.update();
-	x += xspeed.integer;
-	y += yspeed.integer;
+	x += xspeed;
+	y += yspeed;
 	
-	yspeed.value += grav;
-	if (yspeed.value * grav > maxFallSpeed)
-		yspeed.value = maxFallSpeed * sign(grav);
-	
-	subPixelX = xspeed.fractional;
-	subPixelY = yspeed.fractional;
+	yspeed += grav;
+	if (yspeed * grav > maxFallSpeed)
+		yspeed = maxFallSpeed * sign(grav);
 	
 	event_user(EVENT_EFFECT_TICK);
 	if (__isDestroyed)

@@ -6,7 +6,7 @@ y = (image_yscale >= 0)
 
 palette = new ColourPalette([ colourPrimary, colourSecondary, colourOutline ]);
 animator = new FrameAnimationPlayer();
-yspeed.value = 8 * sign_nonzero(image_yscale);
+yspeed = 8 * sign_nonzero(image_yscale);
 
 target = noone;
 targetOffsetX = 0;

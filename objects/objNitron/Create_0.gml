@@ -8,6 +8,6 @@ onSpawn = function() {
     cbkOnSpawn_base();
     phase = 0;
     phaseTimer = 0;
-    xspeed.value = image_xscale;
+    xspeed = image_xscale;
     gravEnabled = false;
 };

@@ -7,7 +7,7 @@ switch (phase) {
             gravEnabled = false;
             collideWithSolids = false;
             hitmask = bitmask_unset_bit(hitmask, HitMask.DEAL_DAMAGE);
-            yspeed.value = 0;
+            yspeed = 0;
             explosionRef = instance_create_depth(x, y - 4, depth, objExplosion);
             phase++;
         }

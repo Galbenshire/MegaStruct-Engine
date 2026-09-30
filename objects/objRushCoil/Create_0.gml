@@ -15,7 +15,7 @@ palette = new ColourPalette(characterSpecs.coilColours);
 // Callbacks
 onSpawn = function() {
 	ground = true;
-	entity_check_ground();
+	entity_check_ground(2);
 };
 onDeath = function(_damageSource) {
 	cbkOnDeath_projectile(_damageSource);

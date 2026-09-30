@@ -1,4 +1,4 @@
 /// @description Detach from gear (death)
 myGear = noone;
-yspeed.value = -3;
+yspeed = -3;
 gravEnabled = true;

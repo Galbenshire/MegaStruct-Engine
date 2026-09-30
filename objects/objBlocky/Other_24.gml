@@ -13,8 +13,8 @@ switch (phase) {
         if (floor(image_index) == 3 && (animCycle mod 3) != 2)
             image_index = 1;
             
-        if (xspeed.value == 0)
-            xspeed.value = 0.35 * image_xscale;
+        if (xspeed == 0)
+            xspeed = 0.35 * image_xscale;
         break;
     
     case 1: // Collapsed - Fall to the ground

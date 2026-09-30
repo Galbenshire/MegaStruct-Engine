@@ -9,8 +9,8 @@ if (boingTimer > 0) {
     exit;
 }
 
-xspeed.value = slowSpeed * image_xscale;
+xspeed = slowSpeed * image_xscale;
 if (reticle.targetExists) {
     if (reticle.target.ground && reticle.target.bbox_bottom == bbox_bottom)
-        xspeed.value = fastSpeed * image_xscale;
+        xspeed = fastSpeed * image_xscale;
 }

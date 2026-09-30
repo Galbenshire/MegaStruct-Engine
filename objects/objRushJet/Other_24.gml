@@ -10,23 +10,23 @@ if (!isActive) {
     exit;
 }
 
-xspeed.value = jetXSpeed * image_xscale;
-yspeed.value = 0;
+xspeed = jetXSpeed * image_xscale;
+yspeed = 0;
 
 if (instance_exists(owner)) {
     if (owner.ground && owner.groundInstance == self.id) {
 		jetLock.activate();
 		
-		yspeed.value = jetYSpeed * owner.yDir;
-		if (sign(yspeed.value) == -image_yscale) {
+		yspeed = jetYSpeed * owner.yDir;
+		if (sign(yspeed) == -image_yscale) {
 			var _headCheckRange = floor(jetYSpeed + bbox_height(owner)) + 1;
 			if (test_move_y(-_headCheckRange))
-				yspeed.value = 0;
+				yspeed = 0;
 		}
 		
 		if (owner.xDir == -image_xscale) {
-			xspeed.value *= pullbackFactor;
-			yspeed.value *= pullbackFactor;
+			xspeed *= pullbackFactor;
+			yspeed *= pullbackFactor;
 		}
     } else {
     	jetLock.deactivate();

@@ -34,7 +34,7 @@ function cbkOnBlocked_projectile(_damageSource) {
     switch (_damageSource.blockType) {
 		case BlockType.PROTO_SHIELD: projectile_reflection_proto_shield(_damageSource.subject); break;
 		case BlockType.DESTROY: projectile_reflection_destroy(); break;
-		case BlockType.REFLECT: projectile_reflection_default(-sign(xspeed.value)); break;
+		case BlockType.REFLECT: projectile_reflection_default(-sign(xspeed)); break;
 		default: /* It's Nothing */ break;
     }
 }

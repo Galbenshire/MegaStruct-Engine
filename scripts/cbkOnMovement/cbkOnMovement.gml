@@ -21,11 +21,11 @@
 /// @desc Default onMovement callback for all entities
 function cbkOnMovement_base() {
     entity_handle_external_forces();
-	entity_horizontal_movement();
-	entity_vertical_movement();
-	entity_gravity();
+	entity_movement_horizontal();
+	entity_movement_vertical();
+	entity_apply_gravity();
 	entity_check_ground();
-	entity_water();
+	entity_handle_water();
 }
 
 #endregion
@@ -39,12 +39,12 @@ function cbkOnMovement_player() {
 		return;
 	
 	entity_handle_external_forces();
-	entity_horizontal_movement();
-	entity_vertical_movement();
+	entity_movement_horizontal();
+	entity_movement_vertical();
 	if (!self.is_action_locked(PlayerAction.GRAVITY))
-		entity_gravity();
+		entity_apply_gravity();
 	entity_check_ground();
-	entity_water();
+	entity_handle_water();
 }
 
 /// @func cbkOnMovement_static()

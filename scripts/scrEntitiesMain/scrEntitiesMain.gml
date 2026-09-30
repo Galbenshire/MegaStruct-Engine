@@ -66,6 +66,52 @@ function spawn_entity(_x, _y, _depthOrLayer, _obj, _vars = {}) {
 
 #endregion
 
+#region Position
+
+/// @func entity_set_x(value, scope)
+/// @desc Sets the x-position of the specified entity, including its subpixel position
+///
+/// @param {number}  value  x-position to set
+/// @param {prtEntity}  [scope]  The instance to perform this on. Defaults to the calling instance.
+function entity_set_x(_value, _scope = self) {
+	_scope.x = _value;
+	_scope.subPixelX = frac(_scope.x);
+	_scope.x -= _scope.subPixelX;
+}
+
+/// @func entity_set_y(value, scope)
+/// @desc Sets the y-position of the specified entity, including its subpixel position
+///
+/// @param {number}  value  y-position to set
+/// @param {prtEntity}  [scope]  The instance to perform this on. Defaults to the calling instance.
+function entity_set_y(_value, _scope = self) {
+	_scope.y = _value;
+	_scope.subPixelY = frac(_scope.y);
+	_scope.y -= _scope.subPixelY;
+}
+
+/// @func entity_x(scope)
+/// @desc Gets the x-position of the specified entity, including its subpixel position
+///
+/// @param {prtEntity}  [scope]  The instance to perform this on. Defaults to the calling instance.
+///
+/// @returns {number}  x-position of the entity specified
+function entity_x(_scope = self) {
+	return _scope.x + _scope.subPixelX;
+}
+
+/// @func entity_y(scope)
+/// @desc Gets the y-position of the specified entity, including its subpixel position
+///
+/// @param {prtEntity}  [scope]  The instance to perform this on. Defaults to the calling instance.
+///
+/// @returns {number}  y-position of the entity specified
+function entity_y(_scope = self) {
+	return _scope.y + _scope.subPixelY;
+}
+
+#endregion
+
 #region Misc.
 
 /// @func entity_clear_hitboxes(scope)

@@ -106,7 +106,7 @@ function ItemDrop(_dropType, _dropOnce, _customDrop = noone) constructor {
     static __onItemDrop_Random = function(_item) {
 		_item.respawnType = RespawnType.DISABLED;
         _item.disappearTimer = 270;
-        _item.yspeed.value = -2 * _item.gravDir;
+        _item.yspeed = -2 * _item.gravDir;
     };
     
     #endregion

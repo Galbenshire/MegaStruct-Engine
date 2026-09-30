@@ -15,15 +15,15 @@ onSpawn = function() {
 };
 onAttackEnd = function(_damageSource) {
     boingTimer = 128;
-    xspeed.value = 0;
+    xspeed = 0;
 };
 onMovement = function() {
     mask_index = mskSpringHeadSolid;
     entity_handle_external_forces();
-    entity_gravity();
-    entity_vertical_movement();
+    entity_apply_gravity();
+    entity_movement_vertical();
 	event_user(1);
-	entity_water();
+	entity_handle_water();
 	mask_index = sprite_index;
 };
 

@@ -1,7 +1,7 @@
 /// @description Entity Tick
 image_index += animSpeed;
 
-if (!isGearBouncing || yspeed.value <= 0)
+if (!isGearBouncing || yspeed <= 0)
     exit;
 if (!place_meeting(x, y, myGear))
     exit;
@@ -10,7 +10,7 @@ if (entity_is_dead(myGear))
 
 if (gearBounces < maxGearBounces) {
     y = myGear.bbox_top;
-    yspeed.value = -3;
+    yspeed = -3;
 } else {
     with (myGear) {
         myPiero = other;
@@ -18,7 +18,7 @@ if (gearBounces < maxGearBounces) {
     }
     isGearBouncing = false;
     gravEnabled = false;
-    yspeed.clear_all();
+    yspeed = 0;
 }
 
 gearBounces++;

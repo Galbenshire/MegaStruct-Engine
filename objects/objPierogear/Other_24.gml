@@ -11,17 +11,17 @@ switch (phase) {
     
     case 1: // Moving
         if (xcoll != 0) {
-            xspeed.value = -xcoll;
-            moveDir = sign(xspeed.value);
+            xspeed = -xcoll;
+            moveDir = sign(xspeed);
         } else if (!ground) {
-            xspeed.value = 0;
+            xspeed = 0;
             phase = 2;
         }
         break;
     
     case 2: // Falling
         if (ground) {
-            xspeed.value = moveDir;
+            xspeed = moveDir;
             phase = 1;
         }
         break;
