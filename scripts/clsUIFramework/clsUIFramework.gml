@@ -3,14 +3,14 @@ function UIFramework_Menu() constructor {
 	
     owner = other.id; /// @is {instance}
     
-    inputs = global.player.inputs; /// @is {InputMap}
-    confirmButtons = [InputActions.PAUSE, InputActions.JUMP];
-    cancelButtons = [InputActions.SHOOT];
-    
+    inputs = new InputMap();
     xDir = 0;
     yDir = 0;
     isConfirmed = false;
     isCanceled = false;
+    
+    confirmButtons = [InputActions.PAUSE, InputActions.JUMP];
+    cancelButtons = [InputActions.SHOOT];
     
     submenus = []; /// @is {array<UIFramework_Submenu>}
     submenuCount = 0;
@@ -20,7 +20,40 @@ function UIFramework_Menu() constructor {
     defaultSubmenu = undefined; /// @is {UIFramework_Submenu?}
     canChangeSubmenu = true;
     
+    moveSFX = sfxMenuMove;
+    selectSFX = sfxMenuSelect;
+    
     __submenuIDFind = "";
+    
+    #endregion
+    
+    #region Functions - Input
+    
+    /// @method check_inputs()
+	/// @desc Updates input across the menu
+    static check_inputs = function() {
+		inputs.copy_inputs(global.player.inputs);
+		
+		xDir = inputs.is_pressed(InputActions.RIGHT) - inputs.is_pressed(InputActions.LEFT);
+        yDir = inputs.is_pressed(InputActions.DOWN) - inputs.is_pressed(InputActions.UP);
+        if (xDir != 0 && yDir != 0) {
+            xDir = 0;
+            yDir = 0;
+        }
+        
+        isConfirmed = inputs.is_any_pressed_ext(confirmButtons);
+        isCanceled = inputs.is_any_pressed_ext(cancelButtons);
+    };
+    
+    /// @method clear_inputs()
+	/// @desc Clears all inputs currently in the menu
+    static clear_inputs = function() {
+		inputs.clear_all();
+		xDir = 0;
+		yDir = 0;
+		isConfirmed = false;
+		isCanceled = false;
+    };
     
     #endregion
     
@@ -60,39 +93,41 @@ function UIFramework_Menu() constructor {
 			_newSubmenu.gain_focus();
     };
     
+    /// @method try_changing_submenus()
+	/// @desc Makes an attempt to change submenus
+    static try_changing_submenus = function() {
+		if (!canChangeSubmenu)
+			return;
+		
+		var _prevSubmenu = currentSubmenu,
+			_nextSubmenu = currentSubmenu.get_neighbour(xDir, yDir);
+		if (!is_undefined(_nextSubmenu)) {
+			self.pass_submenu_focus(_nextSubmenu);
+			self.clear_inputs();
+			if (currentSubmenu != _prevSubmenu)
+				play_sfx(moveSFX);
+		}
+    };
+    
     #endregion
     
     #region Functions - Other
     
-    static check_inputs = function() {
-		xDir = inputs.is_pressed(InputActions.RIGHT) - inputs.is_pressed(InputActions.LEFT);
-        yDir = inputs.is_pressed(InputActions.DOWN) - inputs.is_pressed(InputActions.UP);
-        if (xDir != 0 && yDir != 0) {
-            xDir = 0;
-            yDir = 0;
-        }
-        
-        isConfirmed = inputs.is_any_pressed_ext(confirmButtons);
-        isCanceled = inputs.is_any_pressed_ext(cancelButtons);
+    /// @method render(x, y)
+	/// @desc Renders this menu
+	///
+	/// @param {number}  x  x-position to render the menu at
+	/// @param {number}  y  y-position to render the menu at
+    static render = function(_x, _y) {
+		currentSubmenu.render(_x, _y);
     };
     
     /// @method update()
 	/// @desc Updates the menu
     static update = function() {
-        check_inputs();
-        
-		if (canChangeSubmenu) {
-			var _prevSubmenu = currentSubmenu,
-				_nextSubmenu = currentSubmenu.get_neighbour(xDir, yDir);
-			if (!is_undefined(_nextSubmenu)) {
-				pass_submenu_focus(_nextSubmenu);
-				if (currentSubmenu != _prevSubmenu)
-					play_sfx(sfxMenuMove);
-				return;
-			}
-		}
-		
-		currentSubmenu.update();
+        self.check_inputs();
+        self.try_changing_submenus();
+        currentSubmenu.update();
     };
     
     #endregion
@@ -138,21 +173,6 @@ function UIFramework_Submenu(_id) constructor {
 		//...	
     };
     
-    /// @method on_render(x, y)
-	/// @desc Called when this submenu is to be drawn
-	///
-	/// @param {number}  x  x-position to render at
-	/// @param {number}  y  y-position to render at
-    static on_render = function(_x, _y) {
-		// Basic render callback
-		// Recommended you override this for your own menus
-		var i = 0;
-		repeat(itemCount) {
-			items[i].render(_x, _y);
-			i++;
-		}
-    };
-    
     /// @method on_tick(inputs)
 	/// @desc Called every frame while this submenu has focus
 	///
@@ -171,7 +191,7 @@ function UIFramework_Submenu(_id) constructor {
 	/// @desc Sets this submenu as the current submenu in its menu
     static gain_focus = function() {
 		menu.currentSubmenu = self;
-		on_focus_enter();
+		self.on_focus_enter();
 		if (!is_undefined(defaultItem))
 			defaultItem.gain_focus();
     };
@@ -190,7 +210,7 @@ function UIFramework_Submenu(_id) constructor {
 		if (!is_undefined(currentItem))
 			currentItem.release_focus();
 		
-		on_focus_leave();
+		self.on_focus_leave();
 		menu.currentSubmenu = undefined;
 		menu.previousSubmenu = self;
     };
@@ -214,13 +234,17 @@ function UIFramework_Submenu(_id) constructor {
     
     /// @method add_items_from_list(item_list, is_vertical, wrap_neighbours)
 	/// @desc Adds a list of UI Items into this submenu
+	///
+	/// @param {array<UIFramework_Item>}  item_list  A list of UI Items to add
+	/// @param {bool}  is_vertical  Whether to treat this list as vertical (true) or horizontal (false)
+	/// @param {bool}  wrap_neighbours  Whether the list should wrap around itself (true) or not (false)
     static add_items_from_list = function(_itemList, _isVertical, _wrapNeighbours) {
 		var _count = array_length(_itemList);
 		if (_count <= 0)
 			return;
 		
 		for (var i = 0; i < _count; i++) {
-			add_item(_itemList[i]);
+			self.add_item(_itemList[i]);
 			
 			if (_isVertical) {
 				_itemList[i].neighbourTop = _itemList[modf(i - 1, _count)];
@@ -244,6 +268,10 @@ function UIFramework_Submenu(_id) constructor {
     
     /// @method get_item(item_id)
 	/// @desc Gets a UI Item by its ID
+	///
+	/// @param {string}  item_id  The ID of the UI Item to find
+	///
+	/// @returns {UIFramework_Item?}  The UI item, or `undefined` if nothing was found
     static get_item = function(_itemID) {
 		__itemIDFind = _itemID;
 		return array_find(items, function(_item, i) /*=>*/ {return _item.id == __itemIDFind});
@@ -251,6 +279,8 @@ function UIFramework_Submenu(_id) constructor {
     
     /// @method pass_item_focus(new_item)
 	/// @desc Changes focus from the current UIItem to the specified one
+	///
+	/// @param {UIFramework_Item?}  new_item  The new UI item to switch to
     static pass_item_focus = function(_newItem) {
 		if (!is_undefined(currentItem))
 			currentItem.release_focus();
@@ -258,12 +288,31 @@ function UIFramework_Submenu(_id) constructor {
 			_newItem.gain_focus();
     };
     
+    /// @method try_changing_items()
+	/// @desc Makes an attempt to change items
+    static try_changing_items = function() {
+		if (!canChangeItem)
+			return;
+		
+		var _prevItem = currentItem,
+			_nextItem = currentItem.get_neighbour(menu.xDir, menu.yDir);
+		if (!is_undefined(_nextItem)) {
+			self.pass_item_focus(_nextItem);
+			menu.clear_inputs();
+			if (currentItem != _prevItem)
+				play_sfx(menu.moveSFX);
+		}
+    };
+    
     #endregion
     
-    #region Functions - Other
+    #region Functions - Neighbours
     
     /// @method get_neighbour(x_dir, y_dir)
 	/// @desc Gets this submenu's neighbour, using the given direction
+	///
+	/// @param {number}  x_dir  Checks horizontally for a neighbour
+	/// @param {number}  y_dir  Checks vertically for a neighbour
     static get_neighbour = function(_xDir, _yDir) {
 		if (!is_undefined(currentItem)) {
 			if (!is_undefined(currentItem.get_neighbour(_xDir, _yDir)))
@@ -278,32 +327,48 @@ function UIFramework_Submenu(_id) constructor {
 		return undefined;
     };
     
+    /// @method set_neighbour(left, right, top, bottom)
+	/// @desc Sets all possible neighbours for this submenu
+	///
+	/// @param {UIFramework_Submenu}  [left]  neighbour to the left
+	/// @param {UIFramework_Submenu}  [right]  neighbour to the right
+	/// @param {UIFramework_Submenu}  [top]  neighbour above
+	/// @param {UIFramework_Submenu}  [bottom]  neighbour below
+    static set_neighbours = function(_left, _right, _top, _bottom) {
+		neighbourLeft = _left;
+		neighbourRight = _right;
+		neighbourTop = _top;
+		neighbourBottom = _bottom;
+    };
+    
+    #endregion
+    
+    #region Functions - Other
+    
     /// @method render(x, y)
 	/// @desc Renders this submenu
+	///
+	/// @param {number}  x  x-position to render at
+	/// @param {number}  y  y-position to render at
     static render = function(_x, _y) {
-		on_render(_x, _y);
+		// Basic render callback, drawing all items in this submenu
+		// Recommended you override this for your own menus
+		var i = 0; repeat(itemCount) {
+			items[i].render(_x, _y);
+			i++;
+		}
     };
     
     /// @method update()
 	/// @desc Updates this submenu
     static update = function() {
-		if (!on_tick(menu.inputs))
+		if (!self.on_tick(menu.inputs))
 			return;
-        if (is_undefined(currentItem))
-            return;
-        
-		if (canChangeItem) {
-			var _prevItem = currentItem,
-				_nextItem = currentItem.get_neighbour(menu.xDir, menu.yDir);
-			if (!is_undefined(_nextItem)) {
-				pass_item_focus(_nextItem);
-				if (currentItem != _prevItem)
-					play_sfx(sfxMenuMove);
-				return;
-			}
-		}
-        
-        currentItem.update();
+		
+        if (!is_undefined(currentItem)) {
+			self.try_changing_items();
+			currentItem.update();
+        }
     };
     
     #endregion
@@ -328,10 +393,14 @@ function UIFramework_Item(_id) constructor {
     
     #region Callbacks
     
+    /// @method on_confirm()
+	/// @desc Called when this item receives a "confirm" input
     static on_confirm = function() {
 		//...
     };
     
+    /// @method on_cancel()
+	/// @desc Called when this item receives a "cancel" input
     static on_cancel = function() {
 		//...
     };
@@ -348,15 +417,6 @@ function UIFramework_Item(_id) constructor {
 		//...	
     };
     
-    /// @method on_render(x, y)
-	/// @desc Called when this item is to be drawn
-	///
-	/// @param {number}  x  x-position to render at
-	/// @param {number}  y  y-position to render at
-    static on_render = function(_x, _y) {
-		//...
-    };
-    
     /// @method on_tick(inputs)
 	/// @desc Called every frame while this item has focus
 	///
@@ -367,10 +427,18 @@ function UIFramework_Item(_id) constructor {
 		return true;
     };
     
+    /// @method on_x_dir(dir)
+	/// @desc Called when this item receives left/right input
+	///
+	/// @param {int}  dir  Direction of the input
     static on_x_dir = function(_dir) {
 		//...
     };
     
+    /// @method on_y_dir(dir)
+	/// @desc Called when this item receives up/down input
+	///
+	/// @param {int}  dir  Direction of the input
     static on_y_dir = function(_dir) {
 		//...
     };
@@ -404,10 +472,15 @@ function UIFramework_Item(_id) constructor {
     
     #endregion
     
-    #region Functions - Other
+    #region Functions - Neighbours
     
     /// @method get_neighbour(x_dir, y_dir)
 	/// @desc Gets this item's neighbour, using the given direction
+	///
+	/// @param {int}  x_dir  x-direction to check in
+	/// @param {int}  y_dir  y-direction to check in
+	///
+	/// @returns {UIFramework_Item?}  The neighbour in the given direction. Returns `undefined` if nothing was found
     static get_neighbour = function(_xDir, _yDir) {
 		if (_xDir != 0)
             return (_xDir < 0) ? neighbourLeft : neighbourRight;
@@ -416,10 +489,31 @@ function UIFramework_Item(_id) constructor {
 		return undefined;
     };
     
+    /// @method set_neighbour(left, right, top, bottom)
+	/// @desc Sets all possible neighbours for this item
+	///
+	/// @param {UIFramework_Item}  [left]  neighbour to the left
+	/// @param {UIFramework_Item}  [right]  neighbour to the right
+	/// @param {UIFramework_Item}  [top]  neighbour above
+	/// @param {UIFramework_Item}  [bottom]  neighbour below
+    static set_neighbours = function(_left, _right, _top, _bottom) {
+		neighbourLeft = _left;
+		neighbourRight = _right;
+		neighbourTop = _top;
+		neighbourBottom = _bottom;
+    };
+    
+    #endregion
+    
+    #region Functions - Other
+    
     /// @method render(x, y)
 	/// @desc Renders this item
+	///
+	/// @param {number}  x  x-position to render at
+	/// @param {number}  y  y-position to render at
     static render = function(_x, _y) {
-		on_render(_x, _y);
+		//...
     };
     
     /// @method update()

@@ -9,7 +9,7 @@ with (new OptionsMenu_Submenu("main", "OPTIONS")) {
 	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("AUDIO", "audio"));
 	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("OTHER", "misc"));
 	
-	add_items_from_list(_items, true, true);
+	self.add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);
 }
 
@@ -26,7 +26,7 @@ with (new OptionsMenu_Submenu("controls", "CONTROLS")) {
 	array_push(_items, new OptionsMenu_Item_Toggle("autoFire", "AUTO FIRE"));
 	array_push(_items, new OptionsMenu_Item_Toggle("chargeToggle", "CHARGE TOGGLE"));
 	
-	add_items_from_list(_items, true, true);
+	self.add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);
 }
 
@@ -43,7 +43,7 @@ with (new OptionsMenu_Submenu("display", "DISPLAY")) {
     array_push(_items, new OptionsMenu_Item_Toggle("vsync", "VSYNC", true));
     array_push(_items, new OptionsMenu_Item_Toggle("showFPS", "SHOW FPS"));
     
-    add_items_from_list(_items, true, true);
+    self.add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);
 }
 
@@ -58,7 +58,7 @@ with (new OptionsMenu_Submenu("audio", "AUDIO")) {
 	array_push(_items, new OptionsMenu_Item_Slider("volumeMusic", "MUSIC VOLUME"));
 	array_push(_items, new OptionsMenu_Item_Slider("volumeSound", "SOUND VOLUME"));
 	
-	add_items_from_list(_items, true, true);
+	self.add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);
 }
 
@@ -73,7 +73,7 @@ with (new OptionsMenu_Submenu("misc", "OTHER")) {
 	array_push(_items, new OptionsMenu_Item_Toggle("chargeBar", "CHARGE BAR"));
 	array_push(_items, new OptionsMenu_Item_Toggle("instantHealthFill", "HEALTH FILL", false, ["GRADUAL", "INSTANT"]));
 	
-	add_items_from_list(_items, true, true);
+	self.add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);
 }
 
@@ -82,11 +82,11 @@ with (new OptionsMenu_Submenu("misc", "OTHER")) {
 with (menu) {
 	for (var i = 0; i < submenuCount; i++) {
 		with (submenus[i]) {
-			refresh_item_values();
+			self.refresh_item_values();
 			defaultItem = items[0];
 		}
 	}
 	
 	defaultSubmenu = submenus[0];
-	pass_submenu_focus(defaultSubmenu);
+	self.pass_submenu_focus(defaultSubmenu);
 }

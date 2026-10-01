@@ -141,6 +141,16 @@ function InputMap() constructor {
         pressed = bitmask_set_bit(pressed, _bit * _pressed);
         released = bitmask_set_bit(released, _bit * _released);
 	};
+	
+	/// @method copy_inputs(target)
+	/// @desc Copies inputs from another InputMap
+	///
+	/// @param {InputMap}  target  The other InputMap to copy the inputs from
+	static copy_inputs = function(_target) {
+		held = _target.held;
+		pressed = _target.pressed;
+		released = _target.released;
+	};
     
     /// @method get_axis(positive_action, negative_action)
 	/// @desc Get axis input by specifying two input actions, one negative and one positive.

@@ -417,6 +417,7 @@
     {"id":{"name":"sfxLand","path":"sounds/sfxLand/sfxLand.yy",},},
     {"id":{"name":"sfxMenuMove","path":"sounds/sfxMenuMove/sfxMenuMove.yy",},},
     {"id":{"name":"sfxMenuSelect","path":"sounds/sfxMenuSelect/sfxMenuSelect.yy",},},
+    {"id":{"name":"sfxMenuSwitch","path":"sounds/sfxMenuSwitch/sfxMenuSwitch.yy",},},
     {"id":{"name":"sfxMerserker","path":"sounds/sfxMerserker/sfxMerserker.yy",},},
     {"id":{"name":"sfxMetalBlade","path":"sounds/sfxMetalBlade/sfxMetalBlade.yy",},},
     {"id":{"name":"sfxNitronFire","path":"sounds/sfxNitronFire/sfxNitronFire.yy",},},

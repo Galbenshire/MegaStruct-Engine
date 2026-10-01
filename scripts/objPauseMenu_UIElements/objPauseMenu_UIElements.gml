@@ -7,10 +7,9 @@ function PauseMenu() : UIFramework_Menu() constructor {}
 #region Submenus
 
 function PauseMenu_Submenu_Weapons() : UIFramework_Submenu("weapons") constructor {
-    /// @method on_render(x, y)
-    static on_render = function(_x, _y) {
-		var i = 0;
-		repeat(itemCount) {
+    /// @method render(x, y)
+    static render = function(_x, _y) {
+		var i = 0; repeat(itemCount) {
 			items[i].render(_x, _y);
 			_y += 24;
 			i++;
@@ -19,10 +18,9 @@ function PauseMenu_Submenu_Weapons() : UIFramework_Submenu("weapons") constructo
 }
 
 function PauseMenu_Submenu_Options() : UIFramework_Submenu("options") constructor {
-    /// @method on_render(x, y)
-    static on_render = function(_x, _y) {
-		var i = 0;
-		repeat(itemCount) {
+    /// @method render(x, y)
+    static render = function(_x, _y) {
+		var i = 0; repeat(itemCount) {
 			items[i].render(_x, _y);
 			_y += 16;
 			i++;
@@ -42,8 +40,8 @@ function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor 
 	};
 	playerData.sprite_index = playerData.characterSpecs.get_sprite(PlayerSpriteType.IDLE);
 	
-    /// @method on_render(x, y)
-    static on_render = function(_x, _y) {
+    /// @method render(x, y)
+    static render = function(_x, _y) {
 		with (playerData) {
 			colour_replacer().activate(ColourReplacerMode.GREYSCALE)
 				.apply_output_colours(palette.outputColours)
@@ -103,7 +101,7 @@ function PauseMenu_Item_Text(_id, _text) : UIFramework_Item(_id) constructor {
 		isConfirming = false;
     };
     
-    static on_render = function(_x, _y) {
+    static render = function(_x, _y) {
 		var _col = is_focused() ? c_yellow : c_white;
 		draw_set_text_align(fa_center, fa_top);
 		draw_text_colour(_x, _y, isConfirming ? "OK?" : text, _col, _col, _col, _col, 1);
@@ -144,7 +142,7 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
         }
     };
     
-    static on_render = function(_x, _y) {
+    static render = function(_x, _y) {
 		var _isFocused = is_focused(),
 			_colReplacer = colour_replacer();
 		

@@ -3,12 +3,29 @@
 function OptionsMenu() : UIFramework_Menu() constructor {
 	nextSubmenu = undefined;
     
-    /// @method switch_to_submenu(submenu_id)
-    static switch_to_submenu = function(_submenuID) {
+    /// @method switch_to_submenu(submenu_id, sfx)
+    static switch_to_submenu = function(_submenuID, _sfx = selectSFX) {
 		nextSubmenu = get_submenu(_submenuID);
 		owner.phase = 10;
 		owner.phaseTimer = 0;
-		play_sfx(sfxMenuSelect);
+		play_sfx(_sfx);
+    };
+    
+    /// @method leave_options_menu(sfx)
+    static leave_options_menu = function(_sfx = selectSFX) {
+		play_sfx(_sfx);
+		options_data().save_to_file();
+		
+		if (room == mnuOptions) {
+			go_to_room(mnuTitleScreen);
+		} else {
+			screen_fade({
+				onFadeOutEnd: function() /*=>*/ { instance_destroy(owner); },
+				fadeOutDuration: 10,
+				fadeHoldDuration: 1,
+				fadeInDuration: 10
+			});
+		}
     };
 }
 
@@ -23,14 +40,28 @@ function OptionsMenu_Submenu(_id, _header) : UIFramework_Submenu(_id) constructo
 	static on_focus_enter = function() {
 		if (id == "main" && !is_undefined(menu.previousSubmenu))
 			defaultItem = previousItem;
-	}
+	};
 	
-	/// @method on_render(x, y)
-    static on_render = function(_x, _y) {
+	/// @method on_tick(inputs)
+    static on_tick = function(_inputs) {
+		if (menu.isCanceled) {
+			var _returnOption = self.get_item("back");
+			if (is_undefined(_returnOption.targetSubmenu))
+				menu.leave_options_menu(sfxMenuSwitch);
+			else
+				menu.switch_to_submenu(_returnOption.targetSubmenu, sfxMenuSwitch);
+			
+			return false;
+		}
+		
+		return true;
+    };
+	
+	/// @method render(x, y)
+    static render = function(_x, _y) {
 		draw_set_valign(fa_top);
 		
-		var i = 0;
-		repeat(itemCount) {
+		var i = 0; repeat(itemCount) {
 			items[i].render(_x, _y);
 			_y += 16 + 8 * (i == 0);
 			i++;
@@ -39,8 +70,7 @@ function OptionsMenu_Submenu(_id, _header) : UIFramework_Submenu(_id) constructo
     
     /// @method refresh_item_values()
     static refresh_item_values = function() {
-		var i = 0;
-		repeat(itemCount) {
+		var i = 0; repeat(itemCount) {
 			items[i].refresh_value();
 			i++;
 		}
@@ -51,13 +81,14 @@ function OptionsMenu_Submenu(_id, _header) : UIFramework_Submenu(_id) constructo
 
 #region Items
 
+// The base option item, that the others below inherit from
 function OptionsMenu_Item(_id, _label) : UIFramework_Item(_id) constructor {
     label = _label;
     value = "";
     
-    /// @method on_render(x, y)
+    /// @method render(x, y)
 	/// @desc Renders this item
-    static on_render = function(_x, _y) {
+    static render = function(_x, _y) {
 		draw_set_colour(is_focused() ? c_yellow : c_white);
 		draw_set_halign(fa_left);
 		draw_text(_x - 96, _y, label);
@@ -71,6 +102,7 @@ function OptionsMenu_Item(_id, _label) : UIFramework_Item(_id) constructor {
     };
 }
 
+// Option that allows for control binding
 function OptionsMenu_Item_ControlBinding(_isKeyboard) : OptionsMenu_Item($"bindings_{_isKeyboard ? "keyboard" : "gamepad"}", $"BINDINGS ({_isKeyboard ? "KEYBOARD" : "GAMEPAD"})") constructor {
 	__isKeyboard = _isKeyboard;
 	
@@ -87,6 +119,7 @@ function OptionsMenu_Item_ControlBinding(_isKeyboard) : OptionsMenu_Item($"bindi
     };
 }
 
+// Option that tweaks the game speed
 function OptionsMenu_Item_GameSpeed() : OptionsMenu_Item("gamespeed", "GAME SPEED") constructor {
 	static on_x_dir = function(_dir) {
 		var _newSpeed = (options_data().gameSpeed == 1) ? 50/60 : 1;
@@ -101,16 +134,20 @@ function OptionsMenu_Item_GameSpeed() : OptionsMenu_Item("gamespeed", "GAME SPEE
     };
 }
 
+// Screen size option
 function OptionsMenu_Item_ScreenSize() : OptionsMenu_Item("screensize", "SCREEN SIZE") constructor {
 	static on_x_dir = function(_dir) {
 		with (options_data()) {
             var _prevSize = screenSize;
-            set_screen_size(screenSize + _dir);
+            self.set_screen_size(screenSize + _dir);
             
             if (screenSize != _prevSize) {
-                other.refresh_value();
+                with (other) {
+					self.refresh_value();
+					play_sfx(menu.moveSFX);
+				}
                 game_window().update_screen();
-                play_sfx(sfxMenuMove);
+                game_window().center_window();
             }
         }
 	};
@@ -121,6 +158,7 @@ function OptionsMenu_Item_ScreenSize() : OptionsMenu_Item("screensize", "SCREEN 
     };
 }
 
+// Volume slider options
 function OptionsMenu_Item_Slider(_id, _label) : OptionsMenu_Item(_id, _label) constructor {
 	static on_x_dir = function(_dir) {
 		var _prevVolume = options_data()[$ id];
@@ -143,34 +181,23 @@ function OptionsMenu_Item_Slider(_id, _label) : OptionsMenu_Item(_id, _label) co
     };
 }
 
+// Options that switch the current submenu (also the option that leaves the Options Menu)
 function OptionsMenu_Item_SwitchSubmenu(_label, _submenuID) : OptionsMenu_Item("back", _label) constructor {
-	__submenuID = _submenuID;
+	targetSubmenu = _submenuID;
 	
 	/// @method on_confirm()
 	static on_confirm = function() {
-		if (!is_undefined(__submenuID)) {
-			menu.switch_to_submenu(__submenuID);
-			return;
-		}
-		
-		// No subbmenu assigned? Let's leave the Options Menu then.
-		play_sfx(sfxMenuSelect);
-		if (room == mnuOptions) {
-			go_to_room(mnuTitleScreen);
-		} else {
-			screen_fade({
-				onFadeOutEnd: function() /*=>*/ { instance_destroy(owner); },
-				fadeOutDuration: 10,
-				fadeHoldDuration: 1,
-				fadeInDuration: 10
-			});
-		}
+		if (is_undefined(targetSubmenu))
+			menu.leave_options_menu();
+		else
+			menu.switch_to_submenu(targetSubmenu);
 	};
 }
 
+// Options that toggle a value between true & false
 function OptionsMenu_Item_Toggle(_id, _label, _updateScreen = false, _toggleValues = ["OFF", "ON"]) : OptionsMenu_Item(_id, _label) constructor {
-	__toggleValues = _toggleValues;
-	__updateScreen = _updateScreen;
+	toggleValues = _toggleValues;
+	updateScreen = _updateScreen;
 	
 	static on_x_dir = function(__) {
 		var _optionsData = options_data();
@@ -179,7 +206,7 @@ function OptionsMenu_Item_Toggle(_id, _label, _updateScreen = false, _toggleValu
         refresh_value();
         play_sfx(sfxMenuMove);
         
-        if (__updateScreen)
+        if (updateScreen)
 			game_window().update_screen();
 		
 		if (id == "autoFire" || id == "chargeToggle") {
@@ -193,7 +220,7 @@ function OptionsMenu_Item_Toggle(_id, _label, _updateScreen = false, _toggleValu
 	};
 	
 	static refresh_value = function() {
-		value = __toggleValues[bool(options_data()[$ id])];
+		value = toggleValues[bool(options_data()[$ id])];
 	};
 }
 
