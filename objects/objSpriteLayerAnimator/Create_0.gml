@@ -15,6 +15,9 @@ spriteTypes = [];
 spriteFrames = [];
 spriteTypeCount = 0;
 
+pauseMask = PauseType.GAMEPLAY;
+pauseMask = bitmask_toggle_bit(pauseMask, PauseType.SECTION_SWITCH, !animateDuringSectionSwitches);
+
 // Function - call this in Creation Code to add a sprite element for this animator to animate
 // e.g add_sprite_type(sprMM2Conveyor, [0, 1, 2, 3]);
 function add_sprite_type(_sprite, _imgIndexes) {

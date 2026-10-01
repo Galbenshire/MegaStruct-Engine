@@ -666,6 +666,16 @@ enum DeferType {
 	ROOM_END
 }
 
+// -- Pause Types
+enum PauseType {
+	PAUSEMENU = 1 << 0,
+	TIMESCALE = 1 << 1,
+	SECTION_SWITCH = 1 << 2,
+	HITSTUN = 1 << 3,
+	
+	GAMEPLAY = PauseType.PAUSEMENU | PauseType.TIMESCALE | PauseType.SECTION_SWITCH | PauseType.HITSTUN
+}
+
 // -- Warning Level
 enum WarningLevel {
 	SHOW,

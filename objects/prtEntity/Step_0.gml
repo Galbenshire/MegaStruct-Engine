@@ -6,14 +6,17 @@ if (entity_is_dead() && !entity_can_respawn()) {
 }
 
 // =====  Halt if the entity should not be able to "step" =====
-if (!entity_can_step(true, true))
+var _stepPauseMask = pauseMask & PauseType.GAMEPLAY;
+_stepPauseMask = bitmask_unset_bit(_stepPauseMask, PauseType.TIMESCALE);
+if (!game_can_step(_stepPauseMask) || entity_is_dead())
 	exit;
 
 // ===== The Frame Begins =====
 onFrame();
 
-// =====  The standard "Step" (do it for each active "frame" in the game time scale) =====
-__currentTick = 0; repeat(global.gameTimeScale.integer) {
+// ===== Run each tick for the current frame (will depend on game time scale) =====
+var _gameTicks = bitmask_has_bit(pauseMask, PauseType.TIMESCALE) ? global.gameTimeScale.integer : 1;
+__currentTick = 0; repeat(_gameTicks) {
 	hitTimer++;
 	if (frozenTimer > 0)
 		frozenTimer--;

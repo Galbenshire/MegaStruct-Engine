@@ -7,4 +7,6 @@ yspeed = 0;
 owner = noone;
 createdBy = noone;
 
+pauseMask = PauseType.GAMEPLAY;
+
 __isDestroyed = false;

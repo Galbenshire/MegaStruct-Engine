@@ -13,8 +13,10 @@ if (entity_is_dead()) {
     frozenTimer = 0;
 }
 
-// =====  Halt if the game is "paused" (unless in the middle of a section switch) =====
-if (!game_can_step(false, false, global.switchingSections))
+// =====  Halt if the game is "paused" =====
+var _spawnPauseMask = pauseMask & PauseType.GAMEPLAY;
+_spawnPauseMask = bitmask_unset_bit(_spawnPauseMask, PauseType.SECTION_SWITCH);
+if (!game_can_step(_spawnPauseMask))
 	exit;
 
 // =====  Respawning/Despawning =====

@@ -54,6 +54,7 @@ maxSlopeSteepness = DEFAULT_MAX_SLOPE_STEEPNESS;
 grav = abs(grav);
 gravDir = (gravDir == 0) ? DEFAULT_GRAVITY_DIRECTION : sign(gravDir);
 maxFallSpeed = abs(maxFallSpeed);
+waterGravMod = DEFAULT_GRAVITY_WATER_MODIFIER;
 
 respawnRange = (respawnRange < 0) ? infinity : respawnRange;
 despawnRange = (despawnRange < 0) ? infinity : despawnRange;
@@ -66,6 +67,8 @@ bubbleYOffset = y - bbox_y_center();
 frozenTimer = 0;
 frozenGraphicType = 0;
 frozenPhysicsEnabled = false;
+
+pauseMask = PauseType.GAMEPLAY;
 
 __isKilled = false; // Used for respawn checks
 __currentTick = 0;

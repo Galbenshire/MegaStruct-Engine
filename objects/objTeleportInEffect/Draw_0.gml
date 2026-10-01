@@ -1,4 +1,3 @@
-/// @description Draw
 var _colReplacer = colour_replacer(),
     _paletteMode = palette.colourMode;
 	

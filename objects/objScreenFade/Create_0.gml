@@ -1,11 +1,6 @@
-image_alpha = (fadeOutDuration <= 0);
-image_blend = fadeColour;
+depth += depthOffset;
 
-phase = (image_alpha >= 1);
+phase = -1;
 phaseTimer = 0;
-fadeAlpha = image_alpha;
 
-if (!is_undefined(onFadeOutStart))
-    onFadeOutStart(self);
-if (image_alpha >= 1 && !is_undefined(onFadeOutEnd))
-    onFadeOutEnd(self);
+fadeAlpha = 0;

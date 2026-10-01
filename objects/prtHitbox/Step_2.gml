@@ -4,7 +4,9 @@ if (!instance_exists(owner)) {
     exit;
 }
 
-if (!game_can_step() || !hitbox_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
+var _collisionPauseMask = owner.pauseMask & PauseType.GAMEPLAY;
+_collisionPauseMask = bitmask_unset_bit(_collisionPauseMask, PauseType.SECTION_SWITCH);
+if (!game_can_step(_collisionPauseMask) || !hitbox_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
 	exit;
 
 var _entityArr = instance_place_array(x, y, [prtEntity, prtHitbox], true);

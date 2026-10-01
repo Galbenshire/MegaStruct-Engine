@@ -28,8 +28,9 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"waitTime","filters":[],"listItems":[],"multiselect":false,"name":"waitTime","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"60","varType":1,},
-    {"$GMObjectProperty":"v2","%Name":"startingWaitTime","filters":[],"listItems":[],"multiselect":false,"name":"startingWaitTime","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"waitTime","filters":[],"listItems":[],"multiselect":false,"name":"waitTime","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"60","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"startingWaitTime","filters":[],"listItems":[],"multiselect":false,"name":"startingWaitTime","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"destroyOnSectionSwitch","filters":[],"listItems":[],"multiselect":false,"name":"destroyOnSectionSwitch","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":null,"resourceType":"GMObjectProperty","resourceVersion":"1.0","tags":[],"value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

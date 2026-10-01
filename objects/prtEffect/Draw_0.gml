@@ -1,1 +1,1 @@
-event_user(EVENT_EFFECT_DRAW_FRAME);
+draw_self();

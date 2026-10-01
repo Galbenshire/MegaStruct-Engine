@@ -1,16 +1,14 @@
 /// @description Main Process
-if (!ignorePause && !game_can_step(ignoreTimeScale))
-    exit;
-if (!active)
+if (!active || !game_can_step(pauseMask))
     exit;
 
-var _gameTicks = ignoreTimeScale ? 1 : global.gameTimeScale.integer;
+var _gameTicks = bitmask_has_bit(pauseMask, PauseType.TIMESCALE) ? global.gameTimeScale.integer : 1;
 repeat(_gameTicks) {
     if (--delay > 0)
         continue;
     
-    deferredAction(caller);
-    if (runOnce) {
+    var _finished = deferredAction(caller);
+    if (_finished ?? true) {
         instance_destroy();
         break;
     }

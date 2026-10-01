@@ -213,7 +213,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 				print("SCREENSHOT SAVED", WarningLevel.SHOW, c_orange, true);
 				show_debug_message($"Saved screenshot at {screenshotFile}");
 				play_sfx(sfxBolt);
-			}, 0, true, true);
+			}, 0, 0);
 			_defer.depth = layer_get_depth(LAYER_SYSTEM) - 100;
 			_defer.screenshotFile = _screenshotFile;
         }
@@ -422,13 +422,13 @@ function Subsystem_Level() : Subsystem() constructor {
     __startLevel = false; // flag to know when we're starting a level
     
     static stepEnd = function() {
-		if (!active || pauseStack.is_locked() || global.paused || global.switchingSections)
+		if (!active || pauseStack.is_locked() || global.paused)
 			return;
 		
 		with (global.player) {
 			if (inputs.is_pressed(InputActions.PAUSE)) {
 				var _menu = instance_create_layer(0, 0, LAYER_FADER, objPauseMenu);
-				_menu.depth += 5;
+				_menu.depth += 20;
 			}
 		}
     };
@@ -478,7 +478,7 @@ function Subsystem_Level() : Subsystem() constructor {
 		defer(DeferType.STEP_BEGIN, function() {
 			deactivate_game_objects(false);
 			activate_game_objects();
-		}, 0, true, true);
+		}, 0, 0);
 		
 		// The default level start sequence
 		// (might offer an option in the future to override this)

@@ -9,7 +9,7 @@
   "managed":true,
   "name":"objFlyingShellSpawner",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtInterval","path":"objects/prtInterval/prtInterval.yy",},"propertyId":{"name":"waitTime","path":"objects/prtInterval/prtInterval.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"64",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtInterval","path":"objects/prtInterval/prtInterval.yy",},"propertyId":{"name":"waitTime","path":"objects/prtInterval/prtInterval.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","value":"64",},
   ],
   "parent":{
     "name":"Flying Shell",
@@ -33,10 +33,10 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"spawnDir","filters":[],"listItems":[],"multiselect":false,"name":"spawnDir","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
-    {"$GMObjectProperty":"v2","%Name":"shellMoveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"shellMoveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"1.25","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"shellBulletSpeed","filters":[],"listItems":[],"multiselect":false,"name":"shellBulletSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3.75","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"shellBulletCount","filters":[],"listItems":[],"multiselect":false,"name":"shellBulletCount","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"spawnDir","filters":[],"listItems":[],"multiselect":false,"name":"spawnDir","rangeEnabled":true,"rangeMax":1.0,"rangeMin":-1.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"shellMoveSpeed","filters":[],"listItems":[],"multiselect":false,"name":"shellMoveSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"1.25","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"shellBulletSpeed","filters":[],"listItems":[],"multiselect":false,"name":"shellBulletSpeed","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"3.75","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"shellBulletCount","filters":[],"listItems":[],"multiselect":false,"name":"shellBulletCount","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"8","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

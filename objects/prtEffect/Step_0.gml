@@ -1,7 +1,7 @@
-if (!game_can_step(ignoreTimeScale))
+if (!game_can_step(pauseMask))
 	exit;
 
-var _ticks = ignoreTimeScale ? 1 : global.gameTimeScale.integer;
+var _ticks = bitmask_has_bit(pauseMask, PauseType.TIMESCALE) ? global.gameTimeScale.integer : 1;
 repeat(_ticks) {
 	x += xspeed;
 	y += yspeed;

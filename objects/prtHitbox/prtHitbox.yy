@@ -33,7 +33,7 @@
         "HitMask.DEAL_DAMAGE",
         "HitMask.TAKE_DAMAGE",
         "HitMask.BLOCK",
-      ],"multiselect":true,"name":"hitmask","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":null,"resourceType":"GMObjectProperty","resourceVersion":"1.0","tags":[],"value":"","varType":6,},
+      ],"multiselect":true,"name":"hitmask","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","tags":[],"value":"","varType":6,},
     {"$GMObjectProperty":"v2","%Name":"collisionPriority","filters":[],"listItems":[],"multiselect":false,"name":"collisionPriority","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"1","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"offsetX","filters":[],"listItems":[],"multiselect":false,"name":"offsetX","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"offsetY","filters":[],"listItems":[],"multiselect":false,"name":"offsetY","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"0","varType":0,},

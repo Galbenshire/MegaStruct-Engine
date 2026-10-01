@@ -442,7 +442,7 @@ stateMachine.add_state("Death", {
 			audio_stop_all();
 			pauseLock.activate();
 			if (!_stateData.diedToPit)
-				global.hitStunTimer = 30;
+				hitstun_apply(30);
 		}
 	},
 	tick: function(_substate, _timer, _stateData) {
@@ -459,7 +459,7 @@ stateMachine.add_state("Death", {
 		play_sfx(sfxDeath);
 		
 		if (self.is_user_controlled())
-			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint[CheckpointData.room]); }, GAME_SPEED * 3, true, true);
+			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint[CheckpointData.room]); }, GAME_SPEED * 3, 0);
 		
 		instance_destroy();
 	}

@@ -14,10 +14,7 @@
 #region Main States
 
 stateMachine.add_state("_PreTransition", {
-	enter: function(_prevState) {
-		global.switchingSections = true;
-		queue_pause();
-	},
+	enter: function(_prevState) /*=>*/ { global.switchingSections = true; },
 	tick: function(_substate, _timer) {
 		if (_substate == 0) {
 			assert(instance_exists(playerInstance), "Did you forget to link the player to the section switcher?");
@@ -35,7 +32,7 @@ stateMachine.add_state("_PreTransition", {
 			playerInstance.refresh_palette();
 			
 			stateMachine.change_substate(1);
-		} else if (global.paused) { // An extra tick frame due to instance activation/deactivation conflicts
+		} else { // An extra tick frame due to instance activation/deactivation conflicts
 			deactivate_game_objects(true, targetSection);
 			stateMachine.change_state("Transition");
 			stateMachine.push_state("FixCameraIn");
@@ -100,8 +97,12 @@ stateMachine.add_state("_PostTransition", {
 			stateMachine.change_substate(1);
 		} else {
 			objSystem.camera.active = true;
-			playerInstance.xspeed = playerXSpeedCache;
-			playerInstance.yspeed = playerYSpeedCache;
+			
+			with (playerInstance) {
+				xspeed = other.playerXSpeedCache;
+				yspeed = other.playerYSpeedCache;
+				inputs.clear_momentary();
+			}
 			
 			instance_destroy();
 		}

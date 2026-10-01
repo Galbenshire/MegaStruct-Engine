@@ -7,7 +7,9 @@ if (entity_is_dead()) {
 }
 
 // =====  Entity-to-Entity Collisions =====
-if (!game_can_step() || !entity_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
+var _collisionPauseMask = pauseMask & PauseType.GAMEPLAY;
+_collisionPauseMask = bitmask_unset_bit(_collisionPauseMask, PauseType.SECTION_SWITCH);
+if (!game_can_step(_collisionPauseMask) || !entity_can_deal_damage() || !place_meeting(x, y, [prtEntity, prtHitbox]))
 	exit;
 
 var _entityArr = instance_place_array(x, y, [prtEntity, prtHitbox], true);

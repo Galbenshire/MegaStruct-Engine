@@ -9,6 +9,8 @@ layerCount = 0;
 areaWidth = 0;
 areaHeight = 0;
 
+pauseMask = PauseType.PAUSEMENU | PauseType.TIMESCALE | PauseType.HITSTUN;
+
 // Function - use this to add layers to the parallax
 function add_parallax_layer(_sprite, _index, _parallaxX, _parallaxY, _speedX, _speedY, _wrapX, _wrapY, _offsetXAbs = 0, _offsetYAbs = 0, _offsetXRel = 0, _offsetYRel = 0, _left = 0, _top = 0, _width = sprite_get_width(_sprite), _height = sprite_get_height(_sprite)) {
     var _layer/*:ParallaxLayer*/ = array_create(ParallaxLayer.sizeof);

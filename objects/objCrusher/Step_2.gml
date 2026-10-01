@@ -14,7 +14,9 @@ if (entity_is_dead()) {
 }
 
 // =====  Entity-to-Entity Collisions =====
-if (!game_can_step() || !entity_can_deal_damage())
+var _collisionPauseMask = pauseMask & PauseType.GAMEPLAY;
+_collisionPauseMask = bitmask_unset_bit(_collisionPauseMask, PauseType.SECTION_SWITCH);
+if (!game_can_step(_collisionPauseMask) || !entity_can_deal_damage())
 	exit;
 
 var _entityArr = array_concat(

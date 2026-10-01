@@ -25,17 +25,18 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
         
         // Effects are destroyed
         if (is_object_type(prtEffect)) {
-            instance_destroy();
-            continue;
+			if (destroyOnSectionSwitch) {
+				instance_destroy();
+				continue;
+			}
         }
         
         // For entities, it depends...
         if (is_object_type(prtEntity)) {
-            var _keep = (sectionSwitchBehaviour == SectionSwitchBehaviour.HIDDEN)
-                ? false
-                : (_switchingSections || place_meeting(x, y, _section));
-            if (_keep)
-                continue;
+            if (sectionSwitchBehaviour != SectionSwitchBehaviour.HIDDEN) {
+				if (_switchingSections || place_meeting(x, y, _section))
+					continue;
+            }
             
             if (_resetEntities && (sectionSwitchBehaviour != SectionSwitchBehaviour.PERSISTANT || entity_is_dead())) {
                 lifeState = LifeState.DEAD_ONSCREEN;
@@ -56,17 +57,21 @@ function deactivate_game_objects(_resetEntities = true, _section = global.sectio
         
         // Intervals reset their timer before deactivating
         if (is_object_type(prtInterval)) {
-            timer = startingWaitTime;
-            instance_deactivate_object(id);
+			if (destroyOnSectionSwitch) {
+				instance_destroy();
+			} else {
+				timer = startingWaitTime;
+				instance_deactivate_object(id);
+			}
             continue;
         }
         
         // Anything else, deactivate them
-        // If they're tagged as a special object though, keep them if in the current section, or in a section switch
-        var _keep = false;
-		if (asset_has_tags(object_index, "active_special", asset_object))
-			_keep = _switchingSections || place_meeting(x, y, _section);
-		if (!_keep)
-			instance_deactivate_object(id);
+        // If they're tagged as a special object though, keep them if they exist within the current section, or in a section switch
+        if (asset_has_tags(object_index, "active_special", asset_object)) {
+			if (_switchingSections || place_meeting(x, y, _section))
+				continue;
+        }
+        instance_deactivate_object(id);
     }
 }

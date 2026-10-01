@@ -11,6 +11,9 @@ tilesetCount = 0;
 animTimer = 0;
 animIndex = 0;
 
+pauseMask = PauseType.GAMEPLAY;
+pauseMask = bitmask_toggle_bit(pauseMask, PauseType.SECTION_SWITCH, !animateDuringSectionSwitches);
+
 // Function - call this in Creation Code to define the cycler's tilesets
 // e.g add_tileset(tstMetalManAnimated_0, 8);
 function add_tileset(_tileset, _duration) {

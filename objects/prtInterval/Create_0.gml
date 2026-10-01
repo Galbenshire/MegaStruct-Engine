@@ -6,3 +6,4 @@ timer = startingWaitTime; /// @is {int}
 
 owner = noone;
 createdBy = noone;
+pauseMask = PauseType.GAMEPLAY;

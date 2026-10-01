@@ -29,9 +29,10 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"spriteLayer","filters":[],"listItems":[],"multiselect":false,"name":"spriteLayer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
-    {"$GMObjectProperty":"v2","%Name":"totalFrames","filters":[],"listItems":[],"multiselect":false,"name":"totalFrames","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":1,},
-    {"$GMObjectProperty":"v2","%Name":"frameDuration","filters":[],"listItems":[],"multiselect":false,"name":"frameDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"spriteLayer","filters":[],"listItems":[],"multiselect":false,"name":"spriteLayer","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"totalFrames","filters":[],"listItems":[],"multiselect":false,"name":"totalFrames","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"2","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"frameDuration","filters":[],"listItems":[],"multiselect":false,"name":"frameDuration","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"1.0","value":"8","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"animateDuringSectionSwitches","filters":[],"listItems":[],"multiselect":false,"name":"animateDuringSectionSwitches","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":null,"resourceType":"GMObjectProperty","resourceVersion":"1.0","tags":[],"value":"False","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
