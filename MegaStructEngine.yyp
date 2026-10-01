@@ -327,6 +327,7 @@
     {"id":{"name":"clsItemDrop","path":"scripts/clsItemDrop/clsItemDrop.yy",},},
     {"id":{"name":"clsLockStack","path":"scripts/clsLockStack/clsLockStack.yy",},},
     {"id":{"name":"clsOptionsData","path":"scripts/clsOptionsData/clsOptionsData.yy",},},
+    {"id":{"name":"clsParallaxLayer","path":"scripts/clsParallaxLayer/clsParallaxLayer.yy",},},
     {"id":{"name":"clsPlayer","path":"scripts/clsPlayer/clsPlayer.yy",},},
     {"id":{"name":"clsPlayerLockPool","path":"scripts/clsPlayerLockPool/clsPlayerLockPool.yy",},},
     {"id":{"name":"clsReticle","path":"scripts/clsReticle/clsReticle.yy",},},

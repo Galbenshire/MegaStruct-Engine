@@ -517,27 +517,6 @@ enum PaletteWeapon {
 	sizeof
 }
 
-enum ParallaxLayer {
-	sprite, /// @is {sprite}
-	index, /// @is {int}
-	x, /// @is {number}
-	y, /// @is {number}
-	parallaxX, /// @is {number}
-	parallaxY, /// @is {number}
-	speedX, /// @is {number}
-	speedY, /// @is {number}
-	wrapX, /// @is {bool}
-    wrapY, /// @is {bool}
-    left, /// @is {int}
-    top, /// @is {int}
-    width, /// @is {int}
-    height, /// @is {int}
-    widthSegments, /// @is {int}
-    heightSegments, /// @is {int}
-    isWholeSprite, /// @is {bool}
-	sizeof
-}
-
 enum RefillQueueItem {
 	player, /// @is {prtPlayer}
 	target, /// @is {Weapon?}

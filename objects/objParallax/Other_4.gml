@@ -4,16 +4,14 @@ if (array_empty(layers)) {
 }
 
 var _section = find_section_at(sprite_x_center(), sprite_y_center());
-if (_section != noone) {
-    if (areaLeft == USE_SECTION_EDGE)
-        areaLeft = _section.left;
-    if (areaTop == USE_SECTION_EDGE)
-        areaTop = _section.top;
-    if (areaRight == USE_SECTION_EDGE)
-        areaRight = _section.right;
-    if (areaBottom == USE_SECTION_EDGE)
-        areaBottom = _section.bottom;
-}
+if (areaLeft == USE_SECTION_EDGE)
+    areaLeft = (_section != noone) ? _section.left : 0;
+if (areaTop == USE_SECTION_EDGE)
+    areaTop = (_section != noone) ? _section.top : 0;
+if (areaRight == USE_SECTION_EDGE)
+    areaRight = (_section != noone) ? _section.right : room_width;
+if (areaBottom == USE_SECTION_EDGE)
+    areaBottom = (_section != noone) ? _section.bottom : room_height;
 
 areaWidth = areaRight - areaLeft;
 areaHeight = areaBottom - areaTop;
@@ -37,10 +35,9 @@ switch (alignY) {
     case "Bottom": _yAdjust = areaBottom - GAME_HEIGHT; break;
 }
 
-for (var i = 0; i < layerCount; i++) {
-    var _layer/*:ParallaxLayer*/ = layers[i];
-    _layer[@ParallaxLayer.x] += offsetXAbsolute + ((offsetXRelative + _xAdjust) * _layer[ParallaxLayer.parallaxX]);
-    _layer[@ParallaxLayer.y] += offsetYAbsolute + ((offsetYRelative + _yAdjust) * _layer[ParallaxLayer.parallaxY]);
-    _layer[@ParallaxLayer.widthSegments] = _layer[ParallaxLayer.wrapX] ? ceil(areaWidth / _layer[ParallaxLayer.width]) + 1 : 1;
-    _layer[@ParallaxLayer.heightSegments] = _layer[ParallaxLayer.wrapY] ? ceil(areaHeight / _layer[ParallaxLayer.height]) + 1 : 1;
+var i = 0; repeat(layerCount) {
+    layers[i].shift_by(offsetXAbsolute, offsetYAbsolute, false)
+        .shift_by(offsetXRelative + _xAdjust, offsetYRelative + _yAdjust, true)
+        .calculate_segments(areaWidth, areaHeight);
+    i++;
 }
