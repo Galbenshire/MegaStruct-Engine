@@ -84,7 +84,7 @@ function entity_appears_frozen(_scope = self) {
 ///
 /// @returns {bool}  If the entity can be drawn (true) or not (false)
 function entity_can_draw(_scope = self) {
-	return !entity_is_dead(_scope);
+	return !entity_is_dead(_scope) && !global.pauseMenuActive;
 }
 
 /// @func entity_can_respawn(scope)

@@ -14,7 +14,7 @@ draw_text(4, 4, _str);
 var _canUseShader = playerSprite != PlayerSpriteType.MUGSHOT;
 if (_canUseShader) {
     colour_replacer().activate(ColourReplacerMode.GREYSCALE)
-        .apply_output_colours(currentCharacter.playerColours)
+        .set_output_colours(currentCharacter.playerColours)
         .update_uniforms();
 }
 

@@ -1,3 +1,41 @@
+#region Checkpoints
+
+/// @func checkpoint_find(name)
+/// @desc Finds a checkpoint in the current room, given a name
+///
+/// @param {string}  name  The name of the checkpoint
+///
+/// @returns {CheckpointData?}  The checkpoint data, or `undefined` if nothing was found
+function checkpoint_find(_name) {
+	var _checkpoints = objSystem.debug.checkpointList;
+	var i = 0; repeat(array_length(_checkpoints)) {
+		if (_checkpoints[i][CheckpointData.name] == _name)
+			return _checkpoints[i];
+		i++;
+	}
+	return undefined;
+}
+
+/// @func checkpoint_get_name()
+/// @desc Gets the current checkpoint's name/ID
+///
+/// @returns {room}  The name of the current checkpoint
+function checkpoint_get_name() {
+	return objSystem.level.checkpoint[CheckpointData.name];
+}
+
+/// @func checkpoint_get_room()
+/// @desc Gets the current checkpoint's assigned room
+///
+/// @returns {room}  The room of the current checkpoint
+function checkpoint_get_room() {
+	return objSystem.level.checkpoint[CheckpointData.room];
+}
+
+#endregion
+
+#region Other
+
 /// @func go_to_level(level)
 /// @desc Takes the game to a room tagged as a level, performing any extra steps necessary
 ///
@@ -48,3 +86,5 @@ function is_room_level(_room) {
 function restart_room(_instant = false) {
 	go_to_room(room, _instant);
 }
+
+#endregion

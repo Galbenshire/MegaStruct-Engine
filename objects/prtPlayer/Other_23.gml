@@ -459,7 +459,7 @@ stateMachine.add_state("Death", {
 		play_sfx(sfxDeath);
 		
 		if (self.is_user_controlled())
-			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(objSystem.level.checkpoint[CheckpointData.room]); }, GAME_SPEED * 3, 0);
+			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(checkpoint_get_room()); }, GAME_SPEED * 3, 0);
 		
 		instance_destroy();
 	}

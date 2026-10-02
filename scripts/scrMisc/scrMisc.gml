@@ -31,6 +31,14 @@ function event_user_scope(_numb, _scope = self) {
 		event_user(_numb);
 }
 
+/// @func is_browser()
+/// @desc Checks if this game is running on a browser HTML5
+///
+/// @returns {bool}  Whether the game is running on a browser (true) or not (false)
+function is_browser() {
+	return (os_browser != browser_not_a_browser) || (os_type == os_gxgames);
+}
+
 /// @func is_html5()
 /// @desc Checks if this game is running on HTML5
 ///

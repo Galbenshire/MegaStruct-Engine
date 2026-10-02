@@ -1,4 +1,8 @@
 // This object denotes the beginning point of your level
 
-name = !string_empty(name) ? name : "DefaultSpawn";
-checkpointData = [room, x, y, sign_nonzero(image_xscale), name]; /// @is {CheckpointData}
+checkpointData = array_create(CheckpointData.sizeof);
+checkpointData[CheckpointData.name] = !string_empty(name) ? name : string("DefaultSpawn_{0}_{1}_{2}", room_get_name(room), x, y);
+checkpointData[CheckpointData.room] = room;
+checkpointData[CheckpointData.x] = x;
+checkpointData[CheckpointData.y] = y;
+checkpointData[CheckpointData.dir] = sign_nonzero(image_xscale);

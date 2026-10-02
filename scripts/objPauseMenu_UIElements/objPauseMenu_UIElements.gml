@@ -1,6 +1,18 @@
 #region Menu
 
-function PauseMenu() : UIFramework_Menu() constructor {}
+function PauseMenu() : UIFramework_Menu() constructor {
+	static close_menu = function() {
+		with (owner) {
+            phase = 99;
+            screen_fade({
+                onFadeOutEnd: function(_fader) /*=>*/ { event_user(2); },
+                onFadeInEnd: function(_fader) /*=>*/ { instance_destroy(); },
+				fadeOutDuration: 10,
+				fadeInDuration: 10
+            });
+        }
+	};
+}
 
 #endregion
 
@@ -44,7 +56,7 @@ function PauseMenu_Submenu_Player() : UIFramework_Submenu("player") constructor 
     static render = function(_x, _y) {
 		with (playerData) {
 			colour_replacer().activate(ColourReplacerMode.GREYSCALE)
-				.apply_output_colours(palette.outputColours)
+				.set_output_colours(palette.outputColours)
 				.update_uniforms();
 			draw_sprite_ext(sprite_index, 0, _x + x, _y + y, 1, 1, 0, c_white, 1);
 			colour_replacer().deactivate();
@@ -71,14 +83,15 @@ function PauseMenu_Item_Text(_id, _text) : UIFramework_Item(_id) constructor {
 		
 		switch (id) {
 			case "options":
-				owner.phase = 10;
-				
-				screen_fade({
-					onFadeOutEnd: function() /*=>*/ { event_user_scope(2, owner); },
-					fadeOutDuration: 10,
-					fadeHoldDuration: 1,
-					fadeInDuration: 10
-				});
+				with (owner) {
+					phase = 10;
+					screen_fade({
+						onFadeOutEnd: function() /*=>*/ { event_user(3); },
+						fadeOutDuration: 10,
+						fadeHoldDuration: 1,
+						fadeInDuration: 10
+					});
+				}
 				break;
 			
 			case "retry":
@@ -130,16 +143,7 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
 			}
         }
         
-        with (owner) {
-            phase = 99;
-            
-            screen_fade({
-                onFadeOutEnd: function(_fader) /*=>*/ { visible = false; },
-                onFadeInEnd: function(_fader) /*=>*/ { instance_destroy(); },
-				fadeOutDuration: 10,
-				fadeInDuration: 10
-            });
-        }
+        menu.close_menu();
     };
     
     static render = function(_x, _y) {
@@ -148,7 +152,7 @@ function PauseMenu_Item_Weapon(_id, _weapon) : UIFramework_Item(_id) constructor
 		
 		_colReplacer.activate(ColourReplacerMode.GREYSCALE)
 			.set_colour_count(PalettePlayer.sizeof)
-			.apply_output_colours(_isFocused ? iconPaletteSelected : iconPaletteUnselected)
+			.set_output_colours(_isFocused ? iconPaletteSelected : iconPaletteUnselected)
 			.update_uniforms();
 		weapon.draw_icon(_x, _y);
 		_colReplacer.deactivate();

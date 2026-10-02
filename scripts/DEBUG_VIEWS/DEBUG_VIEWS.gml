@@ -44,6 +44,22 @@ function __debug_view_instance_count() {
 	dbg_text(ref_create(_debugSystem, "instanceListCounts"));
 }
 
+/// @func __debug_view_locks()
+function __debug_view_locks() {
+	DEBUG_VIEW_HTML5_CHECK
+	
+	// == The View
+    var _view = dbg_view("Locks", false, -1, -1, 300, 150);
+    
+    // -- Section - Pause
+    var _pauseLock = dbg_section("Pause");
+    dbg_watch(ref_create(objSystem.level.pauseStack, "counter"), "Locks: ");
+    
+    // -- Section - Player Inputs
+    var _pauseLock = dbg_section("Player Inputs");
+    dbg_watch(ref_create(global.player.lockpool, "results"), "Lock Results: ");
+}
+
 /// @func __debug_view_options_data()
 function __debug_view_options_data() {
     DEBUG_VIEW_HTML5_CHECK
@@ -77,6 +93,43 @@ function __debug_view_options_data() {
     dbg_slider(ref_create(_options, "gameSpeed"), 0.1, 2, "Game Speed", 0.01);
     dbg_checkbox(ref_create(_options, "chargeBar"), "Charge Bar");
     dbg_checkbox(ref_create(_options, "instantHealthFill"), "Instant Health Fill");
+    dbg_checkbox(ref_create(_options, "damagePopup"), "Damage Popup");
+}
+
+/// @func __debug_view_player()
+function __debug_view_player() {
+	DEBUG_VIEW_HTML5_CHECK
+	
+	var _player = global.player;
+	
+	// == The View
+	var _view = dbg_view("Player", false, -1, -1, 400, 275);
+	
+	// -- Section - Data
+	var _shortcuts = dbg_section("General");
+	dbg_slider_int(ref_create(_player, "characterID"), 0, CharacterType.COUNT - 1, "Character ID: ");
+	
+	// -- Section - Inputs
+	var _inputs = dbg_section("Input");
+	dbg_watch(ref_create(_player.inputs, "held"), "Held: ");
+	dbg_watch(ref_create(_player.inputs, "pressed"), "Pressed: ");
+	dbg_watch(ref_create(_player.inputs, "released"), "Released: ");
+	
+	// -- Section - Actions
+	var _actions = dbg_section("Actions");
+	//
+	dbg_button("Press 2", function() {
+		with (global.player.body)
+			entity_kill_self();
+	});
+	dbg_same_line();
+	dbg_button("Kill Entities", function() {
+		play_sfx(sfxExplosionMM3);
+		with (prtEntity) {
+			if (entity_can_take_damage(true) && bitmask_has_bit(factionLayer, Faction.ENEMY))
+				entity_kill_self();
+		}
+	});
 }
 
 /// @func __debug_view_room_select()
@@ -105,6 +158,39 @@ function __debug_view_room_select() {
 	});
 }
 
+/// @func __debug_view_screen_effects()
+function __debug_view_screen_effects() {
+	DEBUG_VIEW_HTML5_CHECK
+	
+	var _debugSystem = objSystem.debug;
+	
+	// == The View
+	var _view = dbg_view("Screen Effects", false, -1, -1, 400, 400);
+	
+	// -- Flash
+	var _flash = dbg_section("Flash");
+    dbg_slider_int(ref_create(_debugSystem, "flashDuration"), 0, 120, "Duration: ");
+    dbg_colour(ref_create(_debugSystem, "flashCol"), "Colour: ");
+    dbg_slider(ref_create(_debugSystem, "flashDecay"), 0, 1, "Decay: ");
+    dbg_slider(ref_create(_debugSystem, "flashGain"), 0, 1, "Gain: ");
+    dbg_slider(ref_create(_debugSystem, "flashStep"), 0, 1, "Step: ", 0.1);
+    dbg_button("Do Flash", function () {
+		with (objSystem.debug)
+			screen_flash(flashDuration, flashCol, flashDecay, flashGain, flashStep);
+	});
+	
+	// -- Shake
+	var _shake = dbg_section("Shake");
+    dbg_slider_int(ref_create(_debugSystem, "shakeDuration"), 0, 120, "Duration: ");
+    dbg_slider(ref_create(_debugSystem, "shakeStrengthX"), 0, 8, "Strength (X): ");
+    dbg_slider(ref_create(_debugSystem, "shakeStrengthY"), 0, 8, "Strength (Y): ");
+    dbg_slider(ref_create(_debugSystem, "shakeDecay"), 0, 1, "Decay: ");
+    dbg_button("Do Shake", function () {
+		with (objSystem.debug)
+			screen_shake(shakeDuration, shakeStrengthX, shakeStrengthY, shakeDecay);
+	});
+}
+
 /// @func __debug_view_timers()
 function __debug_view_timers() {
 	DEBUG_VIEW_HTML5_CHECK
@@ -119,8 +205,9 @@ function __debug_view_timers() {
 	dbg_watch(ref_create(global, "systemTimer"), "System: ");
 	
 	// -- Section - Stopwatch
+	var _debugSystem = objSystem.debug;
 	var _stopwatch = dbg_section("Stopwatch");
-	dbg_watch(ref_create(global, "stopwatchTimer"), "Stopwatch: ");
-	dbg_checkbox(ref_create(global, "stopwatchActive"), "Is Active");
-	dbg_button("Reset", function() /*=>*/ { global.stopwatchTimer = 0; });
+	dbg_watch(ref_create(_debugSystem, "stopwatchTimer"), "Stopwatch: ");
+	dbg_checkbox(ref_create(_debugSystem, "stopwatchActive"), "Is Active");
+	dbg_button("Reset", function() /*=>*/ { objSystem.debug.stopwatchTimer = 0; });
 }

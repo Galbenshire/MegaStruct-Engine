@@ -1,3 +1,26 @@
+/// === MACROS relating to weapons ===
+
+enum WeaponType {
+	BUSTER,
+	BUSTER_PROTO,
+	BUSTER_BASS,
+	RUSH_COIL,
+	RUSH_JET,
+	ICE_SLASHER,
+	METAL_BLADE,
+	SEARCH_SNAKE,
+	SKULL_BARRIER,
+	
+	COUNT
+}
+
+enum WeaponFlags {
+	// Ammo pickups have no effect, there's no ammo bar on the HUD, & Tanks ignore this weapon entirely
+	NO_AMMO = 1 << 0,
+	// Weapon is chargeable (e.g. the Mega Buster (if you're not basic))
+	CHARGE = 1 << 1
+}
+
 /// @func Weapon()
 /// @desc Represents a weapon that can be used by the player in-game.
 function Weapon() constructor {

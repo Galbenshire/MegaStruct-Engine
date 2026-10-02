@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":1.008,
+  "duration":1.0080045,
   "exportDir":"",
   "name":"sfxExplosionMM3",
   "parent":{

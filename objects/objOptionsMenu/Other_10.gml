@@ -38,7 +38,8 @@ with (new OptionsMenu_Submenu("display", "DISPLAY")) {
 	var _items = [];
 	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
 	array_push(_items, new OptionsMenu_Item_Toggle("fullscreen", "FULLSCREEN", true));
-	array_push(_items, new OptionsMenu_Item_ScreenSize());
+	if (!is_browser())
+		array_push(_items, new OptionsMenu_Item_ScreenSize());
     array_push(_items, new OptionsMenu_Item_Toggle("pixelPerfect", "PIXEL PERFECT", true));
     array_push(_items, new OptionsMenu_Item_Toggle("vsync", "VSYNC", true));
     array_push(_items, new OptionsMenu_Item_Toggle("showFPS", "SHOW FPS"));
@@ -72,6 +73,8 @@ with (new OptionsMenu_Submenu("misc", "OTHER")) {
 	array_push(_items, new OptionsMenu_Item_GameSpeed());
 	array_push(_items, new OptionsMenu_Item_Toggle("chargeBar", "CHARGE BAR"));
 	array_push(_items, new OptionsMenu_Item_Toggle("instantHealthFill", "HEALTH FILL", false, ["GRADUAL", "INSTANT"]));
+	array_push(_items, new OptionsMenu_Item_Toggle("damagePopup", "DAMAGE POPUP"));
+	array_push(_items, new OptionsMenu_Item_Toggle("screenShake", "SCREEN SHAKES"));
 	
 	self.add_items_from_list(_items, true, true);
 	other.menu.add_submenu(self);

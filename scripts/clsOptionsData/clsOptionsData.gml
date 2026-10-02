@@ -40,6 +40,7 @@ function OptionsData() constructor {
     chargeBar = false;
     instantHealthFill = false;
     damagePopup = false;
+    screenShake = true;
     
     #endregion
     

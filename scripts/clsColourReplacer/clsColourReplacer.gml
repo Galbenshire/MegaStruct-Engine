@@ -1,3 +1,23 @@
+/// === MACROS relating to ColourReplacer (& also ColourPalette) ===
+
+enum ColourChannels {
+	red, /// @is {int}
+	green, /// @is {int}
+	blue, /// @is {int}
+	sizeof
+}
+
+enum ColourReplacerMode {
+	GREYSCALE,
+	RGB,
+	RGB_SINGLE,
+	
+	COUNT
+}
+
+#macro COLOUR_REPLACER_MAX_COLOURS 32
+
+
 /// === SINGLETON ===
 /// @func ColourReplacer()
 /// @desc A system designed to allow for the change of a sprite's colours on the fly.
@@ -94,82 +114,6 @@ function ColourReplacer() constructor {
     
     #region Functions - Applying Colours
     
-    /// @method apply_input_colours(colours)
-    /// @desc Applies the given array of colours to the ColourReplacer as input
-    ///
-	/// @param {array<int>}  colours  Array of input colours to apply
-	///
-	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
-    static apply_input_colours = function(_colours) {
-		var _length = min(array_length(_colours), COLOUR_REPLACER_MAX_COLOURS),
-			i = 0;
-		repeat(_length) {
-			var _normalizedColour = colour_normalize(_colours[i]);
-			inputColoursR[i] = _normalizedColour[ColourChannels.red];
-			inputColoursG[i] = _normalizedColour[ColourChannels.green];
-			inputColoursB[i] = _normalizedColour[ColourChannels.blue];
-			i++;
-		}
-		
-		return self;
-    };
-    
-    /// @method apply_input_colour_at(index, colour)
-    /// @desc Applies the input colour to the specified index of the ColourReplacer
-    ///
-	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
-    static apply_input_colour_at = function(_index, _colour) {
-		if (!in_range(_index, 0, COLOUR_REPLACER_MAX_COLOURS)) {
-			show_debug_message($"ColourReplacer Warning: Trying to apply an out-of-range index ({_index})");
-			return;
-		}
-		
-		var _normalizedColour = colour_normalize(_colour);
-		inputColoursR[_index] = _normalizedColour[ColourChannels.red];
-		inputColoursG[_index] = _normalizedColour[ColourChannels.green];
-		inputColoursB[_index] = _normalizedColour[ColourChannels.blue];
-		
-		return self;
-    };
-    
-    /// @method apply_output_colours(colours)
-    /// @desc Applies the given array of colours to the ColourReplacer as output
-    ///
-	/// @param {array<int>}  colours  Array of output colours to apply
-	///
-	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
-    static apply_output_colours = function(_colours) {
-		var _length = min(array_length(_colours), COLOUR_REPLACER_MAX_COLOURS),
-			i = 0;
-		repeat(_length) {
-			var _normalizedColour = colour_normalize(_colours[i]);
-			outputColoursR[i] = _normalizedColour[ColourChannels.red];
-			outputColoursG[i] = _normalizedColour[ColourChannels.green];
-			outputColoursB[i] = _normalizedColour[ColourChannels.blue];
-			i++;
-		}
-		
-		return self;
-    };
-    
-    /// @method apply_output_colour_at(index, colour)
-    /// @desc Applies the output colour to the specified index of the ColourReplacer
-    ///
-	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
-    static apply_output_colour_at = function(_index, _colour) {
-		if (!in_range(_index, 0, COLOUR_REPLACER_MAX_COLOURS)) {
-			show_debug_message($"ColourReplacer Warning: Trying to apply an out-of-range index ({_index})");
-			return;
-		}
-		
-		var _normalizedColour = colour_normalize(_colour);
-		outputColoursR[_index] = _normalizedColour[ColourChannels.red];
-		outputColoursG[_index] = _normalizedColour[ColourChannels.green];
-		outputColoursB[_index] = _normalizedColour[ColourChannels.blue];
-		
-		return self;
-    };
-    
     /// @method apply_palette(palette)
     /// @desc Updates ColourReplacer using the given ColourPalette
     ///
@@ -177,8 +121,7 @@ function ColourReplacer() constructor {
 	///
 	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
     static apply_palette = function(_palette) {
-		var i = 0;
-		repeat(_palette.colourCount) {
+		var i = 0; repeat(_palette.colourCount) {
 			inputColoursR[i] = _palette.inputColoursR[i];
 			inputColoursG[i] = _palette.inputColoursG[i];
 			inputColoursB[i] = _palette.inputColoursB[i];
@@ -189,6 +132,76 @@ function ColourReplacer() constructor {
 		}
 		colourMode = _palette.colourMode;
 		colourCount = _palette.colourCount;
+		return self;
+    };
+    
+    /// @method set_input_colours(colours, offset)
+    /// @desc Modifies the ColourReplacer's input colours, using the array of colours provided
+    ///
+	/// @param {array<int>}  colours  Array of input colours to apply
+	/// @param {int}  [offset]  At which index to start applying the new colours. Defaults to 0
+	///
+	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
+    static set_input_colours = function(_colours, _offset = 0) {
+		var _length = min(array_length(_colours), COLOUR_REPLACER_MAX_COLOURS);
+		var i = 0; repeat(_length) {
+			if (i + _offset >= COLOUR_REPLACER_MAX_COLOURS)
+				break;
+			self.set_input_colour_at(i + _offset, _colours[i]);
+			i++;
+		}
+		return self;
+    };
+    
+    /// @method set_input_colour_at(index, colour)
+    /// @desc Sets the input colour at the specified index of the ColourReplacer
+    ///
+	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
+    static set_input_colour_at = function(_index, _colour) {
+		if (!in_range(_index, 0, COLOUR_REPLACER_MAX_COLOURS)) {
+			show_debug_message($"ColourReplacer Warning: Trying to apply an out-of-range index ({_index})");
+			return;
+		}
+		
+		var _normalizedColour = colour_normalize(_colour);
+		inputColoursR[_index] = _normalizedColour[ColourChannels.red];
+		inputColoursG[_index] = _normalizedColour[ColourChannels.green];
+		inputColoursB[_index] = _normalizedColour[ColourChannels.blue];
+		return self;
+    };
+    
+    /// @method set_output_colours(colours, offset)
+    /// @desc Modifies the ColourReplacer's output colours, using the array of colours provided
+    ///
+	/// @param {array<int>}  colours  Array of output colours to apply
+	/// @param {int}  [offset]  At which index to start applying the new colours. Defaults to 0
+	///
+	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
+    static set_output_colours = function(_colours, _offset = 0) {
+		var _length = min(array_length(_colours), COLOUR_REPLACER_MAX_COLOURS);
+		var i = 0; repeat(_length) {
+			if (i + _offset >= COLOUR_REPLACER_MAX_COLOURS)
+				break;
+			self.set_output_colour_at(i + _offset, _colours[i]);
+			i++;
+		}
+		return self;
+    };
+    
+    /// @method set_output_colour_at(index, colour)
+    /// @desc Sets the output colour at the specified index of the ColourReplacer
+    ///
+	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
+    static set_output_colour_at = function(_index, _colour) {
+		if (!in_range(_index, 0, COLOUR_REPLACER_MAX_COLOURS)) {
+			show_debug_message($"ColourReplacer Warning: Trying to apply an out-of-range index ({_index})");
+			return;
+		}
+		
+		var _normalizedColour = colour_normalize(_colour);
+		outputColoursR[_index] = _normalizedColour[ColourChannels.red];
+		outputColoursG[_index] = _normalizedColour[ColourChannels.green];
+		outputColoursB[_index] = _normalizedColour[ColourChannels.blue];
 		return self;
     };
     
@@ -203,8 +216,7 @@ function ColourReplacer() constructor {
 	///
 	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
     static brighten = function(_factor) {
-		var i = 0;
-		repeat(COLOUR_REPLACER_MAX_COLOURS) {
+		var i = 0; repeat(COLOUR_REPLACER_MAX_COLOURS) {
 			outputColoursR[i] += (1 - outputColoursR[i]) * _factor;
 			outputColoursG[i] += (1 - outputColoursG[i]) * _factor;
 			outputColoursB[i] += (1 - outputColoursB[i]) * _factor;
@@ -220,8 +232,7 @@ function ColourReplacer() constructor {
 	///
 	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
     static darken = function(_factor) {
-		var i = 0;
-		repeat(COLOUR_REPLACER_MAX_COLOURS) {
+		var i = 0; repeat(COLOUR_REPLACER_MAX_COLOURS) {
 			outputColoursR[i] *= (1 - _factor);
 			outputColoursG[i] *= (1 - _factor);
 			outputColoursB[i] *= (1 - _factor);
@@ -235,8 +246,7 @@ function ColourReplacer() constructor {
 	///
 	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
     static greyscale = function() {
-		var i = 0;
-		repeat(COLOUR_REPLACER_MAX_COLOURS) {
+		var i = 0; repeat(COLOUR_REPLACER_MAX_COLOURS) {
 			var _grey = dot_product_3d(outputColoursR[i], outputColoursG[i], outputColoursB[i], 0.299, 0.587, 0.114);
 			outputColoursR[i] = _grey;
 			outputColoursG[i] = _grey;
@@ -251,8 +261,7 @@ function ColourReplacer() constructor {
 	///
 	/// @returns {ColourReplacer}  A reference to this struct. Useful for method chaining.
     static invert = function() {
-		var i = 0;
-		repeat(COLOUR_REPLACER_MAX_COLOURS) {
+		var i = 0; repeat(COLOUR_REPLACER_MAX_COLOURS) {
 			outputColoursR[i] = (1 - outputColoursR[i]);
 			outputColoursG[i] = (1 - outputColoursG[i]);
 			outputColoursB[i] = (1 - outputColoursB[i]);

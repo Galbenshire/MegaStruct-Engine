@@ -10,8 +10,10 @@
 /// @param {PaletteThreeTone}  [alphas]  The opacity of each layer of the bar. Optional
 /// @param {number}  [max_value]  Maximum value of the bar. Defaults to 28, the standard for MM health/ammo.
 function draw_mm_healthbar(_x, _y, _value, _colours, _alphas, _maxValue = FULL_HEALTHBAR) {
+	static _defaultAlphas = array_create(PaletteThreeTone.sizeof, 1);
+	
 	_value = clamp(ceil(_value), 0, _maxValue);
-	_alphas ??= array_create(PaletteThreeTone.sizeof, 1);
+	_alphas ??= _defaultAlphas;
 	
 	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, _maxValue, 0, _colours[PaletteThreeTone.background], _alphas[PaletteThreeTone.background]);
 	
@@ -32,9 +34,11 @@ function draw_mm_healthbar(_x, _y, _value, _colours, _alphas, _maxValue = FULL_H
 /// @param {PaletteThreeTone}  [alphas]  The opacity of each layer of the bar. Optional
 /// @param {number}  [max_value]  Maximum value of the bar. Defaults to 28, the standard for MM health/ammo.
 function draw_mm_healthbar_horizontal(_x, _y, _value, _colours, _alphas, _maxValue = FULL_HEALTHBAR) {
+	static _defaultAlphas = array_create(PaletteThreeTone.sizeof, 1);
+	
 	_value = clamp(ceil(_value), 0, _maxValue);
 	_x += _maxValue * 2;
-	_alphas ??= array_create(PaletteThreeTone.sizeof, 1);
+	_alphas ??= _defaultAlphas;
 	
 	draw_sprite_ext(sprHealthbar, 3, _x, _y, 1, _maxValue, -90, _colours[PaletteThreeTone.background], _alphas[PaletteThreeTone.background]);
 	
@@ -43,6 +47,19 @@ function draw_mm_healthbar_horizontal(_x, _y, _value, _colours, _alphas, _maxVal
 		draw_sprite_ext(sprHealthbar, 2, _x, _y, 1, _value, -90, _colours[PaletteThreeTone.secondary], _alphas[PaletteThreeTone.secondary]);
 		draw_sprite_ext(sprHealthbar, 1, _x, _y, 1, _value, -90, _colours[PaletteThreeTone.primary], _alphas[PaletteThreeTone.primary]);
 	}
+}
+
+/// @func draw_rectangle_outline(x, y, width, height, colour, alpha)
+/// @desc Draws an outline of a rectangle using a box outline sprite
+///
+/// @param {number}  x  x-position of the rectangle's top-left corner
+/// @param {number}  y  y-position of the rectangle's top-left corner
+/// @param {number}  width  width of the rectangle's bottom-right corner
+/// @param {number}  height  height of the rectangle's bottom-right corner
+/// @param {int}  colour  colour of the rectangle
+/// @param {number}  alpha  Alpha value of the rectangle
+function draw_rectangle_outline(_x/*:number*/, _y/*:number*/, _width/*:number*/, _height/*:number*/, _colour/*:int*/, _alpha/*:number*/) {
+	draw_sprite_stretched_ext(sprBoxOutline, 0, _x, _y, _width, _height, _colour, _alpha);
 }
 
 /// @func draw_rectangle_solid(x, y, width, height, colour, alpha)
@@ -56,21 +73,6 @@ function draw_mm_healthbar_horizontal(_x, _y, _value, _colours, _alphas, _maxVal
 /// @param {number}  alpha  Alpha value of the rectangle
 function draw_rectangle_solid(_x/*:number*/, _y/*:number*/, _width/*:number*/, _height/*:number*/, _colour/*:int*/, _alpha/*:number*/) {
 	draw_sprite_ext(sprDot, 0, _x, _y, _width, _height, 0, _colour, _alpha);
-}
-
-/// @func draw_rectangle_width(x1, y1, x2, y2, width)
-/// @desc Draws an outline of a rectangle with the lines at a given thickness
-///
-/// @param {number}  x1  x-position of the rectangle's top-left corner
-/// @param {number}  y1  y-position of the rectangle's top-left corner
-/// @param {number}  x2  x-position of the rectangle's bottom-right corner
-/// @param {number}  y2  y-position of the rectangle's bottom-right corner
-/// @param {number}  width  thickness of the lines
-function draw_rectangle_width(_x1/*:number*/, _y1/*:number*/, _x2/*:number*/, _y2/*:number*/, _width/*:number*/) {
-	draw_line_width(_x1, _y1, _x2, _y1, _width); // Top
-	draw_line_width(_x1, _y2, _x2, _y2, _width); // Bottom
-	draw_line_width(_x1, _y1, _x1, _y2, _width); // Left
-	draw_line_width(_x2, _y1, _x2, _y2, _width); // Right
 }
 
 /// @func draw_rectangle_width_colour(x1, y1, x2, y2, width, col1, col2, col3, col4)

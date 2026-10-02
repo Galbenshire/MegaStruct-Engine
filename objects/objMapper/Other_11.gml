@@ -31,7 +31,7 @@ if (instance_exists(global.player.body)) {
     }
 }
 
-draw_rectangle_width_colour(-1, -1, mapWidth - 1, mapHeight - 1, 2, c_black, c_black, c_black, c_black);
+draw_rectangle_outline(0, 0, mapSurfaceWidth, mapSurfaceHeight, c_black, 1);
 
 surface_reset_target();
 

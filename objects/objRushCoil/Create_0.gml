@@ -26,8 +26,6 @@ onDraw = function() {
 		y -= 16 * image_yscale;
 	cbkOnDraw_colour_replacer();
 	y = _y;
-	
-	draw_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, true);
 };
 
 event_user(EVENT_PLAYER_STATEMACHINE_INIT); // Init the State Machine

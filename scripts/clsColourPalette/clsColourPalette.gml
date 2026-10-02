@@ -101,8 +101,7 @@ function ColourPalette(_outputCols, _inputCols = []) constructor {
 	///
 	/// @returns {ColourPalette}  A reference to this struct. Useful for method chaining.
     static set_input_colours = function(_colours, _offset = 0) {
-		var i = 0;
-		repeat(array_length(_colours)) {
+		var i = 0; repeat(array_length(_colours)) {
 			if (i + _offset >= colourCount)
 				break;
 			self.set_input_colour_at(i + _offset, _colours[i]);
@@ -140,8 +139,7 @@ function ColourPalette(_outputCols, _inputCols = []) constructor {
 	///
 	/// @returns {ColourPalette}  A reference to this struct. Useful for method chaining.
     static set_output_colours = function(_colours, _offset = 0) {
-		var i = 0;
-		repeat(array_length(_colours)) {
+		var i = 0; repeat(array_length(_colours)) {
 			if (i + _offset >= colourCount)
 				break;
 			self.set_output_colour_at(i + _offset, _colours[i]);

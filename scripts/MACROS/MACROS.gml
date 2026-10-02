@@ -3,6 +3,8 @@
 //
 // See Also:
 // - Character
+// - ColourReplacer
+// - Weapon
 
 #region _Engine Configurations
 
@@ -39,21 +41,6 @@ $"{_GMFUNCTION_} can only be used by an object that inherits from {object_get_na
 #macro NO_SURFACE -1
 #macro NOT_FOUND -1
 #macro USE_SECTION_EDGE -1
-
-#endregion
-
-
-#region Colour Replacer
-
-enum ColourReplacerMode {
-	GREYSCALE,
-	RGB,
-	RGB_SINGLE,
-	
-	COUNT
-}
-
-#macro COLOUR_REPLACER_MAX_COLOURS 32
 
 #endregion
 
@@ -437,18 +424,11 @@ enum PlayerShootType {
 // Could be more useful than structs at times, since they use less memory
 
 enum CheckpointData {
+	name, /// @is {string}
 	room, /// @is {room}
 	x, /// @is {number}
 	y, /// @is {number}
-	dir, /// @is {number}
-	name, /// @is {string}
-	sizeof
-}
-
-enum ColourChannels {
-	red, /// @is {int}
-	green, /// @is {int}
-	blue, /// @is {int}
+	dir, /// @is {int}
 	sizeof
 }
 
@@ -585,34 +565,6 @@ enum WeightedOutcome {
 // prtEffect
 #macro EVENT_EFFECT_DRAW_FRAME 14
 #macro EVENT_EFFECT_TICK 15
-
-#endregion
-
-
-#region Weapons
-
-// Macros relating to player weapons
-
-enum WeaponType {
-	BUSTER,
-	BUSTER_PROTO,
-	BUSTER_BASS,
-	RUSH_COIL,
-	RUSH_JET,
-	ICE_SLASHER,
-	METAL_BLADE,
-	SEARCH_SNAKE,
-	SKULL_BARRIER,
-	
-	COUNT
-}
-
-enum WeaponFlags {
-	// Ammo pickups have no effect, there's no ammo bar on the HUD, & Tanks ignore this weapon entirely
-	NO_AMMO = 1 << 0,
-	// Weapon is chargeable (e.g. the Mega Buster (if you're not basic))
-	CHARGE = 1 << 1
-}
 
 #endregion
 

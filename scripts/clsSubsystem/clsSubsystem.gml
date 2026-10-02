@@ -31,6 +31,7 @@ function Subsystem_Core() : Subsystem() constructor {
 		global.section = noone;
         global.roomTimer = 0;
         global.hitStunTimer = 0;
+        global.pauseMenuActive = false;
 		
         // Setup the view
         view_enabled = true;
@@ -156,10 +157,24 @@ function Subsystem_Debug() : Subsystem() constructor {
 	consoleWarningLevel = WarningLevel.ERROR;
 	consoleLog = [];
 	consoleLogCount = 0;
+	
+	stopwatchTimer = 0;
+	stopwatchActive = false;
+	
+	flashDuration = 16;
+	flashGain = 0;
+	flashDecay = 0;
+	flashStep = 0;
+	flashCol = c_white;
+	
+	shakeDuration = 16;
+	shakeStrengthX = 1;
+	shakeStrengthY = 1;
+	shakeDecay = 0;
     
     static stepBegin = function() {
         // Exit/Restart the game
-        if (keyboard_check_pressed(vk_escape)) {
+        if (keyboard_check_pressed(vk_escape) && !is_browser()) {
             game_end();
             return;
         }
@@ -173,21 +188,21 @@ function Subsystem_Debug() : Subsystem() constructor {
             var _updateScreen = false,
                 _recenterScreen = false;
 			
-			if (keyboard_check_pressed(vk_f2) && !fullscreen) {
+			if (keyboard_check_pressed(vk_f2) && !fullscreen && !is_browser()) {
                 var _newScale = screenSize + 1;
-                set_screen_size(_newScale > MAX_SCALE ? 1 : _newScale);
+                self.set_screen_size(_newScale > MAX_SCALE ? 1 : _newScale);
                 print($"Screen Scale: {screenSize}", WarningLevel.SHOW);
                 _updateScreen = true;
                 _recenterScreen = true;
             }
-            if (keyboard_check_pressed(vk_f3)) {
-                set_fullscreen(!fullscreen);
+            if (keyboard_check_pressed(vk_f3) && !is_browser()) {
+                self.set_fullscreen(!fullscreen);
                 print($"Fullscreen: {fullscreen ? "ON" : "OFF"}", WarningLevel.SHOW);
                 _updateScreen = true;
                 _recenterScreen |= !fullscreen;
             }
             if (keyboard_check_pressed(vk_f4)) {
-                set_pixel_perfect(!pixelPerfect);
+                self.set_pixel_perfect(!pixelPerfect);
                 print($"Pixel Perfect: {pixelPerfect ? "ON" : "OFF"}", WarningLevel.SHOW);
                 _updateScreen = true;
             }
@@ -248,10 +263,8 @@ function Subsystem_Debug() : Subsystem() constructor {
 			}
 			
 			if (global.roomIsLevel) {
-				if (keyboard_check_pressed(vk_f8)) {
-					var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID , LAYER_TRANSITION];
-					array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), !layer_get_visible(_layer)); });
-				}
+				if (keyboard_check_pressed(vk_f8))
+					construction_layers_set_visible(!layer_get_visible(LAYER_COLLISION));
 				
 				if (keyboard_check_pressed(vk_f9)) {
 					with (global.player) {
@@ -278,7 +291,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 				freeRoamY += _spd * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
 			}
 			
-			global.stopwatchTimer += global.stopwatchActive;
+			stopwatchTimer += stopwatchActive;
 		}
         
         for (var i = consoleLogCount - 1; i >= 0; i--) {
@@ -302,7 +315,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 			instanceListCounts = "---- Counts ----";
 			
 			if (global.roomIsLevel) {
-				checkpointList = [];
+				array_clear(checkpointList);
 				with (objDefaultSpawn)
 					array_push(other.checkpointList, checkpointData);
 				with (objCheckpoint)
@@ -317,8 +330,14 @@ function Subsystem_Debug() : Subsystem() constructor {
 			draw_set_valign(fa_middle);
 			draw_set_colour(c_green);
 			
-			var _gameView = game_view();
-			draw_rectangle_width(_gameView.left_edge(0), _gameView.top_edge(0), _gameView.right_edge(0), _gameView.bottom_edge(0), 4);
+			var _gameView = game_view(),
+				_edgeLeft = _gameView.left_edge(0),
+				_edgeTop = _gameView.top_edge(0);
+			
+			draw_rectangle_outline(_edgeLeft, _edgeTop, GAME_WIDTH, GAME_HEIGHT, c_green, 1);
+			draw_rectangle_outline(_edgeLeft - 1, _edgeTop - 1, GAME_WIDTH + 2, GAME_HEIGHT + 2, c_green, 1);
+			draw_rectangle_outline(_edgeLeft + 1, _edgeTop + 1, GAME_WIDTH - 2, GAME_HEIGHT - 2, c_green, 0.5);
+			draw_rectangle_outline(_edgeLeft - 2, _edgeTop - 2, GAME_WIDTH + 4, GAME_HEIGHT + 4, c_green, 0.5);
 			draw_text(freeRoamX + GAME_WIDTH * 0.5, freeRoamY + GAME_HEIGHT * 0.5, "BOUNDARY BREAK");
 			
 			draw_reset_text_align();
@@ -331,10 +350,9 @@ function Subsystem_Debug() : Subsystem() constructor {
 		
 		var _consoleX = 4,
 			_consoleY = (os_type != os_gxgames) ? window_get_height() - 4 : (GAME_HEIGHT - 4) * options_data().screenSize,
-			_consoleCount = consoleLogCount,
-			i = _consoleCount - 1;
+			_consoleCount = consoleLogCount;
 		
-		repeat(_consoleCount) {
+		var i = _consoleCount - 1; repeat(_consoleCount) {
 			var _line = consoleLog[i],
 				_text = _line[ConsoleLine.text],
 				_colour = _line[ConsoleLine.colour],
@@ -353,27 +371,75 @@ function Subsystem_Debug() : Subsystem() constructor {
 /// @desc Manages in-game screen flash
 ///		  NOTE: Don't overuse. Some people are photosensitive
 function Subsystem_Flasher() : Subsystem() constructor {
-	colour = c_white;
-	timer = 0;
+	flashes = []; /// @is {array<ScreenFlashNote>}
+	flashCount = 0;
 	
-	static stepEnd = function() {
-		if (timer <= 0 || global.paused)
+	static process_flash_note = function(_note) {
+		if (_note[ScreenFlashNote.isDone])
 			return;
 		
-		timer = approach(timer, 0, global.gameTimeScale.integer);
-		if (timer == 0)
-			colour = c_white;
+		// Fading in the flash
+		if (_note[ScreenFlashNote.gain] > 0) {
+			_note[ScreenFlashNote.alpha] = min(1, _note[ScreenFlashNote.alpha] + _note[ScreenFlashNote.gain]);
+			_note[ScreenFlashNote.gain] *= (_note[ScreenFlashNote.alpha] < 1);
+			return;
+		}
+		
+		// Holding on the flash
+		if (--_note[ScreenFlashNote.timer] > 0)
+			return;
+		
+		// Fading out the flash
+		var _decay = _note[ScreenFlashNote.decay];
+		_note[ScreenFlashNote.alpha] = approach(_note[ScreenFlashNote.alpha], 0, _decay);
+		_note[ScreenFlashNote.isDone] = (_note[ScreenFlashNote.alpha] == 0 || _decay <= 0);
+	};
+	
+	static stepEnd = function() {
+		if (flashCount <= 0 || global.paused)
+			return;
+		
+		repeat(global.gameTimeScale.integer) {
+			var i = flashCount - 1; repeat(flashCount) {
+				var _flash = flashes[i];
+				self.process_flash_note(_flash);
+				
+				if (_flash[ScreenFlashNote.isDone]) {
+					array_delete(flashes, i, 1);
+					flashCount--;
+				}
+				i--;
+			}
+			
+			if (flashCount <= 0)
+				break;
+		}
 	};
 	
 	static roomStart = function() {
-		timer = 0;
-		colour = c_white;
+		array_clear(flashes);
+		flashCount = 0;
 	};
 	
 	static drawEnd = function() {
-		if (timer > 0 && !global.paused) {
-			var _gameView = game_view();
-			draw_sprite_ext(sprDot, 0, _gameView.get_x(), _gameView.get_y(), GAME_WIDTH, GAME_HEIGHT, 0, colour, 1);
+		if (flashCount <= 0 || global.paused)
+			return;
+		
+		var _gameView = game_view(),
+			_xView = _gameView.get_x(),
+			_yView = _gameView.get_y();
+		
+		var i = 0; repeat(flashCount) {
+			var _flash = flashes[i],
+				_alpha = _flash[ScreenFlashNote.alpha],
+				_blend = _flash[ScreenFlashNote.colour],
+				_step = _flash[ScreenFlashNote.step];
+			
+			if (_step > 0 && _alpha < 1)
+				_alpha = round_to(_alpha, _step);
+			
+			draw_sprite_ext(sprDot, 0, _xView, _yView, GAME_WIDTH, GAME_HEIGHT, 0, _blend, _alpha);
+			i++;
 		}
     };
 }
@@ -401,8 +467,7 @@ function Subsystem_HUD() : Subsystem() constructor {
 		_playerHUD.draw(_hudX, _hudY);
 		_hudX = game_view().right_edge(-16);
 		
-		var i = 0;
-		repeat(array_length(bossHUD)) {
+		var i = 0; repeat(array_length(bossHUD)) {
 			_hudX -= bossHUD[i].get_width();
 			bossHUD[i].draw(_hudX, _hudY);
 			i++;
@@ -471,9 +536,7 @@ function Subsystem_Level() : Subsystem() constructor {
 		
 		system.camera.active = true;
 		system.camera.stepEnd(); // Get the camera to focus on the player
-		
-		var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
-		array_foreach(_layers, function(_layer, i) /*=>*/ { layer_set_visible(layer_get_id(_layer), false); });
+		construction_layers_set_visible(false);
 		
 		defer(DeferType.STEP_BEGIN, function() {
 			deactivate_game_objects(false);
@@ -574,36 +637,73 @@ function Subsystem_Pause() : Subsystem() constructor {
 /// @func Subsystem_Shaker()
 /// @desc Manages in-game screen shakes
 function Subsystem_Shaker() : Subsystem() constructor {
-	strengthX = 0;
-	strengthY = 0;
-	timer = 0;
+	shakes = []; /// @is {array<ScreenShakeNote>}
+	shakeCount = 0;
 	
 	__shakeX = 0;
 	__shakeY = 0;
 	
-	static stepEnd = function() {
-		if (timer <= 0 || global.paused)
+	static process_shake_note = function(_note) {
+		if (--_note[ScreenShakeNote.timer] > 0 || _note[ScreenShakeNote.isDone])
 			return;
 		
-		var _gameTicks = global.gameTimeScale.integer;
-		if (_gameTicks >= 1) {
-			timer = approach(timer, 0, _gameTicks);
-			if (timer == 0) {
-				strengthX = 0;
-				strengthY = 0;
+		// Decay the strength of the shake
+		var _decay = _note[ScreenShakeNote.decay];
+		_note[ScreenShakeNote.strengthX] = approach(_note[ScreenShakeNote.strengthX], 0, _decay);
+		_note[ScreenShakeNote.strengthY] = approach(_note[ScreenShakeNote.strengthY], 0, _decay);
+		_note[ScreenShakeNote.isDone] = (_note[ScreenShakeNote.strengthX] == 0 && _note[ScreenShakeNote.strengthY] == 0) || _decay <= 0;
+	};
+	
+	static stepEnd = function() {
+		if (shakeCount <= 0 || global.paused)
+			return;
+		
+		repeat(global.gameTimeScale.integer) {
+			var _strengthX = 0,
+				_strengthY = 0;
+			
+			var i = shakeCount - 1; repeat(shakeCount) {
+				var _shake = shakes[i];
+				self.process_shake_note(_shake);
+				
+				if (_shake[ScreenShakeNote.isDone]) {
+					array_delete(shakes, i, 1);
+					shakeCount--;
+				} else {
+					_strengthX = max(_strengthX, _shake[ScreenShakeNote.strengthX]);
+					_strengthY = max(_strengthY, _shake[ScreenShakeNote.strengthY]);
+				}
+				
+				i--;
 			}
-			__shakeX = choose(-strengthX, 0, strengthX);
-			__shakeY = choose(-strengthY, 0, strengthY);
+			
+			__shakeX = choose(-_strengthX, 0, _strengthX);
+			__shakeY = choose(-_strengthY, 0, _strengthY);
+			
+			if (shakeCount <= 0)
+				break;
 		}
 		
-		game_view().add_offset(__shakeX, __shakeY);
+		if (options_data().screenShake)
+			game_view().add_offset(__shakeX, __shakeY);
 	};
 	
 	static roomStart = function() {
-		strengthX = 0;
-		strengthY = 0;
-		timer = 0;
+		array_clear(shakes);
+		shakeCount = 0;
 		__shakeX = 0;
 		__shakeY = 0;
 	};
+	
+	static draw = function() {
+        var _str = "";
+		var i = 0; repeat(shakeCount) {
+			var _shake = shakes[i];
+			
+			_str += $"{_shake}\n";
+			i++;
+		}
+		
+		draw_text_transformed(mouse_x, mouse_y, _str, 0.5, 0.5, 0);
+    };
 };

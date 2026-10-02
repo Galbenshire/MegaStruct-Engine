@@ -1,23 +1,31 @@
 /// @func LockStack()
 /// @desc Represents a "stackable" boolean that can be "disabled" by multiple sources
-///       In other words, if multiple sources
+///       In other words, if multiple sources are trying to disabled a boolean,
+///		  they will not conflict with each other
 function LockStack() constructor {
+    #region Variables
+	
+	switches = []; /// @is {array<LockStackSwitch>}
     counter = 0;
-    switches = []; /// @is {array<LockStackSwitch>}
     
-    /// -- add_switch(lock_switch)
+	#endregion
+    
+    #region Functions - Adding/Removing Switches
+	
+	/// -- add_switch(lock_switch)
 	/// Adds a lock switch into this stack
 	///
 	/// @param {LockStackSwitch}  lock_switch  The lock switch to add
     static add_switch = function(_lockSwitch) {
         array_push(switches, _lockSwitch);
-        counter += (_lockSwitch.active);
+        _lockSwitch.stack = self;
+        counter += _lockSwitch.active;
     };
     
     /// -- remove_all_switches()
 	/// Releases all locks currently in the stack
     static remove_all_switches = function() {
-        while (!array_empty(switches))
+		while (!array_empty(switches))
 			self.remove_switch(switches[0]);
         counter = 0;
     };
@@ -28,33 +36,37 @@ function LockStack() constructor {
 	/// @param {LockStackSwitch}  lock_switch  The lock switch to remove
     static remove_switch = function(_lockSwitch) {
         var _index = array_get_index(switches, _lockSwitch);
-        if (_index == NOT_FOUND)
-			return;
-        
-        _lockSwitch.remove_from_stack();
-        array_delete(switches, _index, 1);
+        if (_index != NOT_FOUND) {
+			array_delete(switches, _index, 1);
+			_lockSwitch.stack = undefined;
+			counter -= _lockSwitch.active;
+        }
     };
-    
-    /// -- is_locked()
+	
+	#endregion
+	
+	#region Functions - Other
+	
+	/// -- is_locked()
 	/// Checks if the LockStack is currently locked
 	///
 	/// @returns {bool}  Whether the LockStack is locked (true) or not (false)
     static is_locked = function() {
-        return (counter > 0);  
+		return (counter > 0);  
     };
-    
-    /// -- update_counter()
+	
+	/// -- update_counter()
 	/// Updates the lock stack's counter
     static update_counter = function() {
 		counter = 0;
-		
-		var i = 0;
-		repeat(array_length(switches)) {
+		var i = 0; repeat(array_length(switches)) {
 			if (switches[i].active)
 				counter++;
 			i++;
 		}
     };
+	
+	#endregion
 }
 
 /// @func LockStackSwitch(lock_stack)
@@ -63,27 +75,21 @@ function LockStack() constructor {
 ///
 /// @param {LockStack}  [lock_stack]  The lock stack this switch applies to.
 function LockStackSwitch(_lockStack) constructor {
-    stack = undefined; /// @is {LockStack}
+	#region Variables
+	
+    stack = _lockStack; /// @is {LockStack}
     active = false;
+    
+    #endregion
+    
+    #region Functions
     
     /// -- activate()
 	/// Activates this switch, locking its assigned stack
     static activate = function() {
-		if (active || !is_assigned())
-			return;
+		if (!active && self.is_assigned())
+			stack.counter++;
 		active = true;
-		stack.counter++;
-    };
-    
-    /// -- assign_to_stack(lock_stack)
-	/// Assigns this switch to the specified lock stack
-	///
-	/// @param {LockStack}  lock_stack  The lock stack to assign this switch to
-    static assign_to_stack = function(_lockStack) {
-		if (!self.is_assigned()) {
-			stack = _lockStack;
-			stack.add_switch(self);
-		}
     };
     
     /// -- deactivate()
@@ -102,16 +108,16 @@ function LockStackSwitch(_lockStack) constructor {
 		return !is_undefined(stack);
     };
     
-    /// -- remove_from_stack()
+    /// -- unassign_from_stack()
 	/// Removes this switch from its assigned lock stack
-    static remove_from_stack = function() {
-		if (!self.is_assigned())
-			return;
-		self.deactivate();
-		stack = undefined;
+    static unassign_from_stack = function() {
+		if (self.is_assigned())
+			stack.remove_switch(self);
     };
     
+    #endregion
+    
     // - Initialize
-    if (!is_undefined(_lockStack))
-		assign_to_stack(_lockStack);
+    if (self.is_assigned())
+		stack.add_switch(self);
 }

@@ -16,7 +16,8 @@ teleportFrameCount = array_length(teleportFrames);
 
 // Callbacks
 onSpawn = function() {
-	jetLock.pool = owner.lockpool;
+	cbkOnSpawn_base();
+	owner.lockpool.add_switch(jetLock);
 };
 onDeath = function(_damageSource) {
 	cbkOnDeath_projectile(_damageSource);

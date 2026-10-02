@@ -5,9 +5,18 @@
 /// @param {bool}  condition  Will crash the game if this is false
 /// @param {string}  [message]  Message to display, should the assertion fail
 function assert(_condition/*:bool*/, _msg/*:string*/ = "FATAL ASSERTION FAILURE") {
-	if (_condition)
-		return;
-	show_error(_msg, true);
+	if (!_condition)
+		show_error(_msg, true);
+}
+
+/// @func construction_layers_set_visible(visible)
+/// @desc Sets the visibility of various layers used in constructing levels
+///
+/// @param {bool}  visible  Whether to make the layers visible (true) or not (false)
+function construction_layers_set_visible(_visible) {
+	var _layers = [LAYER_COLLISION, LAYER_SECTION, LAYER_SECTION_GRID, LAYER_TRANSITION];
+	for (var i = 0, n = array_length(_layers); i < n; i++)
+		layer_set_visible(layer_get_id(_layers[i]), _visible);
 }
 
 /// @func draw_debug_boxed_text(string)

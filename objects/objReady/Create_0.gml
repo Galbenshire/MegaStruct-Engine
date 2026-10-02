@@ -7,7 +7,7 @@ pauseLock.activate();
 
 whistleSFXInst = undefined;
 if (playProtoWhistle)
-    whistleSFXInst = play_sfx(whistleSFX);
+    whistleSFXInst = play_sfx(sfxProtoWhistle);
 
 canMuteMusic = playProtoWhistle;
 muteDelay = 2 * (global.roomTimer == 0);

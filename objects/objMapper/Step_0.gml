@@ -5,13 +5,13 @@ if (keyboard_check_pressed(vk_f7) && timer > 0) {
 
 var _xDir = keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4);
 if (_xDir != 0) {
-    x = clamp(x + _xDir, xMin, xMax);
+    x = clamp(x + _xDir, -xMax, -xMin);
     mapSurfaceRefresh = true;
 }
 
 var _yDir = keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8);
 if (_yDir != 0) {
-    y = clamp(y + _yDir, yMin, yMax);
+    y = clamp(y + _yDir, -yMax, -yMin);
     mapSurfaceRefresh = true;
 }
 
@@ -23,7 +23,7 @@ if (_cDir != 0) {
 
 if (keyboard_check_pressed(vk_numpad0) && checkpointDataCount > 0) {
     objSystem.level.checkpoint = variable_clone(checkpointData[currentCheckpoint]);
-    go_to_room(objSystem.level.checkpoint[CheckpointData.room]);
+    go_to_room(checkpoint_get_room());
 }
 
 timer++;
