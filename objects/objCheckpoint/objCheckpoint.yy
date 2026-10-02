@@ -29,6 +29,13 @@
   "physicsStartAwake":true,
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"name","filters":[],"listItems":[],"multiselect":false,"name":"name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"respawnAnim","filters":[],"listItems":[
+        "TeleportInType.TELEPORT_LONG",
+        "TeleportInType.TELEPORT_SHORT",
+        "TeleportInType.FALL_DOWN",
+        "TeleportInType.JUMP_IN",
+        "TeleportInType.STAND",
+      ],"multiselect":false,"name":"respawnAnim","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"TeleportInType.TELEPORT_LONG","varType":6,},
     {"$GMObjectProperty":"v2","%Name":"debugOnly","filters":[],"listItems":[],"multiselect":false,"name":"debugOnly","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
   ],
   "resourceType":"GMObject",

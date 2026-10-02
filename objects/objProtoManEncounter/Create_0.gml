@@ -6,12 +6,8 @@ whistleSFX = sfxProtoWhistle;
 idleAnim = "idle";
 
 // Variables to store various lockpool locks
-encounterLock = new PlayerLockPoolSwitch(global.player.lockpool,
-	PlayerAction.MOVE_FULL, PlayerAction.TURN_FULL,
-	PlayerAction.JUMP, PlayerAction.SLIDE,
-	PlayerAction.SHOOT, PlayerAction.CHARGE,
-	PlayerAction.CLIMB);
-encounterPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
+encounterLock = new PlayerLockPoolSwitch(global.player.lockpool, PlayerAction.SHOOT);
+encounterPauseLock = new LockStackSwitch(PAUSE_STACK);
 
 // Callback - set this to determine what happens when Proto Man goes away
 onEncounterEnd = undefined; /// @is {function<void>?}

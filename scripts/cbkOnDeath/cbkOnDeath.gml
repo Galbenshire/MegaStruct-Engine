@@ -52,6 +52,8 @@ function cbkOnDeath_boss(_damageSource) {
 	
 	if (_damageSource.can_drop_item())
 		itemDrop.spawn_item(bbox_x_center(), bbox_y_center(), depth);
+	
+	signal_bus().emit_signal(SIGNAL_BOSS_DEATH, { boss: self.id });
 }
 
 /// @func cbkOnDeath_player(damage_source)

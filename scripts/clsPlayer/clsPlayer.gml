@@ -8,9 +8,14 @@ function Player(_id/*:number*/) constructor {
     #region Variables
 	
 	id = _id; /// @is {number} A reference to the player's ID (i.e. they are Player 1, 2, 3, ...)
+	
 	characterID = CharacterType.MEGA; // ID of the playable character this player is set to be
+	
 	body = noone; /// @is {prtPlayer} A reference to the instance this player is controlling
+	
 	inputs = new InputMap();
+	inputAccessLevel = PlayerInputLevel.MAIN;
+	
 	lockpool = new PlayerLockPool();
 	hudElement = new HUDElement_Player();
 	

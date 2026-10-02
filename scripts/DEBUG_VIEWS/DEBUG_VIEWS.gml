@@ -53,7 +53,7 @@ function __debug_view_locks() {
     
     // -- Section - Pause
     var _pauseLock = dbg_section("Pause");
-    dbg_watch(ref_create(objSystem.level.pauseStack, "counter"), "Locks: ");
+    dbg_watch(ref_create(PAUSE_STACK, "counter"), "Locks: ");
     
     // -- Section - Player Inputs
     var _pauseLock = dbg_section("Player Inputs");
@@ -108,6 +108,7 @@ function __debug_view_player() {
 	// -- Section - Data
 	var _shortcuts = dbg_section("General");
 	dbg_slider_int(ref_create(_player, "characterID"), 0, CharacterType.COUNT - 1, "Character ID: ");
+	dbg_slider_int(ref_create(_player, "inputAccessLevel"), 0, PlayerInputLevel.MAX, "Input Access Level: ");
 	
 	// -- Section - Inputs
 	var _inputs = dbg_section("Input");

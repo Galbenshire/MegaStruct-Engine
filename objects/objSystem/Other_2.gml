@@ -81,6 +81,7 @@ if (!variable_global_exists("__gameInit")) {
 	// ===== Other Stuff =====
 	show_debug_message("Other Operations...");
 	math_set_epsilon(0.0001);
+	window_set_caption("MegaStruct Engine");
 	
 	// ===== Finish =====
 	show_debug_message("...Initialisation Finished");

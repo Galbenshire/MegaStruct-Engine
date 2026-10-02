@@ -22,11 +22,12 @@ function calibrate_direction_point(_x, _scope = self) {
         image_xscale = _dir * abs(image_xscale);
 }
 
+/// @template {object}  T
 /// @func instance_all(obj, predicate)
 /// @desc This function will check to see if all instances of the specified object fulfills the predicate condition
 ///
-/// @param {object}  obj  The object to check against
-/// @param {function<instance,int,bool>}  predicate  The Predicate Method to run on each instance
+/// @param {T}  obj  The object to check against
+/// @param {function<T,int,bool>}  predicate  The Predicate Method to run on each instance
 ///
 /// @returns {bool}  Whether the predicate was fulfilled on all instances (true), or not (false)
 ///					 Note: If there are no instances of the object, `true` is returned
@@ -38,11 +39,12 @@ function instance_all(_obj, _predicate) {
     return true;
 }
 
+/// @template {object}  T
 /// @func instance_any(obj, predicate)
 /// @desc This function will check to see if any instance of the specified object fulfills the predicate condition
 ///
-/// @param {object}  obj  The object to check against
-/// @param {function<instance,int,bool>}  predicate  The Predicate Method to run on each instance
+/// @param {T}  obj  The object to check against
+/// @param {function<T,int,bool>}  predicate  The Predicate Method to run on each instance
 ///
 /// @returns {bool}  Whether the predicate was fulfilled on any instance (true), or not (false)
 ///					 Note: If there are no instances of the object, `false` is returned
@@ -54,21 +56,80 @@ function instance_any(_obj, _predicate) {
     return false;
 }
 
+/// @template {object}  T
 /// @func instance_create(x, y, depth_or_layer, obj, var_struct)
 /// @desc General purpose version of the instance_create_* functions
 ///
 /// @param {number}  x  The x position the instance of the given object will be created at
 /// @param {number}  y  The y position the instance of the given object will be created at
 /// @param {number|layer|string}  depth_or_layer  The depth/layer to assign the created instance to
-/// @param {object}  obj  The object index of the object to create an instance of
+/// @param {T}  obj  The object index of the object to create an instance of
 /// @param {struct}  [var_struct]  A struct with variables to assign to the new instance. Optional.
 ///
-/// @returns {instance}  An instance of the object specified
+/// @returns {T}  An instance of the object specified
 function instance_create(_x, _y, _depthOrLayer, _obj, _vars = {}) {
     var _depth = (typeof(_depthOrLayer) == "number")
 		? _depthOrLayer
 		: layer_get_depth(_depthOrLayer);
 	return instance_create_depth(_x, _y, _depth, _obj, _vars);
+}
+
+/// @template {object}  T
+/// @func instance_find_all(obj)
+/// @desc This function will find all instances of the give object index
+///
+/// @param {T}  obj  The object to check
+///
+/// @returns {array<T>}  All instances of obj
+function instance_find_all(_obj) {
+	var _instanceCount = instance_number(_obj),
+		_instances = array_create(_instanceCount);
+	
+	var i = 0; repeat(_instanceCount) {
+		_instances[i] = instance_find(_obj, i);
+		i++;
+	}
+	
+	return _instances;
+}
+
+/// @template {object}  T
+/// @func instance_first(obj, predicate)
+/// @desc This function will get the first instance of the specified object that fulfills the predicate condition
+///
+/// @param {T}  obj  The object to check against
+/// @param {function<instance,int,bool>}  predicate  The Predicate Method to run on each instance
+///
+/// @returns {T}  The first instance to fulfill the predicate
+function instance_first(_obj, _predicate) {
+	var i = 0; repeat(instance_number(_obj)) {
+		var _inst = instance_find(_obj, i);
+        if (_predicate(_inst, i))
+            return _inst;
+        i++;
+	}
+    return noone;
+}
+
+/// @template {object}  T
+/// @func instance_where(obj, predicate)
+/// @desc This function will get all instances of the specified object that fulfill the predicate condition
+///
+/// @param {T}  obj  The object to check against
+/// @param {function<instance,int,bool>}  predicate  The Predicate Method to run on each instance
+///
+/// @returns {array<T>}  All instances of obj that fulfill the predicate
+function instance_where(_obj, _predicate) {
+	var _results = [];
+	
+	var i = 0; repeat(instance_number(_obj)) {
+		var _inst = instance_find(_obj, i);
+        if (_predicate(_inst, i))
+            array_push(_results, _inst);
+        i++;
+	}
+	
+	return _results;
 }
 
 /// @func is_object_type(object_index, scope)

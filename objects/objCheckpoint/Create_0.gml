@@ -9,3 +9,4 @@ data[CheckpointData.room] = room;
 data[CheckpointData.x] = x;
 data[CheckpointData.y] = y;
 data[CheckpointData.dir] = sign_nonzero(image_xscale);
+data[CheckpointData.animation] = respawnAnim;

@@ -2,7 +2,7 @@ countdown = 72;
 flashTimer = 7;
 text = "READY";
 
-pauseLock = new LockStackSwitch(objSystem.level.pauseStack);
+pauseLock = new LockStackSwitch(PAUSE_STACK);
 pauseLock.activate();
 
 whistleSFXInst = undefined;

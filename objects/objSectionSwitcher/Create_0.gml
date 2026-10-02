@@ -1,3 +1,6 @@
+visible = false;
+image_alpha = 0;
+
 // State Machine
 stateMachine = new StateStacker("_PreTransition", true);
 // Movement

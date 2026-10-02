@@ -5,8 +5,8 @@ if (!game_can_step(PauseType.GAMEPLAY) || !inside_view() || !__canOpen)
 var _player = collision_rectangle(boundsLeft, boundsTop, boundRight, boundBottom, prtPlayer, false, false);
 if (_player == noone)
     exit;
-if (!_player.is_user_controlled() || _player.isIntro)
-    exit;
+if (!player_is_user_controlled(_player) || !player_is_active(_player))
+	exit;
 
 var i = 0; repeat(transitionCount) {
     var _transition = transitions[i];
@@ -15,7 +15,7 @@ var i = 0; repeat(transitionCount) {
         continue;
     }
     
-    var _switch = instance_create_depth(_player.x, _player.y, _player.depth, objSectionSwitcher);
+    var _switch = instance_create_layer(x, y, LAYER_FADER, objSectionSwitcher);
 	_switch.playerInstance = _player.id;
 	_switch.transitionInstance = _transition;
 	_switch.bossDoor = id;

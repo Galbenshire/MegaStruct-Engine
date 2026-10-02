@@ -1,11 +1,7 @@
 /// @description On Pickup
-__collected = true;
+event_inherited();
 
-with (__collectPlayer) {
-    if (is_undefined(weapon))
-        exit;
-    if (weapon.has_flag(WeaponFlags.NO_AMMO) || weapon.ammo >= FULL_HEALTHBAR)
-        exit;
-    
-    self.restore_weapon_ammo(other.ammoToRestore, weapon);
+with (collectingPlayer) {
+    if (weapon.ammo < FULL_HEALTHBAR && !weapon.has_flag(WeaponFlags.NO_AMMO))
+        self.restore_weapon_ammo(other.ammoToRestore, weapon);
 }

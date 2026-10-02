@@ -40,11 +40,11 @@ function checkpoint_get_room() {
 /// @desc Takes the game to a room tagged as a level, performing any extra steps necessary
 ///
 /// @param {room}  level  The level to go to (make sure it has the "room_level" tag)
-function go_to_level(_level) {
+/// @param {bool}  [instant]  If true, the screenfade is skipped. Defaults to false.
+function go_to_level(_level, _instant = false) {
 	assert(is_room_level(_level), "calling go_to_level to a room not tagged as a level");
-	
-	objSystem.level.__startLevel = true;
-	go_to_room(_level);
+	objSystem.level.isStartingLevel = true;
+	go_to_room(_level, _instant);
 }
 
 /// @func go_to_room(room, instant)

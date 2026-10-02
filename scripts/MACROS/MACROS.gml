@@ -241,6 +241,18 @@ enum Music {
 	COUNT
 }
 
+// When a boss dies, what should happen to its music
+enum PostBossMusicBehaviour {
+	// The currently playing track contiues to play
+	CONTINUE,
+	
+	// All music stops
+	STOP,
+	
+	// The track that was playing before the fight is played again
+	RESUME
+}
+
 #endregion
 
 
@@ -338,6 +350,15 @@ enum PlayerAction {
 	TURN_FULL
 }
 
+// Input
+
+enum PlayerInputLevel {
+	MAIN,
+	CHARGE,
+	WPN_SWITCH,
+	MAX
+}
+
 // Animation Enums
 
 enum PlayerSpriteType {
@@ -411,9 +432,35 @@ enum PlayerShootType {
 #region Signal Names
 
 #macro SIGNAL_APPSURF_RESIZE "appSurfaceResized"
+#macro SIGNAL_DISPEL_UTILITIES "dispelUtilities"
+#macro SIGNAL_BOSS_FIGHTSTART "bossStart"
+#macro SIGNAL_BOSS_DEATH "bossDeath"
 #macro SIGNAL_PLAYER_INPUT "playerInput"
+#macro SIGNAL_PLAYER_PALETTE_UPDATE "playerPaletteUpdated"
 #macro SIGNAL_PLAYER_SHOT "playerShot"
 #macro SIGNAL_READY_COMPLETE "readyCompleted"
+
+#endregion
+
+
+#region Teleport In/Out
+
+enum TeleportInType {
+	TELEPORT_LONG,
+	TELEPORT_SHORT,
+	FALL_DOWN,
+	JUMP_IN,
+	STAND,
+	
+	COUNT
+}
+
+enum TeleportOutType {
+	TELEPORT_LONG,
+	TELEPORT_SHORT,
+	
+	COUNT
+}
 
 #endregion
 
@@ -429,6 +476,7 @@ enum CheckpointData {
 	x, /// @is {number}
 	y, /// @is {number}
 	dir, /// @is {int}
+	animation, /// @is {int}
 	sizeof
 }
 
@@ -617,5 +665,8 @@ enum WarningLevel {
 // -- Pausing
 #macro QUEUED_PAUSE 1
 #macro QUEUED_UNPAUSE -1
+
+// -- Subsystem Shortcuts
+#macro PAUSE_STACK objSystem.level.pauseStack
 
 #endregion

@@ -1,6 +1,4 @@
 /// @description On Pickup
-global.bolts += value;
-global.bolts = clamp(global.bolts, 0, 999);
-
-__collected = true;
+global.bolts = clamp(global.bolts + value, 0, 999);
 play_sfx(sfxBolt);
+event_inherited();

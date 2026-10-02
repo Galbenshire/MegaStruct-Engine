@@ -28,7 +28,7 @@ stateMachine.add_state("!!Inactive", {
 	},
 	posttick: function(_substate, _timer) {
 		// Wait until all user-controlled players are not doing their intros
-		var _anyPlayersNotReady = instance_any(prtPlayer, function(el, i) /*=>*/ {return el.isIntro && el.is_user_controlled()});
+		var _anyPlayersNotReady = instance_any(prtPlayer, function(el, i) /*=>*/ {return !player_is_active(el) && player_is_user_controlled(el)});
 		if (!_anyPlayersNotReady)
 			stateMachine.change_state("!!Intro");
 	},
@@ -42,6 +42,8 @@ stateMachine.add_state("!!Intro", {
 		if (lockControlsDuringIntro) {
 			introLock.activate();
 			introPauseLock.activate();
+			global.player.inputAccessLevel = PlayerInputLevel.CHARGE;
+			player_halt(global.player.body, true);
 		}
 		
 		if (playBossMusic) {
@@ -66,9 +68,12 @@ stateMachine.add_state("!!Intro", {
         
         introLock.deactivate();
         introPauseLock.deactivate();
+        global.player.inputAccessLevel = PlayerInputLevel.MAIN;
 		
 		ground = true;
 		entity_check_ground(1);
+		
+		signal_bus().emit_signal(SIGNAL_BOSS_FIGHTSTART, {});
 	}
 });
 

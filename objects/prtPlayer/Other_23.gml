@@ -5,6 +5,24 @@
 // -- Standard Movement --
 // - StandardGround
 // - StandardAir
+// -- Specialised Movement --
+// - Jump
+// - Slide
+// - Climb
+// -- Hurt/Death --
+// - Hurt
+// - Death
+// -- Teleport In --
+// - _TeleportIn
+// - TeleportIn_Default
+// - TeleportIn_Quick
+// - TeleportIn_Fall
+// - TeleportIn_Jump
+// - TeleportIn_Stand
+// -- Misc --
+// - Inactive
+// - DirectControl
+// - Debug_FreeMovement
 
 
 #region Standard Movement
@@ -34,35 +52,24 @@ stateMachine.add_state("StandardGround", {
 		switch (_substate) {
 			case SUBSTATE_GROUND_IDLE:
 				animator.play("idle");
-				if (_isOnIce)
-					xspeed = approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE);
-				else
-					xspeed = 0;
+				xspeed = _isOnIce ? approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE) : 0;
 				break;
 			case SUBSTATE_GROUND_SIDESTEP:
 				if (_timer == 0) {
 					move_and_collide_x(xDir);
 					move_and_collide_y(gravDir);
 				}
-				animator.play("sidestep");
-				if (_isOnIce)
-					xspeed = approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE);
-				else
-					xspeed = 0;
+				xspeed = _isOnIce ? approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE) : 0;
 				break;
 			case SUBSTATE_GROUND_BRAKE:
 				animator.play("brake");
-				if (_isOnIce)
-					xspeed = approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE);
-				else
-					xspeed = brakeSpeed * image_xscale;
+				xspeed = _isOnIce ? approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE) : brakeSpeed * image_xscale;
 				break;
 			case SUBSTATE_GROUND_WALK:
 				animator.play("walk");
-				if (_isOnIce)
-					xspeed = approach(xspeed, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK);
-				else
-					xspeed = walkSpeed * xDir;
+				xspeed = _isOnIce
+					? approach(xspeed, walkSpeed * xDir, DEFAULT_ICE_DECEL_WALK)
+					: walkSpeed * xDir;
 				break;
 		}
 	},
@@ -136,7 +143,7 @@ stateMachine.add_state("StandardAir", {
 		var _relativeYSpeed = yspeed * gravDir;
 		animator.play((_relativeYSpeed >= 0) ? "fall" : "jump");
 		
-		var _canJump = inputs.is_pressed(InputActions.JUMP)
+		var _canJump = self.is_input_pressed(InputActions.JUMP)
 			&& (coyoteTimer > 0 || midairJumps < maxMidairJumps)
 			&& !self.is_action_locked(PlayerAction.JUMP);
 		if (_canJump) {
@@ -145,7 +152,7 @@ stateMachine.add_state("StandardAir", {
 		}
 		
 		if (_substate == SUBSTATE_AIR_JUMP) { // Jumping
-			if (canMinJump && _relativeYSpeed < -minJumpThreshold && !inputs.is_held(InputActions.JUMP)) {
+			if (canMinJump && _relativeYSpeed < -minJumpThreshold && !self.is_input_held(InputActions.JUMP)) {
 				yspeed = -minJumpCutoff;
 				canMinJump = false;
 			}
@@ -188,7 +195,9 @@ stateMachine.add_state("Jump", {
 			play_sfx(sfxBalladeShoot);
 			
 			for (var i = -1; i <= 1; i += 2) {
-				with (instance_create_depth(x + 4 * i, bbox_vertical(gravDir) - 2 * image_yscale, depth, objSlideDust)) {
+				with (spawn_child_effect(0, 0, 0, objSlideDust)) {
+					x = other.x + 4 * i;
+					y = bbox_vertical(other.gravDir, other.id) - 2 * other.image_yscale
 					image_xscale = i;
 					xspeed = i;
 				}
@@ -211,8 +220,11 @@ stateMachine.add_state("Slide", {
 		yspeed = 0;
 		animator.play("slide");
 		
-		with (instance_create_depth(bbox_horizontal(-image_xscale), bbox_vertical(image_yscale) - 4 * image_yscale, depth, objSlideDust))
-			image_xscale = -other.image_xscale;
+		spawn_child_effect(0, 0, 0, objSlideDust, {
+			x: bbox_horizontal(-image_xscale),
+			y: bbox_vertical(image_yscale) - 4 * image_yscale,
+			image_xscale: -image_xscale
+		});
 	},
 	resume: function(_prevState) {
 		if (!isSliding) {
@@ -241,7 +253,7 @@ stateMachine.add_state("Slide", {
 		}
 		
 		var _freeSpaceAbove = !test_move_y(-slideMaskHeightDelta * gravDir);
-		if (_freeSpaceAbove && ground && inputs.is_pressed(InputActions.JUMP)) {
+		if (_freeSpaceAbove && ground && self.is_input_pressed(InputActions.JUMP)) {
 			if (!self.is_action_locked(PlayerAction.JUMP) && !self.check_input_down_jump_slide()) {
 				slideBoostActive = slideBoostEnabled;
 				stateMachine.change_state("Jump");
@@ -335,7 +347,7 @@ stateMachine.add_state("Climb", {
 	},
 	posttick: function(_substate, _timer) {
 		// Have we pressed the jump button?
-		if (inputs.is_pressed(InputActions.JUMP) && !self.is_action_locked(PlayerAction.JUMP)) {
+		if (self.is_input_pressed(InputActions.JUMP) && !self.is_action_locked(PlayerAction.JUMP)) {
 			if (climbJumpEnabled && yDir != gravDir) {
 				jumpedOffLadder = true;
 				stateMachine.change_state("Jump");
@@ -409,6 +421,17 @@ stateMachine.add_state("Hurt", {
 			_factorY = (yspeed * gravDir <= 0) * !_moveLocked * !_gravLocked * gravEnabled;
 		xspeed = -image_xscale * _factorX;
 		yspeed = (-1.5 * gravDir) * _factorY;
+		
+		if (healthpoints > 0 && !_stateData.skipIFrames) {
+			var _sweatX = sprite_x_center(),
+				_sweatY = sprite_y_center() - 17;
+			for (var i = -1; i <= 1; i++) {
+				spawn_child_effect(0, 0, -1, objSweatEffect, {
+					x: _sweatX + 11 * i,
+					y: _sweatY + abs(i)
+				});
+			}
+		}
 	},
 	tick: function(_substate, _timer) {
 		if (ground)
@@ -437,7 +460,7 @@ stateMachine.add_state("Death", {
 		canDieToPits = false;
 		iFrames = 0;
 		
-		if (self.is_user_controlled()) {
+		if (player_is_user_controlled(self)) {
 			stop_music();
 			audio_stop_all();
 			pauseLock.activate();
@@ -458,7 +481,7 @@ stateMachine.add_state("Death", {
 		entity_clear_hitboxes();
 		play_sfx(sfxDeath);
 		
-		if (self.is_user_controlled())
+		if (player_is_user_controlled(self))
 			defer(DeferType.STEP, function(__) /*=>*/ { go_to_room(checkpoint_get_room()); }, GAME_SPEED * 3, 0);
 		
 		instance_destroy();
@@ -467,52 +490,44 @@ stateMachine.add_state("Death", {
 
 #endregion
 
-#region Misc.
+#region Teleport-In Types
 
-stateMachine.add_state("Inactive", {
+stateMachine.add_state("_TeleportIn", {
 	enter: function(_prevState) {
-		isIntro = true;
+		isTeleporting = true;
+		teleportX = x;
+		teleportY = y;
 		hitmaskMaster = 0;
-		gravEnabled = false;
-		visible = false;
-		
-		introLock.add_actions(PlayerAction.PHYSICS);
-		introLock.activate();
-		pauseLock.activate();
+		collideWithSolids = false;
+		interactWithWater = false;
+		ignoreCamera = true;
+		teleportLock.activate();
+		if (player_is_user_controlled(self))
+			pauseLock.activate();
 	},
 	leave: function(_newState) {
-		isIntro = false;
+		isTeleporting = false;
+		collideWithSolids = true;
 		hitmaskMaster = HitMask.FULL;
-		gravEnabled = true;
-		visible = true;
-		
-		introLock.deactivate();
-		introLock.remove_actions(PlayerAction.PHYSICS);
+		ground = true;
+		interactWithWater = true;
+		ignoreCamera = false;
+		teleportLock.deactivate();
 		pauseLock.deactivate();
 	}
 });
-stateMachine.add_state("Intro", {
-	enter: function(_prevState) {
-		isIntro = true;
-		hitmaskMaster = 0;
-		collideWithSolids = false;
-		gravEnabled = false;
-		interactWithWater = false;
-		ignoreCamera = true;
+stateMachine.add_child_state("_TeleportIn", "TeleportIn_Default", {
+	enter: function(_prevState, _payload, _stateData) {
+		_stateData.super.enter(_prevState);
+		y = game_view().top_edge(-8, false);
 		animator.play("teleport-idle");
 		animator.update();
-		
-		introLock.activate();
-		pauseLock.activate();
-		
-		y = game_view().top_edge(0);
 	},
 	tick: function(_substate, _timer) {
 		if (_substate == 0) {
 			y += 8;
-			
-			if (y >= ystart) {
-				y = ystart;
+			if (y >= teleportY) {
+				y = teleportY;
 				animator.play("teleport-in");
 				stateMachine.change_substate(1);
 				play_sfx(sfxTeleportIn);
@@ -520,18 +535,108 @@ stateMachine.add_state("Intro", {
 		} else if (animator.is_animation_finished()) {
 			stateMachine.change_state("StandardGround");
 		}
+	}
+});
+stateMachine.add_child_state("_TeleportIn", "TeleportIn_Quick", {
+	enter: function(_prevState, _payload, _stateData) {
+		_stateData.super.enter(_prevState);
+		play_sfx(sfxTeleportIn);
+		animator.play("teleport-in");
+		animator.update();
+	},
+	tick: function(_substate, _timer) {
+		if (animator.is_animation_finished())
+			stateMachine.change_state("StandardGround");
+	}
+});
+stateMachine.add_child_state("_TeleportIn", "TeleportIn_Fall", {
+	enter: function(_prevState, _payload, _stateData) {
+		_stateData.super.enter(_prevState);
+		y = game_view().top_edge(-8, false);
+		animator.play("fall");
+		animator.update();
+	},
+	tick: function(_substate, _timer) {
+		y += 8;
+		if (y >= teleportY) {
+			ground = true;
+			y = teleportY;
+			entity_check_ground(gravDir);
+			
+			if (ground) {
+				play_sfx(sfxLand);
+				stateMachine.change_state("StandardGround");
+			} else {
+				stateMachine.change_state("StandardAir");
+				yspeed = 8;
+			}
+		}
+	}
+});
+stateMachine.add_child_state("_TeleportIn", "TeleportIn_Jump", {
+	enter: function(_prevState, _payload, _stateData) {
+		_stateData.super.enter(_prevState);
+		y = game_view().bottom_edge(8, false);
+		yspeed = -jumpSpeed
+		animator.play("jump");
+		animator.update();
+	},
+	tick: function(_substate, _timer) {
+		if (_substate == 0) {
+			if (y <= teleportY) {
+				animator.play("fall");
+				stateMachine.change_substate(1);
+			}
+		} else {
+			yspeed = approach(yspeed, 8, grav);
+			if (yspeed > 0 && y >= teleportY) {
+				y = teleportY;
+				ground = true;
+				entity_check_ground(gravDir);
+				
+				if (ground) {
+					play_sfx(sfxLand);
+					yspeed = 0;
+					stateMachine.change_state("StandardGround");
+				} else {
+					stateMachine.change_state("StandardAir");
+				}
+			}
+		}
+	}
+});
+stateMachine.add_child_state("_TeleportIn", "TeleportIn_Stand", {
+	tick: function(_substate, _timer) /*=>*/ { stateMachine.change_state("StandardGround"); },
+});
+
+#endregion
+
+#region Misc.
+
+stateMachine.add_state("Inactive", {
+	enter: function(_prevState) {
+		isInactive = true;
+		hitmaskMaster = 0;
+		collideWithSolids = false;
+		interactWithWater = false;
+		ignoreCamera = true;
+		inactiveLock.activate();
+		visible = false;
 	},
 	leave: function(_newState) {
-		isIntro = false;
-		collideWithSolids = true;
-		gravEnabled = true;
+		isInactive = false;
 		hitmaskMaster = HitMask.FULL;
-		ground = true;
+		collideWithSolids = true;
 		interactWithWater = true;
 		ignoreCamera = false;
-		
-		introLock.deactivate();
-		pauseLock.deactivate();
+		inactiveLock.deactivate();
+		visible = true;
+	}
+});
+stateMachine.add_state("DirectControl", {
+	enter: function(_prevState) {
+		xspeed = 0;
+		yspeed = 0;
 	}
 });
 stateMachine.add_state("Debug_FreeMovement", {
@@ -547,15 +652,15 @@ stateMachine.add_state("Debug_FreeMovement", {
 		play_sfx(sfxYasichi);
 	},
 	tick: function(_substate, _timer) {
-		var _spd = 2 + (2 * inputs.is_held(InputActions.SHOOT)) + (6 * inputs.is_held(InputActions.SLIDE));
+		var _spd = 2 + (2 * userInputs.is_held(InputActions.SHOOT)) + (6 * userInputs.is_held(InputActions.SLIDE));
 		
-		x += _spd * (inputs.is_held(InputActions.RIGHT) - inputs.is_held(InputActions.LEFT));
-		y += _spd * (inputs.is_held(InputActions.DOWN) - inputs.is_held(InputActions.UP));
+		x += _spd * (userInputs.is_held(InputActions.RIGHT) - userInputs.is_held(InputActions.LEFT));
+		y += _spd * (userInputs.is_held(InputActions.DOWN) - userInputs.is_held(InputActions.UP));
 		image_alpha = (_timer mod 80) / 80;
 		
-		var _cellDir = inputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - inputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
+		var _cellDir = userInputs.is_pressed(InputActions.WEAPON_SWITCH_RIGHT) - userInputs.is_pressed(InputActions.WEAPON_SWITCH_LEFT);
 		if (_cellDir != 0) {
-			if (inputs.is_held(InputActions.SLIDE))
+			if (userInputs.is_held(InputActions.SLIDE))
 				skinSprite = modf(skinSprite + _cellDir, PlayerSpriteType.COUNT);
 			else
 				skinIndex += _cellDir;

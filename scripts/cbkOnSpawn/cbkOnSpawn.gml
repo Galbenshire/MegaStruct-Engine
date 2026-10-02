@@ -55,6 +55,7 @@ function cbkOnSpawn_player() {
     healthpoints = healthpointsStart;
     self.refresh_palette();
     self.reset_all_properties();
+    weapon.on_equip(self);
     
     ground = gravEnabled;
     entity_check_ground(1, false);

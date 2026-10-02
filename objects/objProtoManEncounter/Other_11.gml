@@ -9,7 +9,7 @@
 stateMachine.add_state("Inactive", {
 	enter: function(_prevState) /*=>*/ { visible = false; },
 	tick: function(_substate, _timer) {
-        if (!inside_section_point() || !instance_all(prtPlayer, function(el, i) /*=>*/ {return !el.isIntro}))
+        if (!inside_section_point() || instance_any(prtPlayer, function(el, i) /*=>*/ {return player_is_user_controlled(el) && !player_is_active(el)}))
 			return;
 		stateMachine.change_state("Whistle");
 	}
@@ -21,6 +21,7 @@ stateMachine.add_state("Whistle", {
 		encounterLock.activate();
 		encounterPauseLock.activate();
 		animator.play("teleport-idle");
+		global.player.inputAccessLevel = PlayerInputLevel.WPN_SWITCH;
 		
 		with (prtPlayer)
 			calibrate_direction_point(other.x);

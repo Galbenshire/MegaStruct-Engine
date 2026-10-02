@@ -29,7 +29,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"strikeIntroPose","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"showHealthbar","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"playBossMusic","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"stopMusicOnDeath","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"postFightMusicBehaviour","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"PostBossMusicBehaviour.CONTINUE",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtBoss","path":"objects/prtBoss/prtBoss.yy",},"propertyId":{"name":"playBossMusic","path":"objects/prtBoss/prtBoss.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
   ],
   "parent":{
     "name":"Hot Dog",

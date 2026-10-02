@@ -1,13 +1,13 @@
 /// @description Entity Tick
-xDir = inputs.get_axis(InputActions.RIGHT, InputActions.LEFT);
-yDir = inputs.get_axis(InputActions.DOWN, InputActions.UP);
+xDir = self.is_input_held(InputActions.RIGHT) - self.is_input_held(InputActions.LEFT);
+yDir = self.is_input_held(InputActions.DOWN) - self.is_input_held(InputActions.UP);
 
 if (coyoteTimer > 0)
 	coyoteTimer--;
 	
 if (jumpBufferTimer > 0)
 	jumpBufferTimer--;
-if (inputs.is_pressed(InputActions.JUMP))
+if (self.is_input_pressed(InputActions.JUMP))
 	jumpBufferTimer = JUMP_BUFFER;
 
 stateMachine.tick();

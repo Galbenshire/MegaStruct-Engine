@@ -13,11 +13,11 @@
 	///
 	/// @returns {bool}  Whether the player can down+jump to slide (true), or not (false)
 	function check_input_down_jump_slide(_ignoreLock = false) {
-		if (!self.is_user_controlled())
+		if (!player_is_user_controlled(self))
 			return false;
 		if (!_ignoreLock && self.is_action_locked(PlayerAction.SLIDE))
 			return false;
-		return yDir == gravDir && inputs.is_pressed(InputActions.JUMP) && options_data().downJumpSlide;
+		return yDir == gravDir && self.is_input_pressed(InputActions.JUMP) && options_data().downJumpSlide;
 	}
 	
 	/// -- check_input_jump(ignore_lock)
@@ -31,9 +31,9 @@
 	function check_input_jump(_ignoreLock = false) {
 		if (!_ignoreLock && self.is_action_locked(PlayerAction.JUMP))
 			return false;
-		if (inputs.is_pressed(InputActions.JUMP))
+		if (self.is_input_pressed(InputActions.JUMP))
 			return true;
-		return jumpBufferTimer > 0 && inputs.is_held(InputActions.JUMP);
+		return jumpBufferTimer > 0 && self.is_input_held(InputActions.JUMP);
 	}
 	
 	/// -- check_input_shoot(auto_fire, ignore_lock)
@@ -51,11 +51,45 @@
 	function check_input_shoot(_autoFire, _ignoreLock = false) {
 		if (!_ignoreLock && self.is_action_locked(PlayerAction.SHOOT))
 			return false;
-		if (inputs.is_pressed(InputActions.SHOOT))
+		if (self.is_input_pressed(InputActions.SHOOT))
 			return true;
 		
-		_autoFire ??= self.is_user_controlled() ? options_data().autoFire : false;
-		return _autoFire && inputs.is_held(InputActions.SHOOT) && autoFireTimer <= 0;
+		_autoFire ??= player_is_user_controlled(self) ? options_data().autoFire : false;
+		return _autoFire && self.is_input_held(InputActions.SHOOT) && autoFireTimer <= 0;
+	}
+	
+	/// -- is_input_held(input, access_level)
+	/// Checks if the player has the specified input held
+	///
+	/// @param {int}  input  The input to check
+	/// @param {int}  [access_level]  The access level required. Overridden by `manualInputs`.
+	///
+	/// @returns {bool}  Whether the input was held (true), or not (false)
+	function is_input_held(_input, _accessLvl = PlayerInputLevel.MAIN) {
+		if (manualInputs.is_held(_input))
+			return true;
+		if (userInputs.is_held(_input)) {
+			var _lvlBound = player_is_user_controlled(self) ? playerUser.inputAccessLevel : PlayerInputLevel.MAIN;
+			return _accessLvl >= _lvlBound;
+		}
+		return false;
+	}
+	
+	/// -- is_input_pressed(input, access_level)
+	/// Checks if the player has the specified input pressed
+	///
+	/// @param {int}  input  The input to check
+	/// @param {int}  [access_level]  The access level required. Overridden by `manualInputs`.
+	///
+	/// @returns {bool}  Whether the input was pressed (true), or not (false)
+	function is_input_pressed(_input, _accessLvl = PlayerInputLevel.MAIN) {
+		if (manualInputs.is_pressed(_input))
+			return true;
+		if (userInputs.is_pressed(_input)) {
+			var _lvlBound = player_is_user_controlled(self) ? playerUser.inputAccessLevel : PlayerInputLevel.MAIN;
+			return _accessLvl >= _lvlBound;
+		}
+		return false;
 	}
 	
 	#endregion
@@ -78,20 +112,21 @@
 	}
 	
 	/// -- handle_input()
-	/// Handles input for the player
+	/// Handles input for the given player
 	function handle_input() {
-		if (!self.is_user_controlled())
+		if (!player_is_user_controlled(self))
 			return;
 		
-		inputs.held = playerUser.inputs.held;
-		inputs.pressed |= playerUser.inputs.pressed;
-		inputs.released |= playerUser.inputs.released;
+		var _userInputs = playerUser.inputs;
+		userInputs.held = _userInputs.held;
+		userInputs.pressed |= _userInputs.pressed;
+		userInputs.released |= _userInputs.released;
 	}
 	
 	/// -- handle_sections()
 	/// Handles the player's interaction with screen sections
 	function handle_sections() {
-		if (isIntro || global.switchingSections)
+		if (!player_is_active(self) || global.switchingSections)
 			return;
 		
 		var _section = global.section;
@@ -101,29 +136,24 @@
 		var _checkX = clamp(x, _section.left + 4, _section.right - 4),
 			_checkY = clamp(y, _section.top + 4, _section.bottom - 4),
 			_transition = instance_position(_checkX, _checkY, objScreenTransition);
-		if (instance_exists(_transition)) {
-			if (isClimbing || isFreeMovement || _transition.image_angle != 90) {
-				x = _checkX;
-				y = _checkY;
-				
-				var _switch = instance_create_depth(x, y, depth, objSectionSwitcher);
-				_switch.playerInstance = id;
-				_switch.transitionInstance = _transition;
-				return;
-			}
+		if (instance_exists(_transition) && _transition.can_transition(self)) {
+			x = _checkX;
+			y = _checkY;
+			
+			var _switch = instance_create_layer(_checkX, _checkY, LAYER_FADER, objSectionSwitcher);
+			_switch.playerInstance = id;
+			_switch.transitionInstance = _transition;
+			return;
 		}
 		
 		var _fallingDown = (gravDir >= 0);
 		x = clamp(x, _section.left, _section.right);
 		y = _fallingDown ? max(y, _section.top - 32) : min(y, _section.bottom + 32);
 		
-		if (!canDieToPits)
-			exit;
-		
-		var _fellIntoPit = _fallingDown ? y > _section.bottom + 16 : y < _section.top - 16;
-		if (_fellIntoPit) {
-			diedToAPit = true;
-			stateMachine.change_state("Death", { diedToPit: true });
+		if (canDieToPits) {
+			var _fellIntoPit = _fallingDown ? y > _section.bottom + 16 : y < _section.top - 16;
+			if (_fellIntoPit)
+				stateMachine.change_state("Death", { diedToPit: true });
 		}
 	}
 	
@@ -153,8 +183,8 @@
 		}
 		
 		var _weaponIndex = array_get_index(weaponList, weapon),
-			_wpnSwitchLeft = inputs.is_held(InputActions.WEAPON_SWITCH_LEFT),
-			_wpnSwitchRight = inputs.is_held(InputActions.WEAPON_SWITCH_RIGHT),
+			_wpnSwitchLeft = self.is_input_held(InputActions.WEAPON_SWITCH_LEFT, PlayerInputLevel.WPN_SWITCH),
+			_wpnSwitchRight = self.is_input_held(InputActions.WEAPON_SWITCH_RIGHT, PlayerInputLevel.WPN_SWITCH),
 			_dir = _wpnSwitchRight - _wpnSwitchLeft;
 		
 		if (_dir != 0) {
@@ -170,7 +200,7 @@
 			self.equip_weapon(_weaponIndex);
 			
 			with (prtProjectile) {
-				if (owner == other.id)
+				if (owner == other.id && destroyOnWeaponSwitch)
 					instance_destroy();
 			}
 			
@@ -187,27 +217,35 @@
 	
 	#region Palette
 	
-	/// -- get_palette(weapon)
-	/// Gets a palette from the player, based on the given weapon
+	/// -- get_palette(live)
+	/// Gets the player's palette
 	///
-	/// @param {Weapon}  weapon  The weapon to use. Defaults to the player's current.
-	function get_palette(_weapon = weapon) {
-		var _characterPalette = characterSpecs.get_player_colours(true);
-		_characterPalette[PalettePlayer.primary] = _weapon.iconColours[PaletteWeapon.primary];
-		_characterPalette[PalettePlayer.secondary] = _weapon.iconColours[PaletteWeapon.secondary];
+	/// @param {bool}  [live]  If true (default), gets the player's palette as it is currently.
+	///		If false, gets their base palette, taking their weapon into account.
+	///
+	/// @returns {PalettePlayer}  The palette
+	function get_palette(_live = true) {
+		if (_live)
+			return palette.copy_output_colours();
 		
+		var _characterPalette = characterSpecs.get_player_colours(true);
+		_characterPalette[PalettePlayer.primary] = weapon.iconColours[PaletteWeapon.primary];
+		_characterPalette[PalettePlayer.secondary] = weapon.iconColours[PaletteWeapon.secondary];
 		return _characterPalette;
 	}
 	
 	/// -- refresh_palette()
 	/// Updates the player's palette
 	function refresh_palette() {
-		var _palette = self.get_palette();
+		var _palette = self.get_palette(false);
 		
-		for (var i = 0; i < palette.colourCount; i++)
-			palette.set_output_colour_at(i, _palette[i]);
-		if (self.is_user_controlled())
+		palette.set_output_colours(_palette);
+		if (player_is_user_controlled(self))
 			hudElement.set_weapon_palette(_palette[PalettePlayer.primary], _palette[PalettePlayer.secondary], _palette[PalettePlayer.outline]);
+		
+		signal_bus().emit_signal(SIGNAL_PLAYER_PALETTE_UPDATE, {
+			player: self.id
+		});
 	}
 	
 	#endregion
@@ -219,7 +257,7 @@
 	///
 	/// @param {number}  value  The amount to health to restore
 	function restore_health(_value) {
-		if (options_data().instantHealthFill || !self.is_user_controlled()) {
+		if (options_data().instantHealthFill || !player_is_user_controlled(self)) {
 			healthpoints = clamp(healthpoints + _value, 0, healthpointsStart);
 			hudElement.healthpoints = healthpoints;
 			play_sfx(sfxEnergyRestore);
@@ -234,7 +272,7 @@
 	/// @param {number}  value  The amount to ammo to restore
 	/// @param {Weapon}  weapon  The weapon to restore the ammo of
 	function restore_weapon_ammo(_value, _weapon) {
-		if (options_data().instantHealthFill || !self.is_user_controlled()) {
+		if (options_data().instantHealthFill || !player_is_user_controlled(self)) {
 			_weapon.change_ammo(_value);
 			play_sfx(sfxEnergyRestore);
 			
@@ -278,7 +316,7 @@
 	function try_sliding() {
 		if (!ground || self.is_action_locked(PlayerAction.SLIDE))
 			return false;
-		if (!inputs.is_pressed(InputActions.SLIDE) && !self.check_input_down_jump_slide(true))
+		if (!self.is_input_pressed(InputActions.SLIDE) && !self.check_input_down_jump_slide(true))
 			return false;
 		
 		// Check if there's space ahead
@@ -396,18 +434,9 @@
 	/// @returns {bool}  Whether the action is locked (true) or not (false)
 	function is_action_locked(_action) {
 		var _result = lockpool.is_locked(_action);
-		if (self.is_user_controlled())
+		if (player_is_user_controlled(self))
 			_result |= playerUser.lockpool.is_locked(_action);
-		
 		return _result;
-	}
-	
-	/// -- is_user_controlled()
-	/// Checks if this player entity is being controlled by a player user.
-	///
-	/// @returns {bool}  Whether this player is being controlled (true), or not (false)
-	function is_user_controlled() {
-		return !is_undefined(playerUser);
 	}
 	
 	/// -- reset_property(name)
@@ -441,6 +470,20 @@
 			self.reset_property(_propKeys[i]);
 			i++;
 		}
+	}
+	
+	/// -- teleport_in()
+	/// Tells the player to perform a teleport-in sequence
+	function teleport_in(_type = teleportInType) {
+		var _typeLookup = array_create(TeleportInType.COUNT);
+		_typeLookup[TeleportInType.TELEPORT_LONG] = "Default";
+		_typeLookup[TeleportInType.TELEPORT_SHORT] = "Quick";
+		_typeLookup[TeleportInType.FALL_DOWN] = "Fall";
+		_typeLookup[TeleportInType.JUMP_IN] = "Jump";
+		_typeLookup[TeleportInType.STAND] = "Stand";
+		
+		teleportInType = _type;
+		stateMachine.change_state($"TeleportIn_{_typeLookup[_type]}");
 	}
 	
 	#endregion

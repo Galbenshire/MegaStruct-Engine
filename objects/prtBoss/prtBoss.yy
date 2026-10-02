@@ -68,7 +68,11 @@
     {"$GMObjectProperty":"v2","%Name":"doPlayerDeathExplosion","filters":[],"listItems":[],"multiselect":false,"name":"doPlayerDeathExplosion","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"playBossMusic","filters":[],"listItems":[],"multiselect":false,"name":"playBossMusic","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"bossMusicID","filters":[],"listItems":[],"multiselect":false,"name":"bossMusicID","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"Music.MM2_BOSS","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"stopMusicOnDeath","filters":[],"listItems":[],"multiselect":false,"name":"stopMusicOnDeath","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"postFightMusicBehaviour","filters":[],"listItems":[
+        "PostBossMusicBehaviour.CONTINUE",
+        "PostBossMusicBehaviour.STOP",
+        "PostBossMusicBehaviour.RESUME",
+      ],"multiselect":false,"name":"postFightMusicBehaviour","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"PostBossMusicBehaviour.STOP","varType":6,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

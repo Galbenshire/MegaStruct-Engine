@@ -1,2 +1,3 @@
 /// @description Entity Tick
-image_index += imageSpeed;
+imageIndex += imageSpeed;
+image_index = 1 + (imageIndex & 1);

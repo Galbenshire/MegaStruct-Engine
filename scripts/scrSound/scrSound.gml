@@ -1,4 +1,4 @@
-#region Music
+#region Volume Levels
 
 /// @func music_volume(in_general)
 /// @desc Gets the current volume of the music in the game
@@ -11,17 +11,28 @@ function music_volume(_inGeneral = false) {
 	return options_data().get_music_volume() * (_inGeneral ? 1 : objSystem.audio.trackVolume);
 }
 
+/// @func sound_volume()
+/// @desc Gets the current volume of sound effects in the game
+///
+/// @returns {number}  The volume of sound effects, in a 0-1 range
+function sound_volume() {
+	return options_data().get_sound_volume();
+}
+
+#endregion
+
+#region Music
+
 /// @func fade_music(duration, to)
 /// @desc Fades the current music to the specified volume level
 ///
 /// @param {number}  duration  how long the fade occurs for, in seconds
 /// @param {number}  [to]  the final volume level after the fade. Defaults to 0, muted
 function fade_music(_duration, _to = 0) {
-	with (objSystem.audio) {
-		trackVolume = _to;
-		if (trackIsPlaying)
-			audio_sound_gain(track, trackVolume, _duration * 1000);
-	}
+	var _audioSystem = objSystem.audio;
+	_audioSystem.trackVolume = _to;
+	if (music_is_playing())
+		audio_sound_gain(_audioSystem.track, _audioSystem.trackVolume, _duration * 1000);
 }
 
 /// @func music_is_paused()
@@ -30,7 +41,7 @@ function fade_music(_duration, _to = 0) {
 /// @returns {bool}  
 function music_is_paused() {
 	with (objSystem.audio)
-		return trackIsPlaying ? audio_is_paused(track) : false;
+		return is_undefined(track) ? false : audio_is_paused(track);
 	return false;
 }
 
@@ -39,11 +50,8 @@ function music_is_paused() {
 ///
 /// @returns {bool}  
 function music_is_playing() {
-	with (objSystem.audio) {
-		return trackIsPlaying
-			? audio_is_playing(track) && !audio_is_paused(track)
-			: false;
-	}
+	with (objSystem.audio)
+		return is_undefined(track) ? false : audio_is_playing(track);
 	return false;
 }
 
@@ -68,8 +76,10 @@ function music_snapshot() {
 /// @func pause_music()
 /// @desc Pauses the music currently playing
 function pause_music() {
-	if (objSystem.audio.trackIsPlaying)
-		audio_pause_sound(objSystem.audio.track);
+	with (objSystem.audio) {
+		if (!is_undefined(track))
+			audio_pause_sound(track);
+	}
 }
 
 /// @func play_music(music_id, volume)
@@ -78,13 +88,11 @@ function pause_music() {
 /// @param {int}  music_id  ID of the music to play, corresponding to the `Music` enum
 /// @param {number}  [volume]  How loud the track should be. Defaults to 1.
 function play_music(_id, _volume = 1) {
-	var _track = global.musicTracks[_id];
+	if (music_is_playing())
+		stop_music();
 	
 	with (objSystem.audio) {
-		if (trackIsPlaying)
-			audio_stop_sound(track);
-		
-		trackIsPlaying = true;
+		var _track = global.musicTracks[_id];
 		trackVolume = max(0, _volume);
 		trackID = _id;
 		track = audio_play_sound_on(emitterMusic, _track[MusicTrack.asset], _track[MusicTrack.loops], 90, trackVolume);
@@ -96,18 +104,19 @@ function play_music(_id, _volume = 1) {
 /// @func resume_music()
 /// @desc Resumes the music, if it was previously paused
 function resume_music() {
-	if (objSystem.audio.trackIsPlaying)
-		audio_resume_sound(objSystem.audio.track);
+	with (objSystem.audio) {
+		if (!is_undefined(track))
+			audio_resume_sound(track);
+	}
 }
 
 /// @func stop_music()
 /// @desc Stops the music currently playing
 function stop_music() {
 	with (objSystem.audio) {
-		if (trackIsPlaying)
+		if (!is_undefined(track))
 			audio_stop_sound(track);
 		trackVolume = 0;
-		trackIsPlaying = false;
 	}
 }
 
@@ -119,7 +128,7 @@ function update_music_volume(_volume) {
 	with (objSystem.audio) {
 		_volume ??= trackVolume;
 		trackVolume = max(0, _volume);
-		if (trackIsPlaying)
+		if (!is_undefined(track))
 			audio_sound_gain(track, trackVolume, 0);
 	}
 }
@@ -127,24 +136,6 @@ function update_music_volume(_volume) {
 #endregion
 
 #region Sound Effects
-
-/// @func sound_volume()
-/// @desc Gets the current volume of sound effects in the game
-///
-/// @returns {number}  The volume of sound effects, in a 0-1 range
-function sound_volume() {
-	return options_data().get_sound_volume();
-}
-
-/// @func create_sound_instance()
-/// @desc Creates an inactive sound instance. For when you want an 'optional' sound instance
-///
-/// @returns {sound_instance}  
-function create_sound_instance() {
-	var _sfx = audio_play_sound(sfxExplosionMM3, 0, false, 0);
-	//audio_stop_sound(_sfx);
-	return _sfx;
-}
 
 /// @func loop_sfx(sound, volume, pitch, stack_sounds, emitter)
 /// @desc Shortcut for looping a sound effect with the play_sfx() script
@@ -168,15 +159,6 @@ function pause_all_sfx() {
 		resume_music();
 }
 
-/// @func resume_all_sfx()
-/// @desc Resume any sound effects that had been paused
-function resume_all_sfx() {
-	var _fixMusic = !music_is_paused();
-	audio_resume_all();
-	if (_fixMusic)
-		resume_music();
-}
-
 /// @func play_sfx(sound, volume, pitch, loop, stack_sounds, emitter)
 /// @desc Plays the given sound effect.
 ///
@@ -192,6 +174,15 @@ function play_sfx(_sound/*:sound*/, _volume/*:number*/ = 1, _pitch/*:number*/ = 
 		stop_sfx(_sound);
 	
 	return audio_play_sound_on(objSystem.audio.emitterSFX, _sound, _loop, 50 - 10 * _loop, _volume, /**/, _pitch);
+}
+
+/// @func resume_all_sfx()
+/// @desc Resume any sound effects that had been paused
+function resume_all_sfx() {
+	var _fixMusic = !music_is_paused();
+	audio_resume_all();
+	if (_fixMusic)
+		resume_music();
 }
 
 /// @func stop_sfx(sound)

@@ -3,10 +3,10 @@ if (disappearTimer > 0) {
     disappearTimer = approach(disappearTimer, 0, 1);
     
     if (disappearTimer < flashThreshold)
-        flashIndex = (flashIndex + 1) mod 4;
+		visible = bool((disappearTimer >> 1) & 1);
     
     if (disappearTimer == 0) {
-    	entity_kill_self();
+		entity_kill_self();
 		exit;
     }
 }
@@ -24,12 +24,12 @@ if (gravEnabled && ycoll * gravDir > 0) {
 }
 
 if (place_meeting(x, y, prtPlayer)) {
-	__collectPlayer = instance_place(x, y, prtPlayer);
+	collectingPlayer = instance_place(x, y, prtPlayer);
 	
-	if (!__collectPlayer.isIntro && (!ignoreCPUPlayers || __collectPlayer.is_user_controlled())) {
+	if (player_is_active(collectingPlayer) && (!ignoreCPUPlayers || player_is_user_controlled(collectingPlayer))) {
 		event_user(0);
 		
-		if (__collected) {
+		if (isCollected) {
 			if (respawnType == RespawnType.ENABLED && canOnlyCollectOnce)
 				array_push(objSystem.level.pickups, pickupID);
 			instance_destroy();

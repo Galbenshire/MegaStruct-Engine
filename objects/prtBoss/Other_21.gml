@@ -85,11 +85,22 @@
 	/// Halts the boss music, restoring the music that was playing before the fight began
 	/// (or cutting the music altogether if configured to do so)
 	function restore_music() {
-		if (stopMusicOnDeath) {
-			audio_stop_all();
-		} else if (playBossMusic && preFightMusicCache[MusicSnapshot.musicID] != -1) {
-			play_music(preFightMusicCache[MusicSnapshot.musicID], preFightMusicCache[MusicSnapshot.volume]);
-			audio_sound_set_track_position(objSystem.audio.track, preFightMusicCache[MusicSnapshot.startAt]);
+		switch (postFightMusicBehaviour) {
+			case PostBossMusicBehaviour.CONTINUE:
+				// Do nothing
+				break;
+			case PostBossMusicBehaviour.STOP:
+				stop_music();
+				audio_stop_all();
+				break;
+			case PostBossMusicBehaviour.RESUME:
+				if (preFightMusicCache[MusicSnapshot.musicID] != -1) {
+					play_music(preFightMusicCache[MusicSnapshot.musicID], preFightMusicCache[MusicSnapshot.volume]);
+					audio_sound_set_track_position(objSystem.audio.track, preFightMusicCache[MusicSnapshot.startAt]);
+				} else {
+					stop_music();
+				}
+				break;
 		}
 	}
 	

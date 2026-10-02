@@ -6,3 +6,4 @@ checkpointData[CheckpointData.room] = room;
 checkpointData[CheckpointData.x] = x;
 checkpointData[CheckpointData.y] = y;
 checkpointData[CheckpointData.dir] = sign_nonzero(image_xscale);
+checkpointData[CheckpointData.animation] = respawnAnim;

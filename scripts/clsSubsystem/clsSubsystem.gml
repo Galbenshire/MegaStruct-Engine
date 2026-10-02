@@ -50,7 +50,10 @@ function Subsystem_Core() : Subsystem() constructor {
     };
     
     static roomEnd = function() {
-        global.player.lockpool.remove_all_switches();
+        with (global.player) {
+			lockpool.remove_all_switches();
+			inputAccessLevel = PlayerInputLevel.MAIN;
+		}
     };
     
     static drawEnd = function() {
@@ -66,24 +69,17 @@ function Subsystem_Core() : Subsystem() constructor {
 /// @desc Manages the audio in this game, including the playing of music
 function Subsystem_Audio() : Subsystem() constructor {
 	// -- Variables
-	track = sfxExplosionMM3;
+	track = undefined;
 	trackID = 0;
 	trackVolume = 0;
-	trackIsPlaying = false;
 	
 	emitterSFX = audio_emitter_create();
 	emitterMusic = audio_emitter_create();
 	
 	// -- Events
 	static roomEnd = function() {
-		audio_resume_all();
 		audio_stop_all();
-		trackIsPlaying = false;
-    };
-    
-    static asyncAudioPlaybackEnd = function() {
-		if (async_load[? "sound_id"] == track)
-			trackIsPlaying = false;
+		track = undefined;
     };
 }
 
@@ -475,99 +471,6 @@ function Subsystem_HUD() : Subsystem() constructor {
     };
 }
 
-/// @func Subsystem_Level()
-/// @desc Handles level-specific actions
-function Subsystem_Level() : Subsystem() constructor {
-	active = false;
-	pauseStack = new LockStack();
-    data = {}; // Data specific to the current level
-    pickups = [];
-    checkpoint = array_create(CheckpointData.sizeof); /// @is {CheckpointData}
-    
-    __startLevel = false; // flag to know when we're starting a level
-    
-    static stepEnd = function() {
-		if (!active || pauseStack.is_locked() || global.paused)
-			return;
-		
-		with (global.player) {
-			if (inputs.is_pressed(InputActions.PAUSE)) {
-				var _menu = instance_create_layer(0, 0, LAYER_FADER, objPauseMenu);
-				_menu.depth += 20;
-			}
-		}
-    };
-    
-    static roomStart = function() {
-		active = global.roomIsLevel;
-		if (!active)
-			return;
-		
-		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
-		
-		if (__startLevel) {
-			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
-			checkpoint = variable_clone(objDefaultSpawn.checkpointData);
-		}
-		
-		var _spawnX = checkpoint[CheckpointData.x],
-			_spawnY = checkpoint[CheckpointData.y],
-			_spawnDir = checkpoint[CheckpointData.dir];
-		
-		global.section = find_section_at(_spawnX, _spawnY);
-		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
-		
-		if (!array_empty(pickups)) {
-			with (prtPickup) {
-				if (array_contains(other.pickups, pickupID))
-					instance_destroy();
-			}
-		}
-		
-		global.player.set_body(spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, global.player.characterID));
-		with (global.player.body) {
-			image_xscale = _spawnDir;
-			hudElement.healthpoints = healthpoints;
-			
-			self.generate_weapons();
-			self.equip_weapon(0);
-			self.refresh_palette();
-		}
-		
-		system.camera.active = true;
-		system.camera.stepEnd(); // Get the camera to focus on the player
-		construction_layers_set_visible(false);
-		
-		defer(DeferType.STEP_BEGIN, function() {
-			deactivate_game_objects(false);
-			activate_game_objects();
-		}, 0, 0);
-		
-		// The default level start sequence
-		// (might offer an option in the future to override this)
-		var _playWhistle = __startLevel && global.player.characterID == CharacterType.PROTO;
-		instance_create_depth(0, 0, system.depth + 1, objReady, { playProtoWhistle: _playWhistle });
-		
-		with (prtPlayer) {
-			if (self.is_user_controlled()) {
-				stateMachine.change_state("Inactive");
-				signal_bus().connect_to_signal(SIGNAL_READY_COMPLETE, self, function(_data) /*=>*/ { stateMachine.change_state("Intro"); }, true);
-			}
-		}
-		
-		__startLevel = false;
-    };
-    
-    static roomEnd = function() {
-		pauseStack.remove_all_switches();
-		
-		if (__startLevel) {
-			data = {};
-			pickups = [];
-		}
-    };
-}
-
 /// @func Subsystem_Input()
 /// @desc Manages player input
 function Subsystem_Input() : Subsystem() constructor {
@@ -599,6 +502,134 @@ function Subsystem_Input() : Subsystem() constructor {
                 break;
         }
     }
+}
+
+/// @func Subsystem_Level()
+/// @desc Handles level-specific actions
+function Subsystem_Level() : Subsystem() constructor {
+	active = false;
+	pauseStack = new LockStack();
+    data = {}; // Data specific to the current level
+    pickups = [];
+    checkpoint = array_create(CheckpointData.sizeof); /// @is {CheckpointData}
+    
+    isStartingLevel = false; // flag to know when we're starting a level
+    onLevelSpawn = method(undefined, self.level_spawn_standard);
+    skipReady = false;
+    spawnedPlayers = [];
+    
+    // The standard procedure for spawning into a level
+    static level_spawn_standard = function() {
+		if (!skipReady) {
+			var _playWhistle = isStartingLevel && global.player.characterID == CharacterType.PROTO;
+			instance_create_depth(0, 0, system.depth + 1, objReady, { playProtoWhistle: _playWhistle });
+		}
+		
+		var i = 0; repeat(array_length(spawnedPlayers)) {
+			with (spawnedPlayers[i]) {
+				stateMachine.change_state("Inactive");
+				
+				if (other.skipReady) {
+					defer(DeferType.STEP, function(_player) {
+						if (is_screen_fading())
+							return false;
+						_player.teleport_in();
+					});
+				} else {
+					signal_bus().connect_to_signal(SIGNAL_READY_COMPLETE, self, function(_data) /*=>*/ { self.teleport_in(); }, true);
+				}
+			}
+			i++;
+		}
+    };
+    
+    // Version to level spawn-in that just plops the player in the level
+    static level_spawn_quick = function() {
+		var i = 0; repeat(array_length(spawnedPlayers)) {
+			with (spawnedPlayers[i])
+				self.teleport_in(TeleportInType.STAND);
+			i++;
+		}
+    };
+    
+    static stepEnd = function() {
+		if (!active || pauseStack.is_locked() || global.paused)
+			return;
+		
+		with (global.player) {
+			if (inputs.is_pressed(InputActions.PAUSE)) {
+				var _menu = instance_create_layer(0, 0, LAYER_FADER, objPauseMenu);
+				_menu.depth += 20;
+			}
+		}
+    };
+    
+    static roomStart = function() {
+		active = global.roomIsLevel;
+		if (!active)
+			return;
+		
+		assert(instance_exists(objSection), "Stage contains no sections. Please use objSection to define them.");
+		
+		if (isStartingLevel) {
+			assert(instance_exists(objDefaultSpawn), "Began a stage but nowhere for player to spawn.");
+			var _defaultSpawnList = instance_find_all(objDefaultSpawn);
+			array_sort(_defaultSpawnList, function(_a, _b) /*=>*/ {return _b.priority - _a.priority});
+			checkpoint = variable_clone(_defaultSpawnList[0].checkpointData);
+		}
+		
+		var _spawnX = checkpoint[CheckpointData.x],
+			_spawnY = checkpoint[CheckpointData.y],
+			_spawnDir = checkpoint[CheckpointData.dir],
+			_spawnAnim = checkpoint[CheckpointData.animation];
+		
+		global.section = find_section_at(_spawnX, _spawnY);
+		assert(global.section != noone, "Spawn coordinates are outside of any defined section");
+		
+		if (!array_empty(pickups)) {
+			with (prtPickup) {
+				if (array_contains(other.pickups, pickupID))
+					instance_destroy();
+			}
+		}
+		
+		global.player.set_body(spawn_player_entity(_spawnX, _spawnY, LAYER_ENTITY, global.player.characterID));
+		with (global.player.body) {
+			image_xscale = _spawnDir;
+			hudElement.healthpoints = healthpoints;
+			teleportInType = _spawnAnim;
+			
+			self.generate_weapons();
+			self.equip_weapon(0);
+			self.refresh_palette();
+			
+			array_push(other.spawnedPlayers, id);
+		}
+		
+		system.camera.active = true;
+		system.camera.stepEnd(); // Get the camera to focus on the player
+		construction_layers_set_visible(false);
+		
+		defer(DeferType.STEP_BEGIN, function(__) {
+			deactivate_game_objects(false);
+			activate_game_objects();
+		}, 0, 0);
+		
+		onLevelSpawn();
+		isStartingLevel = false;
+		skipReady = false;
+		onLevelSpawn = method(undefined, self.level_spawn_standard);
+		array_clear(spawnedPlayers);
+    };
+    
+    static roomEnd = function() {
+		pauseStack.remove_all_switches();
+		
+		if (isStartingLevel) {
+			struct_remove_all(data);
+			array_clear(pickups);
+		}
+    };
 }
 
 /// @func Subsystem_Pause()

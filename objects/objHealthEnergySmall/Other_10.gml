@@ -1,9 +1,7 @@
 /// @description On Pickup
-__collected = true;
+event_inherited();
 
-with (__collectPlayer) {
-    if (healthpoints >= healthpointsStart)
-        exit;
-    
-    self.restore_health(other.healthToRestore);
+with (collectingPlayer) {
+    if (healthpoints < healthpointsStart)
+        self.restore_health(other.healthToRestore);
 }

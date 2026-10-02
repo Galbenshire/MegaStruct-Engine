@@ -20,12 +20,8 @@ teleportRef = noone;
 teleportSFX = noone;
 
 // Variables to store various lockpool locks
-introLock = new PlayerLockPoolSwitch(global.player.lockpool,
-	PlayerAction.MOVE_FULL, PlayerAction.TURN_FULL,
-	PlayerAction.JUMP, PlayerAction.SLIDE,
-	PlayerAction.SHOOT, PlayerAction.CHARGE,
-	PlayerAction.CLIMB);
-introPauseLock = new LockStackSwitch(objSystem.level.pauseStack);
+introLock = new PlayerLockPoolSwitch(global.player.lockpool, PlayerAction.SHOOT);
+introPauseLock = new LockStackSwitch(PAUSE_STACK);
 
 // Bool flags for when specific actions are ocurring
 isInactive = true;

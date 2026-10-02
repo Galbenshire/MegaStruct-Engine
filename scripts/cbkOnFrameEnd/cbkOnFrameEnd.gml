@@ -24,8 +24,10 @@ function cbkOnFrameEnd_base() {
 function cbkOnFrameEnd_player() {
 	cbkOnFrameEnd_base();
 	
-	if (global.gameTimeScale.integer > 0)
-		inputs.clear_all();
+	if (global.gameTimeScale.integer > 0) {
+		userInputs.clear_all();
+		manualInputs.clear_all();
+	}
 }
 
 #endregion

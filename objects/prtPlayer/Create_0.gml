@@ -25,7 +25,8 @@ playerID = -1; // Which player is controlling this object
 playerUser = undefined; /// @is {Player} A reference to the player struct using this as a body. If `undefined`, it's not controlled by a player
 
 // Input
-inputs = new InputMap();
+manualInputs = new InputMap();
+userInputs = new InputMap();
 xDir = 0;
 yDir = 0;
 
@@ -54,7 +55,12 @@ weaponIconTimer = 0; /// @is {int}
 // Flag for if the player died by falling down a pit
 // (to skip the delay & explosions)
 canDieToPits = true;
-diedToAPit = false;
+
+// Teleporting In/Out
+teleportInType = TeleportInType.TELEPORT_LONG;
+teleportOutType = TeleportOutType.TELEPORT_LONG;
+teleportX = x;
+teleportY = y;
 
 // Player Sprite
 skinSprite = PlayerSpriteType.IDLE;
@@ -69,16 +75,18 @@ hudElement = new HUDElement_Player();
 
 // Lock Pool
 lockpool = new PlayerLockPool();
-introLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE);
+inactiveLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE, PlayerAction.PHYSICS, PlayerAction.SPRITE_CHANGE, PlayerAction.WEAPON_CHANGE);
+teleportLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE, PlayerAction.GRAVITY);
 slideLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT);
-shootStandStillLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND); // This lock is for staying on the ground after using a weapon like Metal Blade
+shootStandStillLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.MOVE_GROUND, PlayerAction.TURN_GROUND);
 hitstunLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT);
 freeMovementLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE, PlayerAction.PHYSICS, PlayerAction.SPRITE_CHANGE, PlayerAction.WEAPON_CHANGE);
-pauseLock = new LockStackSwitch(objSystem.level.pauseStack);
+pauseLock = new LockStackSwitch(PAUSE_STACK);
 
 // Bool flags for when specific actions are ocurring
 // Makes it easier to check if the player is performing a specific action
-isIntro = false;
+isInactive = false;
+isTeleporting = false;
 isSliding = false;
 isClimbing = false;
 isShooting = false;

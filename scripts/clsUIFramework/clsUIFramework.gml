@@ -523,13 +523,13 @@ function UIFramework_Item(_id) constructor {
 			return;
 		
 		if (menu.isConfirmed)
-			on_confirm();
+			self.on_confirm();
 		else if (menu.isCanceled)
-			on_cancel();
+			self.on_cancel();
 		else if (menu.xDir != 0)
-            on_x_dir(menu.xDir);
+            self.on_x_dir(menu.xDir);
         else if (menu.yDir != 0)
-            on_y_dir(menu.yDir);
+            self.on_y_dir(menu.yDir);
     };
     
     #endregion

@@ -37,9 +37,10 @@ function cbkOnPostTick_player(_tick) {
     event_user(EVENT_ENTITY_POSTTICK);
     signal_bus().emit_signal(SIGNAL_PLAYER_INPUT, {
         player: self.id,
-        inputs: inputs
+        inputs: userInputs
     });
-    inputs.clear_momentary();
+    userInputs.clear_momentary();
+	manualInputs.clear_momentary();
 }
 
 #endregion

@@ -117,11 +117,11 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				
 				barAmount = remap(0, chargeDuration, 0, FULL_HEALTHBAR, chargeTimer);
 				
-				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
-					if (playerRef.is_action_locked(PlayerAction.SHOOT))
-						self.clear_charge();
-					else
+				if (!self.player_can_charge() || (chargeToggle && playerRef.is_input_pressed(InputActions.SHOOT, PlayerInputLevel.CHARGE))) {
+					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
 						self.fire_buster_shot(1);
+					else if (!playerRef.isSliding)
+						self.clear_charge();
 				} else if (chargeTimer >= chargeDuration) {
 					self.change_charge_state(3);
 				}
@@ -139,11 +139,11 @@ function Weapon_MegaBuster() : Weapon() constructor {
 				
 				barAmount = FULL_HEALTHBAR;
 				
-				if (!self.player_can_charge() || (chargeToggle && playerRef.inputs.is_pressed(InputActions.SHOOT))) {
-					if (playerRef.is_action_locked(PlayerAction.SHOOT))
-						self.clear_charge();
-					else
+				if (!self.player_can_charge() || (chargeToggle && playerRef.is_input_pressed(InputActions.SHOOT, PlayerInputLevel.CHARGE))) {
+					if (!playerRef.is_action_locked(PlayerAction.SHOOT))
 						self.fire_buster_shot(2);
+					else if (!playerRef.isSliding)
+						self.clear_charge();
 				}
 				break;
         }
@@ -184,7 +184,7 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		var _shot = playerRef.fire_weapon(shotData);
 		if (_shot != noone) {
 			_shot.xspeed = _moveSpeed * playerRef.image_xscale;
-			chargeToggle = (_chargeLevel <= 0 && playerRef.is_user_controlled() && options_data().chargeToggle);
+			chargeToggle = (_chargeLevel <= 0 && player_is_user_controlled(playerRef) && options_data().chargeToggle);
 			play_sfx(_sfx);
 		}
 		
@@ -195,15 +195,19 @@ function Weapon_MegaBuster() : Weapon() constructor {
 		if (playerRef.is_action_locked(PlayerAction.CHARGE))
 			return false;
 		
-		var _chargeToggle = playerRef.is_user_controlled() ? options_data().autoFire : false;
+		var _chargeToggle = player_is_user_controlled(playerRef) ? options_data().autoFire : false;
 		return _chargeToggle
 			? chargeToggle
-			: playerRef.inputs.is_held(InputActions.SHOOT);
+			: playerRef.is_input_held(InputActions.SHOOT, PlayerInputLevel.CHARGE);
 	};
 	
 	static update_player_colour = function(_index, _colour) {
 		playerRef.palette.set_output_colour_at(_index, _colour);
 		hudRef.weaponPalette[_index] = _colour;
+		
+		signal_bus().emit_signal(SIGNAL_PLAYER_PALETTE_UPDATE, {
+			player: playerRef.id
+		});
 	};
 	
 	#endregion

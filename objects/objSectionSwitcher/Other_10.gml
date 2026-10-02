@@ -30,12 +30,14 @@ stateMachine.add_state("_PreTransition", {
 			playerXSpeedCache = playerInstance.xspeed;
 			playerYSpeedCache = playerInstance.yspeed;
 			playerInstance.refresh_palette();
+			global.player.inputAccessLevel = PlayerInputLevel.WPN_SWITCH;
 			
 			stateMachine.change_substate(1);
 		} else { // An extra tick frame due to instance activation/deactivation conflicts
 			deactivate_game_objects(true, targetSection);
 			stateMachine.change_state("Transition");
 			stateMachine.push_state("FixCameraIn");
+			stateMachine.push_state("Fade");
 			stateMachine.push_state("BossDoorOpen");
 		}
 	}
@@ -84,6 +86,7 @@ stateMachine.add_state("_PostTransition", {
 	enter: function(_prevState) {
 		stateMachine.push_state("FixCameraOut");
 		stateMachine.push_state("BossDoorClose");
+		stateMachine.push_state("Unfade");
 	},
 	tick: function(_substate, _timer) {
 		if (_substate == 0) {
@@ -96,12 +99,13 @@ stateMachine.add_state("_PostTransition", {
 			
 			stateMachine.change_substate(1);
 		} else {
+			global.player.inputAccessLevel = PlayerInputLevel.MAIN;
 			objSystem.camera.active = true;
 			
 			with (playerInstance) {
+				player_halt(self.id, false, false, true, false);
 				xspeed = other.playerXSpeedCache;
 				yspeed = other.playerYSpeedCache;
-				inputs.clear_momentary();
 			}
 			
 			instance_destroy();
@@ -157,6 +161,19 @@ stateMachine.add_state("BossDoorOpen", {
 			doorOpener.clear_fractional();
 	}
 });
+stateMachine.add_state("Fade", {
+	enter: function(_prevState) {
+        if (transitionInstance.canFade)
+			visible = true;
+        else
+			stateMachine.pop_state();
+	},
+	tick: function(_substate, _timer) {
+		image_alpha = min(1, image_alpha + 1/16);
+		if (image_alpha >= 1)
+			stateMachine.pop_state();
+	}
+});
 
 #endregion
 
@@ -207,6 +224,18 @@ stateMachine.add_state("BossDoorClose", {
 		with (bossDoor)
 			doorOpener.clear_fractional();
 	}
+});
+stateMachine.add_state("Unfade", {
+	enter: function(_prevState) {
+        if (!transitionInstance.canFade)
+			stateMachine.pop_state();
+	},
+	tick: function(_substate, _timer) {
+		image_alpha = max(0, image_alpha - 1/16);
+		if (image_alpha <= 0)
+			stateMachine.pop_state();
+	},
+	leave: function(_newState) /*=>*/ { visible = false; }
 });
 
 #endregion
