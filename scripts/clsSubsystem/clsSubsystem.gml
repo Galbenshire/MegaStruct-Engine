@@ -86,51 +86,71 @@ function Subsystem_Audio() : Subsystem() constructor {
 /// @func Subsystem_Camera()
 /// @desc Manages the in-game camera
 function Subsystem_Camera() : Subsystem() constructor {
-	active = false;
+	points = [];
+	autoPosition = false;
 	
 	static stepEnd = function() {
+		// Reset offset
 		var _gameView = game_view();
 		_gameView.reset_offset();
 		
-        if (!active)
-            return;
-        
-        // TO-DO-BETTER: 
-        var _camX = 0,
-            _camY = 0;
-		var _count = 0;
+		// Update all camera points
+		var i = 0; repeat(array_length(points)) {
+			var _point = points[i];
+			if (_point.active)
+				_point.on_tick();
+			
+			i++;
+		}
 		
-		with (prtPlayer) {
-			if (entity_is_dead() || ignoreCamera)
-				continue;
-            _camX += entity_x();
-            _camY += entity_y();
-            _count++;
-        }
-        
-        if (_count > 0) {
-            _camX = (_camX / _count) - GAME_WIDTH * 0.5;
-            _camY = (_camY / _count) - GAME_HEIGHT * 0.5;
-        } else {
-            _camX = _gameView.xView;
-            _camY = _gameView.yView;
-        }
-        
-        var _section = global.section,
-			_sectionExists = instance_exists(_section);
-		var _boundsLeft = _sectionExists ? _section.left : 0,
-			_boundsTop = _sectionExists ? _section.top : 0,
-			_boundsRight = _sectionExists ? _section.right : room_width,
-			_boundsBottom = _sectionExists ? _section.bottom : room_height;
-        _camX = clamp(_camX, _boundsLeft, _boundsRight - GAME_WIDTH);
-        _camY = clamp(_camY, _boundsTop, _boundsBottom - GAME_HEIGHT);
-        
-        _gameView.set_prev_position(_gameView.xView, _gameView.yView);
-        _gameView.set_position(_camX, _camY);
+		// Position the camera
+		if (autoPosition) {
+			var _camX = 0,
+				_camY = 0;
+			var _count = 0;
+			
+			var i = 0; repeat(array_length(points)) {
+				var _point = points[i];
+				_camX += _point.x;
+				_camY += _point.y;
+				_count++;
+				i++;
+			}
+			
+			if (_count > 0) {
+				_camX = (_camX / _count) - GAME_WIDTH * 0.5;
+				_camY = (_camY / _count) - GAME_HEIGHT * 0.5;
+			} else {
+				_camX = _gameView.xView;
+				_camY = _gameView.yView;
+			}
+			
+			var _section = global.section,
+				_sectionExists = instance_exists(_section);
+			var _boundsLeft = _sectionExists ? _section.left : 0,
+				_boundsTop = _sectionExists ? _section.top : 0,
+				_boundsRight = _sectionExists ? _section.right : room_width,
+				_boundsBottom = _sectionExists ? _section.bottom : room_height;
+			_camX = clamp(_camX, _boundsLeft, _boundsRight - GAME_WIDTH);
+			_camY = clamp(_camY, _boundsTop, _boundsBottom - GAME_HEIGHT);
+			
+			_gameView.set_prev_position(_gameView.xView, _gameView.yView);
+			_gameView.set_position(_camX, _camY);
+		}
     };
     
     static roomStart = function() {
-		active = false; // Most non-level rooms do not need the camera to be active
+		autoPosition = false; // Most non-level rooms do not need the camera to be active
+		array_clear(points);
+    };
+    
+    static drawEnd = function() {
+		// if (DEBUG_ENABLED && debug_mode) {
+		// 	var i = 0; repeat(array_length(points)) {
+		// 		points[i].draw();
+		// 		i++;
+		// 	}
+		// }
     };
 }
 
@@ -606,7 +626,7 @@ function Subsystem_Level() : Subsystem() constructor {
 			array_push(other.spawnedPlayers, id);
 		}
 		
-		system.camera.active = true;
+		system.camera.autoPosition = true;
 		system.camera.stepEnd(); // Get the camera to focus on the player
 		construction_layers_set_visible(false);
 		

@@ -35,6 +35,7 @@ function Player(_id/*:number*/) constructor {
 		body = _body;
 		body.playerUser = self;
 		body.playerID = id;
+		body.camPoint.add_to_camera_system();
 		hudElement = body.hudElement;
 		
 		return self;

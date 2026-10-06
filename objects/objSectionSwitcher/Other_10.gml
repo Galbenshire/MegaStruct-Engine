@@ -25,7 +25,7 @@ stateMachine.add_state("_PreTransition", {
 			
 			x = gameViewRef.xView;
 			y = gameViewRef.yView;
-			objSystem.camera.active = false;
+			objSystem.camera.autoPosition = false;
 			
 			playerXSpeedCache = playerInstance.xspeed;
 			playerYSpeedCache = playerInstance.yspeed;
@@ -100,7 +100,7 @@ stateMachine.add_state("_PostTransition", {
 			stateMachine.change_substate(1);
 		} else {
 			global.player.inputAccessLevel = PlayerInputLevel.MAIN;
-			objSystem.camera.active = true;
+			objSystem.camera.autoPosition = true;
 			
 			with (playerInstance) {
 				player_halt(self.id, false, false, true, false);
@@ -183,11 +183,11 @@ stateMachine.add_state("FixCameraOut", {
 	enter: function(_prevState) {
         var _prevSection = global.section;
 		global.section = targetSection;
-		objSystem.camera.active = true;
+		objSystem.camera.autoPosition = true;
 		objSystem.camera.stepEnd();
         alignmentFixXDir = ((x < gameViewRef.xView) - (x + GAME_WIDTH > gameViewRef.right_edge())) * isVerticalTransition;
 		alignmentFixYDir = ((y < gameViewRef.yView) - (y + GAME_HEIGHT > gameViewRef.bottom_edge())) * !isVerticalTransition;
-		objSystem.camera.active = false;
+		objSystem.camera.autoPosition = false;
 		global.section = _prevSection;
 		
 		xstart = gameViewRef.xView;

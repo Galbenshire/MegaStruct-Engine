@@ -314,6 +314,7 @@
     {"id":{"name":"cbkOnSetDamage","path":"scripts/cbkOnSetDamage/cbkOnSetDamage.yy",},},
     {"id":{"name":"cbkOnSpawn","path":"scripts/cbkOnSpawn/cbkOnSpawn.yy",},},
     {"id":{"name":"cbkOnTick","path":"scripts/cbkOnTick/cbkOnTick.yy",},},
+    {"id":{"name":"clsCameraPoint","path":"scripts/clsCameraPoint/clsCameraPoint.yy",},},
     {"id":{"name":"clsCharacter_Bass","path":"scripts/clsCharacter_Bass/clsCharacter_Bass.yy",},},
     {"id":{"name":"clsCharacter_MegaMan","path":"scripts/clsCharacter_MegaMan/clsCharacter_MegaMan.yy",},},
     {"id":{"name":"clsCharacter_ProtoMan","path":"scripts/clsCharacter_ProtoMan/clsCharacter_ProtoMan.yy",},},

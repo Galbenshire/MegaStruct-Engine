@@ -34,6 +34,7 @@
         "TeleportInType.JUMP_IN",
         "TeleportInType.STAND",
       ],"multiselect":false,"name":"respawnAnim","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"TeleportInType.TELEPORT_LONG","varType":6,},
+    {"$GMObjectProperty":"v2","%Name":"priority","filters":[],"listItems":[],"multiselect":false,"name":"priority","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

@@ -73,6 +73,9 @@ palette = new ColourPalette(characterSpecs.get_player_colours(true));
 // HUD
 hudElement = new HUDElement_Player();
 
+// Camera Point
+camPoint = new CameraPoint_Player(id, false); /// @is {CameraPoint?}
+
 // Lock Pool
 lockpool = new PlayerLockPool();
 inactiveLock = new PlayerLockPoolSwitch(lockpool, PlayerAction.SHOOT, PlayerAction.CHARGE, PlayerAction.PHYSICS, PlayerAction.SPRITE_CHANGE, PlayerAction.WEAPON_CHANGE);
@@ -96,9 +99,6 @@ isFreeMovement = false;
 
 // Misc.
 iFrameFlashStyle = IFrameFlashType.FLICKER;
-
-// temp vars
-ignoreCamera = false;
 
 #endregion
 

@@ -501,7 +501,7 @@ stateMachine.add_state("_TeleportIn", {
 		hitmaskMaster = 0;
 		collideWithSolids = false;
 		interactWithWater = false;
-		ignoreCamera = true;
+		camPoint.active = false;
 		teleportLock.activate();
 		if (player_is_user_controlled(self))
 			pauseLock.activate();
@@ -512,7 +512,7 @@ stateMachine.add_state("_TeleportIn", {
 		hitmaskMaster = HitMask.FULL;
 		ground = true;
 		interactWithWater = true;
-		ignoreCamera = false;
+		camPoint.active = true;
 		teleportLock.deactivate();
 		pauseLock.deactivate();
 	}
@@ -620,7 +620,7 @@ stateMachine.add_state("Inactive", {
 		hitmaskMaster = 0;
 		collideWithSolids = false;
 		interactWithWater = false;
-		ignoreCamera = true;
+		camPoint.active = false;
 		inactiveLock.activate();
 		visible = false;
 	},
@@ -629,7 +629,7 @@ stateMachine.add_state("Inactive", {
 		hitmaskMaster = HitMask.FULL;
 		collideWithSolids = true;
 		interactWithWater = true;
-		ignoreCamera = false;
+		camPoint.active = true;
 		inactiveLock.deactivate();
 		visible = true;
 	}
