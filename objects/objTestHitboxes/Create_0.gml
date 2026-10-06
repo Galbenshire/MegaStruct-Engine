@@ -13,6 +13,6 @@ onSpawn = function() {
         canDealDamage: true
     });
     
-    var _hitbox = hitbox_create_simple(-8, 32, 16, 32, true, false, true);
+    var _hitbox = hitbox_create_simple(-8, 32, 16, 32);
     _hitbox.image_blend = c_red;
 };

@@ -1,3 +1,43 @@
+/// @func slope_edges(slope)
+/// @desc Finds the edges that make up a given slope
+///
+/// @param {objSlope}  slope  The slope to get the edges of
+///
+/// @return {array<Line>}  The edges that make up this slope
+function slope_edges(_slope) {
+	if (_slope.image_xscale > 0) {
+		if (_slope.image_yscale > 0) { // Bottom-Right Slope
+			return [
+				bbox_edge_line(AngleDir.UP, _slope),
+				[ _slope.bbox_right, _slope.bbox_top, _slope.bbox_left, _slope.bbox_bottom ],
+				bbox_edge_line(AngleDir.LEFT, _slope)
+			];
+		} else {  // Top-Right Slope
+			return [
+				[ _slope.bbox_left, _slope.bbox_top, _slope.bbox_right, _slope.bbox_bottom ],
+				bbox_edge_line(AngleDir.DOWN, _slope),
+				bbox_edge_line(AngleDir.LEFT, _slope)
+			];
+		}
+	} else {
+		if (_slope.image_yscale > 0) {  // Bottom-Left Slope
+			return [
+				bbox_edge_line(AngleDir.UP, _slope),
+				bbox_edge_line(AngleDir.RIGHT, _slope),
+				[ _slope.bbox_right, _slope.bbox_bottom, _slope.bbox_left, _slope.bbox_top ]
+			];
+		} else {  // Top-Left Slope
+			return [
+				[ _slope.bbox_left, _slope.bbox_bottom, _slope.bbox_right, _slope.bbox_top ],
+				bbox_edge_line(AngleDir.RIGHT, _slope),
+				bbox_edge_line(AngleDir.DOWN, _slope)
+			];
+		}
+	}
+	
+	return []; // Failsafe
+}
+
 /// @func slope_is_steep(slope, scope)
 /// @desc Given a slope, this function checks if it is too steep to be climbed.
 ///		  Entities will treat a steep slope like a wall if they try to move into it.

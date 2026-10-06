@@ -624,7 +624,9 @@ enum AngleDir {
 	RIGHT,
 	UP,
 	LEFT,
-	DOWN
+	DOWN,
+	
+	COUNT
 }
 
 // -- Defer Event Types

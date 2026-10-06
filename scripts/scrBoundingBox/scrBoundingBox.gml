@@ -24,8 +24,26 @@ function bbox_y_center(_scope = self) {
 
 #region Edges
 
+/// @func bbox_edge_line(edge_dir, scope)
+/// @desc Gets a line representing a specific edge of a given instance's bounding box
+///
+/// @param {number}  [edge_dir]  Which edge to pick, corresponding to the `AngleDir` enum
+/// @param {instance}  [scope]  The instance to check. Defaults to the calling instance.
+///
+/// @returns {Line}  An array representing the two points of the edge
+function bbox_edge_line(_edgeDir, _scope = self) {
+	switch (_edgeDir) {
+		case AngleDir.RIGHT: return [ _scope.bbox_right, _scope.bbox_top, _scope.bbox_right, _scope.bbox_bottom ];
+		case AngleDir.UP: return [ _scope.bbox_left, _scope.bbox_top, _scope.bbox_right, _scope.bbox_top ];
+		case AngleDir.LEFT: return [ _scope.bbox_left, _scope.bbox_bottom, _scope.bbox_left, _scope.bbox_top ];
+		case AngleDir.DOWN: return [ _scope.bbox_right, _scope.bbox_bottom, _scope.bbox_left, _scope.bbox_bottom ];
+		
+		default: show_error($"Invalid edge ({_edgeDir}) supplied for {_GMFUNCTION_}", true); break;
+	}
+}
+
 /// @func bbox_horizontal(direction, scope)
-/// @desc Gets the x-position of the left/right edge of a give instance's bounding box
+/// @desc Gets the x-position of the left/right edge of a given instance's bounding box
 ///       Whether it's the left side that's picked or the right depends on the 'direction' variable given
 ///
 /// @param {number}  [direction]  If greater than 0, the right edge will be picked. Otherwise, the left edge is picked.
@@ -37,7 +55,7 @@ function bbox_horizontal(_dir = 1, _scope = self) {
 }
 
 /// @func bbox_vertical(direction, scope)
-/// @desc Gets the x-position of the top/bottom edge of a give instance's bounding box
+/// @desc Gets the x-position of the top/bottom edge of a given instance's bounding box
 ///       Whether it's the top side that's picked or the bottom depends on the 'direction' variable given
 ///
 /// @param {number}  [direction]  If greater than 0, the bottom edge will be picked. Otherwise, the top edge is picked.

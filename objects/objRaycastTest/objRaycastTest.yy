@@ -1,15 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"objSection",
+  "%Name":"objRaycastTest",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"objSection",
+  "name":"objRaycastTest",
   "overriddenProperties":[],
   "parent":{
-    "name":"Level Objects",
-    "path":"folders/Level Objects.yy",
+    "name":"_TestObjects",
+    "path":"folders/_TestObjects.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -30,12 +32,9 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprSection",
-    "path":"sprites/sprSection/sprSection.yy",
+    "name":"sprSlopeSolid",
+    "path":"sprites/sprSlopeSolid/sprSlopeSolid.yy",
   },
   "spriteMaskId":null,
-  "tags":[
-    "active_always",
-  ],
   "visible":true,
 }

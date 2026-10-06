@@ -162,6 +162,41 @@ function distance_to_collidable_y(_collidable, _direction, _scope = self) {
 }
 
 /// @func get_collidable_type(collidable, scope)
+/// @desc Finds the edges that make up a given collidable
+///
+/// @param {prtCollidable}  collidable  The collidable to check for
+/// @param {prtEntity}  [scope]  The instance this check is in the scope of. Defaults to noone.
+///
+/// @return {array<Line>}  The edges that make up this collidable
+function get_collidable_edges(_collidable, _scope = noone) {
+	switch (get_collidable_type(_collidable, _scope)) {
+		case SolidType.SOLID:
+        case SolidType.SLOPE_SOLID:
+			return [
+				bbox_edge_line(AngleDir.UP, _collidable),
+				bbox_edge_line(AngleDir.RIGHT, _collidable),
+				bbox_edge_line(AngleDir.DOWN, _collidable),
+				bbox_edge_line(AngleDir.LEFT, _collidable)
+			];
+        
+        case SolidType.TOP_SOLID: return [ bbox_edge_line(AngleDir.UP, _collidable) ];
+        case SolidType.RIGHT_SOLID: return [ bbox_edge_line(AngleDir.RIGHT, _collidable) ]; break;
+        case SolidType.BOTTOM_SOLID: return [ bbox_edge_line(AngleDir.DOWN, _collidable) ]; break;
+        case SolidType.LEFT_SOLID: return [ bbox_edge_line(AngleDir.LEFT, _collidable) ]; break;
+        
+        case SolidType.GRAV_DIR_SOLID:
+			if (_scope == noone || _scope.gravDir > 0)
+				return [ bbox_edge_line(AngleDir.UP, _collidable) ];
+			else
+				return [ bbox_edge_line(AngleDir.DOWN, _collidable) ];
+		
+		case SolidType.SLOPE: return slope_edges(_collidable); break;
+	}
+	
+	return [];
+}
+
+/// @func get_collidable_type(collidable, scope)
 /// @desc Finds the type of solid a collidable is, taking into account any overrides defined by the calling instance.
 ///
 /// @param {prtCollidable}  collidable  The collidable to check.
@@ -269,10 +304,8 @@ function get_collidables_y(_range, _scope = self) {
                 _valid = (_range < 0 && _scope.bbox_top >= _candidate.bbox_bottom);
                 break;
             case SolidType.GRAV_DIR_SOLID: // Only count if we're moving in the direction of gravity, and aren't already inside it
-				if (_range * _scope.gravDir >= 0) {
-					with (_scope)
-						_valid = !place_meeting(x, y, _candidate);
-				}
+				var _overlap = bbox_vertical(_scope.gravDir, _scope) - bbox_vertical(-_scope.gravDir, _candidate);
+				_valid = (_range * _scope.gravDir >= 0 && _overlap * _scope.gravDir <= 0);
 				break;
 			case SolidType.SLOPE: // The entity's x-center must be within the slope
                 var _isSteepSlope = slope_is_steep(_candidate, _scope),
@@ -691,6 +724,140 @@ function set_velocity_vector(_speed, _direction, _scope = self) {
 
 #region Other
 
+/// @func raycast_find(x1, y1, x2, y2, scope)
+/// @desc This function casts a line against collidables
+///		  If a collidable is found, various info will be reported & returned
+///
+/// @param {number}  x1  The x coordinate of the start of the line.
+/// @param {number}  y1  The y coordinate of the start of the line.
+/// @param {number}  x2  The x coordinate of the end of the line.
+/// @param {number}  y2  The y coordinate of the end of the line.
+/// @param {prtEntity}  [scope]  The instance to use for this line against other entities. Defaults to the calling instance.
+///
+/// @return {struct}  A struct containing the following information:
+///		- {bool} collided  Whether the raycast hit something (true) or not (false)
+///		- {instance} collider  The collidable the raycast hit. If no collision ocurred, this will be `noone`
+///		- {Vector2} position  The position of the collision
+///		- {number} normal  The angle perpendicular to the hit edge of the collider
+///		- {number} distance  The length the raycast travelled before hitting the collider
+///		- {number} fraction  The ratio of the distance of collision compared to the full length of the raycast
+function raycast_find(_x1, _y1, _x2, _y2, _scope = self) {
+	var _collidiblesList = ds_list_create(),
+		_collidiblesCount = collision_line_list(_x1, _y1, _x2, _y2, prtCollidable, true, false, _collidiblesList, true);
+	var _raycastAngle = point_direction(_x1, _y1, _x2, _y2),
+		_raycastDistance = point_distance(_x1, _y1, _x2, _y2);
+	var _raycastResult = {
+		collided: false,
+		collider: noone,
+		position: [0, 0],
+		normal: 0,
+		distance: 0,
+		fraction: 0
+	};
+	
+	for (var i = 0; i < _collidiblesCount; i++) {
+		var _candidate = _collidiblesList[| i];
+		
+		if (_candidate.id == _scope.id)
+            continue;
+        if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
+            continue;
+        if (_candidate.object_index == objCustomSolid && !_candidate.is_solid_to_entity(_scope))
+			continue;
+		
+		var _candidateEdges = get_collidable_edges(_candidate, _scope),
+			_edgeCount = array_length(_candidateEdges);
+		
+		for (var j = 0; j < _edgeCount; j++) {
+			var _edge = _candidateEdges[j];
+			var _edgex1 = _edge[Line.x1],
+				_edgey1 = _edge[Line.y1],
+			var _edgex2 = _edge[Line.x2],
+				_edgey2 = _edge[Line.y2];
+			var _edgeAngle = point_direction(_edgex1, _edgey1, _edgex2, _edgey2),
+				_angleDiff = angle_difference(_edgeAngle, _raycastAngle);
+			var _candidatePoint = line_line_intersects(_x1, _y1, _x2, _y2, _edgex1, _edgey1, _edgex2, _edgey2);
+			
+			if (!is_undefined(_candidatePoint) && in_range(_angleDiff, 0, 180, false, false)) {
+				_raycastResult.collided = true;
+				_raycastResult.collider = _candidate;
+				_raycastResult.position[Vector2.x] = _candidatePoint[Vector2.x];
+				_raycastResult.position[Vector2.y] = _candidatePoint[Vector2.y];
+				_raycastResult.normal = wrap_angle(_edgeAngle + 90);
+				_raycastResult.distance = point_distance(_x1, _y1, _candidatePoint[Vector2.x], _candidatePoint[Vector2.y]);
+				_raycastResult.fraction = _raycastResult.distance / _raycastDistance;
+				break;
+			}
+		}
+		
+		if (_raycastResult.collided)
+			break;
+	}
+	
+	ds_list_destroy(_collidiblesList);
+	return _raycastResult;
+}
+
+/// @func raycast_find_all(x1, y1, x2, y2, results, scope)
+/// @desc This function casts a line against collidables
+///		  Each collidable found is reported & stored in an array
+///
+/// @param {number}  x1  The x coordinate of the start of the line.
+/// @param {number}  y1  The y coordinate of the start of the line.
+/// @param {number}  x2  The x coordinate of the end of the line.
+/// @param {number}  y2  The y coordinate of the end of the line.
+/// @param {array<struct>}  results  The array to store the results in. (see `raycast_find` for the contents of the struct)
+/// @param {prtEntity}  [scope]  The instance to use for this line against other entities. Defaults to the calling instance.
+///
+/// @return {int}  How many collisions were found
+function raycast_find_all(_x1, _y1, _x2, _y2, _results = [], _scope = self) {
+	var _collidiblesList = ds_list_create(),
+		_collidiblesCount = collision_line_list(_x1, _y1, _x2, _y2, prtCollidable, true, false, _collidiblesList, true);
+	var _raycastAngle = point_direction(_x1, _y1, _x2, _y2),
+		_raycastDistance = point_distance(_x1, _y1, _x2, _y2);
+	
+	array_clear(_results);
+	
+	for (var i = 0; i < _collidiblesCount; i++) {
+		var _candidate = _collidiblesList[| i];
+		
+		if (_candidate.id == _scope.id)
+            continue;
+        if (is_object_type(prtEntity, _candidate) && !entity_is_solid_to_entity(_candidate, _scope))
+            continue;
+        if (_candidate.object_index == objCustomSolid && !_candidate.is_solid_to_entity(_scope))
+			continue;
+		
+		var _candidateEdges = get_collidable_edges(_candidate, _scope),
+			_edgeCount = array_length(_candidateEdges);
+		
+		for (var j = 0; j < _edgeCount; j++) {
+			var _edge = _candidateEdges[j];
+			var _edgex1 = _edge[Line.x1],
+				_edgey1 = _edge[Line.y1],
+			var _edgex2 = _edge[Line.x2],
+				_edgey2 = _edge[Line.y2];
+			var _edgeAngle = point_direction(_edgex1, _edgey1, _edgex2, _edgey2),
+				_angleDiff = angle_difference(_edgeAngle, _raycastAngle);
+			var _candidatePoint = line_line_intersects(_x1, _y1, _x2, _y2, _edgex1, _edgey1, _edgex2, _edgey2);
+			
+			if (!is_undefined(_candidatePoint) && in_range(_angleDiff, 0, 180, false, false)) {
+				var _candidateDistance = point_distance(_x1, _y1, _candidatePoint[Vector2.x], _candidatePoint[Vector2.y]);
+				array_push(_results, {
+					collider: _candidate,
+					position: [ _candidatePoint[Vector2.x], _candidatePoint[Vector2.y] ],
+					normal: wrap_angle(_edgeAngle + 90),
+					distance: _candidateDistance,
+					fraction: _candidateDistance / _raycastDistance
+				});
+			}
+		}
+	}
+	
+	ds_list_destroy(_collidiblesList);
+	return array_length(_results);
+}
+
 /// @func try_splashing(x1, y1, x2, y2)
 /// @desc Given a line, this function tries to make a splash against any water instances in the line's path
 ///
@@ -706,11 +873,11 @@ function try_splashing(_x1, _y1, _x2, _y2) {
 	
 	var _water = _inWaterStart ? instance_position(_x1, _y1, objWater) : instance_position(_x2, _y2, objWater);
 	
-	for (var i = 0; i < 4; i++) {
+	for (var i = 0; i < AngleDir.COUNT; i++) {
 		if (!bitmask_has_bit(_water.splashDirection, 1 << i))
 			continue;
 		
-		var _line/*:Line*/ = _water.lines[i],
+		var _line/*:Line*/ = bbox_edge_line(i, _water),
 			_intersect/*:Vector2*/ = line_line_intersects(_x1, _y1, _x2, _y2, _line[Line.x1], _line[Line.y1], _line[Line.x2], _line[Line.y2]);
 		if (is_undefined(_intersect))
 			continue;

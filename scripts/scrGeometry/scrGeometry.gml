@@ -44,8 +44,8 @@ function line_line_intersects(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4) {
 ///
 /// @returns {bool}  Whether there's an overlap (true) or not (false)
 function line_line_overlaps(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4) {
-    var _uDiv = (_y4 - _y3) *  (_x2 - _x1) - (_x4 - _x3) * (_y2 - _y1);
-    var _uA = ((_x4 - _x3) * (_y1 - _y3) - (_y4 - _y3) *  (_x1 - _x3)) / _uDiv;
-    var _uB = ((_x2 - _x1) * (_y1 - _y3) - (_y2 - _y1) *  (_x1 - _x3)) / _uDiv;
+    var _uDiv = (_y4 - _y3) *  (_x2 - _x1) - (_x4 - _x3) * (_y2 - _y1),
+        _uA = ((_x4 - _x3) * (_y1 - _y3) - (_y4 - _y3) *  (_x1 - _x3)) / _uDiv,
+        _uB = ((_x2 - _x1) * (_y1 - _y3) - (_y2 - _y1) *  (_x1 - _x3)) / _uDiv;
     return (_uA >= 0 && _uA <= 1 && _uB >= 0 && _uB <= 1);
 }

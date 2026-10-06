@@ -59,6 +59,7 @@ stateMachine.add_state("StandardGround", {
 					move_and_collide_x(xDir);
 					move_and_collide_y(gravDir);
 				}
+				animator.play("sidestep");
 				xspeed = _isOnIce ? approach(xspeed, 0, DEFAULT_ICE_DECEL_IDLE) : 0;
 				break;
 			case SUBSTATE_GROUND_BRAKE:

@@ -16,22 +16,17 @@ while (abs(_totalSpeed) > 0) {
 		break;
     }
     
-    var _mask = mask_index,
-        _x = x,
-        _y = y;
-    mask_index = sprDot;
-    x += 8 * sign(_step);
-    y -= gravDir;
-    if (entity_check_ground(gravDir, true, true) == noone && !check_for_solids_point(x, y, self)) {
-        if (!check_for_solids_point(x - 16  * sign(_step), y - gravDir, self)) {
-            xspeed = 0;
-            hasReachedEdge = true;
-            _totalSpeed = 0;
-        }
-    }
-    x = _x;
-    y = _y;
-    mask_index = _mask;
+    var _rayStartX = bbox_horizontal(image_xscale),
+		_rayStartY = bbox_top;
+	var _rayEndX = _rayStartX,
+		_rayEndY = bbox_bottom + 10;
+	var _raycastResult = raycast_find(_rayStartX, _rayStartY, _rayEndX, _rayEndY);
+	
+	if (!_raycastResult.collided) {
+		xspeed = 0;
+        hasReachedEdge = true;
+        _totalSpeed = 0;
+	}
     
     _totalSpeed = approach(_totalSpeed, 0, 1);
 }

@@ -264,7 +264,7 @@ function Subsystem_Debug() : Subsystem() constructor {
 				
 				if (keyboard_check_pressed(vk_f9)) {
 					with (global.player) {
-						if (!instance_exists(body) || body.isIntro)
+						if (!instance_exists(body) || !player_is_active(body))
 							break;
 						
 						if (keyboard_check(vk_shift))

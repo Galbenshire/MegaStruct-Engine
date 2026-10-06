@@ -19,6 +19,16 @@ function bitmask_merge_bits(_bits) {
     return array_reduce(_bits, function(_prev, _curr, i) /*=>*/ {return bitmask_set_bit(_prev, _curr)}, 0);
 }
 
+/// @func bitmask_merge_bitshifts(shifts)
+/// @desc Merges all given bits, represented as their shifts, into a bitmask
+///
+/// @param {array<int>}  shifts  The bit shifts to merge
+///
+/// @returns {int}  The resulting bitmask
+function bitmask_merge_bitshifts(_shifts) {
+    return array_reduce(_shifts, function(_prev, _curr, i) /*=>*/ {return bitmask_set_bit(_prev, 1 << _curr)}, 0);
+}
+
 /// @func bitmask_set_bit(bitmask, bit)
 /// @desc Sets the specified bit on a given bitmask
 ///
