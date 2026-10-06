@@ -365,6 +365,7 @@
     {"id":{"name":"scrCollision","path":"scripts/scrCollision/scrCollision.yy",},},
     {"id":{"name":"scrDebugging","path":"scripts/scrDebugging/scrDebugging.yy",},},
     {"id":{"name":"scrDrawing","path":"scripts/scrDrawing/scrDrawing.yy",},},
+    {"id":{"name":"scrEasings","path":"scripts/scrEasings/scrEasings.yy",},},
     {"id":{"name":"scrEntitiesBoolChecks","path":"scripts/scrEntitiesBoolChecks/scrEntitiesBoolChecks.yy",},},
     {"id":{"name":"scrEntitiesMain","path":"scripts/scrEntitiesMain/scrEntitiesMain.yy",},},
     {"id":{"name":"scrEntitiesSubSteps","path":"scripts/scrEntitiesSubSteps/scrEntitiesSubSteps.yy",},},

@@ -45,6 +45,33 @@ $"{_GMFUNCTION_} can only be used by an object that inherits from {object_get_na
 #endregion
 
 
+#region Easings
+
+enum EaseType {
+	IN,
+	OUT,
+	IN_OUT,
+	OUT_IN
+}
+
+enum LerpType {
+	// POWERS
+	LINEAR,
+	QUAD,
+	CUBIC,
+	QUART,
+	QUINT,
+	POWER,
+	
+	// THE OTHERS
+	CIRC,
+	SINE,
+	BACK
+}
+
+#endregion
+
+
 #region Entity Macros
 
 // The list of factions an entity can be a part of, or can target, in this game
