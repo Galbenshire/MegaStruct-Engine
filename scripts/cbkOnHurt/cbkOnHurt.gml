@@ -51,6 +51,7 @@ function cbkOnHurt_player(_damageSource) {
     
     stateMachine.push_or_restart_state("Hurt");
     hudElement.healthpoints = healthpoints;
+    signal_bus().emit_signal(SIGNAL_PLAYER_HURT, { player: self.id })
 }
 
 #endregion

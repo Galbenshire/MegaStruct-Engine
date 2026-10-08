@@ -462,6 +462,7 @@ enum PlayerShootType {
 #macro SIGNAL_DISPEL_UTILITIES "dispelUtilities"
 #macro SIGNAL_BOSS_FIGHTSTART "bossStart"
 #macro SIGNAL_BOSS_DEATH "bossDeath"
+#macro SIGNAL_PLAYER_HURT "playerHurt"
 #macro SIGNAL_PLAYER_INPUT "playerInput"
 #macro SIGNAL_PLAYER_PALETTE_UPDATE "playerPaletteUpdated"
 #macro SIGNAL_PLAYER_SHOT "playerShot"

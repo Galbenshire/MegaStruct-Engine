@@ -1,6 +1,29 @@
+==== BOSS RELATED ====
+
+=== SIGNAL_BOSS_FIGHTSTART () ===
+-- A boss fight has started
+
+=== SIGNAL_BOSS_DEATH (boss) ===
+-- A boss has just died
+- @param {prtBoss}  boss  The boss instance
+
+
 ==== PLAYER RELATED ====
 
-=== playerShot(player, projectile) ===
+=== SIGNAL_PLAYER_HURT (player) ===
+-- The player was just hurt
+- @param {prtPlayer}  player  The hurt player entity
+
+=== SIGNAL_PLAYER_INPUT (player, input) ===
+-- A snapshot of the player's input
+- @param {prtPlayer}  player  The player entity
+- @param {InputMap}  input  The player's input map
+
+=== SIGNAL_PLAYER_PALETTE_UPDATE (player) ===
+-- The player's palette has been updated
+- @param {prtPlayer}  player  The player entity
+
+=== SIGNAL_PLAYER_SHOT (player, projectile) ===
 -- The player has just fired a weapon
 - @param {prtPlayer}  player  The player entity that just fired a shot
 - @param {instance}  projectile  The projectile being fired
@@ -8,8 +31,11 @@
 
 ==== MISC. ====
 
-=== appSurfaceResize() ===
+=== SIGNAL_APPSURF_RESIZE () ===
 -- The application surface has been resized
 
-=== readyComplete() ===
+=== SIGNAL_DISPEL_UTILITIES () ===
+-- Any ultility-like weapons the player has active should deactivate
+
+=== SIGNAL_READY_COMPLETE () ===
 -- Informs the player that they can perform their intro sequence now

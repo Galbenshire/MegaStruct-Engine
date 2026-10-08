@@ -1,149 +1,151 @@
-== healthpointsStart (int)
+The following variables are available for the user to modify via the Variables tab when editing an entity in the Room Editor
+
+====== depthOffset (int)
+- for an entity placed via the Room Editor, `depthOffset` shifts this entity from its starting layer
+  has no effect for entities spawned via `spawn_entity` & `spawn_child_entity`
+
+====== healthpointsStart (int)
 - how much health this entity spawns in with
   entities left with 0 health will die
 
-== contactDamage (number)
+====== contactDamage (number)
 - how much damage this entity can deal to other hostile entities
-  (`canDealDamage` must also be true to actually deal damage)
+  (`hitmask` must also have the `Hitmask.DEAL_DAMAGE` bit set to actually deal damage)
+  
+====== hitmask (int)
+- sets how this entity should act during entity-entity collisions
+  this variable works as a bitmask, with a bit for each of the following parameters:
+    * Hitmask.DEAL_DAMAGE: the entity is try to deal damage to other entities (`contactDamage` must also be > 0)
+    * Hitmask.TAKE_DAMAGE: the entity will receive damage from other entities
+    * Hitmask.BLOCK: the entity will attempt to block any attacks directed at it
 
-== canTakeDamage (bool)
-- sets whether this entity can receive damage from other entities (true) or not (false)
+====== collisionPriority (int)
+- determines the order at which this entity should be processed during entity-entity collisions
+  a higher number means this entity will be handled earlier than other entities
 
-== canDealDamage (bool)
-- sets whether this entity can deal damage to other entities (true) or not (false)
-  (`contactDamage` must also be > 0 to actually deal damage)
+====== penetrates (bool)
+- sets how this entity should react to "blocks" during entity-entity collisions
+  if `false`, the entity is blocked
+  if `true`, the entity can avoid blocks (unless contact damage is 0)
 
-== penetrate (int)
-- sets how this entity should react to "guards" during entity-entity collisions
-  the available values (corresponding to the `PenetrateType` enum) are as follows:
-    * PenetrateType.NONE: No damage occurs. The entity is reflected, using its `onReflected` callback
-    * PenetrateType.NO_DAMAGE: No damage occurs. The current collision is ignored.
-    * PenetrateType.NO_DAMAGE_AND_COLLISION: No damage occurs. All future collisions are ignored.
-    * PenetrateType.BYPASS_GUARD: The guard is ignored, and damage continues as normal.
-
-== pierces (int)
+====== pierces (int)
 - sets how this entity should react after dealing damage to an entity
   the available values (corresponding to the `PierceType` enum) are as follows:
     * PierceType.NEVER: The entity always dies after dealing damage
     * PierceType.ON_KILLS_ONLY: The entity only dies if its target did not die from the attack
     * PierceType.ALWAYS: The entity never dies from dealing damage
 
-== factionLayer (int)
+====== blockType (int)
+- sets the type of "block" this entity will do, if Hitmask.BLOCK is set on its `hitmask`
+  the available values (corresponding to the `BlockType` enum) are as follows:
+    * BlockType.NONE: no blocking will actually occur, allowing for damage to happen
+    * BlockType.REFLECT: the blocked attacker should do a regular Mega Man style reflection
+    * BlockType.DESTROY: the blocked attacker should be destroyed
+    * BlockType.PROTO_SHIELD: the blocked attacker should be reflected, becoming an attack for the defender
+
+====== attackDelay (int)
+- sets how often this entity should attempt to damage any other entities overlapping
+
+====== factionLayer (int)
 - this sets which "factions" this entity belongs to
   corresponding to the `Faction` enum, this determines which entities can collide with this one
   (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
 
-== factionMask (int)
+====== factionMask (int)
 - this sets which "factions" this entity can collide with
   other entities with any of the factions listed here in their `factionLayer` variable will be viable for collisions
   (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
 
-== factionTargets (int)
-- this sets which "factions" this entity can target
-  other entities with any of the factions listed here in their `factionLayer` variable will be viable for targetting
-  (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
-  (if this entity is not set to target anything, this variable will do nothing)
-
-== isTargetable (bool)
+====== isTargetable (bool)
 - sets whether this entity can be targetted by other entities (true) or not (false)
 
-== targetingPreset (string)
+====== targetingPreset (string)
 - sets a preset targetting behaviour for this entity
-  the available values are as follows:
-    * "Generic": Pseudo-smart AI. Only retarget (with low probability) if the current target is far away, and hasn't attacked in a while
-    * "Nearest": Always pick the closest valid target.
-    * "Switch Regularly": Pick a target at random every set interval
-    * "Pick Once": Pick a target at random, and stick to it (unless it becomes invalid)
-    * "Custom": You must supply the targetting behaviour yourself
-    * "No Target": This entity will not perform any targetting
+  the available values (corresponding to the `ReticlePresetType` enum) are as follows:
+    * ReticlePresetType.GENERIC: Pseudo-smart AI. Only retarget (with low probability) if the current target is far away, and hasn't attacked in a while
+    * ReticlePresetType.NEAREST: Always pick the closest valid target.
+    * ReticlePresetType.SWITCH_REGULARLY: Pick a target at random every set interval
+    * ReticlePresetType.PICK_ONCE: Pick a target at random, and stick to it (unless it becomes invalid)
+    * ReticlePresetType.CUSTOM: You must supply the targetting behaviour yourself
+    * ReticlePresetType.NO_TARGET: This entity will not perform any targetting
 
-== faceTarget (bool)
+====== faceTarget (bool)
 - if true, this entity will face its current target at all times
   (this entity must be set to do any targetting for this to work)
 
-== faceTargetOnSpawn (bool)
+====== faceTargetOnSpawn (bool)
 - if true, this entity will face its current target when spawning in
   (this entity must be set to do any targetting for this to work)
 
-== collideWithSolids (bool)
+====== factionTargetMask (int)
+- this sets which "factions" this entity can target
+  other entities with any of the factions listed here in their `factionLayer` variable will be viable for targetting
+  if left empty, this entity will target the same factions it will collide with
+  (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
+
+====== collideWithSolids (bool)
 - sets whether this entity can collide with solids (true) or not (false)
 
-== gravEnabled (bool)
+====== factionSolidMask (int)
+- this sets which "factions" this entity will be solid to
+  if left empty, ALL entities will treat this entity as solid
+  (though this appears as a list in Variable Definitions, it is converted to a bitmask in-game)
+
+====== gravEnabled (bool)
 - sets whether this entity should be affected by gravity (true) or not (false)
 
-== grav (number)
+====== grav (number)
 - the strength of gravity to apply to this entity
   (`gravEnabled` must be set to true for this variable to do anything)
 
-== gravDir (int)
+====== gravDir (int)
 - the direction to apply gravity to this entity
   (`gravEnabled` must be set to true for this variable to do anything)
 
-== maxFallSpeed (number)
+====== maxFallSpeed (number)
 - maximum falling speed for this entity, relative to their direction of gravity
 
-== respawn (bool)
-- if false, this entity is destroyed when despawned or killed
+====== respawnType (int)
+- determines how this entity should be able to respawn
+  the available values (corresponding to the `RespawnType` enum) are as follows:
+    * RespawnType.ENABLED: can respawn after dying or despawning
+    * RespawnType.DISABLE_ON_DEATH: respawning is disabled on death. Regained during a section switch.
+    * RespawnType.DESTROY_ON_DEATH: is destroyed after dying, but not after despawning
+    * RespawnType.DISABLED: is destroyed after dying or despawning
 
-== respawnRange (int)
+====== respawnRange (int)
 - this entity must be this close to the edge of the screen to be spawned in
 
-== despawnRange (int)
+====== despawnRange (int)
 - this entity must be this far away from the edge of the screen to be despawned
 
-== sectionSwitchBehaviour (int)
+====== sectionSwitchBehaviour (int)
 - determines how this entity should act during section switches
   the available values (corresponding to the `SectionSwitchBehaviour` enum) are as follows:
     * SectionSwitchBehaviour.HIDDEN: The entity is deactivated as soon as a section switch occurs
     * SectionSwitchBehaviour.VISIBLE: The entity is only deactivated if offscreen at the end of a section switch
-    * SectionSwitchBehaviour.PERSISTANT: The entity is deactivated from section switches
+    * SectionSwitchBehaviour.PERSISTANT: The entity is present during section switches
 
-== interactWithWater (bool)
+====== canBeFrozen (bool)
+- if true, this entity can become frozen from ice-type weapons
+
+====== interactWithWater (bool)
 - sets whether this entity should be affected by water (true) or not (false)
   this includes reduced gravity, splashes, & making bubbles
 
-== waterGravMod (number)
-- reduces the entity's gravity when in water
-  (`interactWithWater` must be set to true for this variable to do anything)
-
-== canMakeBubble (bool)
+====== canMakeBubble (bool)
 - sets whether this entity should make bubbles in water (true) or not (false)
   (`interactWithWater` must be set to true for this variable to do anything)
 
-== bubbleXOffset (number)
-- water bubbles will be spawned at this x-offset from the entity
-  (`canMakeBubble` must be set to true for this variable to do anything)
+====== itemDropType (int)
+- determines if this entity is able to drop an item on death
+  the available values (corresponding to the `ItemDropType` enum) are as follows:
+    * ItemDropType.NONE: entity will not drop anything on death
+    * ItemDropType.RANDOM: entity will drop random items (health, ammo, & bolts)
+    * ItemDropType.CUSTOM: entity will drop a custom object, as defined by the user
 
-== bubbleYOffset (number)
-- water bubbles will be spawned at this y-offset from the entity
-  (`canMakeBubble` must be set to true for this variable to do anything)
+====== customItemDrop (asset<object>)
+- If `itemDropType` is set to ItemDropType.CUSTOM, this variable determines what object this entity will drop on death
 
-== onSpawn (function<void>)
-- code to perform when this entity spawns in
-
-== onDespawn (function<void>)
-- code to perform when this entity is despawned
-
-== onSetDamage (function<DamageSource, void>)
-- code to perform when calculating damage to receive from an attack
-
-== onGuard (function<DamageSource, void>)
-- code to run to check if an entity can "guard" against an attack
-
-== onReflected (function<DamageSource, void>)
-- code to run when an entity has been reflected
-
-== onAttackBegin (function<DamageSource, void>)
-- code to perform just before this entity can deal damage
-
-== onAttackEnd (function<DamageSource, void>)
-- code to perform after this entity has dealt damage
-
-== onHurt (function<DamageSource, void>)
-- code to perform after an entity has received damage from an attack
-
-== onDeath (function<DamageSource, void>)
-- code to perform when this entity dies from an attack
-
-== onDraw (function<bool, void>)
-- code for drawing this entity
+====== dropItemOnce (bool)
+- sets whether this entity should only drop an item once (true) or multiple times (false)

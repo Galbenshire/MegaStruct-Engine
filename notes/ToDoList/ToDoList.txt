@@ -9,8 +9,3 @@
     -- etc.
 - Save File System
 - Lives System
-
-
-==== Potential System Reworks ====
-* entity-entity collisions
-    - could it better if it followed Megamix's approach less rigidly?
