@@ -469,7 +469,7 @@ function Subsystem_HUD() : Subsystem() constructor {
 	static roomStart = function() {
 		active = global.roomIsLevel;
 		if (active)
-			bossHUD = [];
+			array_clear(bossHUD);
 	};
 	
 	static draw = function() {

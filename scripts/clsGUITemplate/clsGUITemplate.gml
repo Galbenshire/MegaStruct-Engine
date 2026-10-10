@@ -12,9 +12,9 @@ function GUITemplate(_prefabRoom) constructor {
     /// @static
     static LAYER_MARKERS = 0;
     
-    /// Layer in the room where the sprites should be
+    /// First layer in the room where sprites should be
     /// @static
-    static LAYER_SPRITES = 1;
+    static LAYER_SPRITE_START = 1;
     
     #endregion
     
@@ -24,7 +24,8 @@ function GUITemplate(_prefabRoom) constructor {
     height = 0;
     
     sprites = [];
-    spriteCount = 0;
+    spriteCount = [];
+    layerCount = 0;
     
     markers = {};
     
@@ -32,29 +33,33 @@ function GUITemplate(_prefabRoom) constructor {
     
     #region Functions
     
-    /// @method draw(x, y)
-	/// @desc Draws all the sprites that make up this template
+    /// @method draw(x, y, layer)
+	/// @desc Draws all the sprites that make up a specific layer of this template
 	///
 	/// @param {number}  x  x-position to draw at
 	/// @param {number}  y  y-position to draw at
-    static draw = function(_x, _y) {
-        var i = 0; repeat(spriteCount) {
-            with (sprites[i])
-                draw_sprite_ext(sprite_index, image_index, _x + x, _y + y, image_xscale, image_yscale, image_angle, image_blend, image_alpha);
+	/// @param {int}  [layer]  Which layer of the template to use. Defaults to the first layer.
+    static draw = function(_x, _y, _layer = 0) {
+        var i = 0; repeat(spriteCount[_layer]) {
+			var _spr = sprites[_layer][i];
+			draw_sprite_ext(_spr.sprite_index, _spr.image_index,
+				_spr.x + _x, _spr.y + _y, _spr.image_xscale, _spr.image_yscale,
+				_spr.image_angle, _spr.image_blend, _spr.image_alpha);
             i++;
         }
     };
     
-    /// @method draw_shadow(x, y, colour)
-	/// @desc Draws all the sprites that make up this template in a single colour
+    /// @method draw_shadow(x, y, colour, layer)
+	/// @desc Draws all the sprites that make up a specific layer of this template in a single colour
 	///
 	/// @param {number}  x  x-position to draw at
 	/// @param {number}  y  y-position to draw at
 	/// @param {int}  [colour]  The colour to use
-    static draw_shadow = function(_x, _y, _col = c_black) {
+	/// @param {int}  [layer]  Which layer of the template to use. Defaults to the first layer.
+    static draw_shadow = function(_x, _y, _col = c_black, _layer = 0) {
 		gpu_push_state();
 		gpu_set_fog(true, _col, 0, 0);
-		self.draw(_x, _y);
+		self.draw(_x, _y, _layer);
 		gpu_pop_state();
     }
     
@@ -70,12 +75,34 @@ function GUITemplate(_prefabRoom) constructor {
     
     /// @method get_marker_height(name)
     /// @desc Gets the height of a given marker
+    ///
+	/// @param {string}  name  The id name of the marker
+	///
+	/// @returns {number}  The height
     static get_marker_height = function(_name) {
 		return self.has_marker(_name) ? self.get_marker(_name).height : 0;
     };
     
+    /// @method get_marker_size(name)
+    /// @desc Gets the size of a given marker
+    ///
+	/// @param {string}  name  The id name of the marker
+	///
+	/// @returns {Vector2}  The size
+    static get_marker_size = function(_name) {
+		if (!self.has_marker(_name))
+            return [0, 0];
+        
+        var _marker = self.get_marker(_name);
+        return [_marker.width, _marker.height];
+    };
+    
     /// @method get_marker_width(name)
     /// @desc Gets the width of a given marker
+    ///
+	/// @param {string}  name  The id name of the marker
+	///
+	/// @returns {number}  The width
     static get_marker_width = function(_name) {
 		return self.has_marker(_name) ? self.get_marker(_name).width : 0;
     };
@@ -99,7 +126,7 @@ function GUITemplate(_prefabRoom) constructor {
 	///
 	/// @param {string}  name  The id name of the potential position
 	///
-	/// @returns {bool}  
+	/// @returns {bool}  Whether the marker exists (true) or not (false)
     static has_marker = function(_name) {
         return struct_exists(markers, _name);
     };
@@ -112,22 +139,27 @@ function GUITemplate(_prefabRoom) constructor {
     
     width = _prefabRoomInfo.width;
     height = _prefabRoomInfo.height;
+    layerCount = array_length(_prefabRoomInfo.layers) - 1;
     
-    sprites = array_map(_prefabRoomInfo.layers[LAYER_SPRITES].elements, function(_el, i) {
-		return {
-			sprite_index: _el.sprite_index,
-			image_index: _el.image_index,
-			x: _el.x,
-			y: _el.y,
-			image_xscale: _el.image_xscale,
-			image_yscale: _el.image_yscale,
-			image_angle: _el.image_angle,
-			image_blend: _el.image_blend,
-			image_alpha: _el.image_alpha
-		};
-    });
-    spriteCount = array_length(sprites);
-    array_reverse_ext(sprites);
+    // Get sprite graphics
+    for (var i = 0; i < layerCount; i++) {
+		var _layer = _prefabRoomInfo.layers[LAYER_SPRITE_START + i];
+		sprites[i] = array_map(_layer.elements, function(_el, i) {
+			return {
+				sprite_index: _el.sprite_index,
+				image_index: _el.image_index,
+				x: _el.x,
+				y: _el.y,
+				image_xscale: _el.image_xscale,
+				image_yscale: _el.image_yscale,
+				image_angle: _el.image_angle,
+				image_blend: _el.image_blend,
+				image_alpha: _el.image_alpha
+			};
+		});
+		spriteCount[i] = array_length(sprites[i]);
+		array_reverse_ext(sprites[i]);
+    }
     
     // Grab all marker data
     var _markerList = _prefabRoomInfo.instances;
