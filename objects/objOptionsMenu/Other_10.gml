@@ -2,14 +2,13 @@
 #region Main
 
 with (new OptionsMenu_Submenu("main", "OPTIONS")) {
-	var _items = [];
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("LEAVE", undefined));
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("CONTROLS", "controls"));
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("DISPLAY", "display"));
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("AUDIO", "audio"));
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("OTHER", "misc"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("LEAVE", undefined));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("CONTROLS", "controls"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("DISPLAY", "display"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("AUDIO", "audio"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("OTHER", "misc"));
 	
-	self.add_items_from_list(_items, true, true);
+	self.initialize_list(true);
 	other.menu.add_submenu(self);
 }
 
@@ -18,15 +17,14 @@ with (new OptionsMenu_Submenu("main", "OPTIONS")) {
 #region Controls
 
 with (new OptionsMenu_Submenu("controls", "CONTROLS")) {
-	var _items = [];
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
-	array_push(_items, new OptionsMenu_Item_ControlBinding(true));
-	array_push(_items, new OptionsMenu_Item_ControlBinding(false));
-	array_push(_items, new OptionsMenu_Item_Toggle("downJumpSlide", "DOWN+JUMP", false, ["NONE", "SLIDE"]));
-	array_push(_items, new OptionsMenu_Item_Toggle("autoFire", "AUTO FIRE"));
-	array_push(_items, new OptionsMenu_Item_Toggle("chargeToggle", "CHARGE TOGGLE"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
+	self.add_item(new OptionsMenu_Item_ControlBinding(true));
+	self.add_item(new OptionsMenu_Item_ControlBinding(false));
+	self.add_item(new OptionsMenu_Item_Toggle("downJumpSlide", "DOWN+JUMP", false, ["NONE", "SLIDE"]));
+	self.add_item(new OptionsMenu_Item_Toggle("autoFire", "AUTO FIRE"));
+	self.add_item(new OptionsMenu_Item_Toggle("chargeToggle", "CHARGE TOGGLE"));
 	
-	self.add_items_from_list(_items, true, true);
+	self.initialize_list(true);
 	other.menu.add_submenu(self);
 }
 
@@ -35,16 +33,15 @@ with (new OptionsMenu_Submenu("controls", "CONTROLS")) {
 #region Display
 
 with (new OptionsMenu_Submenu("display", "DISPLAY")) {
-	var _items = [];
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
-	array_push(_items, new OptionsMenu_Item_Toggle("fullscreen", "FULLSCREEN", true));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
+	self.add_item(new OptionsMenu_Item_Toggle("fullscreen", "FULLSCREEN", true));
 	if (!is_browser())
-		array_push(_items, new OptionsMenu_Item_ScreenSize());
-    array_push(_items, new OptionsMenu_Item_Toggle("pixelPerfect", "PIXEL PERFECT", true));
-    array_push(_items, new OptionsMenu_Item_Toggle("vsync", "VSYNC", true));
-    array_push(_items, new OptionsMenu_Item_Toggle("showFPS", "SHOW FPS"));
+		self.add_item(new OptionsMenu_Item_ScreenSize());
+    self.add_item(new OptionsMenu_Item_Toggle("pixelPerfect", "PIXEL PERFECT", true));
+    self.add_item(new OptionsMenu_Item_Toggle("vsync", "VSYNC", true));
+    self.add_item(new OptionsMenu_Item_Toggle("showFPS", "SHOW FPS"));
     
-    self.add_items_from_list(_items, true, true);
+    self.initialize_list(true);
 	other.menu.add_submenu(self);
 }
 
@@ -53,13 +50,12 @@ with (new OptionsMenu_Submenu("display", "DISPLAY")) {
 #region Audio
 
 with (new OptionsMenu_Submenu("audio", "AUDIO")) {
-	var _items = [];
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
-	array_push(_items, new OptionsMenu_Item_Slider("volumeMaster", "MASTER VOLUME"));
-	array_push(_items, new OptionsMenu_Item_Slider("volumeMusic", "MUSIC VOLUME"));
-	array_push(_items, new OptionsMenu_Item_Slider("volumeSound", "SOUND VOLUME"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
+	self.add_item(new OptionsMenu_Item_Slider("volumeMaster", "MASTER VOLUME"));
+	self.add_item(new OptionsMenu_Item_Slider("volumeMusic", "MUSIC VOLUME"));
+	self.add_item(new OptionsMenu_Item_Slider("volumeSound", "SOUND VOLUME"));
 	
-	self.add_items_from_list(_items, true, true);
+	self.initialize_list(true);
 	other.menu.add_submenu(self);
 }
 
@@ -68,15 +64,14 @@ with (new OptionsMenu_Submenu("audio", "AUDIO")) {
 #region Other
 
 with (new OptionsMenu_Submenu("misc", "OTHER")) {
-	var _items = [];
-	array_push(_items, new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
-	array_push(_items, new OptionsMenu_Item_GameSpeed());
-	array_push(_items, new OptionsMenu_Item_Toggle("chargeBar", "CHARGE BAR"));
-	array_push(_items, new OptionsMenu_Item_Toggle("instantHealthFill", "HEALTH FILL", false, ["GRADUAL", "INSTANT"]));
-	array_push(_items, new OptionsMenu_Item_Toggle("damagePopup", "DAMAGE POPUP"));
-	array_push(_items, new OptionsMenu_Item_Toggle("screenShake", "SCREEN SHAKES"));
+	self.add_item(new OptionsMenu_Item_SwitchSubmenu("BACK", "main"));
+	self.add_item(new OptionsMenu_Item_GameSpeed());
+	self.add_item(new OptionsMenu_Item_Toggle("chargeBar", "CHARGE BAR"));
+	self.add_item(new OptionsMenu_Item_Toggle("instantHealthFill", "HEALTH FILL", false, ["GRADUAL", "INSTANT"]));
+	self.add_item(new OptionsMenu_Item_Toggle("damagePopup", "DAMAGE POPUP"));
+	self.add_item(new OptionsMenu_Item_Toggle("screenShake", "SCREEN SHAKES"));
 	
-	self.add_items_from_list(_items, true, true);
+	self.initialize_list(true);
 	other.menu.add_submenu(self);
 }
 

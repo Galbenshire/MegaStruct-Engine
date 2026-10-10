@@ -232,38 +232,77 @@ function UIFramework_Submenu(_id) constructor {
         _item.submenu = self;
     };
     
-    /// @method add_items_from_list(item_list, is_vertical, wrap_neighbours)
-	/// @desc Adds a list of UI Items into this submenu
+    /// @method initialize_grid(per_row, wrap_top, wrap_left, wrap_bottom, wrap_right)
+	/// @desc Establishes this submenu as a list that's either vertical or horizontal
 	///
-	/// @param {array<UIFramework_Item>}  item_list  A list of UI Items to add
+	/// @param {int}  per_row  How many items should there be per row
+	/// @param {bool}  wrap_front  Whether the grid should wrap around itself at the top (true) or not (false, default)
+	/// @param {bool}  wrap_left  Whether the grid should wrap around itself at the left (true, default) or not (false)
+	/// @param {bool}  wrap_bottom  Whether the grid should wrap around itself at the bottom (true) or not (false, default)
+	/// @param {bool}  wrap_right  Whether the grid should wrap around itself at the right (true, default) or not (false)
+    static initialize_grid = function(_perRow, _wrapTop = false, _wrapLeft = true, _wrapBottom = false, _wrapRight = true) {
+		var _totalRows = ceil(itemCount / _perRow);
+		
+		var i = 0; repeat(itemCount) {
+			var _rowI = i div _perRow,
+				_columnI = i mod _perRow;
+			
+			// Top Neighbour
+			if (_rowI > 0 || _wrapTop) {
+				var _topI = modf(i - _perRow, itemCount);
+				items[i].neighbourTop = items[_topI];
+			}
+			// Left Neighbour
+			if (_columnI > 0 || _wrapLeft) {
+				var _leftI = modf(_columnI - 1, _perRow) + (_rowI * _perRow);
+				items[i].neighbourLeft = items[_leftI];
+			}
+			// Bottom Neighbour
+			if (_rowI <= _totalRows - 1 || _wrapBottom) {
+				var _bottomI = modf(i + _perRow, itemCount);
+				items[i].neighbourBottom = items[_bottomI];
+			}
+			// Right Neighbour
+			if (_columnI > 0 || _wrapRight) {
+				var _rightI = modf(_columnI + 1, _perRow) + (_rowI * _perRow);
+				items[i].neighbourRight = items[_rightI];
+			}
+			
+			i++;
+		}
+    };
+    
+    /// @method initialize_list(is_vertical, wrap_front, wrap_back)
+	/// @desc Establishes this submenu as a list that's either vertical or horizontal
+	///
 	/// @param {bool}  is_vertical  Whether to treat this list as vertical (true) or horizontal (false)
-	/// @param {bool}  wrap_neighbours  Whether the list should wrap around itself (true) or not (false)
-    static add_items_from_list = function(_itemList, _isVertical, _wrapNeighbours) {
-		var _count = array_length(_itemList);
-		if (_count <= 0)
+	/// @param {bool}  [wrap_front]  Whether the list should wrap around itself in the front (true, default) or not (false)
+	/// @param {bool}  [wrap_back]  Whether the list should wrap around itself in the back (true, default) or not (false)
+    static initialize_list = function(_isVertical, _wrapFront = true, _wrapBack = true) {
+		if (itemCount <= 0)
 			return;
 		
-		for (var i = 0; i < _count; i++) {
-			self.add_item(_itemList[i]);
-			
-			if (_isVertical) {
-				_itemList[i].neighbourTop = _itemList[modf(i - 1, _count)];
-				_itemList[i].neighbourBottom = _itemList[modf(i + 1, _count)];
-			} else {
-				_itemList[i].neighbourLeft = _itemList[modf(i - 1, _count)];
-				_itemList[i].neighbourRight = _itemList[modf(i + 1, _count)];
+		var i = 0; repeat(itemCount) {
+			// Top/Left Neighbour
+			if (i > 0 || _wrapFront) {
+				var _prevI = modf(i - 1, itemCount);
+				if (_isVertical)
+					items[i].neighbourTop = items[_prevI];
+				else
+					items[i].neighbourLeft = items[_prevI];
 			}
-        }
-        
-        if (_wrapNeighbours)
-			return;
-        if (_isVertical) {
-			_itemList[0].neighbourTop = undefined;
-			_itemList[_count - 1].neighbourBottom = undefined;
-        } else {
-			_itemList[0].neighbourLeft = undefined;
-			_itemList[_count - 1].neighbourRight = undefined;
-        }
+			
+			// Bottom/Right Neighbour
+			if (i < itemCount - 1 || _wrapBack) {
+				var _nextI = modf(i + 1, itemCount);
+				if (_isVertical)
+					items[i].neighbourBottom = items[_nextI];
+				else
+					items[i].neighbourRight = items[_nextI];
+			}
+			
+			i++;
+		}
     };
     
     /// @method get_item(item_id)

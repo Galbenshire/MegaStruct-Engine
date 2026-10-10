@@ -7,25 +7,25 @@ weaponCount = array_length(weapons);
 
 weaponSubmenu = new PauseMenu_Submenu_Weapons();
 with (weaponSubmenu) {
-    var _items = array_create(other.weaponCount);
-    for (var i = 0, n = array_length(_items); i < n; i++) {
-		_items[i] = new PauseMenu_Item_Weapon($"weapon_{i}", other.weapons[i]);
-		if (_items[i].weapon == global.player.body.weapon)
-            defaultItem = _items[i];
+    for (var i = 0, n = other.weaponCount; i < n; i++) {
+		var _item = new PauseMenu_Item_Weapon($"weapon_{i}", other.weapons[i]);
+		if (_item.weapon == global.player.body.weapon)
+            defaultItem = _item;
+		
+		self.add_item(_item);
 	}
     
-    add_items_from_list(_items, true, true);
+    self.initialize_list(true);
 	other.menu.add_submenu(self);
 }
 
 optionsSubmenu = new PauseMenu_Submenu_Options();
 with (optionsSubmenu) {
-    var _items = [];
-    array_push(_items, new PauseMenu_Item_Text("options", "OPTIONS"));
-    array_push(_items, new PauseMenu_Item_Text("retry", "RETRY"));
-    array_push(_items, new PauseMenu_Item_Text("exitstage", "EXIT"));
+    self.add_item(new PauseMenu_Item_Text("options", "OPTIONS"));
+    self.add_item(new PauseMenu_Item_Text("retry", "RETRY"));
+    self.add_item(new PauseMenu_Item_Text("exitstage", "EXIT"));
     
-    add_items_from_list(_items, true, true);
+    self.initialize_list(true);
     defaultItem = items[0];
 	other.menu.add_submenu(self);
 }
