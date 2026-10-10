@@ -416,10 +416,25 @@
 	/// -- generate_weapons()
 	/// Generates a weapon loadout for this player, based on their character specs
 	function generate_weapons() {
-		weaponList = [];
+		array_clear(weaponList);
 		var _weapons = characterSpecs.weapons;
 		for (var i = 0, n = array_length(_weapons); i < n; i++)
 			self.add_weapon(_weapons[i]);
+	}
+	
+	/// -- get_weapon_by_id(weapon_id)
+	/// Gets a specifc weapon from the player, given a weapon ID
+	///
+	/// @param {int}  weapon_id  The weapon ID to look for
+	///
+	/// @returns {Weapon?}  The weapon with the corresponding ID, or `undefined` if the player lacks said weapon
+	function get_weapon_by_id(_weaponID) {
+		var i = 0; repeat(weaponSize) {
+			if (weaponList[i].id == _weaponID)
+				return weaponList[i];
+			i++;
+		}
+		return undefined;
 	}
 	
 	#endregion

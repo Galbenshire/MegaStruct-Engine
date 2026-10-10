@@ -10,7 +10,7 @@ assert(!is_undefined(characterSpecs), $"Invalid characterID provided for {object
 
 // Weapons
 weapon = new Weapon_MegaBuster(); /// @is {Weapon}
-weaponList = [weapon]; /// @is {array<Weapon>}
+weaponList = [ weapon ]; /// @is {array<Weapon>}
 weaponSize = 1;
 
 // Animation System
