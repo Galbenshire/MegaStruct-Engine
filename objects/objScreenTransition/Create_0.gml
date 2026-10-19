@@ -17,10 +17,10 @@ switch (image_angle) {
 section = find_section_at(_searchX, _searchY); /// @is {objSection}
 
 
-// Checks if the give player can trigger a screen transition
+// Checks if the given player can trigger a screen transition
 function can_transition(_player) {
 	if (!player_is_user_controlled(_player))
-		return;
+		return false;
 	if (image_angle == 90 && !(_player.isClimbing || _player.isFreeMovement))
 		return false;
 	
