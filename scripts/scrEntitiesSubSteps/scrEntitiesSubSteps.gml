@@ -47,8 +47,12 @@ function entity_check_ground(_range, _snapToSlopes = true, _testOnly = false) {
 		var _collidable = _collidables[i],
 			_distanceToCollidable = distance_to_collidable_y(_collidable, gravDir);
 		
-		if (_distanceToCollidable * _directionToMove < 0) // In the wrong direction?
-			continue;
+		if (_distanceToCollidable * _directionToMove < 0) { // In the wrong direction?
+			if (_collidable.solidOnOverlap || _collidable.solidType == SolidType.STAND_SOLID)
+				_distanceToCollidable = 0;
+			else
+				continue;
+		}
 		if (abs(_distanceToCollidable) > abs(_distanceToMove)) { // Further down than what we have so far?
 			if (_collidable.solidType != SolidType.SLOPE)
 				continue;

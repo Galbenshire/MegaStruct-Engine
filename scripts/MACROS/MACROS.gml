@@ -306,7 +306,10 @@ enum SolidType {
 	SLOPE,
 	
 	// We'll need a special type of solid to make moving up slopes work
-	SLOPE_SOLID
+	SLOPE_SOLID,
+	
+	// A special type of solid you can stand on, from any height of the solid
+	STAND_SOLID
 }
 
 #macro DEFAULT_GRAVITY 0.25

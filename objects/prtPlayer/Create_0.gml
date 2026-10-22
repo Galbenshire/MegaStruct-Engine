@@ -1,8 +1,8 @@
 event_inherited();
 
-mask_index = maskNormal;
-
 #region Variables
+
+mask_index = maskNormal;
 
 // Character Specs (i.e. details about the playable character represented by this object)
 characterSpecs = character_create_from_id(characterID); /// @is {Character}

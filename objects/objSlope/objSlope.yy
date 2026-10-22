@@ -8,6 +8,7 @@
   "name":"objSlope",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtCollidable","path":"objects/prtCollidable/prtCollidable.yy",},"propertyId":{"name":"solidType","path":"objects/prtCollidable/prtCollidable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"SolidType.SLOPE",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"prtCollidable","path":"objects/prtCollidable/prtCollidable.yy",},"propertyId":{"name":"solidOnOverlap","path":"objects/prtCollidable/prtCollidable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
   ],
   "parent":{
     "name":"Collisions",

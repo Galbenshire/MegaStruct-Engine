@@ -149,7 +149,7 @@ function distance_to_collidable_y(_collidable, _direction, _scope = self) {
     _direction ??= sign_nonzero(bbox_y_center(_collidable) - bbox_y_center(_scope));
     
     // Slopes are treated differently
-    // But only if the entity is not approaching the flat end
+	// But only if the entity is not approaching the flat end
     if (_collidable.solidType == SolidType.SLOPE) {
 		if (sign(_direction) != sign(_collidable.image_yscale)) {
 			var _x = slope_is_steep(_collidable, _scope) ? bbox_horizontal(-_collidable.image_xscale, _scope) : bbox_x_center(_scope),
@@ -244,7 +244,6 @@ function get_collidables_x(_range, _scope = self) {
         var _valid = 0; // 0 = not valid; 1 = valid; 2 = valid slope
         switch (get_collidable_type(_candidate, _scope)) {
             case SolidType.SOLID: // Always a candidate
-            case SolidType.SLOPE_SOLID:
                 _valid = 1;
                 break;
             case SolidType.LEFT_SOLID: // Only count if we're moving to the left, and aren't already inside it
@@ -255,6 +254,13 @@ function get_collidables_x(_range, _scope = self) {
                 break;
             case SolidType.SLOPE: // Always a candidate, but should be last in the array
                 _valid = 2;
+                break;
+            case SolidType.SLOPE_SOLID:
+                var _bboxWidth = bbox_width(_scope),
+                    _bboxXCenter = bbox_x_center(_scope);
+                var _leftBounds = _candidate.bbox_left - _bboxWidth * _candidate.exposedLeft,
+                    _rightBounds = _candidate.bbox_right + _bboxWidth * _candidate.exposedRight;
+                _valid = (_bboxXCenter >= _leftBounds && _bboxXCenter <= _rightBounds);
                 break;
         }
         
@@ -323,6 +329,10 @@ function get_collidables_y(_range, _scope = self) {
                     _rightBounds = _candidate.bbox_right + _bboxWidth * _candidate.exposedRight;
                 _valid = (_bboxXCenter >= _leftBounds && _bboxXCenter <= _rightBounds);
                 break;
+            case SolidType.STAND_SOLID: // If your feet are within the solid, it counts
+				var _overlap = bbox_vertical(_scope.gravDir, _scope) - bbox_vertical(_scope.gravDir, _candidate);
+				_valid = (_range * _scope.gravDir >= 0 && _overlap * _scope.gravDir <= 0);
+				break;
         }
         
         if (_valid == 1)
@@ -409,10 +419,14 @@ function move_and_collide_x(_xspeed, _testOnly = false, _scope = self) {
 				var _collidable = _collidableList[i],
 					_distanceToCollidable = distance_to_collidable_x(_collidable, _directionToMove);
 				
-				if (abs(_distanceToCollidable) >= abs(_distanceToMove))
+				if (_distanceToCollidable * _directionToMove > _distanceToMove * _directionToMove)
 					continue; // Too far
-				if (_distanceToCollidable * _directionToMove < 0)
-					continue; // Don't move backwards
+				if (_distanceToCollidable * _directionToMove < 0) {
+					if (_collidable.solidOnOverlap)
+						_distanceToCollidable = -min(16, abs(_distanceToCollidable)) * _directionToMove; // Fully solid colidables cause zipping
+					else
+						continue; // Don't move backwards otherwise
+				}
 				
 				if (_collidable.solidType == SolidType.SLOPE) { // Slopes are a special kind
 					if (_directionToMove == -sign(_collidable.image_xscale) && !slope_is_steep(_collidable)) {
@@ -471,10 +485,16 @@ function move_and_collide_y(_yspeed, _testOnly = false, _scope = self) {
 				var _collidable = _collidableList[i],
 					_distanceToCollidable = distance_to_collidable_y(_collidable, _directionToMove);
 				
-				if (_distanceToCollidable * _directionToMove < 0)
-					continue; // Don't move backwards
-				if (abs(_distanceToCollidable) >= abs(_distanceToMove))
+				if (_distanceToCollidable * _directionToMove > _distanceToMove * _directionToMove)
 					continue; // Too far
+				if (_distanceToCollidable * _directionToMove < 0) {
+					if (_collidable.solidType == SolidType.STAND_SOLID) // Stand Solids halt downwards movement fully
+						_distanceToCollidable = 0;
+					else if (_collidable.solidOnOverlap)
+						_distanceToCollidable = -min(16, abs(_distanceToCollidable)) * _directionToMove; // Fully solid colidables cause zipping
+					else
+						continue; // Don't move backwards otherwise
+				}
 				
 				if (_collidable.solidType == SolidType.SLOPE) { // Slopes are a special kind
 					if (_directionToMove == -sign(_collidable.image_yscale) && slope_is_steep(_collidable)) {
@@ -560,6 +580,7 @@ function push_entities_x(_xspeed, _scope = self) {
         case SolidType.TOP_SOLID:
         case SolidType.BOTTOM_SOLID:
         case SolidType.GRAV_DIR_SOLID:
+        case SolidType.STAND_SOLID:
             _canShove = false;
             break;
 	}
@@ -608,6 +629,7 @@ function push_entities_y(_yspeed, _scope = self) {
         case SolidType.TOP_SOLID:
         case SolidType.BOTTOM_SOLID:
         case SolidType.GRAV_DIR_SOLID:
+        case SolidType.STAND_SOLID:
             break;
         default:
             return;
@@ -632,8 +654,10 @@ function push_entities_y(_yspeed, _scope = self) {
 			continue;
 		if (_scope.solidType == SolidType.BOTTOM_SOLID && _yspeed <= 0)
 			continue;
-		if (_scope.solidType == SolidType.GRAV_DIR_SOLID && _yspeed * gravDir >= 0)
-			continue;
+		if (_scope.solidType == SolidType.GRAV_DIR_SOLID || _scope.solidType == SolidType.STAND_SOLID) {
+			if (_yspeed * gravDir >= 0)
+				continue;
+		}
         
         if (place_meeting(x, y, _scope.id) && !place_meeting(x, y + _yspeed, _scope.id)) {
             var _displacement = bbox_vertical(_yspeed, _scope.id) - bbox_vertical(-_yspeed);
