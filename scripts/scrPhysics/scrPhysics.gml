@@ -419,7 +419,7 @@ function move_and_collide_x(_xspeed, _testOnly = false, _scope = self) {
 				var _collidable = _collidableList[i],
 					_distanceToCollidable = distance_to_collidable_x(_collidable, _directionToMove);
 				
-				if (_distanceToCollidable * _directionToMove > _distanceToMove * _directionToMove)
+				if (_distanceToCollidable * _directionToMove >= _distanceToMove * _directionToMove)
 					continue; // Too far
 				if (_distanceToCollidable * _directionToMove < 0) {
 					if (_collidable.solidOnOverlap)
@@ -485,7 +485,7 @@ function move_and_collide_y(_yspeed, _testOnly = false, _scope = self) {
 				var _collidable = _collidableList[i],
 					_distanceToCollidable = distance_to_collidable_y(_collidable, _directionToMove);
 				
-				if (_distanceToCollidable * _directionToMove > _distanceToMove * _directionToMove)
+				if (_distanceToCollidable * _directionToMove >= _distanceToMove * _directionToMove)
 					continue; // Too far
 				if (_distanceToCollidable * _directionToMove < 0) {
 					if (_collidable.solidType == SolidType.STAND_SOLID) // Stand Solids halt downwards movement fully

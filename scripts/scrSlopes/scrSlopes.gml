@@ -51,6 +51,28 @@ function slope_is_steep(_slope, _scope = self) {
     return abs(_slope.steepness) > _scope.maxSlopeSteepness;
 }
 
+/// @func slope_line(slope)
+/// @desc Finds the line that makes up the sloped part of a given slope
+///
+/// @param {objSlope}  slope  The slope to get the sloped line of
+///
+/// @return {Line}  The line that makes up the sloped edge
+function slope_line(_slope) {
+	if (_slope.image_xscale > 0) {
+		if (_slope.image_yscale > 0) // Bottom-Right Slope
+			return [ _slope.bbox_right, _slope.bbox_top, _slope.bbox_left, _slope.bbox_bottom ];
+		else // Top-Right Slope
+			return [ _slope.bbox_left, _slope.bbox_top, _slope.bbox_right, _slope.bbox_bottom ];
+	} else {
+		if (_slope.image_yscale > 0)  // Bottom-Left Slope
+			return [ _slope.bbox_right, _slope.bbox_bottom, _slope.bbox_left, _slope.bbox_top ];
+		else  // Top-Left Slope
+			return [ _slope.bbox_left, _slope.bbox_bottom, _slope.bbox_right, _slope.bbox_top ];
+	}
+	
+	return []; // Failsafe
+}
+
 /// @func slope_x_at(slope, y, rounded)
 /// @desc Given a slope and a y-position, this function will find the corresponding x-position on the slope.
 ///

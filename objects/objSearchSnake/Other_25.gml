@@ -17,13 +17,8 @@ if (!isSlithering) {
 }
 
 snakeAngle = moveDir * 90 * sign(image_xscale);
-if (ground && is_object_type(objSlope, groundInstance)) {
-	var _steepness = groundInstance.steepness;
-	if (abs(_steepness) > 1)
-		snakeAngle += (90 * sign(_steepness)) - (45 * (1 / _steepness));
-	else
-		snakeAngle += 45 * _steepness;
-}
+if (ground && is_object_type(objSlope, groundInstance))
+	snakeAngle = wrap_angle(groundInstance.normal + 90);
 
 if (moveDir == 2 && !__enableCeilings) {
 	deathExplode = true;
