@@ -160,6 +160,7 @@ function Subsystem_Debug() : Subsystem() constructor {
     freeRoamEnabled = false;
     freeRoamX = 0;
     freeRoamY = 0;
+    freeRoamZoom = 1;
     
     // Since checkpoints can get destroyed mid-game,
     // we need to store a list here
@@ -268,12 +269,15 @@ function Subsystem_Debug() : Subsystem() constructor {
 					freeRoamEnabled = false;
 					camera_set_begin_script(view_camera[0], -1);
 				} else if (keyboard_check(vk_shift)) {
-					if (global.roomIsLevel && !instance_exists(objMapper))
-						instance_create_layer(0, 0, LAYER_SYSTEM, objMapper);
+					if (global.roomIsLevel && !instance_exists(objMapper)) {
+						var _mapper = instance_create_layer(0, 0, LAYER_SECTION, objMapper);
+						_mapper.depth += 1;
+					}
 				} else if (!instance_exists(objMapper)) {
 					freeRoamEnabled = true;
 					freeRoamX = game_view().xView;
 					freeRoamY = game_view().yView;
+					freeRoamZoom = 1;
 					camera_set_begin_script(view_camera[0], __camera_debug_free_roam);
 				}
 			}
@@ -303,8 +307,23 @@ function Subsystem_Debug() : Subsystem() constructor {
 			
 			if (freeRoamEnabled) {
 				var _spd = 2 + 6 * keyboard_check(vk_numpad5);
+				_spd /= freeRoamZoom;
 				freeRoamX += _spd * (keyboard_check(vk_numpad6) - keyboard_check(vk_numpad4));
 				freeRoamY += _spd * (keyboard_check(vk_numpad2) - keyboard_check(vk_numpad8));
+				
+				var _zoomDir = mouse_wheel_up() - mouse_wheel_down();
+				if (_zoomDir != 0) {
+					var _oldCamWidth = GAME_WIDTH / freeRoamZoom,
+						_oldCamHeight = GAME_HEIGHT / freeRoamZoom;
+					
+					freeRoamZoom = clamp(freeRoamZoom + 0.1 * _zoomDir, 0.1, 2);
+					
+					var _newCamWidth = GAME_WIDTH / freeRoamZoom,
+						_newCamHeight = GAME_HEIGHT / freeRoamZoom;
+					
+					freeRoamX += (_oldCamWidth - _newCamWidth) * 0.5;
+					freeRoamY += (_oldCamHeight - _newCamHeight) * 0.5;
+				}
 			}
 			
 			stopwatchTimer += stopwatchActive;
@@ -337,6 +356,11 @@ function Subsystem_Debug() : Subsystem() constructor {
 				with (objCheckpoint)
 					array_push(other.checkpointList, data);
 			}
+			
+			if (freeRoamEnabled) {
+				freeRoamEnabled = false;
+				camera_set_begin_script(view_camera[0], -1);
+			}
         }	
     };
     
@@ -354,7 +378,11 @@ function Subsystem_Debug() : Subsystem() constructor {
 			draw_rectangle_outline(_edgeLeft - 1, _edgeTop - 1, GAME_WIDTH + 2, GAME_HEIGHT + 2, c_green, 1);
 			draw_rectangle_outline(_edgeLeft + 1, _edgeTop + 1, GAME_WIDTH - 2, GAME_HEIGHT - 2, c_green, 0.5);
 			draw_rectangle_outline(_edgeLeft - 2, _edgeTop - 2, GAME_WIDTH + 4, GAME_HEIGHT + 4, c_green, 0.5);
-			draw_text(freeRoamX + GAME_WIDTH * 0.5, freeRoamY + GAME_HEIGHT * 0.5, "BOUNDARY BREAK");
+			
+			var _textX = freeRoamX + (GAME_WIDTH * 0.5) / freeRoamZoom,
+				_textY = freeRoamY + (GAME_HEIGHT * 0.5) / freeRoamZoom,
+				_textScale = 1 / freeRoamZoom;
+			draw_text_transformed(_textX, _textY, "BOUNDARY BREAK", _textScale, _textScale, 0);
 			
 			draw_reset_text_align();
 			draw_reset_colour();
